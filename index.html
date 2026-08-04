@@ -3,7 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Naver Search Advisor Verification Meta Tag -->
+  <meta name="naver-site-verification" content="f81a49852b57c8fe43df874a299adf2dad3cdb02" />
+
+  <!-- SEO Search Meta Tags -->
   <title>스트레칭온 | 1:1 맞춤 수기 솔루션스트레칭</title>
+  <meta name="description" content="40년 수기 임상 노하우 기반 1:1 맞춤 패시브 스트레칭 및 체형 불균형 교정 전문 스튜디오. 거북목, 어깨·허리·골반 통증 근본 케어." />
+  <meta name="keywords" content="스트레칭온, 솔루션스트레칭, 인천 스트레칭, 가정동 스트레칭, 루원시티 체형교정, 수기 스트레칭, 도수스트레칭" />
+  <link rel="canonical" href="https://solutionstretching.com" />
+
+  <!-- Open Graph for Naver / Kakao Link Previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="스트레칭온 | 1:1 맞춤 수기 솔루션스트레칭" />
+  <meta property="og:description" content="40년 임상 노하우 1:1 맞춤 체형교정 수기 솔루션. 인천 가정역 8층 803호" />
+  <meta property="og:url" content="https://solutionstretching.com" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1200" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -53,6 +68,7 @@
       }
     };
 
+    // SVG Icons
     const IconSparkles = ({ className = "w-5 h-5" }) => (
       <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
@@ -154,12 +170,6 @@
     const IconLock = ({ className = "w-5 h-5" }) => (
       <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-      </svg>
-    );
-
-    const IconTrash = ({ className = "w-4 h-4" }) => (
-      <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
       </svg>
     );
 
@@ -399,11 +409,10 @@
       const [selectedZone, setSelectedZone] = useState(BODY_ZONES[0]);
       const [toastMessage, setToastMessage] = useState(null);
 
-      // Helper: get next available working day (skipping Sunday)
       const getNextWorkingDateStr = () => {
         const d = new Date();
-        d.setDate(d.getDate() + 1); // Minimum 1 day ahead
-        if (d.getDay() === 0) { // If Sunday, skip to Monday
+        d.setDate(d.getDate() + 1);
+        if (d.getDay() === 0) {
           d.setDate(d.getDate() + 1);
         }
         return d.toISOString().split('T')[0];
@@ -424,10 +433,9 @@
       const [newAdminPinInput, setNewAdminPinInput] = useState('');
       const [showPinChangeForm, setShowPinChangeForm] = useState(false);
 
-      // Admin Dashboard View Mode: 'calendar' or 'list'
       const [adminViewMode, setAdminViewMode] = useState('calendar');
       const [currentCalYear, setCurrentCalYear] = useState(new Date().getFullYear());
-      const [currentCalMonth, setCurrentCalMonth] = useState(new Date().getMonth()); // 0-indexed
+      const [currentCalMonth, setCurrentCalMonth] = useState(new Date().getMonth());
 
       useEffect(() => {
         try {
@@ -474,7 +482,6 @@
         }
       };
 
-      // Check if a date string is a Sunday (0 = Sunday)
       const isSundayDate = (dateStr) => {
         if (!dateStr) return false;
         const d = new Date(dateStr + 'T00:00:00');
@@ -554,7 +561,6 @@
         setPrivacyAgreed(false);
       };
 
-      // Check if a booking is at least 3 hours away from now
       const isEligibleForUserCancel = (booking) => {
         try {
           if (booking.status === '취소') return false;
@@ -567,7 +573,6 @@
         }
       };
 
-      // User-initiated cancellation handler
       const handleUserCancelBooking = (booking) => {
         if (!isEligibleForUserCancel(booking)) {
           showToast('방문시간 3시간 이내의 예약은 대표 전화(010-6566-6369)로만 취소 가능합니다.');
@@ -670,7 +675,7 @@
 
       const renderAdminMonthlyCalendar = () => {
         const firstDayOfMonth = new Date(currentCalYear, currentCalMonth, 1);
-        const startingDayOfWeek = firstDayOfMonth.getDay(); // 0 = Sun
+        const startingDayOfWeek = firstDayOfMonth.getDay();
         const daysInMonth = new Date(currentCalYear, currentCalMonth + 1, 0).getDate();
 
         const monthName = `${currentCalYear}년 ${currentCalMonth + 1}월`;
@@ -705,6 +710,7 @@
 
           const isSun = new Date(currentCalYear, currentCalMonth, day).getDay() === 0;
           const dayBookings = allBookings.filter(b => b.date === dateString && b.status !== '취소');
+
           const isSelectedFilter = adminDateFilter === dateString;
 
           calendarCells.push(
@@ -866,7 +872,7 @@
             )}
           </header>
 
-          {}
+          {/* --- Hero Section --- */}
           <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-stone-200/80 shadow-sm text-xs font-semibold text-[#0C3559] mb-6">
@@ -1005,7 +1011,7 @@
                 </div>
               </div>
 
-              {/* Meaning of SolStretch (Latin & Hebrew Etymology) */}
+              {/* Etymology Section: Latin & Hebrew */}
               <div className="bg-gradient-to-br from-[#0C3559] via-[#082239] to-[#051829] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
                 <div className="max-w-3xl mb-10">
                   <span className="text-xs font-semibold text-sky-300 tracking-widest uppercase bg-white/10 px-3.5 py-1 rounded-full">
@@ -1014,26 +1020,26 @@
                   <h3 className="text-2xl sm:text-3xl font-semibold text-white mt-4 mb-3 leading-tight">
                     브랜드가 약속하는 3가지 핵심 밸류, <span className="text-sky-300 font-bold">SOL</span>
                   </h3>
-                  <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
-                    상호명 <strong className="text-white font-semibold">스트레칭 온(Stretching ON)</strong>이 추구하는 근본적 브랜드 가치 <strong className="text-sky-300 font-semibold">SOLSTRETCH</strong>는 인체의 문제 해결을 넘어, 따스한 온기와 완전한 회복을 상징합니다.
+                  <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+                    상호명 <strong className="text-white">스트레칭 온(Stretching ON)</strong>의 근본 브랜드 가치 SOLSTRETCH는 어원적으로 깊은 회복과 태양의 차오르는 온기를 품고 있습니다.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-white/10 rounded-2xl p-6 border border-white/15 space-y-3">
-                    <span className="text-xs text-sky-300 font-semibold uppercase">01 SOLUTION</span>
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
+                    <span className="text-xs text-sky-300 font-semibold uppercase tracking-wider block">01 SOLUTION</span>
                     <h4 className="text-base font-semibold text-white mb-2">근본적 문제 해결</h4>
-                    <p className="text-xs text-stone-300">관절 가동성과 근막 비대칭의 일차 원인을 정밀 스캔하여 명확한 맞춤 수기 이완 솔루션을 제시합니다.</p>
+                    <p className="text-xs text-stone-300 leading-relaxed">관절 가동성과 근막 비대칭의 일차 원인을 정밀 스캔하여 명확한 맞춤 수기 이완 솔루션을 제시합니다.</p>
                   </div>
-                  <div className="bg-white/10 rounded-2xl p-6 border border-white/15 space-y-3">
-                    <span className="text-xs text-amber-300 font-semibold uppercase">02 SOL [LATIN: SUN]</span>
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
+                    <span className="text-xs text-amber-300 font-semibold uppercase tracking-wider block">02 SOL [LATIN: SUN]</span>
                     <h4 className="text-base font-semibold text-white mb-2">태양의 따스한 생명력</h4>
-                    <p className="text-xs text-stone-300">라틴어로 '태양'을 의미하는 Sol처럼, 만성적으로 차갑게 굳어버린 관절과 근육에 따스한 온기와 자유로운 생명력을 불어넣어 드립니다.</p>
+                    <p className="text-xs text-stone-300 leading-relaxed">라틴어로 '태양'을 뜻하는 Sol처럼, 차갑게 굳어진 관절과 근육에 따스한 온기와 자유로운 생명력을 불어넣어 드립니다.</p>
                   </div>
-                  <div className="bg-white/10 rounded-2xl p-6 border border-white/15 space-y-3">
-                    <span className="text-xs text-emerald-300 font-semibold uppercase">03 SHALOM [HEBREW: TRANQUILITY]</span>
+                  <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
+                    <span className="text-xs text-emerald-300 font-semibold uppercase tracking-wider block">03 SHALOM [HEBREW: TRANQUILITY]</span>
                     <h4 className="text-base font-semibold text-white mb-2">온전한 안식과 평온</h4>
-                    <p className="text-xs text-stone-300">히브리어 '샬롬(Shalom)'의 깊은 평안처럼, 신체 오케스트라의 밸런스를 완전하게 회복시켜 일상 전체에 비로소 차오르는 평온을 선사합니다.</p>
+                    <p className="text-xs text-stone-300 leading-relaxed">히브리어 '샬롬(Shalom)'의 깊은 평안처럼, 신체 밸런스를 완전하게 회복시켜 일상 전체에 비로소 차오르는 평온을 선사합니다.</p>
                   </div>
                 </div>
               </div>
@@ -1069,15 +1075,13 @@
                   <button
                     key={zone.id}
                     onClick={() => setSelectedZone(zone)}
-                    className={`p-5 rounded-2xl text-left transition-all duration-300 border ${
+                    className={`p-5 rounded-2xl text-left border transition-all ${
                       isSelected 
                         ? 'bg-[#0C3559] text-white border-[#0C3559] shadow-xl' 
                         : 'bg-white text-[#0C3559] border-stone-200 hover:bg-stone-50'
                     }`}
                   >
-                    <p className={`text-xs font-semibold ${isSelected ? 'text-sky-300' : 'text-[#0C3559]/60'}`}>
-                      Focus Zone
-                    </p>
+                    <p className={`text-xs font-semibold ${isSelected ? 'text-sky-300' : 'text-[#0C3559]/60'}`}>Focus Zone</p>
                     <p className="text-base font-semibold mt-1">{zone.title.split(' ')[0]}</p>
                   </button>
                 );
@@ -1090,10 +1094,8 @@
                   타겟 지점: {selectedZone.title}
                 </div>
 
-                <h3 className="text-2xl sm:text-3xl font-semibold text-[#0C3559]">
-                  {selectedZone.subtitle}
-                </h3>
-
+                <h3 className="text-2xl sm:text-3xl font-semibold text-[#0C3559]">{selectedZone.subtitle}</h3>
+                
                 <div className="space-y-3">
                   <p className="text-xs font-semibold text-[#0C3559]/60 uppercase tracking-wider">주요 측정 불편 증상</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -1106,11 +1108,9 @@
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-sky-50/60 border border-sky-100">
+                <div className="p-4.5 rounded-2xl bg-sky-50/60 border border-sky-100">
                   <p className="text-xs font-semibold text-[#0092B8] uppercase mb-1">맞춤 솔루션 메커니즘</p>
-                  <p className="text-sm sm:text-base font-semibold text-[#0C3559] leading-relaxed">
-                    {selectedZone.solution}
-                  </p>
+                  <p className="text-sm sm:text-base font-semibold text-[#0C3559] leading-relaxed">{selectedZone.solution}</p>
                 </div>
 
                 <div className="pt-2">
@@ -1124,6 +1124,7 @@
                 </div>
               </div>
 
+              {/* Matching Program Right Card */}
               <div className="lg:col-span-5 bg-gradient-to-br from-stone-100 to-sky-50/80 rounded-2xl p-6 sm:p-8 text-center flex flex-col items-center justify-center border border-stone-200 min-h-[300px]">
                 <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-[#0092B8] shadow-md mb-4">
                   <IconActivity className="w-8 h-8" />
@@ -1157,10 +1158,7 @@
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {PROGRAMS.map((prog) => (
-                  <div 
-                    key={prog.id}
-                    className="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative"
-                  >
+                  <div key={prog.id} className="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg flex flex-col justify-between relative hover:shadow-2xl transition-all">
                     {prog.badge && (
                       <span className="absolute top-6 right-6 px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider bg-sky-100 text-[#0092B8] uppercase">
                         {prog.badge}
@@ -1173,31 +1171,20 @@
                         <span>{prog.duration}분 1:1 맞춤 케어</span>
                       </div>
 
-                      <h3 className="text-2xl font-semibold text-[#0C3559] mb-2">
-                        {prog.title}
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-[#0C3559]/75 mb-6 leading-relaxed font-medium">
-                        {prog.subtitle}
-                      </p>
+                      <h3 className="text-2xl font-semibold text-[#0C3559] mb-2">{prog.title}</h3>
+                      <p className="text-xs sm:text-sm text-[#0C3559]/75 mb-6 leading-relaxed font-medium">{prog.subtitle}</p>
 
                       <div className="mb-6 pb-6 border-b border-stone-100">
                         <div className="flex items-baseline gap-1">
-                          <span className="text-3xl sm:text-4xl font-semibold text-[#0C3559]">
-                            {prog.price.toLocaleString()}
-                          </span>
+                          <span className="text-3xl sm:text-4xl font-semibold text-[#0C3559]">{prog.price.toLocaleString()}</span>
                           <span className="text-base font-semibold text-[#0C3559]">원</span>
                           {prog.originalPrice && (
-                            <span className="text-xs text-stone-400 line-through ml-2 font-medium">
-                              {prog.originalPrice.toLocaleString()}원
-                            </span>
+                            <span className="text-xs text-stone-400 line-through ml-2 font-medium">{prog.originalPrice.toLocaleString()}원</span>
                           )}
                         </div>
                       </div>
 
-                      <p className="text-xs sm:text-sm text-[#0C3559]/80 leading-relaxed mb-6 font-normal">
-                        {prog.description}
-                      </p>
+                      <p className="text-xs sm:text-sm text-[#0C3559]/80 mb-6 font-normal leading-relaxed">{prog.description}</p>
 
                       <div className="space-y-2 mb-8">
                         <p className="text-[11px] font-semibold text-[#0C3559]/60 uppercase tracking-wider">권장 케어 대상</p>
@@ -1233,23 +1220,20 @@
                       SOLSTRETCH ACADEMY
                     </span>
 
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-white leading-tight">
-                      솔루션스트레칭 지도자 교육과정
-                    </h2>
-
-                    <p className="text-stone-300 text-sm sm:text-base leading-relaxed font-normal">
+                    <h2 className="text-3xl sm:text-4xl font-semibold text-white">솔루션스트레칭 지도자 교육과정</h2>
+                    <p className="text-stone-300 text-sm sm:text-base leading-relaxed">
                       40여년 경력의 원장이 직접 지도하는 최고위 스트레칭 전문가 양성 과정입니다.<br />
                       체형 분석 이론부터 실전 수기 테크닉까지 완성형 노하우를 직접 전수합니다.
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                      <div className="p-4 bg-white/10 rounded-2xl border border-white/10">
+                      <div className="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
                         <p className="text-xs text-sky-300 font-semibold mb-1">교육 일정 (주중반)</p>
                         <p className="text-base font-semibold text-white">월·수·금요일 (10:00 - 13:00)</p>
                         <p className="text-xs text-stone-300 mt-1 font-normal">1일 3시간 × 4주 (총 36시간 과정)</p>
                       </div>
 
-                      <div className="p-4 bg-white/10 rounded-2xl border border-white/10">
+                      <div className="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
                         <p className="text-xs text-sky-300 font-semibold mb-1">수강료 및 자격증</p>
                         <p className="text-2xl font-semibold text-white">120만원</p>
                         <p className="text-xs text-stone-300 mt-1 font-normal">* 공식 자격증 발급비 포함</p>
@@ -1259,14 +1243,14 @@
                     <div className="pt-4 flex flex-col sm:flex-row gap-4">
                       <button
                         onClick={() => setActiveModal('academy-apply')}
-                        className="px-8 py-4 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-xs sm:text-sm hover:bg-sky-300 transition-all shadow-xl flex items-center justify-center gap-2"
+                        className="px-8 py-4 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-xs sm:text-sm hover:bg-sky-300 flex items-center justify-center gap-2"
                       >
                         지도자 수강 상담 신청
                         <IconChevronRight className="w-4 h-4" />
                       </button>
                       <a
                         href="tel:010-6566-6369"
-                        className="px-6 py-4 rounded-full bg-white/10 text-white border border-white/20 font-semibold text-xs sm:text-sm hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                        className="px-6 py-4 rounded-full bg-white/10 text-white border border-white/20 font-semibold text-xs sm:text-sm hover:bg-white/20 flex items-center justify-center gap-2"
                       >
                         <IconPhone className="w-4 h-4 text-sky-300" />
                         직통 문의: 010-6566-6369
@@ -1274,6 +1258,7 @@
                     </div>
                   </div>
 
+                  {/* Curriculum Cards */}
                   <div className="lg:col-span-5 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-6 space-y-4">
                     <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                       <IconAcademic className="w-5 h-5 text-sky-300" />
@@ -1305,15 +1290,12 @@
           </section>
 
           {}
-          <section id="reservation" className="py-24 bg-[#0C3559] text-white relative overflow-hidden">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <section id="reservation" className="py-24 bg-[#0C3559] text-white">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center max-w-xl mx-auto mb-12">
                 <span className="text-xs font-semibold tracking-widest text-sky-300 uppercase">REAL-TIME RESERVATION</span>
                 <h2 className="text-3xl sm:text-4xl font-semibold text-white mt-3 mb-3">실시간 1:1 맞춤 예약</h2>
-                <p className="text-stone-300 text-xs sm:text-sm font-normal leading-relaxed">
-                  * 당일 온라인 예약 및 일요일(휴무) 예약은 불가합니다.<br />
-                  * 선택하신 날짜/시간대는 1인 한정 실시간 확정 잠금 처리됩니다.
-                </p>
+                <p className="text-stone-300 text-xs sm:text-sm">* 당일 온라인 예약 및 일요일(휴무) 예약은 불가합니다. 선택한 타임은 1인 한정 실시간 잠금 처리됩니다.</p>
               </div>
 
               <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/15 shadow-2xl">
@@ -1325,7 +1307,7 @@
                         <div
                           key={prog.id}
                           onClick={() => setSelectedProgram(prog)}
-                          className={`p-5 rounded-2xl cursor-pointer border flex justify-between items-center ${selectedProgram.id === prog.id ? 'bg-sky-500/20 border-sky-400 ring-2 ring-sky-400' : 'bg-white/5 border-white/10'}`}
+                          className={`p-5 rounded-2xl cursor-pointer border flex justify-between items-center ${selectedProgram.id === prog.id ? 'bg-sky-500/20 border-sky-400' : 'bg-white/5 border-white/10'}`}
                         >
                           <div>
                             <h4 className="text-lg font-semibold text-white">{prog.title}</h4>
@@ -1335,35 +1317,29 @@
                         </div>
                       ))}
                     </div>
-                    <div className="flex justify-end pt-4">
-                      <button onClick={() => setBookingStep(2)} className="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm hover:bg-sky-300 transition-all flex items-center gap-2">
-                        다음: 날짜 및 시간 선택
-                        <IconChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+                    <button onClick={() => setBookingStep(2)} className="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">
+                      다음: 날짜 및 시간 선택
+                    </button>
                   </div>
                 )}
 
                 {bookingStep === 2 && (
                   <div className="space-y-6">
                     <h3 className="text-xl font-semibold text-white">2단계: 방문 날짜 및 시간 선택 (일요일 휴무)</h3>
-                    <div className="space-y-2">
-                      <label className="block text-xs font-semibold text-stone-200">방문 날짜 선택 (내일부터 선택 가능)</label>
-                      <input 
-                        type="date" 
-                        value={selectedDate}
-                        min={getNextWorkingDateStr()}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          if (isSundayDate(val)) {
-                            showToast('일요일은 정기 휴무일입니다. 월~토요일 시간대를 선택해 주세요.');
-                            return;
-                          }
-                          setSelectedDate(val < getNextWorkingDateStr() ? getNextWorkingDateStr() : val);
-                        }}
-                        className="w-full sm:w-64 bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm font-semibold"
-                      />
-                    </div>
+                    <input 
+                      type="date" 
+                      value={selectedDate}
+                      min={getNextWorkingDateStr()}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (isSundayDate(val)) {
+                          showToast('일요일은 정기 휴무일입니다. 월~토요일 시간대를 선택해 주세요.');
+                          return;
+                        }
+                        setSelectedDate(val < getNextWorkingDateStr() ? getNextWorkingDateStr() : val);
+                      }}
+                      className="bg-[#082239] border border-white/20 rounded-xl px-4 py-3 text-white text-sm"
+                    />
 
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
                       {TIME_SLOTS.map((slot) => {
@@ -1371,7 +1347,7 @@
                         const isSelected = selectedTime === slot;
                         if (isBooked) {
                           return (
-                            <button key={slot} disabled className="py-3.5 rounded-xl text-xs bg-stone-800 text-stone-500 line-through opacity-60">
+                            <button key={slot} disabled className="py-3.5 rounded-xl text-xs bg-stone-800 text-stone-500 line-through">
                               {slot} (마감)
                             </button>
                           );
@@ -1379,9 +1355,8 @@
                         return (
                           <button
                             key={slot}
-                            type="button"
                             onClick={() => setSelectedTime(slot)}
-                            className={`py-3.5 rounded-xl text-xs font-semibold border ${isSelected ? 'bg-sky-400 text-[#0C3559] border-sky-400 ring-2 ring-sky-300' : 'bg-[#082239] text-stone-200 border-white/10'}`}
+                            className={`py-3.5 rounded-xl text-xs font-semibold border ${isSelected ? 'bg-sky-400 text-[#0C3559] border-sky-400' : 'bg-[#082239] text-stone-200 border-white/10'}`}
                           >
                             {slot}
                           </button>
@@ -1389,8 +1364,8 @@
                       })}
                     </div>
 
-                    <div className="flex justify-between pt-4">
-                      <button onClick={() => setBookingStep(1)} className="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs">이전 단계</button>
+                    <div className="flex justify-between">
+                      <button onClick={() => setBookingStep(1)} className="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs">이전</button>
                       <button onClick={() => setBookingStep(3)} className="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">다음: 예약자 정보 입력</button>
                     </div>
                   </div>
@@ -1399,12 +1374,6 @@
                 {bookingStep === 3 && (
                   <form onSubmit={handleConfirmBooking} className="space-y-4">
                     <h3 className="text-xl font-semibold text-white mb-4">3단계: 예약자 정보 입력</h3>
-                    
-                    <div className="p-4 rounded-xl bg-[#082239] text-xs text-stone-300 space-y-1">
-                      <p>선택 코스: <strong className="text-white">{selectedProgram.title} ({selectedProgram.duration}분)</strong></p>
-                      <p>예약 일시: <strong className="text-sky-300">{selectedDate} / {selectedTime}</strong></p>
-                    </div>
-
                     <input type="text" required placeholder="성함 *" value={userName} onChange={(e) => setUserName(e.target.value)} className="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
                     <input type="tel" required placeholder="연락처 *" value={userPhone} onChange={(e) => setUserPhone(e.target.value)} className="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
                     <textarea rows={2} placeholder="요청사항" value={userNote} onChange={(e) => setUserNote(e.target.value)} className="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm resize-none" />
@@ -1415,7 +1384,7 @@
                     </label>
 
                     <div className="flex justify-between items-center pt-4">
-                      <button type="button" onClick={() => setBookingStep(2)} className="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs">이전 단계</button>
+                      <button type="button" onClick={() => setBookingStep(2)} className="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs">이전</button>
                       <button type="submit" className="px-10 py-4 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm shadow-xl">예약 신청 및 즉시 확정</button>
                     </div>
                   </form>
@@ -1454,13 +1423,13 @@
             </div>
           </section>
 
-          {}
+          {/* Location, Map Search, FAQ & Studio Policies Guidelines */}
           <section id="location" className="py-24 bg-stone-100 border-t border-stone-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
               <div className="text-center max-w-2xl mx-auto space-y-3">
                 <h3 className="text-2xl font-semibold text-[#0C3559]">스트레칭온 위치 및 안내</h3>
                 <p className="text-sm text-[#0C3559]/80">인천 서구 가정로 451 벨라미센텀시티2차 8층 803호 (가정역 6번 출구 112m)</p>
-                <p className="text-sm font-semibold text-[#0092B8]">전화문의: 010-6566-6369 | 주차 2시간 무료 (일요일 정기휴무)</p>
+                <p className="text-sm font-semibold text-[#0092B8]">전화문의: 010-6566-6369 | 주차 2시간 무료 (일요일 휴무)</p>
 
                 <div className="flex items-center justify-center gap-3 pt-2">
                   <button onClick={() => openMapSearch('naver')} className="px-5 py-2.5 rounded-xl bg-[#03CF5D] text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm">
@@ -1472,6 +1441,7 @@
                 </div>
               </div>
 
+              {/* FAQ Accordion */}
               <div className="max-w-3xl mx-auto space-y-3">
                 <h4 className="text-xl font-semibold text-[#0C3559] text-center mb-6">자주 묻는 질문 FAQ</h4>
                 {FAQS.map((faq, idx) => (
@@ -1485,31 +1455,53 @@
                 ))}
               </div>
 
-              {/* Policy Guidelines */}
-              <div className="pt-8 border-t border-stone-200">
-                <h4 className="text-xl font-semibold text-[#0C3559] text-center mb-8">스튜디오 이용 & 수강권 상세 규정</h4>
+              {/* Guidelines Grid (4 Categories) */}
+              <div className="pt-8 border-t border-stone-200/80">
+                <div className="text-center max-w-2xl mx-auto mb-10">
+                  <span className="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1 rounded-full">
+                    STUDIO POLICIES
+                  </span>
+                  <h3 className="text-2xl font-semibold text-[#0C3559] mt-3 mb-2">
+                    스튜디오 이용 & 수강권 상세 규정
+                  </h3>
+                  <p className="text-[#0C3559]/75 text-xs sm:text-sm">
+                    투명하고 안전한 스튜디오 이용을 위한 예약, 복장, 수강권 환불 및 공유 기준입니다.
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {GUIDELINES.map((group, gIdx) => (
-                    <div key={gIdx} className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm">
-                      <div className="flex items-center justify-between mb-4">
-                        <h5 className="font-semibold text-base text-[#0C3559] flex items-center gap-2">
-                          <IconShieldCheck className="w-5 h-5 text-[#0092B8]" />
-                          {group.category}
-                        </h5>
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-sky-100 text-[#0092B8]">{group.badge}</span>
-                      </div>
-                      <div className="space-y-3">
-                        {group.items.map((item, iIdx) => (
-                          <div key={iIdx} className="bg-stone-50 p-3 rounded-2xl border border-stone-100">
-                            <p className="font-semibold text-xs text-[#0C3559] mb-1">• {item.title}</p>
-                            <p className="text-xs text-stone-600 pl-2">{item.desc}</p>
-                          </div>
-                        ))}
+                    <div key={gIdx} className="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="text-base font-semibold text-[#0C3559] flex items-center gap-2">
+                            <IconShieldCheck className="w-5 h-5 text-[#0092B8]" />
+                            {group.category}
+                          </h4>
+                          <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-[#0092B8]">
+                            {group.badge}
+                          </span>
+                        </div>
+
+                        <div className="space-y-3">
+                          {group.items.map((item, iIdx) => (
+                            <div key={iIdx} className="bg-stone-50 p-3.5 rounded-2xl border border-stone-200/80">
+                              <p className="font-semibold text-xs sm:text-sm text-[#0C3559] mb-1 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#0092B8]" />
+                                {item.title}
+                              </p>
+                              <p className="text-xs text-[#0C3559]/75 font-normal leading-relaxed pl-3.5">
+                                {item.desc}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
+
             </div>
           </section>
 
