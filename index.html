@@ -435,15 +435,21 @@
               <label class="block text-xs font-semibold text-stone-200">방문 날짜 선택 (내일부터 예약 가능)</label>
               <input type="date" id="booking-date-input" onchange="handleBookingDateChange(this.value)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm font-semibold focus:outline-none focus:border-sky-400" />
               <div class="p-4 rounded-xl bg-[#082239]/80 border border-white/10 text-xs text-stone-300 space-y-1.5 font-normal">
-                <p class="font-semibold text-sky-300">💡 예약 정책 안내</p>
-                <p>• 당일 예약은 불가합니다 (최소 1일 전 예약)</p>
-                <p>• 선택하신 날짜의 예약 완료 시간대는 '마감'으로 자동 차단됩니다.</p>
-                <p>• 원장 1:1 전담으로 동일 시간에 추가 중복 예약이 불가능합니다.</p>
+                <p class="font-semibold text-sky-300">💡 운영 시간 및 예약 안내</p>
+                <p>• 월 - 금요일: 10:00 ~ 22:00 (마지막 타임 21:00)</p>
+                <p>• 토요일: 10:00 ~ 18:00 (마지막 타임 17:00)</p>
+                <p>• 일요일: 정기 휴무 (예약 불가)</p>
+                <p>• 선택하신 날짜/시간대는 1인 한정 실시간 자동 마감됩니다.</p>
               </div>
             </div>
 
             <div class="md:col-span-7 space-y-3">
-              <label class="block text-xs font-semibold text-stone-200">방문 시간대</label>
+              <div class="flex justify-between items-center">
+                <label class="block text-xs font-semibold text-stone-200">방문 시간대 선택</label>
+                <span id="saturday-notice-badge" class="hidden text-[11px] px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-semibold">
+                  토요일 단축운영 (10:00 ~ 18:00)
+                </span>
+              </div>
               <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5" id="step2-time-slots"></div>
             </div>
           </div>
@@ -517,8 +523,8 @@
               </div>
 
               <div class="text-xs sm:text-sm text-[#0C3559]/85 font-semibold">
-                <p>월 - 금요일: 10:00 - 22:00</p>
-                <p>토요일: 10:00 - 18:00 (일요일 휴무)</p>
+                <p>월 - 금요일: 10:00 - 22:00 (마지막 케어 21:00)</p>
+                <p>토요일: 10:00 - 18:00 (마지막 케어 17:00 / 일요일 휴무)</p>
               </div>
             </div>
           </div>
@@ -620,7 +626,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <input type="text" id="manual-name" placeholder="성함 *" class="border p-2 rounded text-xs" />
           <input type="tel" id="manual-phone" placeholder="연락처 *" class="border p-2 rounded text-xs" />
-          <input type="date" id="manual-date" class="border p-2 rounded text-xs" />
+          <input type="date" id="manual-date" onchange="updateManualTimeSlots(this.value)" class="border p-2 rounded text-xs" />
           <select id="manual-time" class="border p-2 rounded text-xs"></select>
           <select id="manual-program" class="border p-2 rounded text-xs"></select>
           <button onclick="submitManualBooking()" class="py-2 bg-amber-800 text-white rounded text-xs font-semibold">전화예약 수기 등록</button>
@@ -676,7 +682,9 @@
       { id: 'full', title: '전신 피로 & 신체 불균형 (Full Body)', subtitle: '만성 피로 해소 및 신체 구조 평온함 회복', symptoms: ['자고 일어나도 온몸이 찌뿌둥함', '몸 전체의 자세가 틀어진 느낌', '삶의 질을 높이는 가벼움 절실', '수술 후 빠른회복을 원하시는 분'], solution: '전신 솔루션 스트레칭으로 신체 밸런스 완전 복원', recProgramId: 'p3' }
     ];
 
-    const TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+    // 평일 및 토요일 타임 슬롯 기준
+    const WEEKDAY_TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+    const SATURDAY_TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00']; // 18시 종료에 따라 마지막 타임 17:00
 
     const GUIDELINES = [
       { category: '예약 및 취소/변경 규정', badge: 'RESERVATION', items: [{ title: '온라인 당일 예약 제한 (100% 사전예약제)', desc: '원장의 1:1 집중 정밀 케어를 위해 당일 온라인 예약은 없습니다. 당일 관리를 희망하시는 경우 대표 번호(010-6566-6369)로 문의 부탁드립니다.' }, { title: '타임 슬롯 당 1명 한정 (중복 예약 자동 차감)', desc: '어떤 프로그램을 선택하셔도 동일한 시간대에는 오직 1분의 고객님만 모십니다. 이미 예약된 타임은 마감 처리됩니다.' }, { title: '자유로운 일시 변경 및 취소', desc: '예약 취소 및 날짜/시간 변경은 방문 3시간 전까지 웹사이트 내 [내 예약] 메뉴를 통해 신청하실 수 있습니다.' }] },
@@ -705,7 +713,7 @@
     let selectedProgram = PROGRAMS[0];
     let selectedZone = BODY_ZONES[0];
     let selectedDate = getNextWorkingDateStr();
-    let selectedTime = TIME_SLOTS[2];
+    let selectedTime = '10:00';
     let adminCalYear = new Date().getFullYear();
     let adminCalMonth = new Date().getMonth();
     let adminViewMode = 'calendar';
@@ -714,7 +722,7 @@
     function getNextWorkingDateStr() {
       const d = new Date();
       d.setDate(d.getDate() + 1);
-      if (d.getDay() === 0) d.setDate(d.getDate() + 1);
+      if (d.getDay() === 0) d.setDate(d.getDate() + 1); // 일요일 자동 패스
       return d.toISOString().split('T')[0];
     }
 
@@ -722,6 +730,19 @@
       if (!dateStr) return false;
       const d = new Date(dateStr + 'T00:00:00');
       return d.getDay() === 0;
+    }
+
+    function isSaturdayDate(dateStr) {
+      if (!dateStr) return false;
+      const d = new Date(dateStr + 'T00:00:00');
+      return d.getDay() === 6;
+    }
+
+    function getAvailableTimeSlotsForDate(dateStr) {
+      if (isSaturdayDate(dateStr)) {
+        return SATURDAY_TIME_SLOTS;
+      }
+      return WEEKDAY_TIME_SLOTS;
     }
 
     function showToast(msg) {
@@ -911,10 +932,25 @@
       dateInput.value = selectedDate;
       dateInput.min = getNextWorkingDateStr();
 
+      const isSat = isSaturdayDate(selectedDate);
+      const satBadge = document.getElementById('saturday-notice-badge');
+      if (isSat) {
+        satBadge.classList.remove('hidden');
+      } else {
+        satBadge.classList.add('hidden');
+      }
+
+      const availableSlots = getAvailableTimeSlotsForDate(selectedDate);
+
+      // 선택된 시간값이 해당 날짜의 운영시간 범위를 넘어가면 첫 타임으로 자동 조정
+      if (!availableSlots.includes(selectedTime)) {
+        selectedTime = availableSlots[0] || '10:00';
+      }
+
       const bookedTimes = bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
 
       const slotsEl = document.getElementById('step2-time-slots');
-      slotsEl.innerHTML = TIME_SLOTS.map(t => {
+      slotsEl.innerHTML = availableSlots.map(t => {
         const isBooked = bookedTimes.includes(t);
         const isSelected = selectedTime === t;
         if (isBooked) {
@@ -960,6 +996,11 @@
       if (!agree) return showToast('개인정보 수집 및 이용 동의에 동의해 주세요.');
       if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
       if (isSundayDate(selectedDate)) return showToast('일요일은 정기 휴무일입니다.');
+
+      const availableSlots = getAvailableTimeSlotsForDate(selectedDate);
+      if (!availableSlots.includes(selectedTime)) {
+        return showToast('선택하신 시간은 해당 날짜의 운영시간에 포함되지 않습니다.');
+      }
 
       const bookedTimes = bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
       if (bookedTimes.includes(selectedTime)) return showToast('이미 예약 마감된 시간대입니다.');
@@ -1061,15 +1102,22 @@
       }
     }
 
+    function updateManualTimeSlots(dateVal) {
+      const slots = getAvailableTimeSlotsForDate(dateVal);
+      const timeSel = document.getElementById('manual-time');
+      timeSel.innerHTML = slots.map(t => `<option value="${t}">${t}</option>`).join('');
+    }
+
     function openAdminDashboard() {
       document.getElementById('admin-total-count').innerText = bookings.filter(b => b.status !== '취소').length;
 
       // Populate Manual Booking Selects
-      const timeSel = document.getElementById('manual-time');
-      timeSel.innerHTML = TIME_SLOTS.map(t => `<option value="${t}">${t}</option>`).join('');
+      const initialManualDate = getNextWorkingDateStr();
+      document.getElementById('manual-date').value = initialManualDate;
+      updateManualTimeSlots(initialManualDate);
+
       const progSel = document.getElementById('manual-program');
       progSel.innerHTML = PROGRAMS.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
-      document.getElementById('manual-date').value = getNextWorkingDateStr();
 
       renderAdminDashboardView();
       openModal('modal-admin-dashboard');
@@ -1123,14 +1171,16 @@
         const dStr = String(day).padStart(2, '0');
         const dateString = `${adminCalYear}-${mStr}-${dStr}`;
 
-        const isSun = new Date(adminCalYear, adminCalMonth, day).getDay() === 0;
+        const dayOfWeek = new Date(adminCalYear, adminCalMonth, day).getDay();
+        const isSun = dayOfWeek === 0;
+        const isSat = dayOfWeek === 6;
         const dayBookings = bookings.filter(b => b.date === dateString && b.status !== '취소');
         const isSelected = adminFilterDate === dateString;
 
         cellsHTML += `
-          <div onclick="selectAdminFilterDate('${dateString}')" class="h-20 border p-1.5 rounded-xl cursor-pointer text-xs flex flex-col justify-between ${isSelected ? 'bg-sky-50 border-sky-400' : isSun ? 'bg-rose-50/40 border-stone-200' : 'bg-white border-stone-200'}">
+          <div onclick="selectAdminFilterDate('${dateString}')" class="h-20 border p-1.5 rounded-xl cursor-pointer text-xs flex flex-col justify-between ${isSelected ? 'bg-sky-50 border-sky-400' : isSun ? 'bg-rose-50/40 border-stone-200' : isSat ? 'bg-amber-50/30 border-stone-200' : 'bg-white border-stone-200'}">
             <div class="flex justify-between items-center">
-              <span class="font-bold ${isSun ? 'text-rose-600' : 'text-[#0C3559]'}">${day}일</span>
+              <span class="font-bold ${isSun ? 'text-rose-600' : isSat ? 'text-amber-700' : 'text-[#0C3559]'}">${day}일</span>
               ${dayBookings.length > 0 ? `<span class="bg-[#0C3559] text-white px-1.5 py-0.2 rounded-full text-[9px] font-bold">${dayBookings.length}건</span>` : ''}
             </div>
             <div class="space-y-0.5 overflow-hidden">
@@ -1148,7 +1198,7 @@
           <button onclick="changeAdminMonth(1)" class="px-3 py-1 bg-white rounded font-bold">▶</button>
         </div>
         <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold py-1">
-          <div class="text-rose-600">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+          <div class="text-rose-600">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="text-amber-700">토</div>
         </div>
         <div class="grid grid-cols-7 gap-1">${cellsHTML}</div>
         ${adminFilterDate ? `
@@ -1217,6 +1267,11 @@
 
       if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
       if (isSundayDate(date)) return showToast('일요일은 정기 휴무일입니다.');
+
+      const availableSlots = getAvailableTimeSlotsForDate(date);
+      if (!availableSlots.includes(time)) {
+        return showToast('선택하신 시간은 해당 날짜 운영시간 범위에 포함되지 않습니다.');
+      }
 
       const newB = {
         id: 'DIR-' + Math.floor(100000 + Math.random() * 900000),
