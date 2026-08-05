@@ -86,7 +86,7 @@
           <span id="header-admin-label">관리자</span>
         </button>
 
-        <button id="btn-my-bookings-header" onclick="openMyBookingsModal()" class="hidden px-4 py-2 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-[#0C3559] transition-all flex items-center gap-1.5 border border-stone-200">
+        <button onclick="openMyBookingsModal()" class="px-4 py-2 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-[#0C3559] transition-all flex items-center gap-1.5 border border-stone-200">
           <svg class="w-3.5 h-3.5 text-[#0092B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
           <span>내 예약 (<span id="header-booking-count">0</span>)</span>
         </button>
@@ -508,7 +508,7 @@
             <div class="space-y-4 mb-8 text-sm sm:text-base text-[#0C3559]">
               <div>
                 <p class="font-semibold text-[#0C3559] text-base sm:text-lg">스트레칭온</p>
-                <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
+                <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서해구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
                 <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간</p>
               </div>
 
@@ -561,7 +561,7 @@
   <!-- Footer -->
   <footer class="bg-[#0C3559] text-stone-300 py-16 border-t border-white/10 text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-      <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서구 가정로 451 8층 803호</p>
+      <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서해구 가정로 451 8층 803호</p>
     </div>
   </footer>
 
@@ -751,11 +751,6 @@
       const activeCount = bookings.filter(b => b.status !== '취소').length;
       document.getElementById('header-booking-count').innerText = activeCount;
       document.getElementById('header-admin-label').innerText = isAdminAuth ? '원장님 관리자' : '관리자';
-      const myBtn = document.getElementById('btn-my-bookings-header');
-      if (myBtn) {
-        if (activeCount > 0) myBtn.classList.remove('hidden');
-        else myBtn.classList.add('hidden');
-      }
     }
 
     function scrollToSec(id) {
