@@ -2,13 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   
-  <!-- Naver Search Advisor Verification Meta Tag (Updated) -->
-  <meta name="naver-site-verification" content="f81a49852b57c8fe43df874a299adf2dad3cdb02" />
-
-  <!-- Google Search Console Verification Meta Tag -->
-  <meta name="google-site-verification" content="6w_vT18fFNmbfpnwZrKCm6z6uqt2FcWLDKbRhz7wTM0" />
+  <!-- Naver Search Advisor Verification Meta Tag -->
+  <meta name="naver-site-verification" content="e8081e77e431fe3678695a16d44eac8e63b4acce" />
 
   <!-- SEO Search Meta Tags -->
   <title>스트레칭온 | 1:1 맞춤 수기 솔루션스트레칭</title>
@@ -22,6 +19,21 @@
   <meta property="og:description" content="40년 임상 노하우 1:1 맞춤 체형교정 수기 솔루션. 인천 가정역 8층 803호" />
   <meta property="og:url" content="https://solutionstretching.com" />
   <meta property="og:image" content="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1200" />
+
+  <!-- PWA Web App Meta Tags & Apple Touch Icons (Official Logo Embedded) -->
+  <meta name="theme-color" content="#0C3559" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="스트레칭온" />
+  <meta name="application-name" content="스트레칭온" />
+
+  <!-- Embedded Official Logo SVG for iOS Apple-Touch-Icon & Android PWA -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='110' fill='%230C3559'/><g transform='translate(106, 75) scale(2.5)' fill='none'><path d='M 60 22 C 82 22, 100 40, 100 62 C 100 84, 82 100, 58 100 C 38 100, 24 84, 25 64' stroke='%2338bdf8' stroke-width='13' stroke-linecap='round'/><circle cx='48' cy='18' r='9' fill='%23ffffff'/><path d='M 4 36 C 20 35, 34 31, 50 26' stroke='%23ffffff' stroke-width='10' stroke-linecap='round'/><path d='M 51 25 C 49 43, 37 70, 12 104 L 20 106 C 44 73, 57 46, 57 25 Z' fill='%23ffffff'/><path d='M 49 28 L 75 3 L 80 24 Z' fill='%2338bdf8'/></g></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='110' fill='%230C3559'/><g transform='translate(106, 75) scale(2.5)' fill='none'><path d='M 60 22 C 82 22, 100 40, 100 62 C 100 84, 82 100, 58 100 C 38 100, 24 84, 25 64' stroke='%2338bdf8' stroke-width='13' stroke-linecap='round'/><circle cx='48' cy='18' r='9' fill='%23ffffff'/><path d='M 4 36 C 20 35, 34 31, 50 26' stroke='%23ffffff' stroke-width='10' stroke-linecap='round'/><path d='M 51 25 C 49 43, 37 70, 12 104 L 20 106 C 44 73, 57 46, 57 25 Z' fill='%23ffffff'/><path d='M 49 28 L 75 3 L 80 24 Z' fill='%2338bdf8'/></g></svg>" />
+
+  <!-- Inline Web App Manifest -->
+  <link rel="manifest" href="data:application/manifest+json;utf8,{%22name%22:%22%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%B9%AD%EC%98%A8%22,%22short_name%22:%22%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%B9%AD%EC%98%A8%22,%22description%22:%2240%EB%85%84%20%EC%9E%84%EC%83%81%20%EB%85%B8%ED%95%98%EC%9A%B0%201:1%20%EB%A7%9E%EC%B6%A4%20%EC%B2%B4%ED%98%95%EA%B5%90%EC%A0%95%20%EC%88%98%EA%B8%B0%20%EC%86%94%EB%A3%A8%EC%85%98%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230C3559%22,%22theme_color%22:%22%230C3559%22}" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -60,6 +72,7 @@
   <header class="fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-2xl border-b border-stone-200/80 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       <div onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="cursor-pointer group flex items-center gap-3.5">
+        <!-- Official Logo Symbol SVG Representation -->
         <svg class="h-10 w-auto shrink-0 filter drop-shadow-sm" viewBox="0 0 130 110" fill="none">
           <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="#3C5A76" stroke-width="14" stroke-linecap="round" fill="none" />
           <circle cx="46" cy="18" r="9" fill="#3C5A76" />
@@ -307,13 +320,9 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8" id="zone-tab-buttons">
-      <!-- Generated via JS -->
-    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8" id="zone-tab-buttons"></div>
 
-    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card">
-      <!-- Generated via JS -->
-    </div>
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card"></div>
   </section>
 
   <!-- Programs Section -->
@@ -329,9 +338,7 @@
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="program-cards-container">
-        <!-- Generated via JS -->
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="program-cards-container"></div>
     </div>
   </section>
 
@@ -438,21 +445,16 @@
               <label class="block text-xs font-semibold text-stone-200">방문 날짜 선택 (내일부터 예약 가능)</label>
               <input type="date" id="booking-date-input" onchange="handleBookingDateChange(this.value)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm font-semibold focus:outline-none focus:border-sky-400" />
               <div class="p-4 rounded-xl bg-[#082239]/80 border border-white/10 text-xs text-stone-300 space-y-1.5 font-normal">
-                <p class="font-semibold text-sky-300">💡 운영 시간 및 예약 안내</p>
-                <p>• 월 - 금요일: 10:00 ~ 22:00 (마지막 타임 21:00)</p>
-                <p>• 토요일: 10:00 ~ 18:00 (마지막 타임 17:00)</p>
-                <p>• 일요일: 정기 휴무 (예약 불가)</p>
-                <p>• 선택하신 날짜/시간대는 1인 한정 실시간 자동 마감됩니다.</p>
+                <p class="font-semibold text-sky-300">💡 예약 정책 안내</p>
+                <p>• 당일 예약은 불가합니다 (최소 1일 전 예약)</p>
+                <p>• 토요일은 18:00 영업 종료로 17:00 타임까지만 이용 가능합니다.</p>
+                <p>• 선택하신 날짜의 예약 완료 시간대는 '마감'으로 자동 차단됩니다.</p>
+                <p>• 원장 1:1 전담으로 동일 시간에 추가 중복 예약이 불가능합니다.</p>
               </div>
             </div>
 
             <div class="md:col-span-7 space-y-3">
-              <div class="flex justify-between items-center">
-                <label class="block text-xs font-semibold text-stone-200">방문 시간대 선택</label>
-                <span id="saturday-notice-badge" class="hidden text-[11px] px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-semibold">
-                  토요일 단축운영 (10:00 ~ 18:00)
-                </span>
-              </div>
+              <label class="block text-xs font-semibold text-stone-200">방문 시간대</label>
               <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5" id="step2-time-slots"></div>
             </div>
           </div>
@@ -517,7 +519,7 @@
             <div class="space-y-4 mb-8 text-sm sm:text-base text-[#0C3559]">
               <div>
                 <p class="font-semibold text-[#0C3559] text-base sm:text-lg">스트레칭온</p>
-                <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서해구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
+                <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
                 <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간</p>
               </div>
 
@@ -526,8 +528,8 @@
               </div>
 
               <div class="text-xs sm:text-sm text-[#0C3559]/85 font-semibold">
-                <p>월 - 금요일: 10:00 - 22:00 (마지막 케어 21:00)</p>
-                <p>토요일: 10:00 - 18:00 (마지막 케어 17:00 / 일요일 휴무)</p>
+                <p>월 - 금요일: 10:00 - 22:00</p>
+                <p>토요일: 10:00 - 18:00 (일요일 휴무)</p>
               </div>
             </div>
           </div>
@@ -570,7 +572,7 @@
   <!-- Footer -->
   <footer class="bg-[#0C3559] text-stone-300 py-16 border-t border-white/10 text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-      <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서해구 가정로 451 8층 803호</p>
+      <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서구 가정로 451 8층 803호</p>
     </div>
   </footer>
 
@@ -593,8 +595,8 @@
       <button onclick="closeModal('modal-admin-login')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
       <h3 class="text-2xl font-semibold text-[#0C3559] mb-4">원장 전용 관리자 로그인</h3>
       <div class="space-y-4">
-        <input type="password" id="admin-pin-input" placeholder="비밀번호 입력 (초기: 6369)" class="w-full border rounded-xl px-4 py-3 text-sm" />
-        <button onclick="submitAdminLogin()" class="w-full py-4 rounded-2xl bg-amber-600 text-white font-semibold text-sm">대시보드 접속</button>
+        <input type="password" id="admin-pin-input" placeholder="비밀번호 입력" class="w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0C3559]" />
+        <button onclick="submitAdminLogin()" class="w-full py-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm transition-all">대시보드 접속</button>
       </div>
     </div>
   </div>
@@ -614,6 +616,7 @@
             📋 목록 보기
           </button>
           <button onclick="togglePinChangeForm()" class="px-3 py-1.5 bg-amber-100 text-amber-900 rounded-xl text-xs font-semibold">🔑 비밀번호 변경</button>
+          <button onclick="submitAdminLogout()" class="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded-xl text-xs font-semibold transition-all">🔓 로그아웃</button>
         </div>
       </div>
 
@@ -629,7 +632,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
           <input type="text" id="manual-name" placeholder="성함 *" class="border p-2 rounded text-xs" />
           <input type="tel" id="manual-phone" placeholder="연락처 *" class="border p-2 rounded text-xs" />
-          <input type="date" id="manual-date" onchange="updateManualTimeSlots(this.value)" class="border p-2 rounded text-xs" />
+          <input type="date" id="manual-date" class="border p-2 rounded text-xs" />
           <select id="manual-time" class="border p-2 rounded text-xs"></select>
           <select id="manual-program" class="border p-2 rounded text-xs"></select>
           <button onclick="submitManualBooking()" class="py-2 bg-amber-800 text-white rounded text-xs font-semibold">전화예약 수기 등록</button>
@@ -667,7 +670,6 @@
     </div>
   </div>
 
-  <!-- JavaScript Application Logic -->
   <script>
     const STORAGE_KEY = 'solstretch_bookings_v1';
     const ADMIN_PIN_KEY = 'solstretch_admin_pin_v1';
@@ -685,9 +687,7 @@
       { id: 'full', title: '전신 피로 & 신체 불균형 (Full Body)', subtitle: '만성 피로 해소 및 신체 구조 평온함 회복', symptoms: ['자고 일어나도 온몸이 찌뿌둥함', '몸 전체의 자세가 틀어진 느낌', '삶의 질을 높이는 가벼움 절실', '수술 후 빠른회복을 원하시는 분'], solution: '전신 솔루션 스트레칭으로 신체 밸런스 완전 복원', recProgramId: 'p3' }
     ];
 
-    // 평일 및 토요일 타임 슬롯 기준
-    const WEEKDAY_TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
-    const SATURDAY_TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00']; // 18시 종료에 따라 마지막 타임 17:00
+    const TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
 
     const GUIDELINES = [
       { category: '예약 및 취소/변경 규정', badge: 'RESERVATION', items: [{ title: '온라인 당일 예약 제한 (100% 사전예약제)', desc: '원장의 1:1 집중 정밀 케어를 위해 당일 온라인 예약은 없습니다. 당일 관리를 희망하시는 경우 대표 번호(010-6566-6369)로 문의 부탁드립니다.' }, { title: '타임 슬롯 당 1명 한정 (중복 예약 자동 차감)', desc: '어떤 프로그램을 선택하셔도 동일한 시간대에는 오직 1분의 고객님만 모십니다. 이미 예약된 타임은 마감 처리됩니다.' }, { title: '자유로운 일시 변경 및 취소', desc: '예약 취소 및 날짜/시간 변경은 방문 3시간 전까지 웹사이트 내 [내 예약] 메뉴를 통해 신청하실 수 있습니다.' }] },
@@ -697,9 +697,9 @@
     ];
 
     const REVIEWS = [
-      { name: '위*섭 님', job: 'IT 개발팀', program: 'Sol-Recovery 시그니처 (50분)', comment: '단순 피로 해소 마사지인 줄 알았는데, 제 체형의 불균형 원인을 정확히 짚어주셨습니다. 50분 만에 몸의 가벼움이 완전히 달라졌고 일상 속 집중력이 눈에 띄게 높아졌습니다.', rating: '★★★★★', date: '2026.07.28' },
+      { name: '김*아 님', job: 'IT 개발팀 리더', program: 'Sol-Recovery 시그니처 (50분)', comment: '단순 피로 해소 마사지인 줄 알았는데, 제 체형의 불균형 원인을 정확히 짚어주셨습니다. 50분 만에 몸의 가벼움이 완전히 달라졌고 일상 속 집중력이 눈에 띄게 높아졌습니다.', rating: '★★★★★', date: '2026.07.28' },
       { name: '박*진 님', job: '운수업', program: 'SOL-Balance 프리미엄 (90분)', comment: '오래된 골반,허리통증으로 많이 고생했습니다. 원장님의 해부학적 수기 이완 덕분에 걸음걸이가 편해지고 밤마다 느끼던 뻐근함이 크게 줄어 삶의 질이 향상되었습니다.', rating: '★★★★★', date: '2026.07.24' },
-      { name: '최*지 님', job: '사무직', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡아가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★', date: '2026.07.19' }
+      { name: '최*진 님', job: '사무직 임원', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡아가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★', date: '2026.07.19' }
     ];
 
     const FAQS = [
@@ -716,7 +716,7 @@
     let selectedProgram = PROGRAMS[0];
     let selectedZone = BODY_ZONES[0];
     let selectedDate = getNextWorkingDateStr();
-    let selectedTime = '10:00';
+    let selectedTime = TIME_SLOTS[2];
     let adminCalYear = new Date().getFullYear();
     let adminCalMonth = new Date().getMonth();
     let adminViewMode = 'calendar';
@@ -725,7 +725,7 @@
     function getNextWorkingDateStr() {
       const d = new Date();
       d.setDate(d.getDate() + 1);
-      if (d.getDay() === 0) d.setDate(d.getDate() + 1); // 일요일 자동 패스
+      if (d.getDay() === 0) d.setDate(d.getDate() + 1);
       return d.toISOString().split('T')[0];
     }
 
@@ -741,19 +741,14 @@
       return d.getDay() === 6;
     }
 
-    function getAvailableTimeSlotsForDate(dateStr) {
-      if (isSaturdayDate(dateStr)) {
-        return SATURDAY_TIME_SLOTS;
-      }
-      return WEEKDAY_TIME_SLOTS;
-    }
-
     function showToast(msg) {
       const toast = document.getElementById('toast-container');
       const text = document.getElementById('toast-text');
-      text.innerText = msg;
-      toast.classList.remove('hidden');
-      setTimeout(() => toast.classList.add('hidden'), 3500);
+      if (text && toast) {
+        text.innerText = msg;
+        toast.classList.remove('hidden');
+        setTimeout(() => toast.classList.add('hidden'), 3500);
+      }
     }
 
     function loadInitialData() {
@@ -773,23 +768,28 @@
 
     function updateHeaderState() {
       const activeCount = bookings.filter(b => b.status !== '취소').length;
-      document.getElementById('header-booking-count').innerText = activeCount;
-      document.getElementById('header-admin-label').innerText = isAdminAuth ? '원장님 관리자' : '관리자';
+      const countEl = document.getElementById('header-booking-count');
+      const adminLbl = document.getElementById('header-admin-label');
+      if (countEl) countEl.innerText = activeCount;
+      if (adminLbl) adminLbl.innerText = isAdminAuth ? '원장님 관리자' : '관리자';
     }
 
     function scrollToSec(id) {
-      document.getElementById('mobile-menu').classList.add('hidden');
+      const mob = document.getElementById('mobile-menu');
+      if (mob) mob.classList.add('hidden');
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
     function toggleMobileMenu() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
+      const mob = document.getElementById('mobile-menu');
+      if (mob) mob.classList.toggle('hidden');
     }
 
     // Body Zones Render
     function renderBodyZones() {
       const tabContainer = document.getElementById('zone-tab-buttons');
+      if (!tabContainer) return;
       tabContainer.innerHTML = BODY_ZONES.map(z => {
         const isSelected = selectedZone.id === z.id;
         return `
@@ -803,6 +803,7 @@
       const recProg = PROGRAMS.find(p => p.id === selectedZone.recProgramId) || PROGRAMS[0];
 
       const detailCard = document.getElementById('zone-detail-card');
+      if (!detailCard) return;
       detailCard.innerHTML = `
         <div class="lg:col-span-7 space-y-6">
           <div class="inline-block px-3.5 py-1.5 rounded-full bg-sky-50 text-[#0092B8] text-xs font-semibold">
@@ -858,6 +859,7 @@
     // Render Care Programs
     function renderPrograms() {
       const container = document.getElementById('program-cards-container');
+      if (!container) return;
       container.innerHTML = PROGRAMS.map(p => `
         <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative">
           <span class="absolute top-6 right-6 px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider bg-sky-100 text-[#0092B8] uppercase">
@@ -897,10 +899,15 @@
 
     // Reservation Wizard Logic
     function goToStep(stepNum) {
-      document.getElementById('booking-step-1').classList.add('hidden');
-      document.getElementById('booking-step-2').classList.add('hidden');
-      document.getElementById('booking-step-3').classList.add('hidden');
-      document.getElementById(`booking-step-${stepNum}`).classList.remove('hidden');
+      const s1 = document.getElementById('booking-step-1');
+      const s2 = document.getElementById('booking-step-2');
+      const s3 = document.getElementById('booking-step-3');
+      if (s1) s1.classList.add('hidden');
+      if (s2) s2.classList.add('hidden');
+      if (s3) s3.classList.add('hidden');
+
+      const target = document.getElementById(`booking-step-${stepNum}`);
+      if (target) target.classList.remove('hidden');
 
       if (stepNum === 1) renderStep1();
       if (stepNum === 2) renderStep2();
@@ -908,6 +915,7 @@
 
     function renderStep1() {
       const el = document.getElementById('step1-program-list');
+      if (!el) return;
       el.innerHTML = PROGRAMS.map(p => `
         <div onclick="setStep1Program('${p.id}')" class="p-5 rounded-2xl cursor-pointer border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${selectedProgram.id === p.id ? 'bg-sky-500/20 border-sky-400 ring-2 ring-sky-400' : 'bg-white/5 border-white/10 hover:bg-white/10'}">
           <div>
@@ -926,36 +934,36 @@
     }
 
     function setStep1Program(pId) {
-      selectedProgram = PROGRAMS.find(p => p.id === pId);
+      selectedProgram = PROGRAMS.find(p => p.id === pId) || PROGRAMS[0];
       renderStep1();
     }
 
     function renderStep2() {
       const dateInput = document.getElementById('booking-date-input');
-      dateInput.value = selectedDate;
-      dateInput.min = getNextWorkingDateStr();
-
-      const isSat = isSaturdayDate(selectedDate);
-      const satBadge = document.getElementById('saturday-notice-badge');
-      if (isSat) {
-        satBadge.classList.remove('hidden');
-      } else {
-        satBadge.classList.add('hidden');
+      if (dateInput) {
+        dateInput.value = selectedDate;
+        dateInput.min = getNextWorkingDateStr();
       }
 
-      const availableSlots = getAvailableTimeSlotsForDate(selectedDate);
-
-      // 선택된 시간값이 해당 날짜의 운영시간 범위를 넘어가면 첫 타임으로 자동 조정
-      if (!availableSlots.includes(selectedTime)) {
-        selectedTime = availableSlots[0] || '10:00';
-      }
-
+      const isSaturday = isSaturdayDate(selectedDate);
       const bookedTimes = bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
 
       const slotsEl = document.getElementById('step2-time-slots');
-      slotsEl.innerHTML = availableSlots.map(t => {
+      if (!slotsEl) return;
+      slotsEl.innerHTML = TIME_SLOTS.map(t => {
         const isBooked = bookedTimes.includes(t);
         const isSelected = selectedTime === t;
+        const isSaturdayClosedSlot = isSaturday && t >= '18:00';
+
+        if (isSaturdayClosedSlot) {
+          return `
+            <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-800 bg-stone-900/60 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-50">
+              <span class="line-through">${t}</span>
+              <span class="text-[10px] text-amber-400 font-semibold mt-0.5">토요일마감</span>
+            </button>
+          `;
+        }
+
         if (isBooked) {
           return `
             <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
@@ -976,12 +984,16 @@
     function handleBookingDateChange(val) {
       if (isSundayDate(val)) {
         showToast('일요일은 정기 휴무일입니다. 월~토요일을 선택해 주세요.');
-        document.getElementById('booking-date-input').value = getNextWorkingDateStr();
-        selectedDate = getNextWorkingDateStr();
+        const defaultDate = getNextWorkingDateStr();
+        document.getElementById('booking-date-input').value = defaultDate;
+        selectedDate = defaultDate;
         renderStep2();
         return;
       }
       selectedDate = val;
+      if (isSaturdayDate(selectedDate) && selectedTime >= '18:00') {
+        selectedTime = '17:00';
+      }
       renderStep2();
     }
 
@@ -999,10 +1011,8 @@
       if (!agree) return showToast('개인정보 수집 및 이용 동의에 동의해 주세요.');
       if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
       if (isSundayDate(selectedDate)) return showToast('일요일은 정기 휴무일입니다.');
-
-      const availableSlots = getAvailableTimeSlotsForDate(selectedDate);
-      if (!availableSlots.includes(selectedTime)) {
-        return showToast('선택하신 시간은 해당 날짜의 운영시간에 포함되지 않습니다.');
+      if (isSaturdayDate(selectedDate) && selectedTime >= '18:00') {
+        return showToast('토요일은 18:00 영업 종료로 17:00 타임까지만 선택 가능합니다.');
       }
 
       const bookedTimes = bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
@@ -1039,12 +1049,13 @@
     }
 
     // Modal Helpers
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function openModal(id) { const el = document.getElementById(id); if (el) el.classList.remove('hidden'); }
+    function closeModal(id) { const el = document.getElementById(id); if (el) el.classList.add('hidden'); }
 
     // Client My Bookings View (3 Hours Prior Cancellation Rule)
     function openMyBookingsModal() {
       const listEl = document.getElementById('my-bookings-list');
+      if (!listEl) return;
       if (bookings.length === 0) {
         listEl.innerHTML = '<p class="text-xs text-stone-500 py-6 text-center font-medium">등록된 예약 내역이 없습니다.</p>';
       } else {
@@ -1093,9 +1104,11 @@
     }
 
     function submitAdminLogin() {
-      const pin = document.getElementById('admin-pin-input').value;
+      const pinInput = document.getElementById('admin-pin-input');
+      const pin = pinInput.value;
       if (pin === adminPin) {
         isAdminAuth = true;
+        pinInput.value = '';
         closeModal('modal-admin-login');
         openAdminDashboard();
         showToast('관리자 모드로 로그인되었습니다.');
@@ -1105,22 +1118,26 @@
       }
     }
 
-    function updateManualTimeSlots(dateVal) {
-      const slots = getAvailableTimeSlotsForDate(dateVal);
-      const timeSel = document.getElementById('manual-time');
-      timeSel.innerHTML = slots.map(t => `<option value="${t}">${t}</option>`).join('');
+    function submitAdminLogout() {
+      isAdminAuth = false;
+      closeModal('modal-admin-dashboard');
+      updateHeaderState();
+      showToast('관리자 모드에서 로그아웃 되었습니다.');
     }
 
     function openAdminDashboard() {
-      document.getElementById('admin-total-count').innerText = bookings.filter(b => b.status !== '취소').length;
+      const countEl = document.getElementById('admin-total-count');
+      if (countEl) countEl.innerText = bookings.filter(b => b.status !== '취소').length;
 
       // Populate Manual Booking Selects
-      const initialManualDate = getNextWorkingDateStr();
-      document.getElementById('manual-date').value = initialManualDate;
-      updateManualTimeSlots(initialManualDate);
-
+      const timeSel = document.getElementById('manual-time');
+      if (timeSel) timeSel.innerHTML = TIME_SLOTS.map(t => `<option value="${t}">${t}</option>`).join('');
+      
       const progSel = document.getElementById('manual-program');
-      progSel.innerHTML = PROGRAMS.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+      if (progSel) progSel.innerHTML = PROGRAMS.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+      
+      const manualDateEl = document.getElementById('manual-date');
+      if (manualDateEl) manualDateEl.value = getNextWorkingDateStr();
 
       renderAdminDashboardView();
       openModal('modal-admin-dashboard');
@@ -1128,21 +1145,25 @@
 
     function toggleAdminViewMode() {
       adminViewMode = adminViewMode === 'calendar' ? 'list' : 'calendar';
-      document.getElementById('admin-view-toggle-btn').innerText = adminViewMode === 'calendar' ? '📋 목록 보기' : '📅 월별 달력 보기';
+      const toggleBtn = document.getElementById('admin-view-toggle-btn');
+      if (toggleBtn) toggleBtn.innerText = adminViewMode === 'calendar' ? '📋 목록 보기' : '📅 월별 달력 보기';
       renderAdminDashboardView();
     }
 
     function togglePinChangeForm() {
-      document.getElementById('admin-pin-change-box').classList.toggle('hidden');
+      const box = document.getElementById('admin-pin-change-box');
+      if (box) box.classList.toggle('hidden');
     }
 
     function submitChangePin() {
-      const newPin = document.getElementById('new-admin-pin-input').value.trim();
+      const input = document.getElementById('new-admin-pin-input');
+      const newPin = input ? input.value.trim() : '';
       if (newPin.length < 4) return showToast('최소 4자리 이상 입력해 주세요.');
       adminPin = newPin;
       localStorage.setItem(ADMIN_PIN_KEY, adminPin);
       showToast('비밀번호가 변경되었습니다.');
-      document.getElementById('admin-pin-change-box').classList.add('hidden');
+      const box = document.getElementById('admin-pin-change-box');
+      if (box) box.classList.add('hidden');
     }
 
     function renderAdminDashboardView() {
@@ -1150,12 +1171,12 @@
       const listBox = document.getElementById('admin-list-view');
 
       if (adminViewMode === 'calendar') {
-        calBox.classList.remove('hidden');
-        listBox.classList.add('hidden');
+        if (calBox) calBox.classList.remove('hidden');
+        if (listBox) listBox.classList.add('hidden');
         renderAdminMonthlyCalendar();
       } else {
-        calBox.classList.add('hidden');
-        listBox.classList.remove('hidden');
+        if (calBox) calBox.classList.add('hidden');
+        if (listBox) listBox.classList.remove('hidden');
         renderAdminListView();
       }
     }
@@ -1174,16 +1195,14 @@
         const dStr = String(day).padStart(2, '0');
         const dateString = `${adminCalYear}-${mStr}-${dStr}`;
 
-        const dayOfWeek = new Date(adminCalYear, adminCalMonth, day).getDay();
-        const isSun = dayOfWeek === 0;
-        const isSat = dayOfWeek === 6;
+        const isSun = new Date(adminCalYear, adminCalMonth, day).getDay() === 0;
         const dayBookings = bookings.filter(b => b.date === dateString && b.status !== '취소');
         const isSelected = adminFilterDate === dateString;
 
         cellsHTML += `
-          <div onclick="selectAdminFilterDate('${dateString}')" class="h-20 border p-1.5 rounded-xl cursor-pointer text-xs flex flex-col justify-between ${isSelected ? 'bg-sky-50 border-sky-400' : isSun ? 'bg-rose-50/40 border-stone-200' : isSat ? 'bg-amber-50/30 border-stone-200' : 'bg-white border-stone-200'}">
+          <div onclick="selectAdminFilterDate('${dateString}')" class="h-20 border p-1.5 rounded-xl cursor-pointer text-xs flex flex-col justify-between ${isSelected ? 'bg-sky-50 border-sky-400' : isSun ? 'bg-rose-50/40 border-stone-200' : 'bg-white border-stone-200'}">
             <div class="flex justify-between items-center">
-              <span class="font-bold ${isSun ? 'text-rose-600' : isSat ? 'text-amber-700' : 'text-[#0C3559]'}">${day}일</span>
+              <span class="font-bold ${isSun ? 'text-rose-600' : 'text-[#0C3559]'}">${day}일</span>
               ${dayBookings.length > 0 ? `<span class="bg-[#0C3559] text-white px-1.5 py-0.2 rounded-full text-[9px] font-bold">${dayBookings.length}건</span>` : ''}
             </div>
             <div class="space-y-0.5 overflow-hidden">
@@ -1194,6 +1213,7 @@
       }
 
       const calBox = document.getElementById('admin-calendar-view');
+      if (!calBox) return;
       calBox.innerHTML = `
         <div class="flex justify-between items-center bg-stone-100 p-3 rounded-xl">
           <button onclick="changeAdminMonth(-1)" class="px-3 py-1 bg-white rounded font-bold">◀</button>
@@ -1201,7 +1221,7 @@
           <button onclick="changeAdminMonth(1)" class="px-3 py-1 bg-white rounded font-bold">▶</button>
         </div>
         <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold py-1">
-          <div class="text-rose-600">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="text-amber-700">토</div>
+          <div class="text-rose-600">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
         </div>
         <div class="grid grid-cols-7 gap-1">${cellsHTML}</div>
         ${adminFilterDate ? `
@@ -1241,6 +1261,7 @@
 
     function renderAdminListView() {
       const listContainer = document.getElementById('admin-list-view');
+      if (!listContainer) return;
       listContainer.innerHTML = bookings.map(b => `
         <div class="p-3.5 rounded-xl bg-stone-50 border flex justify-between items-center text-xs">
           <div>
@@ -1266,15 +1287,10 @@
       const date = document.getElementById('manual-date').value;
       const time = document.getElementById('manual-time').value;
       const progId = document.getElementById('manual-program').value;
-      const prog = PROGRAMS.find(p => p.id === progId);
+      const prog = PROGRAMS.find(p => p.id === progId) || PROGRAMS[0];
 
       if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
       if (isSundayDate(date)) return showToast('일요일은 정기 휴무일입니다.');
-
-      const availableSlots = getAvailableTimeSlotsForDate(date);
-      if (!availableSlots.includes(time)) {
-        return showToast('선택하신 시간은 해당 날짜 운영시간 범위에 포함되지 않습니다.');
-      }
 
       const newB = {
         id: 'DIR-' + Math.floor(100000 + Math.random() * 900000),
@@ -1311,65 +1327,77 @@
       if (type === 'kakao') window.open(`https://map.kakao.com/link/search/${encodeURIComponent(query)}`, '_blank');
     }
 
-    // Static Sections Initialization
+    // Static Sections Dynamic Fallback
     function renderStaticSections() {
-      // Reviews
-      document.getElementById('reviews-container').innerHTML = REVIEWS.map(r => `
-        <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-md flex flex-col justify-between hover:shadow-xl transition-all">
-          <div>
-            <div class="text-amber-400 font-bold mb-3">${r.rating}</div>
-            <p class="text-xs sm:text-sm text-[#0C3559]/85 italic mb-6">"${r.comment}"</p>
-          </div>
-          <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
+      const rev = document.getElementById('reviews-container');
+      if (rev && rev.children.length === 0) {
+        rev.innerHTML = REVIEWS.map(r => `
+          <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-md flex flex-col justify-between hover:shadow-xl transition-all">
             <div>
-              <p class="text-base font-semibold text-[#0C3559]">${r.name}</p>
-              <p class="text-xs text-stone-400 font-semibold">${r.job}</p>
+              <div class="text-amber-400 font-bold mb-3">${r.rating}</div>
+              <p class="text-xs sm:text-sm text-[#0C3559]/85 italic mb-6">"${r.comment}"</p>
             </div>
-            <span class="text-xs px-3 py-1 rounded-full bg-sky-50 text-[#0092B8] font-semibold">${r.program}</span>
-          </div>
-        </div>
-      `).join('');
-
-      // Policy Guidelines
-      document.getElementById('guidelines-container').innerHTML = GUIDELINES.map(g => `
-        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <h4 class="text-base sm:text-lg font-semibold text-[#0C3559]">${g.category}</h4>
-              <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-[#0092B8]">${g.badge}</span>
-            </div>
-            <div class="space-y-3">
-              ${g.items.map(i => `
-                <div class="bg-stone-50/80 p-3.5 rounded-2xl border border-stone-200/80">
-                  <p class="font-semibold text-xs sm:text-sm text-[#0C3559] mb-1">• ${i.title}</p>
-                  <p class="text-xs text-[#0C3559]/75 font-normal leading-relaxed pl-3.5">${i.desc}</p>
-                </div>
-              `).join('')}
+            <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
+              <div>
+                <p class="text-base font-semibold text-[#0C3559]">${r.name}</p>
+                <p class="text-xs text-stone-400 font-semibold">${r.job}</p>
+              </div>
+              <span class="text-xs px-3 py-1 rounded-full bg-sky-50 text-[#0092B8] font-semibold">${r.program}</span>
             </div>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+      }
 
-      // FAQs
-      document.getElementById('faqs-container').innerHTML = FAQS.map((f, idx) => `
-        <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
-          <button onclick="document.getElementById('faq-ans-${idx}').classList.toggle('hidden')" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
-            <span>${f.q}</span>
-            <span class="text-[#0092B8] text-xs">▼</span>
-          </button>
-          <div id="faq-ans-${idx}" class="hidden px-5 pb-5 text-xs sm:text-sm text-[#0C3559]/85 leading-relaxed border-t border-stone-100 pt-3.5 font-normal">${f.a}</div>
-        </div>
-      `).join('');
+      const guide = document.getElementById('guidelines-container');
+      if (guide) {
+        guide.innerHTML = GUIDELINES.map(g => `
+          <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h4 class="text-base sm:text-lg font-semibold text-[#0C3559]">${g.category}</h4>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-[#0092B8]">${g.badge}</span>
+              </div>
+              <div class="space-y-3">
+                ${g.items.map(i => `
+                  <div class="bg-stone-50/80 p-3.5 rounded-2xl border border-stone-200/80">
+                    <p class="font-semibold text-xs sm:text-sm text-[#0C3559] mb-1">• ${i.title}</p>
+                    <p class="text-xs text-[#0C3559]/75 font-normal leading-relaxed pl-3.5">${i.desc}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const faqs = document.getElementById('faqs-container');
+      if (faqs) {
+        faqs.innerHTML = FAQS.map((f, idx) => `
+          <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
+            <button onclick="document.getElementById('faq-ans-${idx}').classList.toggle('hidden')" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
+              <span>${f.q}</span>
+              <span class="text-[#0092B8] text-xs">▼</span>
+            </button>
+            <div id="faq-ans-${idx}" class="hidden px-5 pb-5 text-xs sm:text-sm text-[#0C3559]/85 leading-relaxed border-t border-stone-100 pt-3.5 font-normal">${f.a}</div>
+          </div>
+        `).join('');
+      }
     }
 
-    // Page Load Initialization
-    window.onload = function() {
+    // App Initialization
+    function initApp() {
       loadInitialData();
       renderBodyZones();
       renderPrograms();
       renderStaticSections();
       renderStep1();
-    };
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
   </script>
 </body>
 </html>
