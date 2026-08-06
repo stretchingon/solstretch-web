@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <!-- Naver Search Advisor Verification Meta Tag -->
   <meta name="naver-site-verification" content="e8081e77e431fe3678695a16d44eac8e63b4acce" />
@@ -20,21 +20,6 @@
   <meta property="og:url" content="https://solutionstretching.com" />
   <meta property="og:image" content="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1200" />
 
-  <!-- PWA Web App Meta Tags & Apple Touch Icons (Official Logo Embedded) -->
-  <meta name="theme-color" content="#0C3559" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="스트레칭온" />
-  <meta name="application-name" content="스트레칭온" />
-
-  <!-- Embedded Official Logo SVG for iOS Apple-Touch-Icon & Android PWA -->
-  <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='110' fill='%230C3559'/><g transform='translate(106, 75) scale(2.5)' fill='none'><path d='M 60 22 C 82 22, 100 40, 100 62 C 100 84, 82 100, 58 100 C 38 100, 24 84, 25 64' stroke='%2338bdf8' stroke-width='13' stroke-linecap='round'/><circle cx='48' cy='18' r='9' fill='%23ffffff'/><path d='M 4 36 C 20 35, 34 31, 50 26' stroke='%23ffffff' stroke-width='10' stroke-linecap='round'/><path d='M 51 25 C 49 43, 37 70, 12 104 L 20 106 C 44 73, 57 46, 57 25 Z' fill='%23ffffff'/><path d='M 49 28 L 75 3 L 80 24 Z' fill='%2338bdf8'/></g></svg>" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='110' fill='%230C3559'/><g transform='translate(106, 75) scale(2.5)' fill='none'><path d='M 60 22 C 82 22, 100 40, 100 62 C 100 84, 82 100, 58 100 C 38 100, 24 84, 25 64' stroke='%2338bdf8' stroke-width='13' stroke-linecap='round'/><circle cx='48' cy='18' r='9' fill='%23ffffff'/><path d='M 4 36 C 20 35, 34 31, 50 26' stroke='%23ffffff' stroke-width='10' stroke-linecap='round'/><path d='M 51 25 C 49 43, 37 70, 12 104 L 20 106 C 44 73, 57 46, 57 25 Z' fill='%23ffffff'/><path d='M 49 28 L 75 3 L 80 24 Z' fill='%2338bdf8'/></g></svg>" />
-
-  <!-- Inline Web App Manifest -->
-  <link rel="manifest" href="data:application/manifest+json;utf8,{%22name%22:%22%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%B9%AD%EC%98%A8%22,%22short_name%22:%22%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%B9%AD%EC%98%A8%22,%22description%22:%2240%EB%85%84%20%EC%9E%84%EC%83%81%20%EB%85%B8%ED%95%98%EC%9A%B0%201:1%20%EB%A7%9E%EC%B6%A4%20%EC%B2%B4%ED%98%95%EA%B5%90%EC%A0%95%20%EC%88%98%EA%B8%B0%20%EC%86%94%EB%A3%A8%EC%85%98%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230C3559%22,%22theme_color%22:%22%230C3559%22}" />
-
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -51,10 +36,14 @@
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #cbd5e1;
+      background-color: #3C5A76;
       border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background-color: #f1f5f9;
     }
   </style>
 </head>
@@ -91,19 +80,19 @@
         <button onclick="scrollToSec('body-zones')" class="hover:text-[#0092B8] transition-colors py-1">부위별 솔루션</button>
         <button onclick="scrollToSec('programs')" class="hover:text-[#0092B8] transition-colors py-1">프로그램</button>
         <button onclick="scrollToSec('academy')" class="hover:text-[#0092B8] transition-colors py-1">아카데미</button>
-        <button onclick="scrollToSec('reviews')" class="hover:text-[#0092B8] transition-colors py-1">고객 경험</button>
+        <button onclick="scrollToSec('reservation')" class="hover:text-[#0092B8] transition-colors py-1">실시간 예약</button>
         <button onclick="scrollToSec('location')" class="hover:text-[#0092B8] transition-colors py-1">이용 안내</button>
       </nav>
 
       <div class="hidden md:flex items-center gap-3">
-        <button onclick="openAdminAuthModal()" class="px-3.5 py-2 rounded-full text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all flex items-center gap-1.5" title="원장 전용 예약 대시보드">
+        <button onclick="openAdminAuthModal()" class="px-3.5 py-2 rounded-full text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all flex items-center gap-1.5" title="원장 전용 관리자 대시보드">
           <svg class="w-3.5 h-3.5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
           <span id="header-admin-label">관리자</span>
         </button>
 
         <button onclick="openMyBookingsModal()" class="px-4 py-2 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-[#0C3559] transition-all flex items-center gap-1.5 border border-stone-200">
           <svg class="w-3.5 h-3.5 text-[#0092B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-          <span>내 예약 (<span id="header-booking-count">0</span>)</span>
+          <span id="header-user-status">내 예약 / 회원 조회</span>
         </button>
 
         <button onclick="scrollToSec('reservation')" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-[#0C3559] text-white hover:bg-[#082239] transition-all flex items-center gap-1.5 shadow-sm">
@@ -113,6 +102,9 @@
       </div>
 
       <div class="md:hidden flex items-center gap-2">
+        <button onclick="openMyBookingsModal()" class="p-2 rounded-full bg-stone-100 text-[#0C3559] text-xs font-semibold px-2.5 border border-stone-200">
+          내 예약
+        </button>
         <button onclick="openAdminAuthModal()" class="p-2 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold px-2.5 border border-amber-200">
           🔒
         </button>
@@ -128,8 +120,9 @@
       <button onclick="scrollToSec('body-zones')" class="text-left py-2 border-b border-stone-100">부위별 솔루션</button>
       <button onclick="scrollToSec('programs')" class="text-left py-2 border-b border-stone-100">프로그램</button>
       <button onclick="scrollToSec('academy')" class="text-left py-2 border-b border-stone-100">아카데미</button>
-      <button onclick="scrollToSec('reviews')" class="text-left py-2 border-b border-stone-100">고객 경험</button>
+      <button onclick="scrollToSec('reservation')" class="text-left py-2 border-b border-stone-100">실시간 예약</button>
       <button onclick="scrollToSec('location')" class="text-left py-2 border-b border-stone-100">이용 안내</button>
+      <button onclick="openMyBookingsModal()" class="text-left py-2 border-b border-stone-100 text-[#0092B8]">🔑 내 예약 & 수강권 조회</button>
       <button onclick="scrollToSec('reservation')" class="mt-2 w-full py-3.5 rounded-2xl bg-[#0C3559] text-white font-semibold text-center text-sm">1:1 맞춤 예약하기</button>
     </div>
   </header>
@@ -226,8 +219,8 @@
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
               </div>
               <div>
-                <h3 class="font-semibold text-[#0C3559] text-sm">정밀 모빌리티 측정 평가</h3>
-                <p class="text-xs text-[#0C3559]/70 mt-0.5">방문 즉시 관절 제한 범위와 관절막·근막 불균형 지점을 과학적으로 측정평가</p>
+                <h3 class="font-semibold text-[#0C3559] text-sm">01. 정밀 모빌리티 측정 평가</h3>
+                <p class="text-xs text-[#0C3559]/70 mt-0.5">방문 즉시 관절 제한 범위와 관절막·근막 불균형 지점을 과학적으로 측정평가합니다.</p>
               </div>
             </div>
 
@@ -236,8 +229,8 @@
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
               </div>
               <div>
-                <h3 class="font-semibold text-[#0C3559] text-sm">40년 수기 테크닉 기반 패시브 솔루션</h3>
-                <p class="text-xs text-[#0C3559]/70 mt-0.5">호흡과 신체 이완 반사를 활용한 고도의 수기 가동성 회복 케어</p>
+                <h3 class="font-semibold text-[#0C3559] text-sm">02. 40년 수기 임상 기반 패시브 솔루션</h3>
+                <p class="text-xs text-[#0C3559]/70 mt-0.5">호흡과 신체 이완 반사를 활용한 고도의 1:1 수기 가동성 회복 케어를 진행합니다.</p>
               </div>
             </div>
 
@@ -246,8 +239,8 @@
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
               </div>
               <div>
-                <h3 class="font-semibold text-[#0C3559] text-sm">맞춤형 자가 관리 및 자세 로드맵</h3>
-                <p class="text-xs text-[#0C3559]/70 mt-0.5">케어 후 스스로 평온한 신체 상태를 유지할 수 있도록 1:1 운동 가이드 제공</p>
+                <h3 class="font-semibold text-[#0C3559] text-sm">03. 맞춤형 자가 관리 및 자세 로드맵</h3>
+                <p class="text-xs text-[#0C3559]/70 mt-0.5">케어 후 스스로 평온한 신체 상태를 유지할 수 있도록 1:1 자가 운동 가이드를 전수합니다.</p>
               </div>
             </div>
           </div>
@@ -271,19 +264,37 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
             <span class="text-xs text-sky-300 font-semibold uppercase block">01 SOLUTION</span>
-            <h4 class="text-base font-semibold text-white mb-2">근본적 문제 해결</h4>
+            <h4 class="text-base font-semibold text-white mb-2">근본적 문제 해결 (Solution)</h4>
             <p class="text-xs text-stone-300 leading-relaxed font-normal">단순 일시적 자극이나 마사지가 아닙니다. 관절 가동성과 근막 비대칭의 일차 원인을 정밀 스캔하여 명확한 맞춤 수기 이완 솔루션을 제시합니다.</p>
           </div>
           <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
             <span class="text-xs text-amber-300 font-semibold uppercase block">02 SOL [LATIN: SUN]</span>
-            <h4 class="text-base font-semibold text-white mb-2">태양의 따스한 생명력</h4>
+            <h4 class="text-base font-semibold text-white mb-2">태양의 따스한 생명력 (Sol)</h4>
             <p class="text-xs text-stone-300 leading-relaxed font-normal">라틴어로 ‘태양’을 의미하는 Sol처럼, 만성적으로 차갑게 굳어버린 관절과 근육에 따스한 온기와 자유로운 생명력을 불어넣어 드립니다.</p>
           </div>
           <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
             <span class="text-xs text-emerald-300 font-semibold uppercase block">03 SHALOM [TRANQUILITY]</span>
-            <h4 class="text-base font-semibold text-white mb-2">온전한 안식과 평온</h4>
+            <h4 class="text-base font-semibold text-white mb-2">온전한 안식과 평온 (Shalom)</h4>
             <p class="text-xs text-stone-300 leading-relaxed font-normal">히브리어 '샬롬(Shalom)'의 깊은 평안처럼, 신체 오케스트라의 밸런스를 완전하게 회복시켜 일상 전체에 비로소 차오르는 평온을 선사합니다.</p>
           </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+        <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
+          <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">01</span>
+          <h3 class="text-base font-semibold text-[#0C3559] mb-2">정밀 스캔 및 원인 측정</h3>
+          <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">단순 압박이 아닙니다. 관절 가동 범위(ROM)와 근막 비대칭을 정밀 측정하여 통증의 일차 원인을 찾아냅니다.</p>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
+          <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">02</span>
+          <h3 class="text-base font-semibold text-[#0C3559] mb-2">40년 노하우 독자 수기</h3>
+          <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">수만 명의 임상 데이터를 바탕으로 완성된 파트너드 패시브 기법으로, 안전하면서도 확실한 이완을 이끌어냅니다.</p>
+        </div>
+        <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
+          <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">03</span>
+          <h3 class="text-base font-semibold text-[#0C3559] mb-2">삶의 가치 & 재발 방지</h3>
+          <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">케어 후 개인별 자가 관리 리포트와 호흡 가이드를 제공하여 가벼워진 신체 밸런스를 스스로 유지하도록 돕습니다.</p>
         </div>
       </div>
     </div>
@@ -297,12 +308,17 @@
         불편하신 신체 부위를 선택해 주세요
       </h2>
       <p class="text-[#0C3559]/70 text-xs sm:text-sm font-normal">
-        원인이 되는 부위를 선택하시면 스트레칭 온만의 정밀 케어 솔루션을 확인하실 수 있습니다.
+        원인이 되는 부위를 선택하시면 스트레칭 온만의 정밀 케어 솔루션과 매칭 코스를 확인하실 수 있습니다.
       </p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8" id="zone-tab-buttons"></div>
-    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card"></div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8" id="zone-tab-buttons">
+      <!-- Generated via JS -->
+    </div>
+
+    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card">
+      <!-- Generated via JS with Matching Program Card -->
+    </div>
   </section>
 
   <!-- Programs Section -->
@@ -314,11 +330,13 @@
           프리미엄 1:1 맞춤 솔루션 프로그램
         </h2>
         <p class="text-[#0C3559]/75 text-sm sm:text-base font-medium">
-          정밀 체형 분석 스캔과 전문 수기 케어가 종합적으로 제공되는 코스입니다.
+          정밀 체형 분석 스캔과 원장 1:1 수기 케어가 집중 제공되는 코스입니다.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="program-cards-container"></div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="program-cards-container">
+        <!-- Generated via JS -->
+      </div>
     </div>
   </section>
 
@@ -333,25 +351,25 @@
             </span>
 
             <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-white leading-tight">
-              솔루션스트레칭 지도자 교육과정
+              솔루션스트레칭 지도자 4주 교육과정
             </h2>
 
             <p class="text-stone-300 text-sm sm:text-base leading-relaxed font-normal">
-              40여년 경력의 원장이 직접 지도하는 최고위 스트레칭 전문가 양성 과정입니다.<br />
-              체형 분석 이론부터 실전 수기 테크닉까지 완성형 노하우를 직접 전수합니다.
+              40여년 경력의 김동수 대표원장이 직접 지도하는 최고위 스트레칭 전문가 양성 과정입니다.<br />
+              체형 분석 이론부터 실전 수기 테크닉까지 완성형 노하우를 밀착 전수합니다.
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
               <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
-                <p class="text-xs text-sky-300 font-semibold mb-1">교육 일정 (주중반)</p>
+                <p class="text-xs text-sky-300 font-semibold mb-1">교육 일정 (주중반 / 주말반)</p>
                 <p class="text-base font-semibold text-white">월·수·금요일 (10:00 - 13:00)</p>
-                <p class="text-xs text-stone-300 mt-1 font-normal">1일 3시간 × 4주 (총 36시간 과정)</p>
+                <p class="text-xs text-stone-300 mt-1 font-normal">1일 3시간 × 4주 (총 36시간 전수)</p>
               </div>
 
               <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
                 <p class="text-xs text-sky-300 font-semibold mb-1">수강료 및 자격증</p>
                 <p class="text-2xl font-semibold text-white">120만원</p>
-                <p class="text-xs text-stone-300 mt-1 font-normal">* 공식 자격증 발급비 포함</p>
+                <p class="text-xs text-stone-300 mt-1 font-normal">* 공식 수기지도자 자격증 발급비 포함</p>
               </div>
             </div>
 
@@ -367,25 +385,25 @@
 
           <div class="lg:col-span-5 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-6 space-y-4">
             <h3 class="text-lg font-semibold text-white flex items-center gap-2">
-              🎓 핵심 커리큘럼 요약
+              🎓 4주 차별 핵심 커리큘럼
             </h3>
 
             <div class="space-y-3 text-xs sm:text-sm text-stone-200">
               <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
                 <p class="font-semibold text-sky-300">1주차: 해부학 & 정밀 체형 스캔</p>
-                <p class="mt-0.5 text-stone-300 font-normal">관절 가동 범위 측정 및 불균형 원인 분석</p>
+                <p class="mt-0.5 text-stone-300 font-normal">관절 가동 범위 측정 및 불균형 원인 스캔</p>
               </div>
               <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
                 <p class="font-semibold text-sky-300">2주차: 상체 및 경추 딥 수기 실습</p>
-                <p class="mt-0.5 text-stone-300 font-normal">거북목, 승모근, 흉곽 이완 수기 노하우</p>
+                <p class="mt-0.5 text-stone-300 font-normal">거북목, 승모근, 흉곽 이완 테크닉 실습</p>
               </div>
               <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
                 <p class="font-semibold text-sky-300">3주차: 골반 & 하체 리밸런스</p>
-                <p class="mt-0.5 text-stone-300 font-normal">고관절 회전성 확보 및 장요근 이완 테크닉</p>
+                <p class="mt-0.5 text-stone-300 font-normal">고관절 회전성 확보 및 장요근 이완 노하우</p>
               </div>
               <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
                 <p class="font-semibold text-sky-300">4주차: 실전 코칭 심사 & 자격 수여</p>
-                <p class="mt-0.5 text-stone-300 font-normal">원장 직접 심사 및 지도자 자격증 발급</p>
+                <p class="mt-0.5 text-stone-300 font-normal">원장 직접 심사 및 공식 자격증 수여</p>
               </div>
             </div>
           </div>
@@ -427,7 +445,6 @@
               <div class="p-4 rounded-xl bg-[#082239]/80 border border-white/10 text-xs text-stone-300 space-y-1.5 font-normal">
                 <p class="font-semibold text-sky-300">💡 예약 정책 안내</p>
                 <p>• 당일 예약은 불가합니다 (최소 1일 전 예약)</p>
-                <p>• 토요일은 18:00 영업 종료로 17:00 타임까지만 이용 가능합니다.</p>
                 <p>• 선택하신 날짜의 예약 완료 시간대는 '마감'으로 자동 차단됩니다.</p>
                 <p>• 원장 1:1 전담으로 동일 시간에 추가 중복 예약이 불가능합니다.</p>
               </div>
@@ -473,17 +490,6 @@
     </div>
   </section>
 
-  <!-- Reviews Section -->
-  <section id="reviews" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-2xl mx-auto mb-16">
-      <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CUSTOMER REVIEWS</span>
-      <h2 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">솔루션스트레칭 고객 수기 후기</h2>
-      <p class="text-[#0C3559]/75 text-sm sm:text-base font-normal">신체 불균형을 개선하고 가벼운 일상을 회복하신 고객분들의 경험담입니다.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="reviews-container"></div>
-  </section>
-
   <!-- Location & Guidelines Section -->
   <section id="location" class="py-24 bg-stone-100/70 border-t border-stone-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
@@ -494,22 +500,22 @@
             <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1.5 rounded-full">
               LOCATION & SEARCH
             </span>
-            <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-4 mb-6">오시는 길 안내</h3>
+            <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-4 mb-6">오시는 길 및 안내</h3>
 
             <div class="space-y-4 mb-8 text-sm sm:text-base text-[#0C3559]">
               <div>
                 <p class="font-semibold text-[#0C3559] text-base sm:text-lg">스트레칭온</p>
                 <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
-                <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간</p>
+                <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간 제공</p>
               </div>
 
               <div class="text-sm font-semibold text-[#0C3559]">
-                📞 010-6566-6369
+                📞 직통 전화 문의: 010-6566-6369 (대표 김동수)
               </div>
 
               <div class="text-xs sm:text-sm text-[#0C3559]/85 font-semibold">
                 <p>월 - 금요일: 10:00 - 22:00</p>
-                <p>토요일: 10:00 - 18:00 (일요일 휴무)</p>
+                <p>토요일: 10:00 - 18:00 (일요일 정기휴무)</p>
               </div>
             </div>
           </div>
@@ -517,8 +523,8 @@
           <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
             <p class="text-xs font-semibold text-[#0C3559]/70 uppercase tracking-wider">지도 앱으로 빠르게 위치 찾기</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button onclick="openMapSearch('naver')" class="w-full py-3.5 px-4 rounded-xl bg-[#03CF5D] text-white font-semibold text-xs sm:text-sm shadow-sm">네이버 지도 검색 ↗</button>
-              <button onclick="openMapSearch('kakao')" class="w-full py-3.5 px-4 rounded-xl bg-[#FEE500] text-[#191919] font-semibold text-xs sm:text-sm shadow-sm">카카오맵 검색 ↗</button>
+              <button onclick="openMapSearch('naver')" class="w-full py-3.5 px-4 rounded-xl bg-[#03CF5D] text-white font-semibold text-xs sm:text-sm shadow-sm">💚 네이버 지도 검색 ↗</button>
+              <button onclick="openMapSearch('kakao')" class="w-full py-3.5 px-4 rounded-xl bg-[#FEE500] text-[#191919] font-semibold text-xs sm:text-sm shadow-sm">💛 카카오맵 검색 ↗</button>
             </div>
           </div>
         </div>
@@ -529,6 +535,17 @@
           <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-2 mb-6">자주 묻는 질문</h3>
           <div id="faqs-container" class="space-y-3.5"></div>
         </div>
+      </div>
+
+      <!-- Customer Reviews Section (Moved inside Location/Guidelines) -->
+      <div id="reviews" class="pt-8 border-t border-stone-200/80">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CUSTOMER REVIEWS</span>
+          <h3 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">솔루션스트레칭 고객 수기 후기</h3>
+          <p class="text-[#0C3559]/75 text-sm sm:text-base font-normal">신체 불균형을 개선하고 가벼운 일상을 회복하신 고객분들의 실제 경험담입니다.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="reviews-container"></div>
       </div>
 
       <!-- Studio Guidelines -->
@@ -557,7 +574,8 @@
   </footer>
 
   <!-- MODALS -->
-  <!-- Booking Success Modal -->
+
+  <!-- 1. Booking Success Modal -->
   <div id="modal-booking-success" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-8 text-center relative">
       <button onclick="closeModal('modal-booking-success')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
@@ -568,145 +586,182 @@
     </div>
   </div>
 
-  <!-- Admin Auth Modal -->
-  <div id="modal-admin-login" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center relative">
-      <button onclick="closeModal('modal-admin-login')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
-      <h3 class="text-2xl font-semibold text-[#0C3559] mb-4">원장 전용 관리자 로그인</h3>
-      <div class="space-y-4">
-        <input type="password" id="admin-pin-input" placeholder="비밀번호 입력" class="w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0C3559]" />
-        <button onclick="submitAdminLogin()" class="w-full py-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm transition-all">대시보드 접속</button>
+  <!-- 2. Client Lookup & My Bookings Modal (Cross-device Sync) -->
+  <div id="modal-my-bookings" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative max-h-[85vh] overflow-y-auto custom-scrollbar">
+      <button onclick="closeModal('modal-my-bookings')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
+      <h3 class="text-xl font-bold text-[#0C3559] mb-1">🔑 내 예약 및 수강권 조회</h3>
+      <p class="text-xs text-stone-500 mb-4">예약 시 입력하셨던 성함과 연락처로 조회하시면 모든 기기에서 실시간 확인됩니다.</p>
+
+      <!-- Search Form -->
+      <form onsubmit="handleCustomerLookup(event)" class="space-y-3 mb-6 p-4 rounded-2xl bg-stone-50 border border-stone-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <input type="text" id="lookup-name" required placeholder="성함 *" class="border p-2.5 rounded-xl text-xs bg-white" />
+          <input type="tel" id="lookup-phone" required placeholder="연락처 (예: 01012345678) *" class="border p-2.5 rounded-xl text-xs bg-white" />
+        </div>
+        <button type="submit" class="w-full py-2.5 bg-[#0C3559] text-white font-bold rounded-xl text-xs shadow-sm">
+          내 예약 및 수강권 조회하기 ➔
+        </button>
+      </form>
+
+      <!-- Member Card Area -->
+      <div id="my-member-status-box" class="hidden mb-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-xs space-y-2"></div>
+
+      <!-- Bookings List Area -->
+      <div id="my-bookings-list" class="space-y-3">
+        <p class="text-xs text-stone-400 py-6 text-center font-medium">성함과 연락처를 입력 후 조회해 주세요.</p>
       </div>
     </div>
   </div>
 
-  <!-- Admin Dashboard Modal (Enhanced with Member & Pass Management System) -->
-  <div id="modal-admin-dashboard" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-6">
-    <div class="bg-white rounded-3xl max-w-5xl w-full p-6 sm:p-8 relative max-h-[92vh] overflow-y-auto custom-scrollbar">
-      <button onclick="closeModal('modal-admin-dashboard')" class="absolute top-6 right-6 text-stone-500 font-bold hover:text-stone-800">✕</button>
+  <!-- 3. Admin Auth Modal -->
+  <div id="modal-admin-login" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center relative">
+      <button onclick="closeModal('modal-admin-login')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
+      <h3 class="text-2xl font-semibold text-[#0C3559] mb-4">👑 원장 전용 관리자 로그인</h3>
+      <div class="space-y-4">
+        <input type="password" id="admin-pin-input" placeholder="비밀번호 입력" class="w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#0C3559]" />
+        <button onclick="submitAdminLogin()" class="w-full py-4 rounded-2xl bg-[#0C3559] text-white font-semibold text-sm">대시보드 접속</button>
+      </div>
+    </div>
+  </div>
 
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3 border-b border-stone-200 pb-4">
-        <div>
-          <h3 class="text-2xl font-semibold text-[#0C3559]">원장 전용 실시간 스튜디오 관리 대시보드</h3>
-          <p class="text-xs text-stone-500 mt-1">예약: <span id="admin-total-count" class="font-bold text-[#0092B8]">0</span>건 | 등록 회원: <span id="admin-member-count" class="font-bold text-amber-700">0</span>명</p>
-        </div>
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="setAdminTab('calendar')" id="admin-tab-btn-calendar" class="px-3.5 py-1.5 bg-[#0C3559] text-white rounded-xl text-xs font-semibold shadow-sm">
-            📅 예약 달력 스케줄
-          </button>
-          <button onclick="setAdminTab('members')" id="admin-tab-btn-members" class="px-3.5 py-1.5 bg-stone-100 text-[#0C3559] hover:bg-stone-200 rounded-xl text-xs font-semibold border border-stone-300 transition-all">
-            👥 회원 및 수강권 관리 (<span id="admin-tab-member-badge">0</span>명)
-          </button>
-          <button onclick="togglePinChangeForm()" class="px-3 py-1.5 bg-amber-100 text-amber-900 rounded-xl text-xs font-semibold">🔑 비밀번호 변경</button>
-          <button onclick="submitAdminLogout()" class="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded-xl text-xs font-semibold transition-all">🔓 로그아웃</button>
-        </div>
+  <!-- 4. Admin Dashboard Modal -->
+  <div id="modal-admin-dashboard" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-5xl w-full h-[90vh] p-4 sm:p-8 relative flex flex-col">
+      <button onclick="closeModal('modal-admin-dashboard')" class="absolute top-6 right-6 text-stone-500 font-bold text-lg z-10">✕</button>
+
+      <div class="flex items-center justify-between pb-4 border-b border-stone-200 pr-8">
+        <h3 class="text-xl font-extrabold text-[#0C3559] flex items-center gap-2">
+          <span>👑 원장님 통합 관리자 센터</span>
+          <span class="text-xs font-normal bg-sky-100 text-[#0092B8] px-2.5 py-0.5 rounded-full">구글 클라우드 동기화</span>
+        </h3>
+        <button onclick="togglePinChangeForm()" class="px-3 py-1.5 bg-amber-100 text-amber-900 rounded-xl text-xs font-semibold">🔑 비밀번호 변경</button>
       </div>
 
       <!-- PIN Change Form -->
-      <div id="admin-pin-change-box" class="p-4 bg-amber-50 rounded-xl mb-4 hidden flex gap-2">
+      <div id="admin-pin-change-box" class="p-3 bg-amber-50 rounded-xl my-2 hidden flex gap-2">
         <input type="password" id="new-admin-pin-input" placeholder="새 비밀번호 입력" class="border p-2 rounded text-xs w-full" />
         <button onclick="submitChangePin()" class="px-4 py-2 bg-amber-800 text-white rounded text-xs font-semibold shrink-0">저장</button>
       </div>
 
-      <!-- TAB 1: RESERVATIONS VIEW -->
-      <div id="admin-tab-reservations" class="space-y-6">
-        <!-- Direct Manual Phone Booking Form -->
-        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200/80 space-y-3">
-          <h4 class="text-sm font-semibold text-amber-950 flex items-center gap-2">
-            📞 전화 예약 수기 직접 등록 (타임 마감 처리)
-          </h4>
-          <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
-            <input type="text" id="manual-name" placeholder="성함 *" class="border p-2 rounded-xl text-xs bg-white" />
-            <input type="tel" id="manual-phone" placeholder="연락처 *" class="border p-2 rounded-xl text-xs bg-white" />
-            <input type="date" id="manual-date" class="border p-2 rounded-xl text-xs bg-white" />
-            <select id="manual-time" class="border p-2 rounded-xl text-xs bg-white"></select>
-            <select id="manual-program" class="border p-2 rounded-xl text-xs bg-white"></select>
-            <button onclick="submitManualBooking()" class="py-2 bg-amber-800 hover:bg-amber-900 text-white rounded-xl text-xs font-semibold shadow-sm transition-all">
-              수기 예약 등록
-            </button>
-          </div>
-        </div>
-
-        <div class="flex justify-between items-center">
-          <h4 class="text-sm font-semibold text-[#0C3559]">월별 예약 현황</h4>
-          <button onclick="toggleAdminViewMode()" id="admin-view-toggle-btn" class="px-3 py-1 bg-stone-100 text-xs text-[#0C3559] font-semibold rounded-lg border">
-            📋 목록으로 보기
-          </button>
-        </div>
-
-        <!-- View Box (Calendar or List) -->
-        <div id="admin-calendar-view" class="space-y-4"></div>
-        <div id="admin-list-view" class="space-y-3 hidden"></div>
+      <!-- Navigation Tabs -->
+      <div class="flex gap-2 my-3 border-b border-stone-200">
+        <button id="admin-tab-btn-bookings" onclick="switchAdminTab('bookings')" class="pb-2.5 px-4 text-xs font-bold border-b-2 border-[#0C3559] text-[#0C3559]">
+          📅 예약 현황 & 달력 스케줄
+        </button>
+        <button id="admin-tab-btn-members" onclick="switchAdminTab('members')" class="pb-2.5 px-4 text-xs font-bold text-stone-400 border-b-2 border-transparent hover:text-[#0C3559]">
+          👥 회원 등록 & 수강권 차감 관리
+        </button>
       </div>
 
-      <!-- TAB 2: MEMBERS & PASSES MANAGEMENT (NEW ENHANCED SYSTEM) -->
-      <div id="admin-tab-members" class="space-y-6 hidden">
-        <!-- Add New Member & Pass Form -->
-        <div class="p-5 rounded-2xl bg-sky-50/80 border border-sky-200 space-y-4">
-          <h4 class="text-sm font-semibold text-[#0C3559] flex items-center gap-2">
-            ➕ 회원 신규 등록 및 수강권(10회/20회) 발급
-          </h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-            <div>
-              <label class="block font-semibold text-stone-700 mb-1">회원 성함 *</label>
-              <input type="text" id="new-mem-name" placeholder="예: 홍길동" class="w-full border p-2.5 rounded-xl bg-white focus:outline-none focus:border-[#0C3559]" />
+      <!-- Tab Content Area -->
+      <div class="flex-1 overflow-y-auto custom-scrollbar pr-1">
+        <!-- Tab 1: Bookings -->
+        <div id="admin-tab-bookings-content" class="space-y-4">
+          <!-- Manual Phone Booking Form -->
+          <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 space-y-2">
+            <h4 class="text-xs font-bold text-amber-950">📞 전화 예약 수기 직접 등록 (타임 마감)</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
+              <input type="text" id="manual-name" placeholder="성함 *" class="border p-2 rounded-xl text-xs bg-white" />
+              <input type="tel" id="manual-phone" placeholder="연락처 *" class="border p-2 rounded-xl text-xs bg-white" />
+              <input type="date" id="manual-date" class="border p-2 rounded-xl text-xs bg-white" />
+              <select id="manual-time" class="border p-2 rounded-xl text-xs bg-white"></select>
+              <select id="manual-program" class="border p-2 rounded-xl text-xs bg-white"></select>
+              <button onclick="submitManualBooking()" class="py-2 bg-amber-800 text-white rounded-xl text-xs font-bold shadow-sm">수기 등록</button>
             </div>
-            <div>
-              <label class="block font-semibold text-stone-700 mb-1">연락처 *</label>
-              <input type="tel" id="new-mem-phone" placeholder="예: 010-1234-5678" class="w-full border p-2.5 rounded-xl bg-white focus:outline-none focus:border-[#0C3559]" />
-            </div>
-            <div>
-              <label class="block font-semibold text-stone-700 mb-1">수강권 종류</label>
-              <select id="new-mem-passtype" onchange="handlePassTypeSelect(this.value)" class="w-full border p-2.5 rounded-xl bg-white">
-                <option value="솔루션 멤버십 10회">솔루션 멤버십 10회 (2개월 유효)</option>
-                <option value="프리미엄 멤버십 20회">프리미엄 멤버십 20회 (무제한)</option>
+          </div>
+
+          <div id="admin-calendar-view" class="space-y-4"></div>
+        </div>
+
+        <!-- Tab 2: Members -->
+        <div id="admin-tab-members-content" class="hidden space-y-6">
+          <!-- Add Member Form -->
+          <div class="bg-sky-50/70 p-5 rounded-2xl border border-sky-100 space-y-3">
+            <h4 class="font-bold text-sm text-[#0C3559]">➕ 신규 회원 등록 & 수강권 발급</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <input type="text" id="new-mem-name" placeholder="회원 성함 *" class="border p-2.5 rounded-xl text-xs bg-white" />
+              <input type="tel" id="new-mem-phone" placeholder="연락처 *" class="border p-2.5 rounded-xl text-xs bg-white" />
+              <select id="new-mem-passtype" class="border p-2.5 rounded-xl text-xs bg-white">
+                <option value="솔루션 코스 10회">솔루션 코스 10회 (2개월 유효)</option>
+                <option value="프리미엄 딥케어 10회">프리미엄 딥케어 10회 (2개월 유효)</option>
+                <option value="원장 VIP 스페셜 10회">원장 VIP 스페셜 10회 (2개월 유효)</option>
+                <option value="20회 멤버십 수강권">20회 멤버십 수강권 (무제한)</option>
                 <option value="1회 체험 수강권">1회 체험 수강권</option>
               </select>
-            </div>
-            <div>
-              <label class="block font-semibold text-stone-700 mb-1">부여 수강 횟수</label>
-              <input type="number" id="new-mem-passes" value="10" min="1" max="100" class="w-full border p-2.5 rounded-xl bg-white font-semibold" />
-            </div>
-            <div>
-              <label class="block font-semibold text-stone-700 mb-1">유효기간 만료일</label>
-              <input type="date" id="new-mem-expiry" class="w-full border p-2.5 rounded-xl bg-white font-semibold" />
-            </div>
-            <div>
-              <label class="block font-semibold text-stone-700 mb-1">특이사항 / 통증 부위 메모</label>
-              <input type="text" id="new-mem-note" placeholder="예: 목/승모근 통증 이완 전담" class="w-full border p-2.5 rounded-xl bg-white" />
+              <input type="number" id="new-mem-passes" min="1" value="10" placeholder="부여 횟수" class="border p-2.5 rounded-xl text-xs bg-white" />
+              <input type="date" id="new-mem-expiry" class="border p-2.5 rounded-xl text-xs bg-white" />
+              <button onclick="submitAddMemberAdmin()" class="bg-[#0C3559] hover:bg-[#082239] text-white rounded-xl text-xs font-bold py-2.5 shadow-sm transition-all">
+                회원 등록 완료 ✓
+              </button>
             </div>
           </div>
-          <div class="flex justify-end pt-1">
-            <button onclick="submitRegisterMember()" class="px-6 py-3 bg-[#0C3559] hover:bg-[#082239] text-white text-xs font-semibold rounded-xl shadow-md transition-all">
-              신규 회원 등록 및 수강권 부여 완료 ✓
-            </button>
+
+          <!-- Members List -->
+          <div>
+            <h4 class="font-bold text-sm text-[#0C3559] mb-3">👥 등록된 회원 목록 및 수강권 현황</h4>
+            <div id="admin-members-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
           </div>
         </div>
-
-        <!-- Members Search & Filter -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-          <h4 class="text-sm font-semibold text-[#0C3559]">등록 회원 수강권 잔여 현황 목록</h4>
-          <input type="text" id="member-search-input" onkeyup="filterMemberList(this.value)" placeholder="🔍 회원 성함 또는 연락처 검색..." class="border rounded-xl px-3.5 py-2 text-xs w-full sm:w-64 bg-white" />
-        </div>
-
-        <!-- Member Cards List -->
-        <div id="admin-member-cards-container" class="space-y-3"></div>
       </div>
     </div>
   </div>
 
-  <!-- Client My Bookings Modal -->
-  <div id="modal-my-bookings" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative max-h-[80vh] overflow-y-auto">
-      <button onclick="closeModal('modal-my-bookings')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
-      <h3 class="text-xl font-semibold text-[#0C3559] mb-2">내 예약 내역</h3>
-      <p class="text-xs text-stone-500 mb-4">* 방문 3시간 전까지 웹에서 직접 예약을 취소할 수 있습니다.</p>
-
-      <div id="my-bookings-list" class="space-y-3"></div>
+  <!-- 5. Admin Edit Member Modal -->
+  <div id="modal-admin-edit-member" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative">
+      <button onclick="closeModal('modal-admin-edit-member')" class="absolute top-6 right-6 text-stone-500 font-bold hover:text-stone-800">✕</button>
+      <h3 class="text-xl font-semibold text-[#0C3559] mb-4 flex items-center gap-2">✏️ 회원 정보 & 수강권 상세 수정</h3>
+      <input type="hidden" id="edit-mem-id" />
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">회원 성함 *</label>
+          <input type="text" id="edit-mem-name" class="w-full border p-2.5 rounded-xl bg-white focus:outline-none focus:border-[#0C3559]" />
+        </div>
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">연락처 *</label>
+          <input type="tel" id="edit-mem-phone" class="w-full border p-2.5 rounded-xl bg-white focus:outline-none focus:border-[#0C3559]" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">수강권 종류</label>
+            <select id="edit-mem-passtype" class="w-full border p-2.5 rounded-xl bg-white">
+              <option value="솔루션 코스 10회">솔루션 코스 10회</option>
+              <option value="프리미엄 딥케어 10회">프리미엄 딥케어 10회</option>
+              <option value="원장 VIP 스페셜 10회">원장 VIP 스페셜 10회</option>
+              <option value="20회 멤버십 수강권">20회 멤버십 수강권</option>
+              <option value="1회 체험 수강권">1회 체험 수강권</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">유효기간 만료일</label>
+            <input type="date" id="edit-mem-expiry" class="w-full border p-2.5 rounded-xl bg-white" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">총 부여 횟수</label>
+            <input type="number" id="edit-mem-totalpasses" min="1" class="w-full border p-2.5 rounded-xl bg-white font-semibold" />
+          </div>
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">잔여 횟수</label>
+            <input type="number" id="edit-mem-remainingpasses" min="0" class="w-full border p-2.5 rounded-xl bg-white font-semibold text-[#0092B8]" />
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">특이사항 / 통증 부위 메모</label>
+          <input type="text" id="edit-mem-note" class="w-full border p-2.5 rounded-xl bg-white" />
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button onclick="closeModal('modal-admin-edit-member')" class="px-4 py-2.5 bg-stone-100 text-stone-700 rounded-xl text-xs font-semibold">취소</button>
+          <button onclick="submitEditMemberAdmin()" class="px-6 py-2.5 bg-[#0C3559] hover:bg-[#082239] text-white rounded-xl text-xs font-semibold shadow-md transition-all">수정 사항 저장 ✓</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Academy Modal -->
+  <!-- 6. Academy Modal -->
   <div id="modal-academy" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative">
       <button onclick="closeModal('modal-academy')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
@@ -720,140 +775,54 @@
     </div>
   </div>
 
-  <!-- Firebase Cloud Firestore SDK Modules (Personal Firebase Config) -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    /*
-     * 💡 원장님의 개인 파이어베이스(Firebase) 프로젝트 연동
-     */
-    const customFirebaseConfig = {
-      apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
-      authDomain: "solutionstretching.firebaseapp.com",
-      projectId: "solutionstretching",
-      storageBucket: "solutionstretching.firebasestorage.app",
-      messagingSenderId: "567579240099",
-      appId: "1:567579240099:web:1b32c98d04fbd4e55d0116",
-      measurementId: "G-663RDZSPGH"
-    };
-
-    let firebaseConfig = customFirebaseConfig;
-
-    if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-      try { 
-        const parsed = JSON.parse(__firebase_config); 
-        if (parsed && parsed.apiKey) firebaseConfig = parsed;
-      } catch(e){}
-    }
-
-    let db = null;
-    let auth = null;
-
-    if (firebaseConfig && firebaseConfig.apiKey) {
-      try {
-        const app = initializeApp(firebaseConfig);
-        db = getFirestore(app);
-        auth = getAuth(app);
-
-        const initAuth = async () => {
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
-          }
-        };
-
-        initAuth().then(() => {
-          // 1. Listen to Realtime Bookings from Firestore
-          const bookingsColRef = collection(db, 'bookings');
-          onSnapshot(bookingsColRef, (snapshot) => {
-            const cloudBookings = [];
-            snapshot.forEach((docSnap) => {
-              cloudBookings.push(docSnap.data());
-            });
-            if (cloudBookings.length > 0) {
-              window.bookings = cloudBookings.sort((a,b) => b.id.localeCompare(a.id));
-              window.saveBookingsLocal();
-              window.updateHeaderState();
-              if (window.renderStep2) window.renderStep2();
-              if (window.renderAdminDashboardView) window.renderAdminDashboardView();
-            }
-          }, (err) => console.log('Bookings Cloud Notice:', err));
-
-          // 2. Listen to Realtime Members from Firestore
-          const membersColRef = collection(db, 'members');
-          onSnapshot(membersColRef, (snapshot) => {
-            const cloudMembers = [];
-            snapshot.forEach((docSnap) => {
-              cloudMembers.push(docSnap.data());
-            });
-            if (cloudMembers.length > 0) {
-              window.members = cloudMembers.sort((a,b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-              window.saveMembersLocal();
-              if (window.renderAdminDashboardView) window.renderAdminDashboardView();
-            }
-          }, (err) => console.log('Members Cloud Notice:', err));
-
-        }).catch(err => console.log('Auth Notice:', err));
-      } catch (err) { console.log('Firebase Init Notice:', err); }
-    }
-
-    // Global Cloud Sync Handlers
-    window.syncBookingToCloud = async function(bookingObj) {
-      if (!db) return;
-      try {
-        const docRef = doc(db, 'bookings', bookingObj.id);
-        await setDoc(docRef, bookingObj);
-      } catch (e) { console.log('Booking Cloud Save Notice:', e); }
-    };
-
-    window.syncMemberToCloud = async function(memberObj) {
-      if (!db) return;
-      try {
-        const docRef = doc(db, 'members', memberObj.id);
-        await setDoc(docRef, memberObj);
-      } catch (e) { console.log('Member Cloud Save Notice:', e); }
-    };
-
-    window.deleteMemberFromCloud = async function(memberId) {
-      if (!db) return;
-      try {
-        const docRef = doc(db, 'members', memberId);
-        await deleteDoc(docRef);
-      } catch (e) { console.log('Member Cloud Delete Notice:', e); }
-    };
-  </script>
-
+  <!-- JavaScript Application Logic -->
   <script>
     const STORAGE_KEY = 'solstretch_bookings_v1';
     const MEMBERS_KEY = 'solstretch_members_v1';
     const ADMIN_PIN_KEY = 'solstretch_admin_pin_v1';
 
-    const DEFAULT_MEMBERS = [
-      {
-        id: 'M-101',
-        name: '홍길동',
-        phone: '010-1234-5678',
-        passType: '솔루션 멤버십 10회',
-        totalPasses: 10,
-        remainingPasses: 7,
-        usedPasses: 3,
-        expiryDate: getFutureDateStr(2),
-        note: '어깨/목 통증 집중 케어',
-        createdAt: '2026.07.01'
+    // Rich Program definitions
+    const PROGRAMS = [
+      { 
+        id: 'p1', 
+        title: 'Sol-Recovery (시그니처)', 
+        subtitle: '1:1 맞춤 체형 교정 & 패시브 수기 스트레칭 (50분)', 
+        duration: 50, 
+        priceSingle: '70,000원', 
+        price: 70000,
+        originalPrice: 150000, 
+        badge: 'SIGNATURE', 
+        description: '관절 가동 범위를 섬세하게 확보하고, 거북목·승모근 및 만성 근육 긴장 해소를 위한 원장의 독자 수기 대표 기본 솔루션입니다.', 
+        targets: ['거북목·승모근 결림 및 목 뻐근함', '어깨 가동범위 제한 및 굽은 등', '일상 속 가벼운 유연성 회복을 원하시는 분'] 
+      },
+      { 
+        id: 'p2', 
+        title: 'Sol-Balance (프리미엄)', 
+        subtitle: '척추·골반 무브먼트 리밸런스 딥 케어 (90분)', 
+        duration: 90, 
+        priceSingle: '100,000원', 
+        price: 100000,
+        originalPrice: 250000, 
+        badge: 'PREMIUM', 
+        description: '골반 비대칭 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 굳어진 근막을 딥 이완하고 하체 순환을 촉진하는 정밀 심화 케어입니다.', 
+        targets: ['골반 틀어짐 및 요통 근본 해소', '하체 부종 및 고관절 수축·답답함', '자세 구조 정교화 및 신체 밸런스 재정립'] 
+      },
+      { 
+        id: 'p3', 
+        title: '솔루션 멤버십 10회 (멤버십)', 
+        subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', 
+        duration: 50, 
+        priceSingle: '600,000원', 
+        price: 600000,
+        originalPrice: 1200000, 
+        badge: 'MEMBERSHIP', 
+        description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 직계 가족 및 지인과 자유롭게 차감 공유 가능합니다.', 
+        targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지 및 지속 케어', '가족 및 지인과 차감 공유 원하시는 분'] 
       }
     ];
 
-    const PROGRAMS = [
-      { id: 'p1', title: 'Sol-Recovery', subtitle: '1:1 컨디셔닝 패시브 스트레칭', duration: 50, price: 70000, originalPrice: 150000, badge: 'SIGNATURE', description: '관절 가동 범위를 섬세하게 확보하고, 만성적 근육 긴장 완화를 위한 원장의 독자 수기 기본 솔루션입니다.', targets: ['만성 목·어깨·다리 통증', '굽은 등 & 자세 불균형', '일상의 본연 가벼움을 원하시는 분'] },
-      { id: 'p2', title: 'Sol-Balance', subtitle: '무브먼트 리밸런스 딥 케어', duration: 90, price: 100000, originalPrice: 250000, badge: 'PREMIUM', description: '골반 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 긴장된 근막을 딥 이완하는 정밀 케어입니다.', targets: ['골반 비대칭 및 골반 요통', '하체 순환 장애 & 고관절 답답함', '자세 정교화 및 신체 구조 재정립'] },
-      { id: 'p3', title: '솔루션 멤버십 10회', subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', duration: 50, price: 600000, originalPrice: 1200000, badge: 'MEMBERSHIP', description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 가족 및 지인과 자유롭게 차감 공유 가능합니다.', targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지', '가족 및 지인 공유 케어'] }
-    ];
-
     const BODY_ZONES = [
-      { id: 'neck', title: '목 & 어깨 (Neck & Shoulder)', subtitle: '거북목, 승모근 긴장 완화', symptoms: ['스마트폰/모니터 집중 후 목 뻐근함', '승모근 뭉침 및 두통 유발', '어깨 가동범위 제한', '병원에서 스트레칭을 권유받은 분'], solution: '경추 및 흉근·승모근 근막 이완, 관절 가동성 확보 수기 솔루션', recProgramId: 'p1' },
+      { id: 'neck', title: '목 & 어깨 (Neck & Shoulder)', subtitle: '거북목, 일자목, 승모근 긴장 완화', symptoms: ['스마트폰/모니터 집중 후 목 뻐근함', '승모근 뭉침 및 두통 유발', '어깨 가동범위 제한 및 굽은 등', '병원에서 스트레칭을 권유받은 분'], solution: '경추 및 흉근·승모근 근막 이완, 관절 가동성 확보 수기 솔루션', recProgramId: 'p1' },
       { id: 'waist', title: '허리 & 골반 (Pelvis & Back)', subtitle: '골반 비대칭, 뻐근한 요통 근본 해소', symptoms: ['오래 앉아있으면 요통이 발생함', '양쪽 골반 높이가 다름', '다리를 꼬거나 걸음걸이 불균형', '오래된 통증으로 불편하신 분'], solution: '장요근·장골근 딥 이완 및 고관절 회전성 회복 교정 스트레칭', recProgramId: 'p2' },
       { id: 'legs', title: '하체 & 순환 (Legs & Circulation)', subtitle: '다리 부종, 햄스트링/종아리 단축 해소', symptoms: ['저녁만 되면 다리가 쉽게 부음', '유연성 부족으로 허리를 숙이기 힘듦', '발바닥 및 아킬레스건 피로', '종아리에 쥐가 자주 나시는 분'], solution: '하체 림프 순환 촉진 및 햄스트링·내덕근 확장 딥 솔루션', recProgramId: 'p1' },
       { id: 'full', title: '전신 피로 & 신체 불균형 (Full Body)', subtitle: '만성 피로 해소 및 신체 구조 평온함 회복', symptoms: ['자고 일어나도 온몸이 찌뿌둥함', '몸 전체의 자세가 틀어진 느낌', '삶의 질을 높이는 가벼움 절실', '수술 후 빠른회복을 원하시는 분'], solution: '전신 솔루션 스트레칭으로 신체 밸런스 완전 복원', recProgramId: 'p3' }
@@ -864,14 +833,14 @@
     const GUIDELINES = [
       { category: '예약 및 취소/변경 규정', badge: 'RESERVATION', items: [{ title: '온라인 당일 예약 제한 (100% 사전예약제)', desc: '원장의 1:1 집중 정밀 케어를 위해 당일 온라인 예약은 없습니다. 당일 관리를 희망하시는 경우 대표 번호(010-6566-6369)로 문의 부탁드립니다.' }, { title: '타임 슬롯 당 1명 한정 (중복 예약 자동 차감)', desc: '어떤 프로그램을 선택하셔도 동일한 시간대에는 오직 1분의 고객님만 모십니다. 이미 예약된 타임은 마감 처리됩니다.' }, { title: '자유로운 일시 변경 및 취소', desc: '예약 취소 및 날짜/시간 변경은 방문 3시간 전까지 웹사이트 내 [내 예약] 메뉴를 통해 신청하실 수 있습니다.' }] },
       { category: '복장 및 시설 안내', badge: 'DRESS CODE', items: [{ title: '유니폼 및 탈의실 미운영', desc: '스트레칭 온은 별도의 유니폼을 제공하지 않으며 탈의실/파우더룸을 운영하지 않습니다.' }, { title: '편안한 복장 착용 후 방문', desc: '관절 및 근막의 자율적이고 원활한 이완 움직임을 위해 방문 시 상·하체 움직임이 편안한 복장(운동복 등)을 미리 착용 후 방문해 주세요.' }] },
-      { category: '솔루션 멤버십(10회권) 규정', badge: 'MEMBERSHIP', items: [{ title: '유효기간 2개월', desc: '솔루션 멤버십 10회 이용권의 유효기간은 등록일로부터 2개월입니다.' }, { title: '당일 예약취소 규정', desc: '당일 예약 취소는 예약시간 3시간 전까지 가능하고, 그 이후 또는 불참시는 1회 차감됩니다.' }, { title: '가족 및 지인 자유 공유', desc: '10회 멤버십 이용권은 본인 외에도 직계 가족 및 지인과 자유롭게 차감 공유하여 함께 이용하실 수 있습니다.' }] },
+      { category: '솔루션 멤버십(10회/20회권) 규정', badge: 'MEMBERSHIP', items: [{ title: '유효기간 안내', desc: '10회 수강권의 유효기간은 등록일로부터 2개월이며, 20회 수강권은 유효기간 무제한입니다.' }, { title: '당일 예약취소 규정', desc: '당일 예약 취소는 예약시간 3시간 전까지 가능하며, 그 이후 미방문 시 1회 차감됩니다.' }, { title: '가족 및 지인 자유 공유', desc: '수강권 이용권은 본인 외에도 직계 가족 및 지인과 자유롭게 차감 공유하여 함께 이용하실 수 있습니다.' }] },
       { category: '주차 및 위치 / 안전 안내', badge: 'PARKING & SAFETY', items: [{ title: '건물 내 2시간 무료 주차', desc: '벨라미센텀시티 2차 건물 지하 주차장에 2시간 무료 주차가 가능하며, 케어 완료 후 차량 번호를 등록해 드립니다.' }, { title: '신체 상태 사전 공유', desc: '수술 이력, 디스크 중증 질환, 임신 중이신 경우 케어 진행 전 원장에게 미리 말씀해 주시면 안전을 최우선으로 진행합니다.' }] }
     ];
 
     const REVIEWS = [
-      { name: '김*아 님', job: 'IT 개발팀 리더', program: 'Sol-Recovery 시그니처 (50분)', comment: '단순 피로 해소 마사지인 줄 알았는데, 제 체형의 불균형 원인을 정확히 짚어주셨습니다. 50분 만에 몸의 가벼움이 완전히 달라졌고 일상 속 집중력이 눈에 띄게 높아졌습니다.', rating: '★★★★★', date: '2026.07.28' },
-      { name: '박*진 님', job: '운수업', program: 'SOL-Balance 프리미엄 (90분)', comment: '오래된 골반,허리통증으로 많이 고생했습니다. 원장님의 해부학적 수기 이완 덕분에 걸음걸이가 편해지고 밤마다 느끼던 뻐근함이 크게 줄어 삶의 질이 향상되었습니다.', rating: '★★★★★', date: '2026.07.24' },
-      { name: '최*진 님', job: '사무직 임원', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡아가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★', date: '2026.07.19' }
+      { name: '김*아 님', job: 'IT 개발팀 리더', program: 'Sol-Recovery (50분)', comment: '단순 피로 해소 마사지인 줄 알았는데, 제 체형의 불균형 원인을 정확히 짚어주셨습니다. 50분 만에 몸의 가벼움이 완전히 달라졌고 일상 속 집중력이 눈에 띄게 높아졌습니다.', rating: '★★★★★' },
+      { name: '박*진 님', job: '운수업', program: 'Sol-Balance (90분)', comment: '오래된 골반,허리통증으로 많이 고생했습니다. 원장님의 해부학적 수기 이완 덕분에 걸음걸이가 편해지고 밤마다 느끼던 뻐근함이 크게 줄어 삶의 질이 향상되었습니다.', rating: '★★★★★' },
+      { name: '최*진 님', job: '사무직 임원', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡아가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★' }
     ];
 
     const FAQS = [
@@ -881,10 +850,12 @@
       { q: '편안한 복장이 준비되어 있나요?', a: '아니요, 스트레칭 온은 탈의실 및 별도 유니폼을 제공하지 않습니다. 자율적이고 원활한 가동 이완을 위해 방문 시 움직임이 편안한 복장(운동복 등)을 미리 착용하고 방문해 주시기 바랍니다.' }
     ];
 
-    // Global State Variables
-    window.bookings = [];
-    window.members = [];
-    let adminPin = '6369';
+    // App Global State
+    window.bookings = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    window.members = JSON.parse(localStorage.getItem(MEMBERS_KEY)) || [
+      { id: 'M-101', name: '홍길동', phone: '01012345678', passType: '솔루션 코스 10회', totalPasses: 10, remainingPasses: 8, expiryDate: getFutureDateStr(2), note: '목/어깨 결림 심함' }
+    ];
+    let adminPin = localStorage.getItem(ADMIN_PIN_KEY) || '6369';
     let isAdminAuth = false;
     let selectedProgram = PROGRAMS[0];
     let selectedZone = BODY_ZONES[0];
@@ -892,12 +863,9 @@
     let selectedTime = TIME_SLOTS[2];
     let adminCalYear = new Date().getFullYear();
     let adminCalMonth = new Date().getMonth();
-    let adminViewMode = 'calendar';
-    let adminActiveTab = 'calendar'; // 'calendar' or 'members'
     let adminFilterDate = '';
-    let memberSearchQuery = '';
 
-    function getFutureDateStr(monthsToAdd) {
+    function getFutureDateStr(monthsToAdd = 2) {
       const d = new Date();
       d.setMonth(d.getMonth() + monthsToAdd);
       return d.toISOString().split('T')[0];
@@ -925,70 +893,37 @@
     function showToast(msg) {
       const toast = document.getElementById('toast-container');
       const text = document.getElementById('toast-text');
-      if (text && toast) {
-        text.innerText = msg;
-        toast.classList.remove('hidden');
-        setTimeout(() => toast.classList.add('hidden'), 3500);
-      }
+      text.innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3500);
     }
 
-    function loadInitialData() {
-      try {
-        const savedBookings = localStorage.getItem(STORAGE_KEY);
-        window.bookings = savedBookings ? JSON.parse(savedBookings) : [];
-        
-        const savedMembers = localStorage.getItem(MEMBERS_KEY);
-        window.members = savedMembers ? JSON.parse(savedMembers) : DEFAULT_MEMBERS;
-
-        const savedPin = localStorage.getItem(ADMIN_PIN_KEY);
-        if (savedPin) adminPin = savedPin;
-      } catch (e) {
-        window.bookings = [];
-        window.members = DEFAULT_MEMBERS;
-      }
-      window.updateHeaderState();
-    }
-
-    window.saveBookingsLocal = function() {
+    function saveBookingsLocal() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(window.bookings));
-    };
+      updateHeaderState();
+    }
 
-    window.saveMembersLocal = function() {
+    function saveMembersLocal() {
       localStorage.setItem(MEMBERS_KEY, JSON.stringify(window.members));
-    };
-
-    function saveBookings() {
-      window.saveBookingsLocal();
-      window.updateHeaderState();
     }
 
-    function saveMembers() {
-      window.saveMembersLocal();
+    function updateHeaderState() {
+      document.getElementById('header-admin-label').innerText = isAdminAuth ? '원장님 관리자' : '관리자';
     }
-
-    window.updateHeaderState = function() {
-      const activeCount = window.bookings.filter(b => b.status !== '취소').length;
-      const countEl = document.getElementById('header-booking-count');
-      const adminLbl = document.getElementById('header-admin-label');
-      if (countEl) countEl.innerText = activeCount;
-      if (adminLbl) adminLbl.innerText = isAdminAuth ? '원장님 관리자' : '관리자';
-    };
 
     function scrollToSec(id) {
-      const mob = document.getElementById('mobile-menu');
-      if (mob) mob.classList.add('hidden');
+      document.getElementById('mobile-menu').classList.add('hidden');
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
     function toggleMobileMenu() {
-      const mob = document.getElementById('mobile-menu');
-      if (mob) mob.classList.toggle('hidden');
+      document.getElementById('mobile-menu').classList.toggle('hidden');
     }
 
+    // Body Zones Render with Right Matching Program Card
     function renderBodyZones() {
       const tabContainer = document.getElementById('zone-tab-buttons');
-      if (!tabContainer) return;
       tabContainer.innerHTML = BODY_ZONES.map(z => {
         const isSelected = selectedZone.id === z.id;
         return `
@@ -1002,7 +937,6 @@
       const recProg = PROGRAMS.find(p => p.id === selectedZone.recProgramId) || PROGRAMS[0];
 
       const detailCard = document.getElementById('zone-detail-card');
-      if (!detailCard) return;
       detailCard.innerHTML = `
         <div class="lg:col-span-7 space-y-6">
           <div class="inline-block px-3.5 py-1.5 rounded-full bg-sky-50 text-[#0092B8] text-xs font-semibold">
@@ -1039,7 +973,7 @@
           <p class="text-xs font-semibold text-[#0C3559]/60 uppercase tracking-widest">Matching Program</p>
           <h4 class="text-xl font-semibold text-[#0C3559] mt-1 mb-2">${recProg.title}</h4>
           <p class="text-xs sm:text-sm text-[#0C3559]/75 mb-6 max-w-xs font-medium">${recProg.subtitle}</p>
-          <span class="text-lg font-semibold text-[#0C3559]">${recProg.price.toLocaleString()}원 / ${recProg.duration}분</span>
+          <span class="text-lg font-semibold text-[#0C3559]">${recProg.priceSingle}</span>
         </div>
       `;
     }
@@ -1055,64 +989,76 @@
       scrollToSec('reservation');
     }
 
+    // Render Care Programs & Detailed Passes
     function renderPrograms() {
       const container = document.getElementById('program-cards-container');
-      if (!container) return;
-      container.innerHTML = PROGRAMS.map(p => `
-        <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative">
-          <span class="absolute top-6 right-6 px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider bg-sky-100 text-[#0092B8] uppercase">
-            ${p.badge}
-          </span>
-
-          <div>
-            <div class="flex items-center gap-2 text-xs font-semibold text-[#0092B8] mb-2">
-              <span>⏱ ${p.duration}분 1:1 맞춤 케어</span>
+      container.innerHTML = PROGRAMS.map(p => {
+        let priceBoxHtml = '';
+        if (p.id === 'p1' || p.id === 'p2') {
+          priceBoxHtml = `
+            <div class="mb-6 p-4 rounded-2xl bg-stone-50 border border-stone-200 text-xs">
+              <div class="flex justify-between items-center text-[#0C3559] font-bold">
+                <span>1회 케어</span>
+                <span class="text-[#0092B8] text-sm">${p.priceSingle}</span>
+              </div>
             </div>
+          `;
+        } else if (p.id === 'p3') {
+          priceBoxHtml = `
+            <div class="mb-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-xs">
+              <div class="flex justify-between items-center text-[#0C3559] font-bold">
+                <span>10회 수강권</span>
+                <span class="text-[#0092B8] text-sm">${p.priceSingle}</span>
+              </div>
+            </div>
+          `;
+        }
 
-            <h3 class="text-2xl font-semibold text-[#0C3559] mb-2">${p.title}</h3>
-            <p class="text-xs sm:text-sm text-[#0C3559]/75 mb-6 leading-relaxed font-medium">${p.subtitle}</p>
+        return `
+          <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative">
+            <span class="absolute top-6 right-6 px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider bg-sky-100 text-[#0092B8] uppercase">
+              ${p.badge}
+            </span>
 
-            <div class="mb-6 pb-6 border-b border-stone-100">
-              <div class="flex items-baseline gap-1">
-                <span class="text-3xl sm:text-4xl font-semibold text-[#0C3559]">${p.price.toLocaleString()}</span>
-                <span class="text-base font-semibold text-[#0C3559]">원</span>
-                <span class="text-xs text-stone-400 line-through ml-2 font-medium">${p.originalPrice.toLocaleString()}원</span>
+            <div>
+              <div class="flex items-center gap-2 text-xs font-semibold text-[#0092B8] mb-2">
+                <span>⏱ ${p.duration}분 1:1 맞춤 수기 케어</span>
+              </div>
+
+              <h3 class="text-2xl font-semibold text-[#0C3559] mb-1">${p.title}</h3>
+              <p class="text-xs sm:text-sm text-[#0C3559]/75 mb-5 leading-relaxed font-medium">${p.subtitle}</p>
+
+              ${priceBoxHtml}
+
+              <p class="text-xs sm:text-sm text-[#0C3559]/80 leading-relaxed mb-6 font-normal">${p.description}</p>
+
+              <div class="space-y-2 mb-8">
+                <p class="text-[11px] font-semibold text-[#0C3559]/60 uppercase tracking-wider">권장 케어 대상</p>
+                ${p.targets.map(t => `<div class="flex items-center gap-2 text-xs sm:text-sm text-[#0C3559] font-semibold"><span class="text-[#0092B8]">✓</span><span>${t}</span></div>`).join('')}
               </div>
             </div>
 
-            <p class="text-xs sm:text-sm text-[#0C3559]/80 leading-relaxed mb-6 font-normal">${p.description}</p>
-
-            <div class="space-y-2 mb-8">
-              <p class="text-[11px] font-semibold text-[#0C3559]/60 uppercase tracking-wider">권장 케어 대상</p>
-              ${p.targets.map(t => `<div class="flex items-center gap-2 text-xs sm:text-sm text-[#0C3559] font-semibold"><span class="text-[#0092B8]">✓</span><span>${t}</span></div>`).join('')}
-            </div>
+            <button onclick="selectProgramAndBook('${p.id}')" class="w-full py-4 rounded-2xl bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] transition-all flex items-center justify-center gap-2 shadow-md">
+              ${p.title} 선택 및 예약 ➔
+            </button>
           </div>
-
-          <button onclick="selectProgramAndBook('${p.id}')" class="w-full py-4 rounded-2xl bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] transition-all flex items-center justify-center gap-2 shadow-md">
-            프로그램 선택 및 1:1 예약 ➔
-          </button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
+    // Reservation Wizard Logic
     function goToStep(stepNum) {
-      const s1 = document.getElementById('booking-step-1');
-      const s2 = document.getElementById('booking-step-2');
-      const s3 = document.getElementById('booking-step-3');
-      if (s1) s1.classList.add('hidden');
-      if (s2) s2.classList.add('hidden');
-      if (s3) s3.classList.add('hidden');
-
-      const target = document.getElementById(`booking-step-${stepNum}`);
-      if (target) target.classList.remove('hidden');
+      document.getElementById('booking-step-1').classList.add('hidden');
+      document.getElementById('booking-step-2').classList.add('hidden');
+      document.getElementById('booking-step-3').classList.add('hidden');
+      document.getElementById(`booking-step-${stepNum}`).classList.remove('hidden');
 
       if (stepNum === 1) renderStep1();
-      if (stepNum === 2) window.renderStep2();
+      if (stepNum === 2) renderStep2();
     }
 
     function renderStep1() {
       const el = document.getElementById('step1-program-list');
-      if (!el) return;
       el.innerHTML = PROGRAMS.map(p => `
         <div onclick="setStep1Program('${p.id}')" class="p-5 rounded-2xl cursor-pointer border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${selectedProgram.id === p.id ? 'bg-sky-500/20 border-sky-400 ring-2 ring-sky-400' : 'bg-white/5 border-white/10 hover:bg-white/10'}">
           <div>
@@ -1123,7 +1069,7 @@
             <p class="text-xs sm:text-sm text-stone-300 mt-1 font-normal">${p.subtitle}</p>
           </div>
           <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-            <span class="text-xl font-semibold text-sky-300">${p.price.toLocaleString()}원</span>
+            <span class="text-sm font-semibold text-sky-300">${p.priceSingle}</span>
             <div class="w-6 h-6 rounded-full border flex items-center justify-center ${selectedProgram.id === p.id ? 'bg-sky-400 border-sky-400 text-[#0C3559]' : 'border-stone-500'}">✓</div>
           </div>
         </div>
@@ -1131,32 +1077,34 @@
     }
 
     function setStep1Program(pId) {
-      selectedProgram = PROGRAMS.find(p => p.id === pId) || PROGRAMS[0];
+      selectedProgram = PROGRAMS.find(p => p.id === pId);
       renderStep1();
     }
 
-    window.renderStep2 = function() {
+    function renderStep2() {
       const dateInput = document.getElementById('booking-date-input');
-      if (dateInput) {
-        dateInput.value = selectedDate;
-        dateInput.min = getNextWorkingDateStr();
-      }
+      dateInput.value = selectedDate;
+      dateInput.min = getNextWorkingDateStr();
 
-      const isSaturday = isSaturdayDate(selectedDate);
+      const isSat = isSaturdayDate(selectedDate);
       const bookedTimes = window.bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
 
+      // 토요일인 경우 18시 이후 시간대가 선택되어 있으면 10:00으로 자동 변경
+      if (isSat && ['18:00', '19:00', '20:00', '21:00'].includes(selectedTime)) {
+        selectedTime = '10:00';
+      }
+
       const slotsEl = document.getElementById('step2-time-slots');
-      if (!slotsEl) return;
       slotsEl.innerHTML = TIME_SLOTS.map(t => {
+        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00', '21:00'].includes(t);
         const isBooked = bookedTimes.includes(t);
         const isSelected = selectedTime === t;
-        const isSaturdayClosedSlot = isSaturday && t >= '18:00';
 
-        if (isSaturdayClosedSlot) {
+        if (isSaturdayCutoff) {
           return `
-            <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-800 bg-stone-900/60 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-50">
+            <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
               <span class="line-through">${t}</span>
-              <span class="text-[10px] text-amber-400 font-semibold mt-0.5">토요일마감</span>
+              <span class="text-[10px] text-amber-400 font-semibold mt-0.5">토 18시 종료</span>
             </button>
           `;
         }
@@ -1169,6 +1117,7 @@
             </button>
           `;
         }
+
         return `
           <button onclick="setStep2Time('${t}')" class="py-3.5 rounded-xl text-xs font-semibold border transition-all flex flex-col items-center justify-center ${isSelected ? 'bg-sky-400 text-[#0C3559] border-sky-400 ring-2 ring-sky-300 shadow-lg scale-105' : 'bg-[#082239] text-stone-200 border-white/10 hover:border-white/30 hover:bg-white/5'}">
             <span>${t}</span>
@@ -1176,27 +1125,23 @@
           </button>
         `;
       }).join('');
-    };
+    }
 
     function handleBookingDateChange(val) {
       if (isSundayDate(val)) {
         showToast('일요일은 정기 휴무일입니다. 월~토요일을 선택해 주세요.');
-        const defaultDate = getNextWorkingDateStr();
-        document.getElementById('booking-date-input').value = defaultDate;
-        selectedDate = defaultDate;
-        window.renderStep2();
+        document.getElementById('booking-date-input').value = getNextWorkingDateStr();
+        selectedDate = getNextWorkingDateStr();
+        renderStep2();
         return;
       }
       selectedDate = val;
-      if (isSaturdayDate(selectedDate) && selectedTime >= '18:00') {
-        selectedTime = '17:00';
-      }
-      window.renderStep2();
+      renderStep2();
     }
 
     function setStep2Time(t) {
       selectedTime = t;
-      window.renderStep2();
+      renderStep2();
     }
 
     function submitBooking() {
@@ -1208,8 +1153,20 @@
       if (!agree) return showToast('개인정보 수집 및 이용 동의에 동의해 주세요.');
       if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
       if (isSundayDate(selectedDate)) return showToast('일요일은 정기 휴무일입니다.');
-      if (isSaturdayDate(selectedDate) && selectedTime >= '18:00') {
-        return showToast('토요일은 18:00 영업 종료로 17:00 타임까지만 선택 가능합니다.');
+
+      const cleanPhone = phone.replace(/[^0-9]/g, '');
+
+      // Member Pass Auto-deduction Check
+      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
+      if (member) {
+        const curPasses = member.remainingPasses !== undefined ? member.remainingPasses : member.passCount;
+        if (curPasses > 0) {
+          member.remainingPasses = curPasses - 1;
+          member.passCount = curPasses - 1;
+          saveMembersLocal();
+          if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
+          showToast(`${name} 회원님의 수강권 1회가 차감되었습니다. (잔여: ${curPasses - 1}회)`);
+        }
       }
 
       const bookedTimes = window.bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
@@ -1223,15 +1180,15 @@
         price: selectedProgram.price,
         date: selectedDate,
         time: selectedTime,
-        name, phone, note,
+        name, phone: cleanPhone, note,
         status: '예약 확정',
         createdAt: new Date().toLocaleDateString('ko-KR')
       };
 
       window.bookings.unshift(newB);
-      saveBookings();
+      saveBookingsLocal();
 
-      if (window.syncBookingToCloud) {
+      if (typeof window.syncBookingToCloud === 'function') {
         window.syncBookingToCloud(newB);
       }
 
@@ -1249,51 +1206,86 @@
       document.getElementById('privacy-agree').checked = false;
     }
 
-    function openModal(id) { const el = document.getElementById(id); if (el) el.classList.remove('hidden'); }
-    function closeModal(id) { const el = document.getElementById(id); if (el) el.classList.add('hidden'); }
+    // Modal Helpers
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
+    // Customer Lookup & My Bookings Modal
     function openMyBookingsModal() {
-      const listEl = document.getElementById('my-bookings-list');
-      if (!listEl) return;
-      if (window.bookings.length === 0) {
-        listEl.innerHTML = '<p class="text-xs text-stone-500 py-6 text-center font-medium">등록된 예약 내역이 없습니다.</p>';
+      openModal('modal-my-bookings');
+    }
+
+    function handleCustomerLookup(e) {
+      e.preventDefault();
+      const name = document.getElementById('lookup-name').value.trim();
+      const rawPhone = document.getElementById('lookup-phone').value.trim();
+      const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+
+      if (!name || !cleanPhone) return showToast('성함과 연락처를 작성해 주세요.');
+
+      // 1. Look for Member pass info
+      const mem = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
+      const memBox = document.getElementById('my-member-status-box');
+
+      if (mem) {
+        const passes = mem.remainingPasses !== undefined ? mem.remainingPasses : mem.passCount;
+        memBox.classList.remove('hidden');
+        memBox.innerHTML = `
+          <div class="flex justify-between items-center">
+            <strong class="text-sm font-bold text-[#0C3559]">👤 ${mem.name} 회원님</strong>
+            <span class="px-2.5 py-1 bg-[#0C3559] text-white rounded-full font-bold text-xs">
+              잔여 ${passes} / ${mem.totalPasses || 10}회
+            </span>
+          </div>
+          <p class="text-[11px] text-stone-600">수강권: ${mem.passType} · 만료일: ${mem.expiryDate || '무제한'}</p>
+        `;
       } else {
-        listEl.innerHTML = window.bookings.map(b => {
+        memBox.classList.add('hidden');
+      }
+
+      // 2. Filter bookings
+      const userBookings = window.bookings.filter(b => b.name === name && b.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
+      const listEl = document.getElementById('my-bookings-list');
+
+      if (userBookings.length === 0) {
+        listEl.innerHTML = `<p class="text-xs text-stone-500 py-6 text-center font-medium">${name}님의 등록된 예약 내역이 없습니다.</p>`;
+      } else {
+        listEl.innerHTML = userBookings.map(b => {
           const apptTime = new Date(`${b.date}T${b.time}:00`);
           const diffHours = (apptTime - new Date()) / (1000 * 60 * 60);
           const eligibleCancel = b.status !== '취소' && diffHours >= 3;
 
           return `
-            <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200 flex justify-between items-center gap-4 text-xs">
+            <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200 flex justify-between items-center gap-3 text-xs">
               <div>
                 <div class="flex items-center gap-2 mb-1">
-                  <span class="px-2.5 py-0.5 rounded ${b.status === '취소' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'} text-[10px] font-bold">${b.status}</span>
-                  <span class="font-mono text-stone-400 font-semibold">${b.id}</span>
+                  <span class="px-2 py-0.5 rounded ${b.status === '취소' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'} text-[10px] font-bold">${b.status}</span>
+                  <span class="font-mono text-stone-400 text-[10px]">${b.id}</span>
                 </div>
-                <h4 class="text-base font-semibold text-[#0C3559]">${b.programTitle}</h4>
-                <p class="text-stone-500 mt-1 font-semibold">${b.date} (${b.time}) | ${b.name}님</p>
+                <h4 class="text-sm font-bold text-[#0C3559]">${b.programTitle}</h4>
+                <p class="text-stone-500 mt-0.5 font-semibold">${b.date} (${b.time})</p>
               </div>
               ${b.status !== '취소' ? (
-                eligibleCancel ? `<button onclick="userCancelBooking('${b.id}')" class="px-3.5 py-2 bg-rose-50 text-rose-600 rounded-xl font-semibold border border-rose-200 hover:bg-rose-100">예약 취소</button>` : `<span class="text-[10px] text-stone-400 text-right">방문 3시간 이내<br>(취소 전화문의)</span>`
+                eligibleCancel ? `<button onclick="userCancelBooking('${b.id}')" class="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-xl font-bold border border-rose-200 hover:bg-rose-100">예약 취소</button>` : `<span class="text-[10px] text-stone-400 text-right">방문 3시간 이내<br>(전화문의)</span>`
               ) : ''}
             </div>
           `;
         }).join('');
       }
-      openModal('modal-my-bookings');
     }
 
     function userCancelBooking(id) {
       const b = window.bookings.find(x => x.id === id);
       if (b) {
         b.status = '취소';
-        saveBookings();
-        if (window.syncBookingToCloud) window.syncBookingToCloud(b);
-        showToast(`예약번호 [${id}] 예약이 성공적으로 취소되었습니다.`);
-        openMyBookingsModal();
+        saveBookingsLocal();
+        if (typeof window.deleteBookingFromCloud === 'function') window.deleteBookingFromCloud(id);
+        showToast(`예약 [${id}]이 성공적으로 취소되었습니다.`);
+        document.querySelector('#modal-my-bookings form').dispatchEvent(new Event('submit'));
       }
     }
 
+    // Admin Flow
     function openAdminAuthModal() {
       if (isAdminAuth) {
         openAdminDashboard();
@@ -1303,287 +1295,62 @@
     }
 
     function submitAdminLogin() {
-      const pinInput = document.getElementById('admin-pin-input');
-      const pin = pinInput.value;
+      const pin = document.getElementById('admin-pin-input').value;
       if (pin === adminPin) {
         isAdminAuth = true;
-        pinInput.value = '';
         closeModal('modal-admin-login');
         openAdminDashboard();
-        showToast('원장님 관리자 모드로 로그인되었습니다.');
-        window.updateHeaderState();
+        showToast('관리자 모드로 로그인되었습니다.');
+        updateHeaderState();
       } else {
         showToast('비밀번호가 올바르지 않습니다.');
       }
     }
 
-    function submitAdminLogout() {
-      isAdminAuth = false;
-      closeModal('modal-admin-dashboard');
-      window.updateHeaderState();
-      showToast('관리자 모드에서 로그아웃 되었습니다.');
-    }
-
-    function setAdminTab(tabName) {
-      adminActiveTab = tabName;
-      const resTab = document.getElementById('admin-tab-reservations');
-      const memTab = document.getElementById('admin-tab-members');
-      const btnCal = document.getElementById('admin-tab-btn-calendar');
-      const btnMem = document.getElementById('admin-tab-btn-members');
-
-      if (tabName === 'calendar') {
-        if (resTab) resTab.classList.remove('hidden');
-        if (memTab) memTab.classList.add('hidden');
-        if (btnCal) { btnCal.className = "px-3.5 py-1.5 bg-[#0C3559] text-white rounded-xl text-xs font-semibold shadow-sm"; }
-        if (btnMem) { btnMem.className = "px-3.5 py-1.5 bg-stone-100 text-[#0C3559] hover:bg-stone-200 rounded-xl text-xs font-semibold border border-stone-300 transition-all"; }
-      } else {
-        if (resTab) resTab.classList.add('hidden');
-        if (memTab) memTab.classList.remove('hidden');
-        if (btnCal) { btnCal.className = "px-3.5 py-1.5 bg-stone-100 text-[#0C3559] hover:bg-stone-200 rounded-xl text-xs font-semibold border border-stone-300 transition-all"; }
-        if (btnMem) { btnMem.className = "px-3.5 py-1.5 bg-[#0C3559] text-white rounded-xl text-xs font-semibold shadow-sm"; }
-      }
-      renderAdminDashboardView();
-    }
-
     function openAdminDashboard() {
-      const countEl = document.getElementById('admin-total-count');
-      const memCountEl = document.getElementById('admin-member-count');
-      const tabMemBadge = document.getElementById('admin-tab-member-badge');
-
-      if (countEl) countEl.innerText = window.bookings.filter(b => b.status !== '취소').length;
-      if (memCountEl) memCountEl.innerText = window.members.length;
-      if (tabMemBadge) tabMemBadge.innerText = window.members.length;
-
       const timeSel = document.getElementById('manual-time');
-      if (timeSel) timeSel.innerHTML = TIME_SLOTS.map(t => `<option value="${t}">${t}</option>`).join('');
+      timeSel.innerHTML = TIME_SLOTS.map(t => `<option value="${t}">${t}</option>`).join('');
       const progSel = document.getElementById('manual-program');
-      if (progSel) progSel.innerHTML = PROGRAMS.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
-      const manualDateEl = document.getElementById('manual-date');
-      if (manualDateEl) manualDateEl.value = getNextWorkingDateStr();
-
-      // Default new member expiry
-      const newExpiryEl = document.getElementById('new-mem-expiry');
-      if (newExpiryEl && !newExpiryEl.value) newExpiryEl.value = getFutureDateStr(2);
+      progSel.innerHTML = PROGRAMS.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+      document.getElementById('manual-date').value = getNextWorkingDateStr();
+      document.getElementById('new-mem-expiry').value = getFutureDateStr(2);
 
       renderAdminDashboardView();
       openModal('modal-admin-dashboard');
     }
 
-    function toggleAdminViewMode() {
-      adminViewMode = adminViewMode === 'calendar' ? 'list' : 'calendar';
-      const toggleBtn = document.getElementById('admin-view-toggle-btn');
-      if (toggleBtn) toggleBtn.innerText = adminViewMode === 'calendar' ? '📋 목록으로 보기' : '📅 달력으로 보기';
-      renderAdminDashboardView();
+    function switchAdminTab(tabName) {
+      document.getElementById('admin-tab-bookings-content').classList.toggle('hidden', tabName !== 'bookings');
+      document.getElementById('admin-tab-members-content').classList.toggle('hidden', tabName !== 'members');
+
+      const btnB = document.getElementById('admin-tab-btn-bookings');
+      const btnM = document.getElementById('admin-tab-btn-members');
+
+      if (tabName === 'bookings') {
+        btnB.className = 'pb-2.5 px-4 text-xs font-bold border-b-2 border-[#0C3559] text-[#0C3559]';
+        btnM.className = 'pb-2.5 px-4 text-xs font-bold text-stone-400 border-b-2 border-transparent hover:text-[#0C3559]';
+      } else {
+        btnM.className = 'pb-2.5 px-4 text-xs font-bold border-b-2 border-[#0C3559] text-[#0C3559]';
+        btnB.className = 'pb-2.5 px-4 text-xs font-bold text-stone-400 border-b-2 border-transparent hover:text-[#0C3559]';
+      }
     }
 
     function togglePinChangeForm() {
-      const box = document.getElementById('admin-pin-change-box');
-      if (box) box.classList.toggle('hidden');
+      document.getElementById('admin-pin-change-box').classList.toggle('hidden');
     }
 
     function submitChangePin() {
-      const input = document.getElementById('new-admin-pin-input');
-      const newPin = input ? input.value.trim() : '';
+      const newPin = document.getElementById('new-admin-pin-input').value.trim();
       if (newPin.length < 4) return showToast('최소 4자리 이상 입력해 주세요.');
       adminPin = newPin;
       localStorage.setItem(ADMIN_PIN_KEY, adminPin);
       showToast('비밀번호가 변경되었습니다.');
-      const box = document.getElementById('admin-pin-change-box');
-      if (box) box.classList.add('hidden');
+      document.getElementById('admin-pin-change-box').classList.add('hidden');
     }
 
-    function handlePassTypeSelect(val) {
-      const passesInput = document.getElementById('new-mem-passes');
-      const expiryInput = document.getElementById('new-mem-expiry');
-
-      if (val.includes('10회')) {
-        if (passesInput) passesInput.value = 10;
-        if (expiryInput) expiryInput.value = getFutureDateStr(2);
-      } else if (val.includes('20회')) {
-        if (passesInput) passesInput.value = 20;
-        if (expiryInput) expiryInput.value = getFutureDateStr(12);
-      } else {
-        if (passesInput) passesInput.value = 1;
-        if (expiryInput) expiryInput.value = getFutureDateStr(1);
-      }
-    }
-
-    function submitRegisterMember() {
-      const name = document.getElementById('new-mem-name').value.trim();
-      const phone = document.getElementById('new-mem-phone').value.trim();
-      const passType = document.getElementById('new-mem-passtype').value;
-      const totalPasses = parseInt(document.getElementById('new-mem-passes').value) || 10;
-      const expiryDate = document.getElementById('new-mem-expiry').value;
-      const note = document.getElementById('new-mem-note').value.trim();
-
-      if (!name || !phone) return showToast('회원 성함과 연락처를 빠짐없이 입력해 주세요.');
-
-      const newM = {
-        id: 'M-' + Math.floor(1000 + Math.random() * 9000),
-        name,
-        phone,
-        passType,
-        totalPasses,
-        remainingPasses: totalPasses,
-        usedPasses: 0,
-        expiryDate,
-        note,
-        createdAt: new Date().toLocaleDateString('ko-KR')
-      };
-
-      window.members.unshift(newM);
-      saveMembers();
-      if (window.syncMemberToCloud) window.syncMemberToCloud(newM);
-
-      showToast(`[${name}] 회원의 ${passType} 이용권이 등록되었습니다!`);
-
-      document.getElementById('new-mem-name').value = '';
-      document.getElementById('new-mem-phone').value = '';
-      document.getElementById('new-mem-note').value = '';
-
-      renderAdminDashboardView();
-    }
-
-    function deductMemberPass(memberId) {
-      const m = window.members.find(x => x.id === memberId);
-      if (!m) return;
-      if (m.remainingPasses <= 0) return showToast('남은 수강권 횟수가 없습니다.');
-
-      m.remainingPasses -= 1;
-      m.usedPasses = (m.usedPasses || 0) + 1;
-      saveMembers();
-      if (window.syncMemberToCloud) window.syncMemberToCloud(m);
-
-      showToast(`[${m.name}] 회원 수강권 1회 차감 완료 (잔여: ${m.remainingPasses}/${m.totalPasses}회)`);
-      renderAdminDashboardView();
-    }
-
-    function restoreMemberPass(memberId) {
-      const m = window.members.find(x => x.id === memberId);
-      if (!m) return;
-
-      m.remainingPasses += 1;
-      if (m.usedPasses > 0) m.usedPasses -= 1;
-      saveMembers();
-      if (window.syncMemberToCloud) window.syncMemberToCloud(m);
-
-      showToast(`[${m.name}] 회원 수강권 1회 복구 (잔여: ${m.remainingPasses}/${m.totalPasses}회)`);
-      renderAdminDashboardView();
-    }
-
-    function addTenPasses(memberId) {
-      const m = window.members.find(x => x.id === memberId);
-      if (!m) return;
-
-      m.totalPasses += 10;
-      m.remainingPasses += 10;
-      m.expiryDate = getFutureDateStr(2);
-      saveMembers();
-      if (window.syncMemberToCloud) window.syncMemberToCloud(m);
-
-      showToast(`[${m.name}] 회원 10회 추가 충전 & 유효기간 2개월 연장 완료!`);
-      renderAdminDashboardView();
-    }
-
-    function deleteMember(memberId) {
-      const m = window.members.find(x => x.id === memberId);
-      if (!m) return;
-      if (!confirm(`정말로 [${m.name}] 회원 정보를 삭제하시겠습니까?`)) return;
-
-      window.members = window.members.filter(x => x.id !== memberId);
-      saveMembers();
-      if (window.deleteMemberFromCloud) window.deleteMemberFromCloud(memberId);
-
-      showToast(`[${m.name}] 회원이 삭제되었습니다.`);
-      renderAdminDashboardView();
-    }
-
-    function filterMemberList(query) {
-      memberSearchQuery = query.toLowerCase().trim();
-      renderMemberListCards();
-    }
-
-    window.renderAdminDashboardView = function() {
-      const memCountEl = document.getElementById('admin-member-count');
-      const tabMemBadge = document.getElementById('admin-tab-member-badge');
-      if (memCountEl) memCountEl.innerText = window.members.length;
-      if (tabMemBadge) tabMemBadge.innerText = window.members.length;
-
-      if (adminActiveTab === 'calendar') {
-        const calBox = document.getElementById('admin-calendar-view');
-        const listBox = document.getElementById('admin-list-view');
-
-        if (adminViewMode === 'calendar') {
-          if (calBox) calBox.classList.remove('hidden');
-          if (listBox) listBox.classList.add('hidden');
-          renderAdminMonthlyCalendar();
-        } else {
-          if (calBox) calBox.classList.add('hidden');
-          if (listBox) listBox.classList.remove('hidden');
-          renderAdminListView();
-        }
-      } else {
-        renderMemberListCards();
-      }
-    };
-
-    function renderMemberListCards() {
-      const container = document.getElementById('admin-member-cards-container');
-      if (!container) return;
-
-      const filtered = window.members.filter(m => 
-        m.name.toLowerCase().includes(memberSearchQuery) || 
-        m.phone.includes(memberSearchQuery)
-      );
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-xs text-stone-500 py-8 text-center font-medium bg-stone-50 rounded-2xl border border-stone-200">등록된 회원 내역이 없거나 검색 결과가 없습니다.</p>`;
-        return;
-      }
-
-      const todayStr = new Date().toISOString().split('T')[0];
-
-      container.innerHTML = filtered.map(m => {
-        const isExpired = m.expiryDate && m.expiryDate < todayStr;
-        const usedCount = m.usedPasses || (m.totalPasses - m.remainingPasses);
-
-        return `
-          <div class="p-4 sm:p-5 rounded-2xl bg-white border border-stone-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 text-xs hover:border-stone-300 transition-all">
-            <div class="space-y-1.5">
-              <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold text-[#0C3559]">${m.name} 님</span>
-                <span class="font-mono text-stone-500 font-semibold">(${m.phone})</span>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-sky-100 text-[#0092B8]">${m.passType}</span>
-                ${isExpired ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-700">⚠️ 유효기간 만료</span>` : ''}
-              </div>
-
-              <div class="flex flex-wrap items-center gap-3 text-stone-600 font-semibold pt-0.5">
-                <span>총 부여: <strong class="text-[#0C3559]">${m.totalPasses}회</strong></span>
-                <span>사용: <strong class="text-amber-700">${usedCount}회</strong></span>
-                <span>잔여: <strong class="text-xl text-[#0092B8] font-bold">${m.remainingPasses}회</strong></span>
-                <span class="text-stone-400">|</span>
-                <span>유효기간: <strong class="${isExpired ? 'text-rose-600' : 'text-stone-700'}">${m.expiryDate || '무제한'}</strong></span>
-                ${m.note ? `<span class="text-stone-400">(${m.note})</span>` : ''}
-              </div>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-              <button onclick="deductMemberPass('${m.id}')" class="px-3.5 py-2 rounded-xl bg-[#0C3559] hover:bg-[#082239] text-white font-semibold text-xs shadow-sm transition-all flex items-center gap-1">
-                ⚡ 1회 차감 (사용)
-              </button>
-              <button onclick="restoreMemberPass('${m.id}')" class="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs border border-stone-200">
-                ↩️ 1회 복구
-              </button>
-              <button onclick="addTenPasses('${m.id}')" class="px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 font-semibold text-xs border border-amber-200">
-                ➕ 10회 추가 충전
-              </button>
-              <button onclick="deleteMember('${m.id}')" class="px-2.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold text-xs border border-rose-200">
-                삭제
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
+    function renderAdminDashboardView() {
+      renderAdminMonthlyCalendar();
+      renderAdminMembersList();
     }
 
     function renderAdminMonthlyCalendar() {
@@ -1592,7 +1359,7 @@
 
       let cellsHTML = '';
       for (let i = 0; i < firstDay; i++) {
-        cellsHTML += `<div class="h-20 bg-stone-50 border border-stone-100 opacity-40"></div>`;
+        cellsHTML += `<div class="h-16 bg-stone-50 border border-stone-100 opacity-40"></div>`;
       }
 
       for (let day = 1; day <= daysInMonth; day++) {
@@ -1605,56 +1372,47 @@
         const isSelected = adminFilterDate === dateString;
 
         cellsHTML += `
-          <div onclick="selectAdminFilterDate('${dateString}')" class="h-20 border p-1.5 rounded-xl cursor-pointer text-xs flex flex-col justify-between ${isSelected ? 'bg-sky-50 border-sky-400' : isSun ? 'bg-rose-50/40 border-stone-200' : 'bg-white border-stone-200'}">
+          <div onclick="selectAdminFilterDate('${dateString}')" class="h-16 border p-1 rounded-xl cursor-pointer text-xs flex flex-col justify-between ${isSelected ? 'bg-[#0C3559] text-white font-bold' : isSun ? 'bg-rose-50/40 border-stone-200' : 'bg-white hover:bg-stone-50 border-stone-200'}">
             <div class="flex justify-between items-center">
-              <span class="font-bold ${isSun ? 'text-rose-600' : 'text-[#0C3559]'}">${day}일</span>
-              ${dayBookings.length > 0 ? `<span class="bg-[#0C3559] text-white px-1.5 py-0.2 rounded-full text-[9px] font-bold">${dayBookings.length}건</span>` : ''}
+              <span class="font-bold ${isSelected ? 'text-white' : isSun ? 'text-rose-600' : 'text-[#0C3559]'}">${day}</span>
+              ${dayBookings.length > 0 ? `<span class="bg-sky-400 text-[#0C3559] px-1.5 py-0.2 rounded-full text-[9px] font-bold">${dayBookings.length}건</span>` : ''}
             </div>
             <div class="space-y-0.5 overflow-hidden">
-              ${dayBookings.slice(0, 2).map(b => `<div class="bg-sky-100 text-[#0C3559] px-1 rounded text-[9px] truncate">${b.time} ${b.name}</div>`).join('')}
+              ${dayBookings.slice(0, 1).map(b => `<div class="text-[9px] truncate opacity-90">${b.time} ${b.name}</div>`).join('')}
             </div>
           </div>
         `;
       }
 
       const calBox = document.getElementById('admin-calendar-view');
-      if (!calBox) return;
       calBox.innerHTML = `
-        <div class="flex justify-between items-center bg-stone-100 p-3 rounded-xl">
-          <button onclick="changeAdminMonth(-1)" class="px-3 py-1 bg-white rounded font-bold">◀</button>
-          <span class="font-bold text-sm text-[#0C3559]">${adminCalYear}년 ${adminCalMonth + 1}월 달력 스케줄</span>
-          <button onclick="changeAdminMonth(1)" class="px-3 py-1 bg-white rounded font-bold">▶</button>
+        <div class="flex justify-between items-center bg-stone-100 p-3 rounded-2xl mb-2">
+          <button onclick="changeAdminMonth(-1)" class="px-3 py-1 bg-white rounded-lg font-bold text-xs">◀</button>
+          <span class="font-bold text-xs text-[#0C3559]">${adminCalYear}년 ${adminCalMonth + 1}월 달력 예약 스케줄</span>
+          <button onclick="changeAdminMonth(1)" class="px-3 py-1 bg-white rounded-lg font-bold text-xs">▶</button>
         </div>
         <div class="grid grid-cols-7 gap-1 text-center text-xs font-bold py-1">
           <div class="text-rose-600">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
         </div>
         <div class="grid grid-cols-7 gap-1">${cellsHTML}</div>
         ${adminFilterDate ? `
-          <div class="p-3 bg-sky-50 rounded-xl border border-sky-200 mt-3">
-            <div class="flex justify-between items-center mb-2">
+          <div class="p-3 bg-sky-50 rounded-2xl border border-sky-200 mt-3 space-y-2">
+            <div class="flex justify-between items-center border-b border-sky-200 pb-1.5">
               <strong class="text-xs text-[#0C3559]">📍 ${adminFilterDate} 예약 내역</strong>
               <button onclick="selectAdminFilterDate('')" class="text-xs text-stone-500 underline">전체보기</button>
             </div>
-            <div class="space-y-1">
-              ${window.bookings.filter(b => b.date === adminFilterDate).map(b => {
-                const mem = window.members.find(m => m.name === b.name || (b.phone && m.phone.includes(b.phone)));
-                const passText = mem ? ` [수강권 잔여: ${mem.remainingPasses}/${mem.totalPasses}회]` : '';
-
-                return `
-                  <div class="p-2.5 bg-white rounded-xl border flex justify-between items-center text-xs">
-                    <div>
-                      <span class="font-bold text-[#0092B8] mr-2">${b.time}</span>
-                      <span class="font-bold">${b.name}님 (${b.phone || '전화예약'})</span>
-                      <span class="text-stone-500 ml-1">[${b.programTitle}]</span>
-                      ${passText ? `<span class="text-amber-800 font-bold ml-1">${passText}</span>` : ''}
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                      ${mem ? `<button onclick="deductMemberPass('${mem.id}')" class="px-2 py-1 bg-sky-100 text-[#0C3559] font-bold rounded text-[10px]">⚡ 1회 차감</button>` : ''}
-                      <button onclick="deleteBookingAdmin('${b.id}')" class="px-2 py-1 bg-red-50 text-red-600 font-semibold rounded text-[10px]">삭제</button>
-                    </div>
+            <div class="space-y-1 max-h-40 overflow-y-auto">
+              ${window.bookings.filter(b => b.date === adminFilterDate).length === 0 ? '<p class="text-xs text-stone-400 text-center py-2">예약 건이 없습니다.</p>' : 
+                window.bookings.filter(b => b.date === adminFilterDate).map(b => `
+                <div class="p-2 bg-white rounded-xl border flex justify-between items-center text-xs">
+                  <div>
+                    <span class="font-bold text-[#0092B8] mr-2">${b.time}</span>
+                    <span class="font-bold">${b.name}님 (${b.phone})</span>
+                    <span class="text-stone-400 ml-2">[${b.programTitle}]</span>
                   </div>
-                `;
-              }).join('')}
+                  <button onclick="deleteBookingAdmin('${b.id}')" class="px-2 py-0.5 bg-red-50 text-red-600 rounded text-[10px] font-bold">삭제</button>
+                </div>
+              `).join('')}
             </div>
           </div>
         ` : ''}
@@ -1673,40 +1431,12 @@
       renderAdminMonthlyCalendar();
     }
 
-    function renderAdminListView() {
-      const listContainer = document.getElementById('admin-list-view');
-      if (!listContainer) return;
-      listContainer.innerHTML = window.bookings.map(b => {
-        const mem = window.members.find(m => m.name === b.name || (b.phone && m.phone.includes(b.phone)));
-        const passText = mem ? ` [잔여: ${mem.remainingPasses}/${mem.totalPasses}회]` : '';
-
-        return `
-          <div class="p-3.5 rounded-xl bg-stone-50 border flex justify-between items-center text-xs">
-            <div>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold mr-2 ${b.status === '취소' ? 'bg-stone-200 text-stone-600' : 'bg-emerald-100 text-emerald-800'}">${b.status}</span>
-              <strong class="text-[#0C3559]">${b.name}님 (${b.phone})</strong>
-              ${passText ? `<span class="text-amber-800 font-bold ml-1">${passText}</span>` : ''}
-              <p class="text-stone-500 mt-0.5">${b.programTitle} | <strong class="text-[#0092B8]">${b.date} ${b.time}</strong></p>
-            </div>
-            <div class="flex items-center gap-1.5">
-              ${mem ? `<button onclick="deductMemberPass('${mem.id}')" class="px-2.5 py-1.5 bg-sky-100 text-[#0C3559] font-semibold rounded text-[11px]">⚡ 1회 차감</button>` : ''}
-              <button onclick="deleteBookingAdmin('${b.id}')" class="px-3 py-1.5 bg-red-50 text-red-600 rounded text-[11px] font-semibold">삭제</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
     function deleteBookingAdmin(id) {
-      const b = window.bookings.find(x => x.id === id);
-      window.bookings = window.bookings.filter(x => x.id !== id);
-      saveBookings();
-      if (b && window.syncBookingToCloud) {
-        b.status = '취소';
-        window.syncBookingToCloud(b);
-      }
+      window.bookings = window.bookings.filter(b => b.id !== id);
+      saveBookingsLocal();
+      if (typeof window.deleteBookingFromCloud === 'function') window.deleteBookingFromCloud(id);
       showToast(`예약 [${id}] 삭제 완료되었습니다.`);
-      window.renderAdminDashboardView();
+      renderAdminDashboardView();
     }
 
     function submitManualBooking() {
@@ -1715,7 +1445,7 @@
       const date = document.getElementById('manual-date').value;
       const time = document.getElementById('manual-time').value;
       const progId = document.getElementById('manual-program').value;
-      const prog = PROGRAMS.find(p => p.id === progId) || PROGRAMS[0];
+      const prog = PROGRAMS.find(p => p.id === progId);
 
       if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
       if (isSundayDate(date)) return showToast('일요일은 정기 휴무일입니다.');
@@ -1733,12 +1463,142 @@
       };
 
       window.bookings.unshift(newB);
-      saveBookings();
-      if (window.syncBookingToCloud) window.syncBookingToCloud(newB);
+      saveBookingsLocal();
+      if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(newB);
       showToast(`${name}님 전화예약시간이 등록 마감되었습니다.`);
       document.getElementById('manual-name').value = '';
       document.getElementById('manual-phone').value = '';
-      window.renderAdminDashboardView();
+      renderAdminDashboardView();
+    }
+
+    // Admin Member Management Functions
+    function submitAddMemberAdmin() {
+      const name = document.getElementById('new-mem-name').value.trim();
+      const phone = document.getElementById('new-mem-phone').value.trim();
+      const passType = document.getElementById('new-mem-passtype').value;
+      const passes = parseInt(document.getElementById('new-mem-passes').value) || 10;
+      const expiry = document.getElementById('new-mem-expiry').value || getFutureDateStr(2);
+
+      if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
+
+      const newM = {
+        id: 'M-' + Math.floor(100 + Math.random() * 900),
+        name, phone, passType,
+        totalPasses: passes,
+        remainingPasses: passes,
+        expiryDate: expiry,
+        note: '관리자 신규 등록'
+      };
+
+      window.members.unshift(newM);
+      saveMembersLocal();
+      if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(newM);
+
+      document.getElementById('new-mem-name').value = '';
+      document.getElementById('new-mem-phone').value = '';
+      showToast(`${name} 회원이 등록되었습니다.`);
+      renderAdminMembersList();
+    }
+
+    function renderAdminMembersList() {
+      const list = document.getElementById('admin-members-list');
+      list.innerHTML = window.members.map(m => {
+        const curPasses = m.remainingPasses !== undefined ? m.remainingPasses : m.passCount;
+        return `
+          <div class="bg-white p-4 rounded-2xl border border-stone-200 space-y-2 text-xs">
+            <div class="flex justify-between items-start">
+              <div>
+                <strong class="text-sm text-[#0C3559]">${m.name}</strong> <span class="text-stone-400">(${m.phone})</span>
+                <p class="text-[10px] text-stone-500 mt-0.5">${m.passType} · 만료: ${m.expiryDate || '무제한'}</p>
+                ${m.note ? `<p class="text-[10px] text-amber-800 bg-amber-50 px-2 py-0.5 rounded mt-1 inline-block">📝 ${m.note}</p>` : ''}
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold ${curPasses > 0 ? 'bg-sky-50 text-[#0092B8]' : 'bg-red-50 text-red-600'}">
+                잔여 ${curPasses} / ${m.totalPasses || 10}회
+              </span>
+            </div>
+            <div class="flex gap-1.5 pt-2 border-t border-stone-100">
+              <button onclick="openEditMemberModalAdmin('${m.id}')" class="flex-1 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold rounded-lg text-[11px]">✏️ 정보 수정</button>
+              <button onclick="deductMemberPassAdmin('${m.id}')" class="flex-1 py-1.5 bg-sky-50 hover:bg-sky-100 text-[#0092B8] font-bold rounded-lg text-[11px]">⚡ 1회 차감</button>
+              <button onclick="restoreMemberPassAdmin('${m.id}')" class="py-1.5 px-3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-lg text-[11px]">↩️ 복구</button>
+              <button onclick="deleteMemberAdmin('${m.id}')" class="py-1.5 px-2.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-lg text-[11px]">삭제</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function deductMemberPassAdmin(id) {
+      const m = window.members.find(x => x.id === id);
+      if (m) {
+        const cur = m.remainingPasses !== undefined ? m.remainingPasses : m.passCount;
+        if (cur > 0) {
+          m.remainingPasses = cur - 1;
+          m.passCount = cur - 1;
+          saveMembersLocal();
+          if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(m);
+          renderAdminMembersList();
+          showToast(`${m.name} 회원 수강권 1회 차감 완료 (잔여 ${cur - 1}회)`);
+        }
+      }
+    }
+
+    function restoreMemberPassAdmin(id) {
+      const m = window.members.find(x => x.id === id);
+      if (m) {
+        const cur = m.remainingPasses !== undefined ? m.remainingPasses : m.passCount;
+        m.remainingPasses = cur + 1;
+        m.passCount = cur + 1;
+        saveMembersLocal();
+        if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(m);
+        renderAdminMembersList();
+        showToast(`${m.name} 회원 수강권 1회 복구 완료 (잔여 ${cur + 1}회)`);
+      }
+    }
+
+    function deleteMemberAdmin(id) {
+      window.members = window.members.filter(x => x.id !== id);
+      saveMembersLocal();
+      if (typeof window.deleteMemberFromCloud === 'function') window.deleteMemberFromCloud(id);
+      renderAdminMembersList();
+      showToast('회원 정보가 삭제되었습니다.');
+    }
+
+    function openEditMemberModalAdmin(memberId) {
+      const m = window.members.find(x => x.id === memberId);
+      if (!m) return;
+
+      document.getElementById('edit-mem-id').value = m.id;
+      document.getElementById('edit-mem-name').value = m.name || '';
+      document.getElementById('edit-mem-phone').value = m.phone || '';
+      document.getElementById('edit-mem-passtype').value = m.passType || '솔루션 코스 10회';
+      document.getElementById('edit-mem-totalpasses').value = m.totalPasses || 10;
+      document.getElementById('edit-mem-remainingpasses').value = m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 10);
+      document.getElementById('edit-mem-expiry').value = m.expiryDate || getFutureDateStr(2);
+      document.getElementById('edit-mem-note').value = m.note || '';
+
+      openModal('modal-admin-edit-member');
+    }
+
+    function submitEditMemberAdmin() {
+      const id = document.getElementById('edit-mem-id').value;
+      const m = window.members.find(x => x.id === id);
+      if (!m) return;
+
+      m.name = document.getElementById('edit-mem-name').value.trim();
+      m.phone = document.getElementById('edit-mem-phone').value.trim();
+      m.passType = document.getElementById('edit-mem-passtype').value;
+      m.totalPasses = parseInt(document.getElementById('edit-mem-totalpasses').value) || 10;
+      m.remainingPasses = parseInt(document.getElementById('edit-mem-remainingpasses').value) || 0;
+      m.passCount = m.remainingPasses;
+      m.expiryDate = document.getElementById('edit-mem-expiry').value;
+      m.note = document.getElementById('edit-mem-note').value.trim();
+
+      saveMembersLocal();
+      if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(m);
+
+      closeModal('modal-admin-edit-member');
+      renderAdminMembersList();
+      showToast(`${m.name} 회원 정보 수정 저장 완료 ✓`);
     }
 
     function openAcademyModal() { openModal('modal-academy'); }
@@ -1756,75 +1616,134 @@
       if (type === 'kakao') window.open(`https://map.kakao.com/link/search/${encodeURIComponent(query)}`, '_blank');
     }
 
+    // Static Sections Initialization
     function renderStaticSections() {
-      const rev = document.getElementById('reviews-container');
-      if (rev && rev.children.length === 0) {
-        rev.innerHTML = REVIEWS.map(r => `
-          <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-md flex flex-col justify-between hover:shadow-xl transition-all">
+      // Reviews
+      document.getElementById('reviews-container').innerHTML = REVIEWS.map(r => `
+        <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-md flex flex-col justify-between hover:shadow-xl transition-all">
+          <div>
+            <div class="text-amber-400 font-bold mb-3">${r.rating}</div>
+            <p class="text-xs sm:text-sm text-[#0C3559]/85 italic mb-6">"${r.comment}"</p>
+          </div>
+          <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
             <div>
-              <div class="text-amber-400 font-bold mb-3">${r.rating}</div>
-              <p class="text-xs sm:text-sm text-[#0C3559]/85 italic mb-6">"${r.comment}"</p>
+              <p class="text-base font-semibold text-[#0C3559]">${r.name}</p>
+              <p class="text-xs text-stone-400 font-semibold">${r.job}</p>
             </div>
-            <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
-              <div>
-                <p class="text-base font-semibold text-[#0C3559]">${r.name}</p>
-                <p class="text-xs text-stone-400 font-semibold">${r.job}</p>
-              </div>
-              <span class="text-xs px-3 py-1 rounded-full bg-sky-50 text-[#0092B8] font-semibold">${r.program}</span>
-            </div>
+            <span class="text-xs px-3 py-1 rounded-full bg-sky-50 text-[#0092B8] font-semibold">${r.program}</span>
           </div>
-        `).join('');
-      }
+        </div>
+      `).join('');
 
-      const guide = document.getElementById('guidelines-container');
-      if (guide) {
-        guide.innerHTML = GUIDELINES.map(g => `
-          <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-4">
-                <h4 class="text-base sm:text-lg font-semibold text-[#0C3559]">${g.category}</h4>
-                <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-[#0092B8]">${g.badge}</span>
-              </div>
-              <div class="space-y-3">
-                ${g.items.map(i => `
-                  <div class="bg-stone-50/80 p-3.5 rounded-2xl border border-stone-200/80">
-                    <p class="font-semibold text-xs sm:text-sm text-[#0C3559] mb-1">• ${i.title}</p>
-                    <p class="text-xs text-[#0C3559]/75 font-normal leading-relaxed pl-3.5">${i.desc}</p>
-                  </div>
-                `).join('')}
-              </div>
+      // Policy Guidelines
+      document.getElementById('guidelines-container').innerHTML = GUIDELINES.map(g => `
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-base sm:text-lg font-semibold text-[#0C3559]">${g.category}</h4>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-sky-100 text-[#0092B8]">${g.badge}</span>
+            </div>
+            <div class="space-y-3">
+              ${g.items.map(i => `
+                <div class="bg-stone-50/80 p-3.5 rounded-2xl border border-stone-200/80">
+                  <p class="font-semibold text-xs sm:text-sm text-[#0C3559] mb-1">• ${i.title}</p>
+                  <p class="text-xs text-[#0C3559]/75 font-normal leading-relaxed pl-3.5">${i.desc}</p>
+                </div>
+              `).join('')}
             </div>
           </div>
-        `).join('');
-      }
+        </div>
+      `).join('');
 
-      const faqs = document.getElementById('faqs-container');
-      if (faqs) {
-        faqs.innerHTML = FAQS.map((f, idx) => `
-          <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
-            <button onclick="document.getElementById('faq-ans-${idx}').classList.toggle('hidden')" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
-              <span>${f.q}</span>
-              <span class="text-[#0092B8] text-xs">▼</span>
-            </button>
-            <div id="faq-ans-${idx}" class="hidden px-5 pb-5 text-xs sm:text-sm text-[#0C3559]/85 leading-relaxed border-t border-stone-100 pt-3.5 font-normal">${f.a}</div>
-          </div>
-        `).join('');
-      }
+      // FAQs
+      document.getElementById('faqs-container').innerHTML = FAQS.map((f, idx) => `
+        <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
+          <button onclick="document.getElementById('faq-ans-${idx}').classList.toggle('hidden')" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
+            <span>${f.q}</span>
+            <span class="text-[#0092B8] text-xs">▼</span>
+          </button>
+          <div id="faq-ans-${idx}" class="hidden px-5 pb-5 text-xs sm:text-sm text-[#0C3559]/85 leading-relaxed border-t border-stone-100 pt-3.5 font-normal">${f.a}</div>
+        </div>
+      `).join('');
     }
 
-    function initApp() {
-      loadInitialData();
+    window.onload = function() {
       renderBodyZones();
       renderPrograms();
       renderStaticSections();
       renderStep1();
-    }
+      updateHeaderState();
+    };
+  </script>
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-      initApp();
+  <!-- Firebase Cloud Firestore SDK Modules -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
+      authDomain: "solutionstretching.firebaseapp.com",
+      projectId: "solutionstretching",
+      storageBucket: "solutionstretching.firebasestorage.app",
+      messagingSenderId: "567579240099",
+      appId: "1:567579240099:web:1b32c98d04fbd4e55d0116",
+      measurementId: "G-663RDZSPGH"
+    };
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // 1. Realtime listener for members
+      onSnapshot(collection(db, "members"), (snapshot) => {
+        if (!snapshot.empty) {
+          const cloudMembers = [];
+          snapshot.forEach((docSnap) => cloudMembers.push(docSnap.data()));
+          window.members = cloudMembers;
+          localStorage.setItem('solstretch_members_v1', JSON.stringify(cloudMembers));
+          if (typeof renderAdminMembersList === 'function') renderAdminMembersList();
+        }
+      }, (err) => console.log("Members listener:", err));
+
+      // 2. Realtime listener for bookings
+      onSnapshot(collection(db, "bookings"), (snapshot) => {
+        if (!snapshot.empty) {
+          const cloudBookings = [];
+          snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
+          window.bookings = cloudBookings;
+          localStorage.setItem('solstretch_bookings_v1', JSON.stringify(cloudBookings));
+          if (typeof renderAdminDashboardView === 'function') renderAdminDashboardView();
+          if (typeof renderStep2 === 'function') renderStep2();
+        }
+      }, (err) => console.log("Bookings listener:", err));
+
+      // Cloud syncing helpers
+      window.syncMemberToCloud = async function(memberObj) {
+        try { await setDoc(doc(db, "members", memberObj.id), memberObj); }
+        catch (e) { console.error("Cloud member save:", e); }
+      };
+
+      window.deleteMemberFromCloud = async function(memberId) {
+        try { await deleteDoc(doc(db, "members", memberId)); }
+        catch (e) { console.error("Cloud member delete:", e); }
+      };
+
+      window.syncBookingToCloud = async function(bookingObj) {
+        try { await setDoc(doc(db, "bookings", bookingObj.id), bookingObj); }
+        catch (e) { console.error("Cloud booking save:", e); }
+      };
+
+      window.deleteBookingFromCloud = async function(bookingId) {
+        try { await deleteDoc(doc(db, "bookings", bookingId)); }
+        catch (e) { console.error("Cloud booking delete:", e); }
+      };
+
+      console.log("Firebase Firestore Realtime Listener connected.");
+    } catch (err) {
+      console.warn("Firebase Init Error:", err);
     }
   </script>
+
 </body>
 </html>
