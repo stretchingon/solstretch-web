@@ -2,7 +2,13 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  
+  <!-- PWA & Mobile Web App Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0C3559" />
   
   <!-- Naver Search Advisor Verification Meta Tag -->
   <meta name="naver-site-verification" content="e8081e77e431fe3678695a16d44eac8e63b4acce" />
@@ -57,523 +63,614 @@
     <span id="toast-text" class="text-xs sm:text-sm font-semibold"></span>
   </div>
 
-  <!-- Header -->
-  <header class="fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-2xl border-b border-stone-200/80 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-      <div onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="cursor-pointer group flex items-center gap-3.5">
-        <svg class="h-10 w-auto shrink-0 filter drop-shadow-sm" viewBox="0 0 130 110" fill="none">
-          <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="#3C5A76" stroke-width="14" stroke-linecap="round" fill="none" />
-          <circle cx="46" cy="18" r="9" fill="#3C5A76" />
-          <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="#3C5A76" stroke-width="11" stroke-linecap="round" fill="none" />
-          <path d="M 52 26 C 50 45, 38 72, 12 106 L 20 108 C 45 75, 58 48, 58 26 Z" fill="#3C5A76" />
-          <path d="M 50 30 L 76 4 L 82 26 Z" fill="#3C5A76" />
-        </svg>
-        <div class="flex flex-col justify-center text-left">
-          <span class="font-sans font-semibold text-xl leading-none text-[#3C5A76] tracking-tight">스트레칭 온</span>
-          <div class="w-full h-[1px] bg-[#3C5A76]/25 my-1"></div>
-          <span class="font-sans font-semibold text-[13px] leading-none text-[#3C5A76] tracking-normal">Stretching ON</span>
-        </div>
+  <!-- ================================================================= -->
+  <!-- 📱 10회권 회원 전용 모바일 앱 뷰 (주소창에 ?view=app 접속 시 표시) -->
+  <!-- ================================================================= -->
+  <div id="app-view" class="hidden min-h-screen bg-[#FAF9F6] p-4 max-w-md mx-auto relative">
+    
+    <!-- 앱 헤더 -->
+    <div class="flex justify-between items-center py-3 mb-4 border-b border-stone-200">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-lg text-[#0C3559]">스트레칭 온</span>
+        <span class="text-[10px] font-bold bg-[#0092B8] text-white px-2 py-0.5 rounded-full">회원 전용 앱</span>
       </div>
-
-      <nav class="hidden md:flex items-center gap-7 text-[15px] font-semibold text-[#0C3559]/80">
-        <button onclick="scrollToSec('brand-story')" class="hover:text-[#0092B8] transition-colors py-1">브랜드 철학</button>
-        <button onclick="scrollToSec('body-zones')" class="hover:text-[#0092B8] transition-colors py-1">부위별 솔루션</button>
-        <button onclick="scrollToSec('programs')" class="hover:text-[#0092B8] transition-colors py-1">프로그램</button>
-        <button onclick="scrollToSec('academy')" class="hover:text-[#0092B8] transition-colors py-1">아카데미</button>
-        <button onclick="scrollToSec('reservation')" class="hover:text-[#0092B8] transition-colors py-1">실시간 예약</button>
-        <button onclick="scrollToSec('location')" class="hover:text-[#0092B8] transition-colors py-1">이용 안내</button>
-      </nav>
-
-      <div class="hidden md:flex items-center gap-3">
-        <button onclick="openAdminAuthModal()" class="px-3.5 py-2 rounded-full text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all flex items-center gap-1.5" title="원장 전용 관리자 대시보드">
-          <svg class="w-3.5 h-3.5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-          <span id="header-admin-label">관리자</span>
-        </button>
-
-        <button onclick="openMyBookingsModal()" class="px-4 py-2 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-[#0C3559] transition-all flex items-center gap-1.5 border border-stone-200">
-          <svg class="w-3.5 h-3.5 text-[#0092B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-          <span id="header-user-status">내 예약 / 회원 조회</span>
-        </button>
-
-        <button onclick="scrollToSec('reservation')" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-[#0C3559] text-white hover:bg-[#082239] transition-all flex items-center gap-1.5 shadow-sm">
-          온라인 1:1 예약
-          <svg class="w-3.5 h-3.5 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" /></svg>
-        </button>
-      </div>
-
-      <div class="md:hidden flex items-center gap-2">
-        <button onclick="openMyBookingsModal()" class="p-2 rounded-full bg-stone-100 text-[#0C3559] text-xs font-semibold px-2.5 border border-stone-200">
-          내 예약
-        </button>
-        <button onclick="openAdminAuthModal()" class="p-2 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold px-2.5 border border-amber-200">
-          🔒
-        </button>
-        <button onclick="toggleMobileMenu()" class="p-2.5 text-[#0C3559] rounded-xl bg-stone-100">
-          ☰
-        </button>
-      </div>
+      <button onclick="location.href='index.html'" class="text-xs text-stone-400 underline">일반 웹사이트</button>
     </div>
 
-    <!-- Mobile Drawer -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white/95 border-b border-stone-200 px-6 py-6 flex flex-col gap-3 text-base font-semibold text-[#0C3559] shadow-2xl">
-      <button onclick="scrollToSec('brand-story')" class="text-left py-2 border-b border-stone-100">브랜드 철학</button>
-      <button onclick="scrollToSec('body-zones')" class="text-left py-2 border-b border-stone-100">부위별 솔루션</button>
-      <button onclick="scrollToSec('programs')" class="text-left py-2 border-b border-stone-100">프로그램</button>
-      <button onclick="scrollToSec('academy')" class="text-left py-2 border-b border-stone-100">아카데미</button>
-      <button onclick="scrollToSec('reservation')" class="text-left py-2 border-b border-stone-100">실시간 예약</button>
-      <button onclick="scrollToSec('location')" class="text-left py-2 border-b border-stone-100">이용 안내</button>
-      <button onclick="openMyBookingsModal()" class="text-left py-2 border-b border-stone-100 text-[#0092B8]">🔑 내 예약 & 수강권 조회</button>
-      <button onclick="scrollToSec('reservation')" class="mt-2 w-full py-3.5 rounded-2xl bg-[#0C3559] text-white font-semibold text-center text-sm">1:1 맞춤 예약하기</button>
+    <!-- 1. 본인 확인 로그인 화면 -->
+    <div id="app-login-screen" class="mt-8 bg-white p-6 rounded-3xl border border-stone-200 shadow-xl space-y-4">
+      <div class="text-center mb-4">
+        <h2 class="text-xl font-bold text-[#0C3559]">10회권 회원 확인</h2>
+        <p class="text-xs text-stone-500 mt-1">등록하신 성함과 연락처를 입력해 주세요.</p>
+      </div>
+      <input type="text" id="app-input-name" placeholder="성함 *" class="w-full p-3.5 border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#0C3559]" />
+      <input type="tel" id="app-input-phone" placeholder="연락처 (예: 01012345678) *" class="w-full p-3.5 border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#0C3559]" />
+      <button onclick="appLoginCheck()" class="w-full py-4 bg-[#0C3559] text-white font-bold rounded-xl text-xs shadow-md hover:bg-[#082239] transition-all">
+        내 수강권 확인 및 1:1 예약하기 ➔
+      </button>
     </div>
-  </header>
 
-  <!-- Hero Section -->
-  <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-stone-200/80 shadow-sm text-xs font-semibold text-[#0C3559] mb-6">
-        <span class="w-2 h-2 rounded-full bg-[#0092B8]"></span>
-        <span>40년 임상 수기 기술 · 근골격계 불균형 솔루션</span>
-      </div>
-
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#0C3559] tracking-tight leading-snug mb-6">
-        통증을 원인부터 해소하고, <br class="hidden sm:inline" />
-        몸 본연의 자유로움과 평온을 되찾다
-      </h1>
-
-      <p class="max-w-2xl mx-auto text-sm sm:text-base text-[#0C3559]/80 font-normal leading-relaxed mb-8">
-        단순 피로 회복을 위한 1회성 케어가 아닙니다.<br class="hidden sm:inline" />
-        40여년의 수기 임상 노하우로 체형 불균형의 정밀한 원인을 측정하고, 삶의 질을 바꾸는 1:1 솔루션 스트레칭을 선보입니다.
-      </p>
-
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
-        <button onclick="scrollToSec('reservation')" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] shadow-md flex items-center justify-center gap-2">
-          온라인 1:1 예약하기
-          <svg class="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-        </button>
-        <button onclick="scrollToSec('brand-story')" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white border border-stone-300 text-[#0C3559] font-medium text-xs sm:text-sm hover:bg-stone-50 shadow-sm">
-          브랜드 철학 알아보기
-        </button>
-      </div>
-
-      <!-- Stats Bar -->
-      <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 border border-stone-200/90 shadow-2xl text-left grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
-          <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">40+</div>
+    <!-- 2. 회원 전용 간편 예약 화면 (인증 완료 시) -->
+    <div id="app-booking-screen" class="hidden space-y-5">
+      <!-- 회원 카드 -->
+      <div class="bg-gradient-to-br from-[#0C3559] via-[#0A2D4C] to-[#082239] p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
+        <div class="flex justify-between items-start">
           <div>
-            <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">40여년</p>
-            <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">축적된 원장 체형수기 임상 경험</p>
+            <span class="text-xs text-sky-300 font-semibold block">MEMBER PROFILE</span>
+            <h3 class="text-xl font-bold mt-1"><span id="app-user-name">O</span> 회원님</h3>
+            <p class="text-[11px] text-stone-300 mt-0.5" id="app-user-type">솔루션 멤버십 10회</p>
           </div>
+          <button onclick="appLogout()" class="text-[10px] bg-white/10 px-2.5 py-1 rounded-full text-stone-300 hover:bg-white/20">로그아웃</button>
         </div>
+        <div class="mt-5 p-4 rounded-2xl bg-white/10 backdrop-blur-md flex justify-between items-center border border-white/10">
+          <span class="text-xs font-semibold text-stone-200">잔여 수강권</span>
+          <span class="text-2xl font-extrabold text-amber-300"><span id="app-user-passes">0</span> <span class="text-sm text-white font-normal">/ 10회</span></span>
+        </div>
+        <p class="text-[10px] text-stone-300 mt-2 text-right">만료 예정일: <span id="app-user-expiry">-</span></p>
+      </div>
 
-        <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
-          <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">1:1</div>
+      <!-- ⚡ 3초 간편 예약 카드 -->
+      <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-lg space-y-4">
+        <h4 class="font-bold text-sm text-[#0C3559] flex items-center gap-1.5">
+          <span>⚡ 3초 1:1 간편 예약</span>
+        </h4>
+        
+        <div class="space-y-3">
           <div>
-            <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">100%</p>
-            <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">1:1 단독 맞춤 수기 솔루션</p>
+            <label class="block text-[11px] font-semibold text-stone-500 mb-1">방문 날짜 선택</label>
+            <input type="date" id="app-date" onchange="renderAppTimeSlots()" class="w-full p-3 border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#0C3559]" />
           </div>
-        </div>
 
-        <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
-          <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">★</div>
           <div>
-            <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">99.4%</p>
-            <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">고객 신체 가동성 개선 만족도</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Brand Story Section -->
-  <section id="brand-story" class="py-24 bg-white border-y border-stone-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div class="relative">
-          <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white">
-            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1000" alt="스트레칭 온 공간" class="w-full h-[450px] object-cover" />
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0C3559]/80 via-transparent to-transparent"></div>
-            <div class="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg">
-              <p class="text-[#0C3559] text-sm sm:text-base font-semibold leading-relaxed">
-                "단순한 주무름이 아닌, 인체 본연의 관절 가동성과 균형을 회복시키는 깊이 있는 1:1 테크닉"
-              </p>
-              <p class="text-xs text-[#0092B8] font-semibold mt-1.5">SOLSTRETCH 솔루션스트레칭</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="space-y-6">
-          <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1.5 rounded-full">
-            THE SOLSTRETCH BRAND STORY
-          </span>
-          <h2 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] leading-snug">
-            몸의 불균형을 근본부터 해결하여 <br />
-            삶 전체의 깊은 평온을 되찾아 주는 공간
-          </h2>
-          <p class="text-[#0C3559]/80 text-xs sm:text-sm leading-relaxed font-normal">
-            현대인의 굳어진 근육과 비틀어진 골반은 단순한 피로가 아닌 신체 구조적 신호입니다. 스트레칭 온의 프리미엄 브랜드 <strong class="text-[#0C3559] font-semibold">SOLSTRETCH(솔루션스트레칭)</strong>는 일시적인 통증 차단을 지양하고, 40여년 집약된 해부학적 수기 분석을 통해 근골격계와 관절의 가동 범위를 안전하고 정교하게 확장시킵니다.
-          </p>
-
-          <div class="pt-2 space-y-3">
-            <div class="flex items-start gap-3">
-              <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-[#0C3559] text-sm">01. 정밀 모빌리티 측정 평가</h3>
-                <p class="text-xs text-[#0C3559]/70 mt-0.5">방문 즉시 관절 제한 범위와 관절막·근막 불균형 지점을 과학적으로 측정평가합니다.</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3">
-              <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-[#0C3559] text-sm">02. 40년 수기 임상 기반 패시브 솔루션</h3>
-                <p class="text-xs text-[#0C3559]/70 mt-0.5">호흡과 신체 이완 반사를 활용한 고도의 1:1 수기 가동성 회복 케어를 진행합니다.</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3">
-              <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-              </div>
-              <div>
-                <h3 class="font-semibold text-[#0C3559] text-sm">03. 맞춤형 자가 관리 및 자세 로드맵</h3>
-                <p class="text-xs text-[#0C3559]/70 mt-0.5">케어 후 스스로 평온한 신체 상태를 유지할 수 있도록 1:1 자가 운동 가이드를 전수합니다.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Etymology Section: Latin & Hebrew -->
-      <div class="bg-gradient-to-br from-[#0C3559] via-[#082239] to-[#051829] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
-        <div class="max-w-3xl mb-10">
-          <span class="text-xs font-semibold text-sky-300 tracking-widest uppercase bg-white/10 px-3.5 py-1 rounded-full">
-            THE ETYMOLOGY OF SOLSTRETCH
-          </span>
-          <h3 class="text-2xl sm:text-3xl font-semibold text-white mt-4 mb-3 leading-tight">
-            브랜드가 약속하는 3가지 핵심 밸류, <span class="text-sky-300 font-bold">SOL</span>
-          </h3>
-          <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
-            상호명 <strong class="text-white font-semibold">스트레칭 온(Stretching ON)</strong>이 추구하는 근본적 브랜드 가치 <strong class="text-sky-300 font-semibold">SOLSTRETCH</strong>는 인체의 문제 해결을 넘어, 따스한 온기와 완전한 회복을 상징합니다.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-            <span class="text-xs text-sky-300 font-semibold uppercase block">01 SOLUTION</span>
-            <h4 class="text-base font-semibold text-white mb-2">근본적 문제 해결 (Solution)</h4>
-            <p class="text-xs text-stone-300 leading-relaxed font-normal">단순 일시적 자극이나 마사지가 아닙니다. 관절 가동성과 근막 비대칭의 일차 원인을 정밀 스캔하여 명확한 맞춤 수기 이완 솔루션을 제시합니다.</p>
-          </div>
-          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-            <span class="text-xs text-amber-300 font-semibold uppercase block">02 SOL [LATIN: SUN]</span>
-            <h4 class="text-base font-semibold text-white mb-2">태양의 따스한 생명력 (Sol)</h4>
-            <p class="text-xs text-stone-300 leading-relaxed font-normal">라틴어로 ‘태양’을 의미하는 Sol처럼, 만성적으로 차갑게 굳어버린 관절과 근육에 따스한 온기와 자유로운 생명력을 불어넣어 드립니다.</p>
-          </div>
-          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-            <span class="text-xs text-emerald-300 font-semibold uppercase block">03 SHALOM [TRANQUILITY]</span>
-            <h4 class="text-base font-semibold text-white mb-2">온전한 안식과 평온 (Shalom)</h4>
-            <p class="text-xs text-stone-300 leading-relaxed font-normal">히브리어 '샬롬(Shalom)'의 깊은 평안처럼, 신체 오케스트라의 밸런스를 완전하게 회복시켜 일상 전체에 비로소 차오르는 평온을 선사합니다.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-        <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
-          <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">01</span>
-          <h3 class="text-base font-semibold text-[#0C3559] mb-2">정밀 스캔 및 원인 측정</h3>
-          <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">단순 압박이 아닙니다. 관절 가동 범위(ROM)와 근막 비대칭을 정밀 측정하여 통증의 일차 원인을 찾아냅니다.</p>
-        </div>
-        <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
-          <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">02</span>
-          <h3 class="text-base font-semibold text-[#0C3559] mb-2">40년 노하우 독자 수기</h3>
-          <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">수만 명의 임상 데이터를 바탕으로 완성된 파트너드 패시브 기법으로, 안전하면서도 확실한 이완을 이끌어냅니다.</p>
-        </div>
-        <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
-          <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">03</span>
-          <h3 class="text-base font-semibold text-[#0C3559] mb-2">삶의 가치 & 재발 방지</h3>
-          <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">케어 후 개인별 자가 관리 리포트와 호흡 가이드를 제공하여 가벼워진 신체 밸런스를 스스로 유지하도록 돕습니다.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Body Zones Section -->
-  <section id="body-zones" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-2xl mx-auto mb-14">
-      <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">ANALYSIS & SOLUTIONS</span>
-      <h2 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-2 mb-3">
-        불편하신 신체 부위를 선택해 주세요
-      </h2>
-      <p class="text-[#0C3559]/70 text-xs sm:text-sm font-normal">
-        원인이 되는 부위를 선택하시면 스트레칭 온만의 정밀 케어 솔루션과 매칭 코스를 확인하실 수 있습니다.
-      </p>
-    </div>
-
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8" id="zone-tab-buttons">
-      <!-- Generated via JS -->
-    </div>
-
-    <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card">
-      <!-- Generated via JS with Matching Program Card -->
-    </div>
-  </section>
-
-  <!-- Programs Section -->
-  <section id="programs" class="py-24 bg-stone-100/70 border-y border-stone-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CURATED CARE PROGRAMS</span>
-        <h2 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">
-          프리미엄 1:1 맞춤 솔루션 프로그램
-        </h2>
-        <p class="text-[#0C3559]/75 text-sm sm:text-base font-medium">
-          정밀 체형 분석 스캔과 원장 1:1 수기 케어가 집중 제공되는 코스입니다.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="program-cards-container">
-        <!-- Generated via JS -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Academy Section -->
-  <section id="academy" class="py-24 bg-white border-b border-stone-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-gradient-to-br from-[#0C3559] via-[#0A2D4C] to-[#082239] text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div class="lg:col-span-7 space-y-6">
-            <span class="px-3.5 py-1.5 rounded-full bg-sky-400/20 text-sky-300 text-xs font-semibold tracking-widest uppercase">
-              SOLSTRETCH ACADEMY
-            </span>
-
-            <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-white leading-tight">
-              솔루션스트레칭 지도자 4주 교육과정
-            </h2>
-
-            <p class="text-stone-300 text-sm sm:text-base leading-relaxed font-normal">
-              40여년 경력의 김동수 대표원장이 직접 지도하는 최고위 스트레칭 전문가 양성 과정입니다.<br />
-              체형 분석 이론부터 실전 수기 테크닉까지 완성형 노하우를 밀착 전수합니다.
-            </p>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
-                <p class="text-xs text-sky-300 font-semibold mb-1">교육 일정 (주중반 / 주말반)</p>
-                <p class="text-base font-semibold text-white">월·수·금요일 (10:00 - 13:00)</p>
-                <p class="text-xs text-stone-300 mt-1 font-normal">1일 3시간 × 4주 (총 36시간 전수)</p>
-              </div>
-
-              <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
-                <p class="text-xs text-sky-300 font-semibold mb-1">수강료 및 자격증</p>
-                <p class="text-2xl font-semibold text-white">120만원</p>
-                <p class="text-xs text-stone-300 mt-1 font-normal">* 공식 수기지도자 자격증 발급비 포함</p>
-              </div>
-            </div>
-
-            <div class="pt-4 flex flex-col sm:flex-row gap-4">
-              <button onclick="openAcademyModal()" class="px-8 py-4.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-xs sm:text-sm hover:bg-sky-300 transition-all shadow-xl flex items-center justify-center gap-2">
-                지도자 수강 상담 신청 ➔
-              </button>
-              <a href="tel:010-6566-6369" class="px-6 py-4.5 rounded-full bg-white/10 text-white border border-white/20 font-semibold text-xs sm:text-sm hover:bg-white/20 transition-all flex items-center justify-center gap-2">
-                📞 직통 문의: 010-6566-6369
-              </a>
+            <label class="block text-[11px] font-semibold text-stone-500 mb-1">방문 시간대</label>
+            <div id="app-time-slots" class="grid grid-cols-3 gap-2">
+              <!-- JS로 연동 생성 -->
             </div>
           </div>
 
-          <div class="lg:col-span-5 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-6 space-y-4">
-            <h3 class="text-lg font-semibold text-white flex items-center gap-2">
-              🎓 4주 차별 핵심 커리큘럼
-            </h3>
+          <button onclick="submitAppBooking()" class="w-full py-4 bg-[#0092B8] text-white font-bold rounded-xl text-xs shadow-lg hover:bg-[#007a99] transition-all mt-2">
+            1:1 맞춤 예약 확정하기 ✓
+          </button>
+        </div>
+      </div>
 
-            <div class="space-y-3 text-xs sm:text-sm text-stone-200">
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                <p class="font-semibold text-sky-300">1주차: 해부학 & 정밀 체형 스캔</p>
-                <p class="mt-0.5 text-stone-300 font-normal">관절 가동 범위 측정 및 불균형 원인 스캔</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                <p class="font-semibold text-sky-300">2주차: 상체 및 경추 딥 수기 실습</p>
-                <p class="mt-0.5 text-stone-300 font-normal">거북목, 승모근, 흉곽 이완 테크닉 실습</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                <p class="font-semibold text-sky-300">3주차: 골반 & 하체 리밸런스</p>
-                <p class="mt-0.5 text-stone-300 font-normal">고관절 회전성 확보 및 장요근 이완 노하우</p>
-              </div>
-              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                <p class="font-semibold text-sky-300">4주차: 실전 코칭 심사 & 자격 수여</p>
-                <p class="mt-0.5 text-stone-300 font-normal">원장 직접 심사 및 공식 자격증 수여</p>
-              </div>
-            </div>
-          </div>
+      <!-- 다가오는 예약 현황 -->
+      <div class="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm space-y-3">
+        <h4 class="font-bold text-xs text-[#0C3559]">📅 내 예약 신청 내역</h4>
+        <div id="app-my-bookings-list" class="space-y-2">
+          <!-- JS 생성 -->
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Realtime Reservation Section -->
-  <section id="reservation" class="py-24 bg-[#0C3559] text-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-xl mx-auto mb-12">
-        <span class="text-xs font-semibold tracking-widest text-sky-300 uppercase">REAL-TIME RESERVATION</span>
-        <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-3 mb-3">실시간 1:1 맞춤 예약</h2>
-        <p class="text-stone-300 text-xs sm:text-sm font-normal leading-relaxed">
-          * 원장의 100% 1:1 단독 집중 케어로 진행됩니다. <br class="hidden sm:inline" />
-          * 당일 예약은 불가하며, 선택하신 날짜/시간대는 1인 한정 실시간 확정됩니다.
-        </p>
-      </div>
+  </div>
 
-      <div class="bg-white/10 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/15 shadow-2xl">
-        <!-- Step 1 -->
-        <div id="booking-step-1" class="space-y-6">
-          <h3 class="text-xl font-semibold text-white">1단계: 케어 프로그램 선택</h3>
-          <div class="space-y-3" id="step1-program-list"></div>
-          <button onclick="goToStep(2)" class="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">
-            다음: 날짜 및 시간 선택 ➔
+  <!-- ================================================================= -->
+  <!-- 🖥️ 일반 PC/모바일 웹사이트 (기본 뷰) -->
+  <!-- ================================================================= -->
+  <div id="main-website" class="flex-1 flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-2xl border-b border-stone-200/80 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="cursor-pointer group flex items-center gap-3.5">
+          <svg class="h-10 w-auto shrink-0 filter drop-shadow-sm" viewBox="0 0 130 110" fill="none">
+            <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="#3C5A76" stroke-width="14" stroke-linecap="round" fill="none" />
+            <circle cx="46" cy="18" r="9" fill="#3C5A76" />
+            <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="#3C5A76" stroke-width="11" stroke-linecap="round" fill="none" />
+            <path d="M 52 26 C 50 45, 38 72, 12 106 L 20 108 C 45 75, 58 48, 58 26 Z" fill="#3C5A76" />
+            <path d="M 50 30 L 76 4 L 82 26 Z" fill="#3C5A76" />
+          </svg>
+          <div class="flex flex-col justify-center text-left">
+            <span class="font-sans font-semibold text-xl leading-none text-[#3C5A76] tracking-tight">스트레칭 온</span>
+            <div class="w-full h-[1px] bg-[#3C5A76]/25 my-1"></div>
+            <span class="font-sans font-semibold text-[13px] leading-none text-[#3C5A76] tracking-normal">Stretching ON</span>
+          </div>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-7 text-[15px] font-semibold text-[#0C3559]/80">
+          <button onclick="scrollToSec('brand-story')" class="hover:text-[#0092B8] transition-colors py-1">브랜드 철학</button>
+          <button onclick="scrollToSec('body-zones')" class="hover:text-[#0092B8] transition-colors py-1">부위별 솔루션</button>
+          <button onclick="scrollToSec('programs')" class="hover:text-[#0092B8] transition-colors py-1">프로그램</button>
+          <button onclick="scrollToSec('academy')" class="hover:text-[#0092B8] transition-colors py-1">아카데미</button>
+          <button onclick="scrollToSec('reservation')" class="hover:text-[#0092B8] transition-colors py-1">실시간 예약</button>
+          <button onclick="scrollToSec('location')" class="hover:text-[#0092B8] transition-colors py-1">이용 안내</button>
+        </nav>
+
+        <div class="hidden md:flex items-center gap-3">
+          <button onclick="openAdminAuthModal()" class="px-3.5 py-2 rounded-full text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/80 transition-all flex items-center gap-1.5" title="원장 전용 관리자 대시보드">
+            <svg class="w-3.5 h-3.5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            <span id="header-admin-label">관리자</span>
+          </button>
+
+          <button onclick="openMyBookingsModal()" class="px-4 py-2 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-[#0C3559] transition-all flex items-center gap-1.5 border border-stone-200">
+            <svg class="w-3.5 h-3.5 text-[#0092B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            <span id="header-user-status">내 예약 / 회원 조회</span>
+          </button>
+
+          <button onclick="scrollToSec('reservation')" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-[#0C3559] text-white hover:bg-[#082239] transition-all flex items-center gap-1.5 shadow-sm">
+            온라인 1:1 예약
+            <svg class="w-3.5 h-3.5 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" /></svg>
           </button>
         </div>
 
-        <!-- Step 2 -->
-        <div id="booking-step-2" class="space-y-6 hidden">
-          <h3 class="text-xl font-semibold text-white">2단계: 방문 날짜 및 시간 선택 (일요일 휴무)</h3>
-          
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-            <div class="md:col-span-5 space-y-3">
-              <label class="block text-xs font-semibold text-stone-200">방문 날짜 선택 (내일부터 예약 가능)</label>
-              <input type="date" id="booking-date-input" onchange="handleBookingDateChange(this.value)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm font-semibold focus:outline-none focus:border-sky-400" />
-              <div class="p-4 rounded-xl bg-[#082239]/80 border border-white/10 text-xs text-stone-300 space-y-1.5 font-normal">
-                <p class="font-semibold text-sky-300">💡 예약 정책 안내</p>
-                <p>• 당일 예약은 불가합니다 (최소 1일 전 예약)</p>
-                <p>• 선택하신 날짜의 예약 완료 시간대는 '마감'으로 자동 차단됩니다.</p>
-                <p>• 원장 1:1 전담으로 동일 시간에 추가 중복 예약이 불가능합니다.</p>
-              </div>
-            </div>
+        <div class="md:hidden flex items-center gap-2">
+          <button onclick="openMyBookingsModal()" class="p-2 rounded-full bg-stone-100 text-[#0C3559] text-xs font-semibold px-2.5 border border-stone-200">
+            내 예약
+          </button>
+          <button onclick="openAdminAuthModal()" class="p-2 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold px-2.5 border border-amber-200">
+            🔒
+          </button>
+          <button onclick="toggleMobileMenu()" class="p-2.5 text-[#0C3559] rounded-xl bg-stone-100">
+            ☰
+          </button>
+        </div>
+      </div>
 
-            <div class="md:col-span-7 space-y-3">
-              <label class="block text-xs font-semibold text-stone-200">방문 시간대</label>
-              <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5" id="step2-time-slots"></div>
-            </div>
-          </div>
+      <!-- Mobile Drawer -->
+      <div id="mobile-menu" class="hidden md:hidden bg-white/95 border-b border-stone-200 px-6 py-6 flex flex-col gap-3 text-base font-semibold text-[#0C3559] shadow-2xl">
+        <button onclick="scrollToSec('brand-story')" class="text-left py-2 border-b border-stone-100">브랜드 철학</button>
+        <button onclick="scrollToSec('body-zones')" class="text-left py-2 border-b border-stone-100">부위별 솔루션</button>
+        <button onclick="scrollToSec('programs')" class="text-left py-2 border-b border-stone-100">프로그램</button>
+        <button onclick="scrollToSec('academy')" class="text-left py-2 border-b border-stone-100">아카데미</button>
+        <button onclick="scrollToSec('reservation')" class="text-left py-2 border-b border-stone-100">실시간 예약</button>
+        <button onclick="scrollToSec('location')" class="text-left py-2 border-b border-stone-100">이용 안내</button>
+        <button onclick="openMyBookingsModal()" class="text-left py-2 border-b border-stone-100 text-[#0092B8]">🔑 내 예약 & 수강권 조회</button>
+        <button onclick="scrollToSec('reservation')" class="mt-2 w-full py-3.5 rounded-2xl bg-[#0C3559] text-white font-semibold text-center text-sm">1:1 맞춤 예약하기</button>
+      </div>
+    </header>
 
-          <div class="flex justify-between pt-4">
-            <button onclick="goToStep(1)" class="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs font-semibold">이전 단계</button>
-            <button onclick="goToStep(3)" class="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">다음: 예약자 정보 입력 ➔</button>
-          </div>
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-stone-200/80 shadow-sm text-xs font-semibold text-[#0C3559] mb-6">
+          <span class="w-2 h-2 rounded-full bg-[#0092B8]"></span>
+          <span>40년 임상 수기 기술 · 근골격계 불균형 솔루션</span>
         </div>
 
-        <!-- Step 3 -->
-        <div id="booking-step-3" class="space-y-6 hidden">
-          <h3 class="text-xl font-semibold text-white mb-4">3단계: 예약자 정보 입력</h3>
-          <input type="text" id="user-name" placeholder="성함 *" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
-          <input type="tel" id="user-phone" placeholder="연락처 *" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
-          <textarea id="user-note" rows="3" placeholder="주요 통증 부위 및 요청사항 (선택)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm resize-none"></textarea>
-          
-          <div class="p-4 rounded-xl bg-[#082239] border border-white/10 space-y-2.5">
-            <label class="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-stone-200 cursor-pointer select-none">
-              <input type="checkbox" id="privacy-agree" class="w-4 h-4 rounded" />
-              <span>[필수] 개인정보 수집 및 이용 동의</span>
-            </label>
-            <div class="p-3 rounded-lg bg-[#0C3559]/60 border border-white/10 text-[11px] text-stone-300 leading-relaxed space-y-1 font-normal">
-              <p>• <strong class="text-stone-200">수집 항목:</strong> 성함, 연락처, 주요 통증 부위 및 요청사항</p>
-              <p>• <strong class="text-stone-200">이용 목적:</strong> 1:1 맞춤 스트레칭 실시간 예약 확정 및 안내</p>
-              <p>• <strong class="text-stone-200">보유 기간:</strong> 이용 완료 후 관련 법령에 따라 최대 3개월 보관 후 파기</p>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#0C3559] tracking-tight leading-snug mb-6">
+          통증을 원인부터 해소하고, <br class="hidden sm:inline" />
+          몸 본연의 자유로움과 평온을 되찾다
+        </h1>
+
+        <p class="max-w-2xl mx-auto text-sm sm:text-base text-[#0C3559]/80 font-normal leading-relaxed mb-8">
+          단순 피로 회복을 위한 1회성 케어가 아닙니다.<br class="hidden sm:inline" />
+          40여년의 수기 임상 노하우로 체형 불균형의 정밀한 원인을 측정하고, 삶의 질을 바꾸는 1:1 솔루션 스트레칭을 선보입니다.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
+          <button onclick="scrollToSec('reservation')" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] shadow-md flex items-center justify-center gap-2">
+            온라인 1:1 예약하기
+            <svg class="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+          </button>
+          <button onclick="scrollToSec('brand-story')" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white border border-stone-300 text-[#0C3559] font-medium text-xs sm:text-sm hover:bg-stone-50 shadow-sm">
+            브랜드 철학 알아보기
+          </button>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 border border-stone-200/90 shadow-2xl text-left grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
+            <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">40+</div>
+            <div>
+              <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">40여년</p>
+              <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">축적된 원장 체형수기 임상 경험</p>
             </div>
           </div>
 
-          <div class="flex justify-between items-center pt-4">
-            <button type="button" onclick="goToStep(2)" class="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs font-semibold">이전 단계</button>
-            <button type="button" onclick="submitBooking()" class="px-10 py-4 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm shadow-xl">예약 신청 및 즉시 확정하기 ✓</button>
+          <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
+            <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">1:1</div>
+            <div>
+              <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">100%</p>
+              <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">1:1 단독 맞춤 수기 솔루션</p>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
+            <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">★</div>
+            <div>
+              <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">99.4%</p>
+              <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">고객 신체 가동성 개선 만족도</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Location & Guidelines Section -->
-  <section id="location" class="py-24 bg-stone-100/70 border-t border-stone-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <!-- Location Card -->
-        <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg flex flex-col justify-between">
-          <div>
+    <!-- Brand Story Section -->
+    <section id="brand-story" class="py-24 bg-white border-y border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div class="relative">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white">
+              <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1000" alt="스트레칭 온 공간" class="w-full h-[450px] object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0C3559]/80 via-transparent to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg">
+                <p class="text-[#0C3559] text-sm sm:text-base font-semibold leading-relaxed">
+                  "단순한 주무름이 아닌, 인체 본연의 관절 가동성과 균형을 회복시키는 깊이 있는 1:1 테크닉"
+                </p>
+                <p class="text-xs text-[#0092B8] font-semibold mt-1.5">SOLSTRETCH 솔루션스트레칭</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-6">
             <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1.5 rounded-full">
-              LOCATION & SEARCH
+              THE SOLSTRETCH BRAND STORY
             </span>
-            <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-4 mb-6">오시는 길 및 안내</h3>
+            <h2 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] leading-snug">
+              몸의 불균형을 근본부터 해결하여 <br />
+              삶 전체의 깊은 평온을 되찾아 주는 공간
+            </h2>
+            <p class="text-[#0C3559]/80 text-xs sm:text-sm leading-relaxed font-normal">
+              현대인의 굳어진 근육과 비틀어진 골반은 단순한 피로가 아닌 신체 구조적 신호입니다. 스트레칭 온의 프리미엄 브랜드 <strong class="text-[#0C3559] font-semibold">SOLSTRETCH(솔루션스트레칭)</strong>는 일시적인 통증 차단을 지양하고, 40여년 집약된 해부학적 수기 분석을 통해 근골격계와 관절의 가동 범위를 안전하고 정교하게 확장시킵니다.
+            </p>
 
-            <div class="space-y-4 mb-8 text-sm sm:text-base text-[#0C3559]">
-              <div>
-                <p class="font-semibold text-[#0C3559] text-base sm:text-lg">스트레칭온</p>
-                <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
-                <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간 제공</p>
+            <div class="pt-2 space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-[#0C3559] text-sm">01. 정밀 모빌리티 측정 평가</h3>
+                  <p class="text-xs text-[#0C3559]/70 mt-0.5">방문 즉시 관절 제한 범위와 관절막·근막 불균형 지점을 과학적으로 측정평가합니다.</p>
+                </div>
               </div>
 
-              <div class="text-sm font-semibold text-[#0C3559]">
-                📞 직통 전화 문의: 010-6566-6369 (대표 김동수)
+              <div class="flex items-start gap-3">
+                <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-[#0C3559] text-sm">02. 40년 수기 임상 기반 패시브 솔루션</h3>
+                  <p class="text-xs text-[#0C3559]/70 mt-0.5">호흡과 신체 이완 반사를 활용한 고도의 1:1 수기 가동성 회복 케어를 진행합니다.</p>
+                </div>
               </div>
 
-              <div class="text-xs sm:text-sm text-[#0C3559]/85 font-semibold">
-                <p>월 - 금요일: 10:00 - 22:00</p>
-                <p>토요일: 10:00 - 18:00 (일요일 정기휴무)</p>
+              <div class="flex items-start gap-3">
+                <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold text-[#0C3559] text-sm">03. 맞춤형 자가 관리 및 자세 로드맵</h3>
+                  <p class="text-xs text-[#0C3559]/70 mt-0.5">케어 후 스스로 평온한 신체 상태를 유지할 수 있도록 1:1 자가 운동 가이드를 전수합니다.</p>
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
-            <p class="text-xs font-semibold text-[#0C3559]/70 uppercase tracking-wider">지도 앱으로 빠르게 위치 찾기</p>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <button onclick="openMapSearch('naver')" class="w-full py-3.5 px-4 rounded-xl bg-[#03CF5D] text-white font-semibold text-xs sm:text-sm shadow-sm">💚 네이버 지도 검색 ↗</button>
-              <button onclick="openMapSearch('kakao')" class="w-full py-3.5 px-4 rounded-xl bg-[#FEE500] text-[#191919] font-semibold text-xs sm:text-sm shadow-sm">💛 카카오맵 검색 ↗</button>
             </div>
           </div>
         </div>
 
-        <!-- FAQs -->
-        <div>
-          <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">FAQ</span>
-          <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-2 mb-6">자주 묻는 질문</h3>
-          <div id="faqs-container" class="space-y-3.5"></div>
+        <!-- Etymology Section -->
+        <div class="bg-gradient-to-br from-[#0C3559] via-[#082239] to-[#051829] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
+          <div class="max-w-3xl mb-10">
+            <span class="text-xs font-semibold text-sky-300 tracking-widest uppercase bg-white/10 px-3.5 py-1 rounded-full">
+              THE ETYMOLOGY OF SOLSTRETCH
+            </span>
+            <h3 class="text-2xl sm:text-3xl font-semibold text-white mt-4 mb-3 leading-tight">
+              브랜드가 약속하는 3가지 핵심 밸류, <span class="text-sky-300 font-bold">SOL</span>
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
+              상호명 <strong class="text-white font-semibold">스트레칭 온(Stretching ON)</strong>이 추구하는 근본적 브랜드 가치 <strong class="text-sky-300 font-semibold">SOLSTRETCH</strong>는 인체의 문제 해결을 넘어, 따스한 온기와 완전한 회복을 상징합니다.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
+              <span class="text-xs text-sky-300 font-semibold uppercase block">01 SOLUTION</span>
+              <h4 class="text-base font-semibold text-white mb-2">근본적 문제 해결 (Solution)</h4>
+              <p class="text-xs text-stone-300 leading-relaxed font-normal">단순 일시적 자극이나 마사지가 아닙니다. 관절 가동성과 근막 비대칭의 일차 원인을 정밀 스캔하여 명확한 맞춤 수기 이완 솔루션을 제시합니다.</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
+              <span class="text-xs text-amber-300 font-semibold uppercase block">02 SOL [LATIN: SUN]</span>
+              <h4 class="text-base font-semibold text-white mb-2">태양의 따스한 생명력 (Sol)</h4>
+              <p class="text-xs text-stone-300 leading-relaxed font-normal">라틴어로 ‘태양’을 의미하는 Sol처럼, 만성적으로 차갑게 굳어버린 관절과 근육에 따스한 온기와 자유로운 생명력을 불어넣어 드립니다.</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
+              <span class="text-xs text-emerald-300 font-semibold uppercase block">03 SHALOM [TRANQUILITY]</span>
+              <h4 class="text-base font-semibold text-white mb-2">온전한 안식과 평온 (Shalom)</h4>
+              <p class="text-xs text-stone-300 leading-relaxed font-normal">히브리어 '샬롬(Shalom)'의 깊은 평안처럼, 신체 오케스트라의 밸런스를 완전하게 회복시켜 일상 전체에 비로소 차오르는 평온을 선사합니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+          <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
+            <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">01</span>
+            <h3 class="text-base font-semibold text-[#0C3559] mb-2">정밀 스캔 및 원인 측정</h3>
+            <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">단순 압박이 아닙니다. 관절 가동 범위(ROM)와 근막 비대칭을 정밀 측정하여 통증의 일차 원인을 찾아냅니다.</p>
+          </div>
+          <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
+            <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">02</span>
+            <h3 class="text-base font-semibold text-[#0C3559] mb-2">40년 노하우 독자 수기</h3>
+            <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">수만 명의 임상 데이터를 바탕으로 완성된 파트너드 패시브 기법으로, 안전하면서도 확실한 이완을 이끌어냅니다.</p>
+          </div>
+          <div class="bg-stone-50 rounded-2xl p-7 border border-stone-200/80 hover:bg-white hover:shadow-xl transition-all duration-300">
+            <span class="text-2xl font-semibold text-[#0092B8] block mb-3 font-mono">03</span>
+            <h3 class="text-base font-semibold text-[#0C3559] mb-2">삶의 가치 & 재발 방지</h3>
+            <p class="text-xs sm:text-sm text-[#0C3559]/75 font-normal leading-relaxed">케어 후 개인별 자가 관리 리포트와 호흡 가이드를 제공하여 가벼워진 신체 밸런스를 스스로 유지하도록 돕습니다.</p>
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- Customer Reviews Section (Positioned inside Location/Guidelines) -->
-      <div id="reviews" class="pt-8 border-t border-stone-200/80">
+    <!-- Body Zones Section -->
+    <section id="body-zones" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">ANALYSIS & SOLUTIONS</span>
+        <h2 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-2 mb-3">
+          불편하신 신체 부위를 선택해 주세요
+        </h2>
+        <p class="text-[#0C3559]/70 text-xs sm:text-sm font-normal">
+          원인이 되는 부위를 선택하시면 스트레칭 온만의 정밀 케어 솔루션과 매칭 코스를 확인하실 수 있습니다.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8" id="zone-tab-buttons">
+        <!-- Generated via JS -->
+      </div>
+
+      <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card">
+        <!-- Generated via JS -->
+      </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="py-24 bg-stone-100/70 border-y border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-16">
-          <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CUSTOMER REVIEWS</span>
-          <h3 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">솔루션스트레칭 고객 수기 후기</h3>
-          <p class="text-[#0C3559]/75 text-sm sm:text-base font-normal">신체 불균형을 개선하고 가벼운 일상을 회복하신 고객분들의 실제 경험담입니다.</p>
+          <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CURATED CARE PROGRAMS</span>
+          <h2 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">
+            프리미엄 1:1 맞춤 솔루션 프로그램
+          </h2>
+          <p class="text-[#0C3559]/75 text-sm sm:text-base font-medium">
+            정밀 체형 분석 스캔과 원장 1:1 수기 케어가 집중 제공되는 코스입니다.
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="reviews-container"></div>
-      </div>
-
-      <!-- Studio Guidelines -->
-      <div class="pt-8 border-t border-stone-200/80">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-          <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1 rounded-full">STUDIO POLICIES</span>
-          <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-3 mb-3">스튜디오 이용 & 수강권 상세 규정</h3>
-          <p class="text-[#0C3559]/75 text-xs sm:text-sm font-normal">투명하고 안전한 스튜디오 이용을 위한 예약, 복장, 수강권 환불 및 공유 기준입니다.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="guidelines-container"></div>
-
-        <div class="mt-8 p-5 rounded-2xl bg-sky-50/80 border border-sky-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span class="text-xs sm:text-sm font-semibold text-[#0C3559]">문의사항이나 일정 변경 요청은 대표 번호 <strong>010-6566-6369</strong>로 연락주시면 안내해 드립니다.</span>
-          <button onclick="scrollToSec('reservation')" class="px-5 py-2.5 rounded-full bg-[#0C3559] text-white text-xs font-semibold shrink-0">1:1 예약 바로가기</button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="program-cards-container">
+          <!-- Generated via JS -->
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="bg-[#0C3559] text-stone-300 py-16 border-t border-white/10 text-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-      <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서구 가정로 451 8층 803호</p>
-    </div>
-  </footer>
+    <!-- Academy Section -->
+    <section id="academy" class="py-24 bg-white border-b border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-br from-[#0C3559] via-[#0A2D4C] to-[#082239] text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div class="lg:col-span-7 space-y-6">
+              <span class="px-3.5 py-1.5 rounded-full bg-sky-400/20 text-sky-300 text-xs font-semibold tracking-widest uppercase">
+                SOLSTRETCH ACADEMY
+              </span>
 
+              <h2 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-white leading-tight">
+                솔루션스트레칭 지도자 4주 교육과정
+              </h2>
+
+              <p class="text-stone-300 text-sm sm:text-base leading-relaxed font-normal">
+                40여년 경력의 김동수 대표원장이 직접 지도하는 최고위 스트레칭 전문가 양성 과정입니다.<br />
+                체형 분석 이론부터 실전 수기 테크닉까지 완성형 노하우를 밀착 전수합니다.
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
+                  <p class="text-xs text-sky-300 font-semibold mb-1">교육 일정 (주중반 / 주말반)</p>
+                  <p class="text-base font-semibold text-white">월·수·금요일 (10:00 - 13:00)</p>
+                  <p class="text-xs text-stone-300 mt-1 font-normal">1일 3시간 × 4주 (총 36시간 전수)</p>
+                </div>
+
+                <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
+                  <p class="text-xs text-sky-300 font-semibold mb-1">수강료 및 자격증</p>
+                  <p class="text-2xl font-semibold text-white">120만원</p>
+                  <p class="text-xs text-stone-300 mt-1 font-normal">* 공식 수기지도자 자격증 발급비 포함</p>
+                </div>
+              </div>
+
+              <div class="pt-4 flex flex-col sm:flex-row gap-4">
+                <button onclick="openAcademyModal()" class="px-8 py-4.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-xs sm:text-sm hover:bg-sky-300 transition-all shadow-xl flex items-center justify-center gap-2">
+                  지도자 수강 상담 신청 ➔
+                </button>
+                <a href="tel:010-6566-6369" class="px-6 py-4.5 rounded-full bg-white/10 text-white border border-white/20 font-semibold text-xs sm:text-sm hover:bg-white/20 transition-all flex items-center justify-center gap-2">
+                  📞 직통 문의: 010-6566-6369
+                </a>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-6 space-y-4">
+              <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+                🎓 4주 차별 핵심 커리큘럼
+              </h3>
+
+              <div class="space-y-3 text-xs sm:text-sm text-stone-200">
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <p class="font-semibold text-sky-300">1주차: 해부학 & 정밀 체형 스캔</p>
+                  <p class="mt-0.5 text-stone-300 font-normal">관절 가동 범위 측정 및 불균형 원인 스캔</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <p class="font-semibold text-sky-300">2주차: 상체 및 경추 딥 수기 실습</p>
+                  <p class="mt-0.5 text-stone-300 font-normal">거북목, 승모근, 흉곽 이완 테크닉 실습</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <p class="font-semibold text-sky-300">3주차: 골반 & 하체 리밸런스</p>
+                  <p class="mt-0.5 text-stone-300 font-normal">고관절 회전성 확보 및 장요근 이완 노하우</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
+                  <p class="font-semibold text-sky-300">4주차: 실전 코칭 심사 & 자격 수여</p>
+                  <p class="mt-0.5 text-stone-300 font-normal">원장 직접 심사 및 공식 자격증 수여</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Realtime Reservation Section -->
+    <section id="reservation" class="py-24 bg-[#0C3559] text-white">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-xl mx-auto mb-12">
+          <span class="text-xs font-semibold tracking-widest text-sky-300 uppercase">REAL-TIME RESERVATION</span>
+          <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-3 mb-3">실시간 1:1 맞춤 예약</h2>
+          <p class="text-stone-300 text-xs sm:text-sm font-normal leading-relaxed">
+            * 원장의 100% 1:1 단독 집중 케어로 진행됩니다. <br class="hidden sm:inline" />
+            * 당일 예약은 불가하며, 선택하신 날짜/시간대는 1인 한정 실시간 확정됩니다.
+          </p>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/15 shadow-2xl">
+          <!-- Step 1 -->
+          <div id="booking-step-1" class="space-y-6">
+            <h3 class="text-xl font-semibold text-white">1단계: 케어 프로그램 선택</h3>
+            <div class="space-y-3" id="step1-program-list"></div>
+            <button onclick="goToStep(2)" class="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">
+              다음: 날짜 및 시간 선택 ➔
+            </button>
+          </div>
+
+          <!-- Step 2 -->
+          <div id="booking-step-2" class="space-y-6 hidden">
+            <h3 class="text-xl font-semibold text-white">2단계: 방문 날짜 및 시간 선택 (일요일 휴무)</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+              <div class="md:col-span-5 space-y-3">
+                <label class="block text-xs font-semibold text-stone-200">방문 날짜 선택 (내일부터 예약 가능)</label>
+                <input type="date" id="booking-date-input" onchange="handleBookingDateChange(this.value)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm font-semibold focus:outline-none focus:border-sky-400" />
+                <div class="p-4 rounded-xl bg-[#082239]/80 border border-white/10 text-xs text-stone-300 space-y-1.5 font-normal">
+                  <p class="font-semibold text-sky-300">💡 예약 정책 안내</p>
+                  <p>• 당일 예약은 불가합니다 (최소 1일 전 예약)</p>
+                  <p>• 선택하신 날짜의 예약 완료 시간대는 '마감'으로 자동 차단됩니다.</p>
+                  <p>• 원장 1:1 전담으로 동일 시간에 추가 중복 예약이 불가능합니다.</p>
+                </div>
+              </div>
+
+              <div class="md:col-span-7 space-y-3">
+                <label class="block text-xs font-semibold text-stone-200">방문 시간대</label>
+                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5" id="step2-time-slots"></div>
+              </div>
+            </div>
+
+            <div class="flex justify-between pt-4">
+              <button onclick="goToStep(1)" class="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs font-semibold">이전 단계</button>
+              <button onclick="goToStep(3)" class="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">다음: 예약자 정보 입력 ➔</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div id="booking-step-3" class="space-y-6 hidden">
+            <h3 class="text-xl font-semibold text-white mb-4">3단계: 예약자 정보 입력</h3>
+            <input type="text" id="user-name" placeholder="성함 *" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
+            <input type="tel" id="user-phone" placeholder="연락처 *" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
+            <textarea id="user-note" rows="3" placeholder="주요 통증 부위 및 요청사항 (선택)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm resize-none"></textarea>
+            
+            <div class="p-4 rounded-xl bg-[#082239] border border-white/10 space-y-2.5">
+              <label class="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-stone-200 cursor-pointer select-none">
+                <input type="checkbox" id="privacy-agree" class="w-4 h-4 rounded" />
+                <span>[필수] 개인정보 수집 및 이용 동의</span>
+              </label>
+              <div class="p-3 rounded-lg bg-[#0C3559]/60 border border-white/10 text-[11px] text-stone-300 leading-relaxed space-y-1 font-normal">
+                <p>• <strong class="text-stone-200">수집 항목:</strong> 성함, 연락처, 주요 통증 부위 및 요청사항</p>
+                <p>• <strong class="text-stone-200">이용 목적:</strong> 1:1 맞춤 스트레칭 실시간 예약 확정 및 안내</p>
+                <p>• <strong class="text-stone-200">보유 기간:</strong> 이용 완료 후 관련 법령에 따라 최대 3개월 보관 후 파기</p>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4">
+              <button type="button" onclick="goToStep(2)" class="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs font-semibold">이전 단계</button>
+              <button type="button" onclick="submitBooking()" class="px-10 py-4 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm shadow-xl">예약 신청 및 즉시 확정하기 ✓</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Location & Guidelines Section -->
+    <section id="location" class="py-24 bg-stone-100/70 border-t border-stone-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <!-- Location Card -->
+          <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg flex flex-col justify-between">
+            <div>
+              <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1.5 rounded-full">
+                LOCATION & SEARCH
+              </span>
+              <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-4 mb-6">오시는 길 및 안내</h3>
+
+              <div class="space-y-4 mb-8 text-sm sm:text-base text-[#0C3559]">
+                <div>
+                  <p class="font-semibold text-[#0C3559] text-base sm:text-lg">스트레칭온</p>
+                  <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
+                  <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간 제공</p>
+                </div>
+
+                <div class="text-sm font-semibold text-[#0C3559]">
+                  📞 직통 전화 문의: 010-6566-6369 (대표 김동수)
+                </div>
+
+                <div class="text-xs sm:text-sm text-[#0C3559]/85 font-semibold">
+                  <p>월 - 금요일: 10:00 - 22:00</p>
+                  <p>토요일: 10:00 - 18:00 (일요일 정기휴무)</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
+              <p class="text-xs font-semibold text-[#0C3559]/70 uppercase tracking-wider">지도 앱으로 빠르게 위치 찾기</p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onclick="openMapSearch('naver')" class="w-full py-3.5 px-4 rounded-xl bg-[#03CF5D] text-white font-semibold text-xs sm:text-sm shadow-sm">💚 네이버 지도 검색 ↗</button>
+                <button onclick="openMapSearch('kakao')" class="w-full py-3.5 px-4 rounded-xl bg-[#FEE500] text-[#191919] font-semibold text-xs sm:text-sm shadow-sm">💛 카카오맵 검색 ↗</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQs -->
+          <div>
+            <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">FAQ</span>
+            <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-2 mb-6">자주 묻는 질문</h3>
+            <div id="faqs-container" class="space-y-3.5"></div>
+          </div>
+        </div>
+
+        <!-- Customer Reviews -->
+        <div id="reviews" class="pt-8 border-t border-stone-200/80">
+          <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CUSTOMER REVIEWS</span>
+            <h3 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">솔루션스트레칭 고객 수기 후기</h3>
+            <p class="text-[#0C3559]/75 text-sm sm:text-base font-normal">신체 불균형을 개선하고 가벼운 일상을 회복하신 고객분들의 실제 경험담입니다.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="reviews-container"></div>
+        </div>
+
+        <!-- Studio Guidelines -->
+        <div class="pt-8 border-t border-stone-200/80">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1 rounded-full">STUDIO POLICIES</span>
+            <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-3 mb-3">스튜디오 이용 & 수강권 상세 규정</h3>
+            <p class="text-[#0C3559]/75 text-xs sm:text-sm font-normal">투명하고 안전한 스튜디오 이용을 위한 예약, 복장, 수강권 환불 및 공유 기준입니다.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="guidelines-container"></div>
+
+          <div class="mt-8 p-5 rounded-2xl bg-sky-50/80 border border-sky-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-xs sm:text-sm font-semibold text-[#0C3559]">문의사항이나 일정 변경 요청은 대표 번호 <strong>010-6566-6369</strong>로 연락주시면 안내해 드립니다.</span>
+            <button onclick="scrollToSec('reservation')" class="px-5 py-2.5 rounded-full bg-[#0C3559] text-white text-xs font-semibold shrink-0">1:1 예약 바로가기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#0C3559] text-stone-300 py-16 border-t border-white/10 text-xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+        <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서구 가정로 451 8층 803호</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ================================================================= -->
   <!-- MODALS -->
+  <!-- ================================================================= -->
 
   <!-- 1. Booking Success Modal -->
   <div id="modal-booking-success" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
@@ -586,14 +683,13 @@
     </div>
   </div>
 
-  <!-- 2. Client Lookup & My Bookings Modal (Cross-device Sync) -->
+  <!-- 2. Client Lookup & My Bookings Modal -->
   <div id="modal-my-bookings" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative max-h-[85vh] overflow-y-auto custom-scrollbar">
       <button onclick="closeModal('modal-my-bookings')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
       <h3 class="text-xl font-bold text-[#0C3559] mb-1">🔑 내 예약 및 수강권 조회</h3>
       <p class="text-xs text-stone-500 mb-4">예약 시 입력하셨던 성함과 연락처로 조회하시면 모든 기기에서 실시간 확인됩니다.</p>
 
-      <!-- Search Form -->
       <form onsubmit="handleCustomerLookup(event)" class="space-y-3 mb-6 p-4 rounded-2xl bg-stone-50 border border-stone-200">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <input type="text" id="lookup-name" required placeholder="성함 *" class="border p-2.5 rounded-xl text-xs bg-white" />
@@ -604,10 +700,8 @@
         </button>
       </form>
 
-      <!-- Member Card Area -->
       <div id="my-member-status-box" class="hidden mb-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-xs space-y-2"></div>
 
-      <!-- Bookings List Area -->
       <div id="my-bookings-list" class="space-y-3">
         <p class="text-xs text-stone-400 py-6 text-center font-medium">성함과 연락처를 입력 후 조회해 주세요.</p>
       </div>
@@ -644,13 +738,11 @@
         </div>
       </div>
 
-      <!-- PIN Change Form -->
       <div id="admin-pin-change-box" class="p-3 bg-amber-50 rounded-xl my-2 hidden flex gap-2">
         <input type="password" id="new-admin-pin-input" placeholder="새 비밀번호 입력" class="border p-2 rounded text-xs w-full" />
         <button onclick="submitChangePin()" class="px-4 py-2 bg-amber-800 text-white rounded text-xs font-semibold shrink-0">저장</button>
       </div>
 
-      <!-- Navigation Tabs -->
       <div class="flex gap-2 my-3 border-b border-stone-200">
         <button id="admin-tab-btn-bookings" onclick="switchAdminTab('bookings')" class="pb-2.5 px-4 text-xs font-bold border-b-2 border-[#0C3559] text-[#0C3559]">
           📅 예약 현황 & 달력 스케줄
@@ -660,11 +752,8 @@
         </button>
       </div>
 
-      <!-- Tab Content Area -->
       <div class="flex-1 overflow-y-auto custom-scrollbar pr-1">
-        <!-- Tab 1: Bookings -->
         <div id="admin-tab-bookings-content" class="space-y-4">
-          <!-- Manual Phone Booking Form -->
           <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 space-y-2">
             <h4 class="text-xs font-bold text-amber-950">📞 전화 예약 수기 직접 등록 (타임 마감)</h4>
             <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
@@ -680,9 +769,7 @@
           <div id="admin-calendar-view" class="space-y-4"></div>
         </div>
 
-        <!-- Tab 2: Members -->
         <div id="admin-tab-members-content" class="hidden space-y-6">
-          <!-- Add Member Form -->
           <div class="bg-sky-50/70 p-5 rounded-2xl border border-sky-100 space-y-3">
             <h4 class="font-bold text-sm text-[#0C3559]">➕ 신규 회원 등록 & 수강권 발급</h4>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -703,7 +790,6 @@
             </div>
           </div>
 
-          <!-- Members List -->
           <div>
             <h4 class="font-bold text-sm text-[#0C3559] mb-3">👥 등록된 회원 목록 및 수강권 현황</h4>
             <div id="admin-members-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
@@ -786,7 +872,6 @@
     const MEMBERS_KEY = 'solstretch_members_v1';
     const ADMIN_PIN_KEY = 'solstretch_admin_pin_v1';
 
-    // Rich Program definitions
     const PROGRAMS = [
       { 
         id: 'p1', 
@@ -855,7 +940,7 @@
       { q: '편안한 복장이 준비되어 있나요?', a: '아니요, 스트레칭 온은 탈의실 및 별도 유니폼을 제공하지 않습니다. 자율적이고 원활한 가동 이완을 위해 방문 시 움직임이 편안한 복장(운동복 등)을 미리 착용하고 방문해 주시기 바랍니다.' }
     ];
 
-    // App Global State
+    // Global State
     window.bookings = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     window.members = JSON.parse(localStorage.getItem(MEMBERS_KEY)) || [
       { id: 'M-101', name: '홍길동', phone: '01012345678', passType: '솔루션 코스 10회', totalPasses: 10, remainingPasses: 8, expiryDate: getFutureDateStr(2), note: '목/어깨 결림 심함' }
@@ -869,6 +954,7 @@
     let adminCalYear = new Date().getFullYear();
     let adminCalMonth = new Date().getMonth();
     let adminFilterDate = '';
+    let appSelectedTime = '';
 
     function getFutureDateStr(monthsToAdd = 2) {
       const d = new Date();
@@ -926,7 +1012,242 @@
       document.getElementById('mobile-menu').classList.toggle('hidden');
     }
 
-    // Body Zones Render with Right Matching Program Card
+    // ==========================================
+    // 📱 [앱 전용 모바일 뷰 로직 (?view=app)]
+    // ==========================================
+    function checkUrlRouting() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isAppView = urlParams.get('view') === 'app';
+
+      if (isAppView) {
+        document.getElementById('main-website').classList.add('hidden');
+        document.getElementById('app-view').classList.remove('hidden');
+        
+        // 앱 전용 세션 확인
+        const appName = sessionStorage.getItem('solstretch_app_name');
+        const appPhone = sessionStorage.getItem('solstretch_app_phone');
+        if (appName && appPhone) {
+          loadAppDashboard(appName, appPhone);
+        }
+      }
+    }
+
+    function appLoginCheck() {
+      const name = document.getElementById('app-input-name').value.trim();
+      const rawPhone = document.getElementById('app-input-phone').value.trim();
+      const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
+
+      if (!name || !cleanPhone) return showToast('성함과 연락처를 작성해 주세요.');
+
+      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
+      if (!member) {
+        alert('🚨 등록된 10회권 회원 정보가 없습니다. 원장님께 등록 문의를 해주세요.');
+        return;
+      }
+
+      sessionStorage.setItem('solstretch_app_name', name);
+      sessionStorage.setItem('solstretch_app_phone', cleanPhone);
+      loadAppDashboard(name, cleanPhone);
+    }
+
+    function loadAppDashboard(name, cleanPhone) {
+      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
+      if (!member) { appLogout(); return; }
+
+      const curPasses = member.remainingPasses !== undefined ? member.remainingPasses : member.passCount;
+
+      document.getElementById('app-login-screen').classList.add('hidden');
+      document.getElementById('app-booking-screen').classList.remove('hidden');
+
+      document.getElementById('app-user-name').innerText = member.name;
+      document.getElementById('app-user-type').innerText = member.passType || '솔루션 멤버십 10회';
+      document.getElementById('app-user-passes').innerText = curPasses;
+      document.getElementById('app-user-expiry').innerText = member.expiryDate || '무제한';
+
+      document.getElementById('app-date').value = getNextWorkingDateStr();
+      document.getElementById('app-date').min = getNextWorkingDateStr();
+      
+      renderAppTimeSlots();
+      renderAppMyBookings(name, cleanPhone);
+    }
+
+    function appLogout() {
+      sessionStorage.removeItem('solstretch_app_name');
+      sessionStorage.removeItem('solstretch_app_phone');
+      document.getElementById('app-login-screen').classList.remove('hidden');
+      document.getElementById('app-booking-screen').classList.add('hidden');
+    }
+
+    function renderAppTimeSlots() {
+      const dateVal = document.getElementById('app-date').value;
+      if (isSundayDate(dateVal)) {
+        showToast('일요일은 정기 휴무입니다.');
+        document.getElementById('app-date').value = getNextWorkingDateStr();
+        return renderAppTimeSlots();
+      }
+
+      const bookedTimes = window.bookings.filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
+      const isSat = isSaturdayDate(dateVal);
+
+      const slotsEl = document.getElementById('app-time-slots');
+      slotsEl.innerHTML = TIME_SLOTS.map(t => {
+        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00', '21:00'].includes(t);
+        const isBooked = bookedTimes.includes(t);
+        const isSelected = appSelectedTime === t;
+
+        if (isSaturdayCutoff || isBooked) {
+          return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
+        }
+
+        return `
+          <button onclick="selectAppTime('${t}')" class="py-2.5 rounded-xl text-xs font-bold border ${isSelected ? 'bg-[#0092B8] text-white border-[#0092B8]' : 'bg-white text-[#0C3559] border-stone-200 hover:bg-stone-50'}">
+            ${t}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectAppTime(t) {
+      appSelectedTime = t;
+      renderAppTimeSlots();
+    }
+
+    function submitAppBooking() {
+      const name = sessionStorage.getItem('solstretch_app_name');
+      const phone = sessionStorage.getItem('solstretch_app_phone');
+      const date = document.getElementById('app-date').value;
+
+      if (!appSelectedTime) return showToast('시간대를 선택해 주세요.');
+
+      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(phone));
+      const curPasses = member ? (member.remainingPasses !== undefined ? member.remainingPasses : member.passCount) : 0;
+
+      if (!member || curPasses <= 0) {
+        alert('🚨 잔여 수강권이 없습니다. 재결제가 필요합니다.');
+        return;
+      }
+
+      // 수강권 차감
+      member.remainingPasses = curPasses - 1;
+      member.passCount = curPasses - 1;
+      saveMembersLocal();
+      if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
+
+      const newB = {
+        id: 'APP-' + Math.floor(100000 + Math.random() * 900000),
+        programId: 'p3',
+        programTitle: '솔루션 멤버십 10회 (앱예약)',
+        duration: 50,
+        price: 0,
+        date: date,
+        time: appSelectedTime,
+        name, phone,
+        note: '10회권 앱 전용 간편 예약',
+        status: '예약 확정',
+        createdAt: new Date().toLocaleDateString('ko-KR')
+      };
+
+      window.bookings.unshift(newB);
+      saveBookingsLocal();
+      if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(newB);
+
+      alert(`✅ ${date} ${appSelectedTime} 1:1 맞춤 예약이 완료되었습니다! (남은 횟수: ${curPasses - 1}회)`);
+      appSelectedTime = '';
+      loadAppDashboard(name, phone);
+    }
+
+    function renderAppMyBookings(name, phone) {
+      const userBookings = window.bookings.filter(b => b.name === name && b.phone.replace(/[^0-9]/g, '').endsWith(phone));
+      const listEl = document.getElementById('app-my-bookings-list');
+
+      if (userBookings.length === 0) {
+        listEl.innerHTML = `<p class="text-xs text-stone-400 py-3 text-center">예약 신청 내역이 없습니다.</p>`;
+      } else {
+        listEl.innerHTML = userBookings.map(b => `
+          <div class="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between items-center text-xs">
+            <div>
+              <span class="font-bold text-[#0C3559]">${b.date} (${b.time})</span>
+              <p class="text-[10px] text-stone-400">${b.programTitle}</p>
+            </div>
+            <span class="px-2 py-0.5 rounded ${b.status === '취소' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'} text-[10px] font-bold">${b.status}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    // ==========================================
+    // 🔒 [웹사이트 10회권 비회원 차단 보안 로직]
+    // ==========================================
+    function submitBooking() {
+      const name = document.getElementById('user-name').value.trim();
+      const phone = document.getElementById('user-phone').value.trim();
+      const note = document.getElementById('user-note').value.trim();
+      const agree = document.getElementById('privacy-agree').checked;
+
+      if (!agree) return showToast('개인정보 수집 및 이용 동의에 동의해 주세요.');
+      if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
+      if (isSundayDate(selectedDate)) return showToast('일요일은 정기 휴무일입니다.');
+
+      const cleanPhone = phone.replace(/[^0-9]/g, '');
+
+      // 🚨 [보안 차단 핵심] 10회권 선택 시 비회원이거나 횟수가 0인 경우 완벽 차단!
+      if (selectedProgram.id === 'p3' || selectedProgram.badge === 'MEMBERSHIP') {
+        const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
+        const curPasses = member ? (member.remainingPasses !== undefined ? member.remainingPasses : member.passCount) : 0;
+        
+        if (!member || curPasses <= 0) {
+          alert("🚨 10회권 등록 회원이 아니거나 잔여 수강권이 없습니다.\n일반 1회 예약 코스를 선택해 주시거나 스튜디오로 회원 등록을 진행해 주세요.");
+          return; // 예약 데이터베이스 전송을 원천 차단!
+        }
+      }
+
+      // 10회권 등록 회원인 경우 자동 1회 차감 처리
+      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
+      if (member) {
+        const curPasses = member.remainingPasses !== undefined ? member.remainingPasses : member.passCount;
+        if (curPasses > 0) {
+          member.remainingPasses = curPasses - 1;
+          member.passCount = curPasses - 1;
+          saveMembersLocal();
+          if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
+          showToast(`${name} 회원님의 수강권 1회가 차감되었습니다. (잔여: ${curPasses - 1}회)`);
+        }
+      }
+
+      const bookedTimes = window.bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
+      if (bookedTimes.includes(selectedTime)) return showToast('이미 예약 마감된 시간대입니다.');
+
+      const newB = {
+        id: 'SOL-' + Math.floor(100000 + Math.random() * 900000),
+        programId: selectedProgram.id,
+        programTitle: selectedProgram.title,
+        duration: selectedProgram.duration,
+        price: selectedProgram.price,
+        date: selectedDate,
+        time: selectedTime,
+        name, phone: cleanPhone, note,
+        status: '예약 확정',
+        createdAt: new Date().toLocaleDateString('ko-KR')
+      };
+
+      window.bookings.unshift(newB);
+      saveBookingsLocal();
+
+      if (typeof window.syncBookingToCloud === 'function') {
+        window.syncBookingToCloud(newB);
+      }
+
+      document.getElementById('success-user-name').innerText = `${name}님, 예약이 확정되었습니다`;
+      document.getElementById('success-date-time').innerText = `${selectedDate} ${selectedTime} (${selectedProgram.title})`;
+      openModal('modal-booking-success');
+
+      document.getElementById('user-name').value = '';
+      document.getElementById('user-phone').value = '';
+      document.getElementById('user-note').value = '';
+      document.getElementById('privacy-agree').checked = false;
+    }
+
+    // Body Zones Render
     function renderBodyZones() {
       const tabContainer = document.getElementById('zone-tab-buttons');
       tabContainer.innerHTML = BODY_ZONES.map(z => {
@@ -994,7 +1315,7 @@
       scrollToSec('reservation');
     }
 
-    // Render Care Programs & Detailed Passes
+    // Render Care Programs
     function renderPrograms() {
       const container = document.getElementById('program-cards-container');
       container.innerHTML = PROGRAMS.map(p => {
@@ -1148,76 +1469,12 @@
       renderStep2();
     }
 
-    function submitBooking() {
-      const name = document.getElementById('user-name').value.trim();
-      const phone = document.getElementById('user-phone').value.trim();
-      const note = document.getElementById('user-note').value.trim();
-      const agree = document.getElementById('privacy-agree').checked;
-
-      if (!agree) return showToast('개인정보 수집 및 이용 동의에 동의해 주세요.');
-      if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
-      if (isSundayDate(selectedDate)) return showToast('일요일은 정기 휴무일입니다.');
-
-      const cleanPhone = phone.replace(/[^0-9]/g, '');
-
-      // Member Pass Auto-deduction Check
-      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-      if (member) {
-        const curPasses = member.remainingPasses !== undefined ? member.remainingPasses : member.passCount;
-        if (curPasses > 0) {
-          member.remainingPasses = curPasses - 1;
-          member.passCount = curPasses - 1;
-          saveMembersLocal();
-          if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
-          showToast(`${name} 회원님의 수강권 1회가 차감되었습니다. (잔여: ${curPasses - 1}회)`);
-        }
-      }
-
-      const bookedTimes = window.bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
-      if (bookedTimes.includes(selectedTime)) return showToast('이미 예약 마감된 시간대입니다.');
-
-      const newB = {
-        id: 'SOL-' + Math.floor(100000 + Math.random() * 900000),
-        programId: selectedProgram.id,
-        programTitle: selectedProgram.title,
-        duration: selectedProgram.duration,
-        price: selectedProgram.price,
-        date: selectedDate,
-        time: selectedTime,
-        name, phone: cleanPhone, note,
-        status: '예약 확정',
-        createdAt: new Date().toLocaleDateString('ko-KR')
-      };
-
-      window.bookings.unshift(newB);
-      saveBookingsLocal();
-
-      if (typeof window.syncBookingToCloud === 'function') {
-        window.syncBookingToCloud(newB);
-      }
-
-      try {
-        fetch('/api/send-alimtalk', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newB) }).catch(()=>{});
-      } catch(e){}
-
-      document.getElementById('success-user-name').innerText = `${name}님, 예약이 확정되었습니다`;
-      document.getElementById('success-date-time').innerText = `${selectedDate} ${selectedTime} (${selectedProgram.title})`;
-      openModal('modal-booking-success');
-
-      document.getElementById('user-name').value = '';
-      document.getElementById('user-phone').value = '';
-      document.getElementById('user-note').value = '';
-      document.getElementById('privacy-agree').checked = false;
-    }
-
     // Modal Helpers
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    // Client Lookup & My Bookings Modal
-    function openMyBookingsModal() {
-      openModal('modal-my-bookings');
-    }
+    // Client Lookup Modal
+    function openMyBookingsModal() { openModal('modal-my-bookings'); }
 
     function handleCustomerLookup(e) {
       e.preventDefault();
@@ -1289,11 +1546,7 @@
 
     // Admin Flow
     function openAdminAuthModal() {
-      if (isAdminAuth) {
-        openAdminDashboard();
-      } else {
-        openModal('modal-admin-login');
-      }
+      if (isAdminAuth) { openAdminDashboard(); } else { openModal('modal-admin-login'); }
     }
 
     function submitAdminLogin() {
@@ -1344,9 +1597,7 @@
       }
     }
 
-    function togglePinChangeForm() {
-      document.getElementById('admin-pin-change-box').classList.toggle('hidden');
-    }
+    function togglePinChangeForm() { document.getElementById('admin-pin-change-box').classList.toggle('hidden'); }
 
     function submitChangePin() {
       const newPin = document.getElementById('new-admin-pin-input').value.trim();
@@ -1480,7 +1731,7 @@
       renderAdminDashboardView();
     }
 
-    // Admin Member Management Functions
+    // Admin Member Management
     function submitAddMemberAdmin() {
       const name = document.getElementById('new-mem-name').value.trim();
       const phone = document.getElementById('new-mem-phone').value.trim();
@@ -1627,7 +1878,6 @@
 
     // Static Sections Initialization
     function renderStaticSections() {
-      // Reviews
       document.getElementById('reviews-container').innerHTML = REVIEWS.map(r => `
         <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-md flex flex-col justify-between hover:shadow-xl transition-all">
           <div>
@@ -1644,7 +1894,6 @@
         </div>
       `).join('');
 
-      // Policy Guidelines
       document.getElementById('guidelines-container').innerHTML = GUIDELINES.map(g => `
         <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
           <div>
@@ -1664,7 +1913,6 @@
         </div>
       `).join('');
 
-      // FAQs
       document.getElementById('faqs-container').innerHTML = FAQS.map((f, idx) => `
         <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
           <button onclick="document.getElementById('faq-ans-${idx}').classList.toggle('hidden')" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
@@ -1677,6 +1925,7 @@
     }
 
     window.onload = function() {
+      checkUrlRouting();
       renderBodyZones();
       renderPrograms();
       renderStaticSections();
@@ -1690,6 +1939,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // 원장님의 실제 Firebase 설정
     const firebaseConfig = {
       apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
       authDomain: "solutionstretching.firebaseapp.com",
@@ -1734,7 +1984,7 @@
       };
 
       window.deleteMemberFromCloud = async function(memberId) {
-        try { await deleteDoc(doc(db, "members", memberId)); }
+        try { await deleteDoc(doc(doc(db, "members", memberId))); }
         catch (e) { console.error("Cloud member delete:", e); }
       };
 
