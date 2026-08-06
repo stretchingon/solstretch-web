@@ -537,7 +537,7 @@
         </div>
       </div>
 
-      <!-- Customer Reviews Section (Moved inside Location/Guidelines) -->
+      <!-- Customer Reviews Section (Positioned inside Location/Guidelines) -->
       <div id="reviews" class="pt-8 border-t border-stone-200/80">
         <div class="text-center max-w-2xl mx-auto mb-16">
           <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CUSTOMER REVIEWS</span>
@@ -631,12 +631,17 @@
     <div class="bg-white rounded-3xl max-w-5xl w-full h-[90vh] p-4 sm:p-8 relative flex flex-col">
       <button onclick="closeModal('modal-admin-dashboard')" class="absolute top-6 right-6 text-stone-500 font-bold text-lg z-10">✕</button>
 
-      <div class="flex items-center justify-between pb-4 border-b border-stone-200 pr-8">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-stone-200 pr-8 gap-3">
         <h3 class="text-xl font-extrabold text-[#0C3559] flex items-center gap-2">
           <span>👑 원장님 통합 관리자 센터</span>
           <span class="text-xs font-normal bg-sky-100 text-[#0092B8] px-2.5 py-0.5 rounded-full">구글 클라우드 동기화</span>
         </h3>
-        <button onclick="togglePinChangeForm()" class="px-3 py-1.5 bg-amber-100 text-amber-900 rounded-xl text-xs font-semibold">🔑 비밀번호 변경</button>
+        <div class="flex items-center gap-2">
+          <button onclick="adminLogout()" class="px-3.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center gap-1">
+            🚪 로그아웃
+          </button>
+          <button onclick="togglePinChangeForm()" class="px-3 py-1.5 bg-amber-100 text-amber-900 rounded-xl text-xs font-semibold">🔑 비밀번호 변경</button>
+        </div>
       </div>
 
       <!-- PIN Change Form -->
@@ -684,7 +689,7 @@
               <input type="text" id="new-mem-name" placeholder="회원 성함 *" class="border p-2.5 rounded-xl text-xs bg-white" />
               <input type="tel" id="new-mem-phone" placeholder="연락처 *" class="border p-2.5 rounded-xl text-xs bg-white" />
               <select id="new-mem-passtype" class="border p-2.5 rounded-xl text-xs bg-white">
-                <option value="솔루션 코스 10회">솔루션 코스 10회 (2개월 유효)</option>
+                <option value="솔루션 멤버십 10회">솔루션 멤버십 10회 (2개월 유효)</option>
                 <option value="프리미엄 딥케어 10회">프리미엄 딥케어 10회 (2개월 유효)</option>
                 <option value="원장 VIP 스페셜 10회">원장 VIP 스페셜 10회 (2개월 유효)</option>
                 <option value="20회 멤버십 수강권">20회 멤버십 수강권 (무제한)</option>
@@ -727,7 +732,7 @@
           <div>
             <label class="block font-semibold text-stone-700 mb-1">수강권 종류</label>
             <select id="edit-mem-passtype" class="w-full border p-2.5 rounded-xl bg-white">
-              <option value="솔루션 코스 10회">솔루션 코스 10회</option>
+              <option value="솔루션 멤버십 10회">솔루션 멤버십 10회</option>
               <option value="프리미엄 딥케어 10회">프리미엄 딥케어 10회</option>
               <option value="원장 VIP 스페셜 10회">원장 VIP 스페셜 10회</option>
               <option value="20회 멤버십 수강권">20회 멤버십 수강권</option>
@@ -1089,7 +1094,6 @@
       const isSat = isSaturdayDate(selectedDate);
       const bookedTimes = window.bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
 
-      // 토요일인 경우 18시 이후 시간대가 선택되어 있으면 10:00으로 자동 변경
       if (isSat && ['18:00', '19:00', '20:00', '21:00'].includes(selectedTime)) {
         selectedTime = '10:00';
       }
@@ -1210,7 +1214,7 @@
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    // Customer Lookup & My Bookings Modal
+    // Client Lookup & My Bookings Modal
     function openMyBookingsModal() {
       openModal('modal-my-bookings');
     }
@@ -1223,7 +1227,6 @@
 
       if (!name || !cleanPhone) return showToast('성함과 연락처를 작성해 주세요.');
 
-      // 1. Look for Member pass info
       const mem = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
       const memBox = document.getElementById('my-member-status-box');
 
@@ -1243,7 +1246,6 @@
         memBox.classList.add('hidden');
       }
 
-      // 2. Filter bookings
       const userBookings = window.bookings.filter(b => b.name === name && b.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
       const listEl = document.getElementById('my-bookings-list');
 
@@ -1305,6 +1307,13 @@
       } else {
         showToast('비밀번호가 올바르지 않습니다.');
       }
+    }
+
+    function adminLogout() {
+      isAdminAuth = false;
+      closeModal('modal-admin-dashboard');
+      updateHeaderState();
+      showToast('관리자 모드에서 로그아웃되었습니다.');
     }
 
     function openAdminDashboard() {
