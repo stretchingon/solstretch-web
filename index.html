@@ -18,15 +18,15 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, query, where, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // 원장님의 Firebase 설정으로 교체해주세요.
         const firebaseConfig = {
-      apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
-      authDomain: "solutionstretching.firebaseapp.com",
-      projectId: "solutionstretching",
-      storageBucket: "solutionstretching.firebasestorage.app",
-      messagingSenderId: "567579240099",
-      appId: "1:567579240099:web:1b32c98d04fbd4e55d0116",
-      measurementId: "G-663RDZSPGH"
-    };
+            apiKey: "API_KEY",
+            authDomain: "PROJECT_ID.firebaseapp.com",
+            projectId: "PROJECT_ID",
+            storageBucket: "PROJECT_ID.appspot.com",
+            messagingSenderId: "SENDER_ID",
+            appId: "APP_ID"
+        };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
