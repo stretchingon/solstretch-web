@@ -1286,6 +1286,25 @@
       saveBookingsLocal();
       if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(newB);
 
+      // 📱 카카오 알림톡 및 원장님 SMS 발송
+      try {
+        fetch('/api/send-alimtalk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            phone: phone,
+            programTitle: '솔루션 멤버십 10회 (앱예약)',
+            duration: 50,
+            date: date,
+            time: appSelectedTime,
+            note: '10회권 앱 전용 간편 예약'
+          })
+        }).catch(err => console.warn('Alimtalk send error:', err));
+      } catch (err) {
+        console.warn('Alimtalk exception:', err);
+      }
+
       alert(`✅ ${date} ${appSelectedTime} 1:1 맞춤 예약이 확정되었습니다!\n* 수강권은 방문 당일 스튜디오 출석체크 시 차감됩니다.`);
       appSelectedTime = '';
       loadAppDashboard(name, phone);
@@ -1365,6 +1384,25 @@
 
       if (typeof window.syncBookingToCloud === 'function') {
         window.syncBookingToCloud(newB);
+      }
+
+      // 📱 카카오 알림톡 및 원장님 SMS 발송
+      try {
+        fetch('/api/send-alimtalk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            phone: cleanPhone,
+            programTitle: selectedProgram.title,
+            duration: selectedProgram.duration,
+            date: selectedDate,
+            time: selectedTime,
+            note: note || '없음'
+          })
+        }).catch(err => console.warn('Alimtalk send error:', err));
+      } catch (err) {
+        console.warn('Alimtalk exception:', err);
       }
 
       document.getElementById('success-user-name').innerText = `${name}님, 예약이 확정되었습니다`;
