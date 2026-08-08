@@ -1,6 +1,6 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader(
@@ -12,19 +12,17 @@ module.exports = async (req, res) => {
     return res.status(200).end();
   }
 
-  // GET = 연결 테스트
   if (req.method === 'GET') {
     return res.status(200).json({
       success: true,
-      message: 'SOLAPI API 인증 서버 정상 작동!'
+      message: 'SOLAPI Alimtalk API 서버 정상 작동!'
     });
   }
 
-  // POST = 실제 예약 알림 발송
   if (req.method !== 'POST') {
     return res.status(405).json({
       success: false,
-      error: '허용되지 않은 요청 방식입니다.'
+      error: 'Method not allowed'
     });
   }
 
@@ -57,7 +55,6 @@ module.exports = async (req, res) => {
     const apiSecret = process.env.SOLAPI_API_SECRET;
     const pfId = process.env.SOLAPI_PF_ID;
     const templateId = process.env.SOLAPI_TEMPLATE_ID;
-
     const senderPhone = String(
       process.env.SOLAPI_SENDER_PHONE || ''
     ).replace(/[^0-9]/g, '');
@@ -69,7 +66,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    // SOLAPI HMAC 인증
     const dateHeader = new Date().toISOString();
     const salt = crypto.randomBytes(16).toString('hex');
 
@@ -78,7 +74,7 @@ module.exports = async (req, res) => {
       .update(dateHeader + salt)
       .digest('hex');
 
-    const authHeader =
+    const authorization =
       'HMAC-SHA256 ' +
       'apiKey=' + apiKey + ', ' +
       'date=' + dateHeader + ', ' +
@@ -102,8 +98,43 @@ module.exports = async (req, res) => {
       }
     };
 
-    // 원장님 문자
-    const lmsMessage = {
+    console.log('알림톡 요청:', {
+      to: cleanedPhone,
+      pfId: pfId,
+      templateId: templateId
+    });
+
+    const alimtalkResponse = await fetch(
+      'https://api.solapi.com/messages/v4/send',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: authorization
+        },
+        body: JSON.stringify(alimtalkMessage)
+      }
+    );
+
+    const alimtalkData =
+      await alimtalkResponse.json().catch(() => ({}));
+
+    console.log('알림톡 응답:', alimtalkData);
+
+    if (!alimtalkResponse.ok) {
+      return res.status(500).json({
+        success: false,
+        stage: 'alimtalk',
+        error:
+          alimtalkData.errorMessage ||
+          alimtalkData.message ||
+          '알림톡 발송 실패',
+        solapi: alimtalkData
+      });
+    }
+
+    // 원장님 LMS
+    const adminMessage = {
       to: senderPhone,
       from: senderPhone,
       text:
@@ -117,57 +148,36 @@ module.exports = async (req, res) => {
         '요청사항: ' + String(note || '없음')
     };
 
-    const messages = [
-      alimtalkMessage,
-      lmsMessage
-    ];
-
-    const solapiRes = await fetch(
-      'https://api.solapi.com/messages/v4/send-many',
+    const adminResponse = await fetch(
+      'https://api.solapi.com/messages/v4/send',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': authHeader
+          Authorization: authorization
         },
-        body: JSON.stringify({
-          messages: messages
-        })
+        body: JSON.stringify(adminMessage)
       }
     );
 
-    const solapiData =
-      await solapiRes.json().catch(() => ({}));
+    const adminData =
+      await adminResponse.json().catch(() => ({}));
 
-    if (!solapiRes.ok) {
-      console.error('SOLAPI 발송 실패:', solapiData);
-
-      return res.status(500).json({
-        success: false,
-        error:
-          solapiData.errorMessage ||
-          solapiData.message ||
-          'SOLAPI 메시지 발송에 실패했습니다.',
-        status: solapiRes.status
-      });
-    }
-
-    console.log('SOLAPI 발송 성공:', solapiData);
+    console.log('원장님 문자 응답:', adminData);
 
     return res.status(200).json({
       success: true,
-      message: '예약 알림이 정상적으로 발송되었습니다.',
-      result: solapiData
+      message: '알림톡 및 예약 접수 문자가 처리되었습니다.',
+      alimtalk: alimtalkData,
+      adminSms: adminData
     });
 
   } catch (error) {
-    console.error('알림 발송 오류:', error);
+    console.error('SOLAPI 발송 오류:', error);
 
     return res.status(500).json({
       success: false,
-      error:
-        error.message ||
-        '알림 발송 중 서버 오류가 발생했습니다.'
+      error: error.message || '알림 발송 중 서버 오류가 발생했습니다.'
     });
   }
-};
+}
