@@ -8,7 +8,6 @@ export default async function handler(req, res) {
 
   const { name, phone, programTitle, duration, date, time } = req.body;
 
-  // 원장님의 실제 계정 및 발신 프로필 정보 적용 완료
   const apiKey = "NCS24FJSIMGZIRAU"; 
   const apiSecret = "UUGFZ1N6ZDOPL8GVRT3SQBPQ35MNYBHU";
   const pfId = "KA01PF260804020356564lHGfPOx0VFG"; 
@@ -28,9 +27,11 @@ export default async function handler(req, res) {
       messages: [{
         to: phone,
         from: senderPhone,
+        text: `${name}님 예약이 확정되었습니다.\n코스: ${programTitle}\n일자: ${date} ${time}`, // 카카오 필수 규격 텍스트
         kakaoOptions: {
           pfId: pfId,
           templateId: templateId,
+          disableSms: true, // ⭐️ 카카오 실패 시 SMS로 빠지지 않게 강제 고정
           variables: {
             "#{고객명}": name,
             "#{코스명}": programTitle,
