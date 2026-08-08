@@ -1,5 +1,5 @@
 ```js
-import { SolapiMessageService } from 'solapi';
+const { SolapiMessageService } = require('solapi');
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -77,8 +77,8 @@ export default async function handler(req, res) {
       to: cleanedPhone,
       from: senderPhone,
       kakaoOptions: {
-        pfId,
-        templateId,
+        pfId: pfId,
+        templateId: templateId,
         variables: {
           '#{고객명}': String(name || '고객'),
           '#{코스명}': String(programTitle || '1:1 맞춤 예약'),
@@ -90,13 +90,13 @@ export default async function handler(req, res) {
     };
 
     const lmsText =
-      '[스트레칭온 실시간 예약 접수]\\n' +
-      '고객명: ' + String(name || '미입력') + '\\n' +
-      '연락처: ' + cleanedPhone + '\\n' +
+      '[스트레칭온 실시간 예약 접수]\n' +
+      '고객명: ' + String(name || '미입력') + '\n' +
+      '연락처: ' + cleanedPhone + '\n' +
       '코스: ' + String(programTitle || '맞춤 케어') +
-      ' (' + String(duration || '50') + '분)\\n' +
+      ' (' + String(duration || '50') + '분)\n' +
       '일시: ' + String(date || '') +
-      ' ' + String(time || '') + '\\n' +
+      ' ' + String(time || '') + '\n' +
       '요청사항: ' + String(note || '없음');
 
     const lmsMessage = {
@@ -111,8 +111,8 @@ export default async function handler(req, res) {
     const lmsResult =
       await messageService.send(lmsMessage);
 
-    console.log('알림톡 발송 결과:', alimtalkResult);
-    console.log('LMS 발송 결과:', lmsResult);
+    console.log('Alimtalk result:', alimtalkResult);
+    console.log('LMS result:', lmsResult);
 
     return res.status(200).json({
       success: true,
@@ -120,11 +120,13 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Solapi 발송 오류:', error);
+    console.error('Solapi send error:', error);
 
     return res.status(500).json({
       success: false,
-      error: error?.message || '알림 발송 중 서버 오류가 발생했습니다.'
+      error: error && error.message
+        ? error.message
+        : '알림 발송 중 서버 오류가 발생했습니다.'
     });
   }
 }
