@@ -22,16 +22,29 @@ export default async function handler(req, res) {
   const signature = hmac.digest('hex');
   const authHeader = `HMAC-SHA256 apiKey=${apiKey}, date=${dateStr}, salt=${salt}, signature=${signature}`;
 
+  // ⭐️ 핵심 수정: 카카오 승인 템플릿과 100% 동일한 텍스트로 치환 적용
+  const messageText = `[스트레칭온] 1:1 맞춤 예약 완료 안내
+
+안녕하세요, ${name}님!
+스트레칭온 1:1 맞춤 수기 케어 예약이 정상 확정되었습니다.
+
+• 예약 코스: ${programTitle} (${duration || 50}분)
+• 예약 일시: ${date} ${time}
+• 오시는 길: 인천 서구 가정로 451 벨라미센텀시티2차 8층 803호
+• 문의 전화: 010-6566-6369
+
+※ 자율적 이완 관리를 위해 움직임이 편안한 복장(운동복 등)을 착용 후 방문해 주세요.`;
+
   try {
     const payload = {
       messages: [{
         to: phone,
         from: senderPhone,
-        text: `${name}님 예약이 확정되었습니다.\n코스: ${programTitle}\n일자: ${date} ${time}`, // 카카오 필수 규격 텍스트
+        text: messageText,
         kakaoOptions: {
           pfId: pfId,
           templateId: templateId,
-          disableSms: true, // ⭐️ 카카오 실패 시 SMS로 빠지지 않게 강제 고정
+          disableSms: true, // 카톡 실패시 문자로 빠지지 않게 강제 설정
           variables: {
             "#{고객명}": name,
             "#{코스명}": programTitle,
