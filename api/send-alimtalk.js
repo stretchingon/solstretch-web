@@ -2,7 +2,6 @@
 import { SolapiMessageService } from 'solapi';
 
 export default async function handler(req, res) {
-  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader(
@@ -10,12 +9,10 @@ export default async function handler(req, res) {
     'Content-Type, Authorization, X-Requested-With'
   );
 
-  // OPTIONS
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // GET 테스트
   if (req.method === 'GET') {
     return res.status(200).json({
       success: true,
@@ -23,7 +20,6 @@ export default async function handler(req, res) {
     });
   }
 
-  // POST만 허용
   if (req.method !== 'POST') {
     return res.status(405).json({
       success: false,
@@ -47,7 +43,6 @@ export default async function handler(req, res) {
       note
     } = body;
 
-    // 전화번호 숫자만 남김
     const cleanedPhone = String(phone || '').replace(/[^0-9]/g, '');
 
     if (!cleanedPhone) {
@@ -57,38 +52,33 @@ export default async function handler(req, res) {
       });
     }
 
-    // Vercel 환경변수
     const apiKey = process.env.SOLAPI_API_KEY;
     const apiSecret = process.env.SOLAPI_API_SECRET;
     const pfId = process.env.SOLAPI_PF_ID;
     const templateId = process.env.SOLAPI_TEMPLATE_ID;
+
     const senderPhone = String(
       process.env.SOLAPI_SENDER_PHONE || ''
     ).replace(/[^0-9]/g, '');
 
-    // 환경변수 확인
     if (!apiKey || !apiSecret || !pfId || !templateId || !senderPhone) {
-      console.error('Solapi 환경변수 누락');
-
       return res.status(500).json({
         success: false,
-        error: 'Solapi 서버 설정이 완료되지 않았습니다.'
+        error: 'Solapi 환경변수가 모두 설정되지 않았습니다.'
       });
     }
 
-    // SOLAPI 공식 Node.js SDK
     const messageService = new SolapiMessageService(
       apiKey,
       apiSecret
     );
 
-    // 고객 알림톡
     const alimtalkMessage = {
       to: cleanedPhone,
       from: senderPhone,
       kakaoOptions: {
-        pfId: pfId,
-        templateId: templateId,
+        pfId,
+        templateId,
         variables: {
           '#{고객명}': String(name || '고객'),
           '#{코스명}': String(programTitle || '1:1 맞춤 예약'),
@@ -99,20 +89,22 @@ export default async function handler(req, res) {
       }
     };
 
-    // 원장님 LMS
+    const lmsText =
+      '[스트레칭온 실시간 예약 접수]\\n' +
+      '고객명: ' + String(name || '미입력') + '\\n' +
+      '연락처: ' + cleanedPhone + '\\n' +
+      '코스: ' + String(programTitle || '맞춤 케어') +
+      ' (' + String(duration || '50') + '분)\\n' +
+      '일시: ' + String(date || '') +
+      ' ' + String(time || '') + '\\n' +
+      '요청사항: ' + String(note || '없음');
+
     const lmsMessage = {
       to: senderPhone,
       from: senderPhone,
-      text:
-        `[스트레칭온 실시간 예약 접수]\n` +
-        `• 고객명: ${name || '미입력'}\n` +
-        `• 연락처: ${cleanedPhone}\n` +
-        `• 코스: ${programTitle || '맞춤 케어'} (${duration || 50}분)\n` +
-        `• 일시: ${date || ''} ${time || ''}\n` +
-        `• 요청사항: ${note || '없음'}`
+      text: lmsText
     };
 
-    // 두 메시지를 순서대로 발송
     const alimtalkResult =
       await messageService.send(alimtalkMessage);
 
@@ -132,9 +124,7 @@ export default async function handler(req, res) {
 
     return res.status(500).json({
       success: false,
-      error:
-        error?.message ||
-        '알림톡 발송 중 서버 오류가 발생했습니다.'
+      error: error?.message || '알림 발송 중 서버 오류가 발생했습니다.'
     });
   }
 }
