@@ -5,22 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>스트레칭온 | 통합 회원관리 ERP</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- CryptoJS for Solapi Kakao Alimtalk -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
   <style>
-    body { font-family: "Pretendard", sans-serif; background-color: #f1f5f9; }
+    body { font-family: "Pretendard", -apple-system, sans-serif; background-color: #f1f5f9; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
+    .nav-top-btn.active { background-color: #0092B8; color: #ffffff; font-weight: 800; border-bottom: 4px solid #38bdf8; }
+    .nav-top-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
   </style>
 </head>
-<body class="text-slate-800 h-screen flex overflow-hidden">
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden bg-slate-100">
 
-  <!-- Sidebar -->
-  <aside class="w-64 bg-[#0C3559] text-white flex flex-col justify-between shadow-xl z-20">
-    <div>
-      <div class="h-20 flex items-center gap-3 px-6 border-b border-white/10 cursor-pointer" onclick="window.showWelcomeView()">
-        <!-- SVG Logo -->
-        <svg class="h-8 w-auto text-amber-300" viewBox="0 0 130 110" fill="none">
+  <!-- 🌙 대기모드 (Standby Mode Screen) -->
+  <div id="standby-screen" onclick="window.exitStandbyMode()" class="fixed inset-0 z-[100] bg-[#081b2e] text-white hidden flex-col items-center justify-center p-8 select-none transition-all duration-300">
+    <div class="max-w-2xl w-full text-center space-y-8 flex flex-col items-center justify-center">
+      
+      <!-- Centered Logo & Emblem -->
+      <div class="flex flex-col items-center justify-center gap-4 animate-pulse">
+        <svg class="h-24 w-auto text-amber-300 drop-shadow-[0_0_20px_rgba(252,211,77,0.4)]" viewBox="0 0 130 110" fill="none">
           <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none" />
           <circle cx="46" cy="18" r="9" fill="currentColor" />
           <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="currentColor" stroke-width="11" stroke-linecap="round" fill="none" />
@@ -28,361 +31,2981 @@
           <path d="M 50 30 L 76 4 L 82 26 Z" fill="currentColor" />
         </svg>
         <div>
-          <h1 class="font-bold text-lg tracking-tight">스트레칭온 ERP</h1>
-          <p class="text-[10px] text-sky-300 font-semibold">Stretching ON Admin</p>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">스트레칭온 ERP</h1>
+          <p class="text-sm font-bold text-sky-400 tracking-widest uppercase mt-1">SOLSTRETCH INTEGRATED MANAGEMENT SYSTEM</p>
         </div>
       </div>
-      
-      <nav class="p-4 space-y-1">
-        <button onclick="window.switchTab('dashboard')" id="btn-dashboard" class="w-full text-left px-4 py-3 rounded-xl font-bold flex items-center gap-3 text-white/70 hover:bg-white/10 hover:text-white transition-all tab-btn active:bg-sky-500 active:text-white">
-          <span>📊</span> 대시보드
-        </button>
-        <button onclick="window.switchTab('members')" id="btn-members" class="w-full text-left px-4 py-3 rounded-xl font-bold flex items-center gap-3 text-white/70 hover:bg-white/10 hover:text-white transition-all tab-btn">
-          <span>👥</span> 회원 관리
-        </button>
-        <button onclick="window.switchTab('reservations')" id="btn-reservations" class="w-full text-left px-4 py-3 rounded-xl font-bold flex items-center gap-3 text-white/70 hover:bg-white/10 hover:text-white transition-all tab-btn">
-          <span>📅</span> 예약 관리
-        </button>
-      </nav>
+
+      <!-- Live Digital Clock & Date -->
+      <div class="bg-[#0C3559]/80 border border-sky-400/30 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-2 w-full max-w-lg">
+        <p id="standby-date-text" class="text-sm sm:text-base font-semibold text-sky-300">2026년 08월 08일 토요일</p>
+        <p id="standby-clock-text" class="text-5xl sm:text-6xl font-black font-mono tracking-wider text-amber-300">14:35:00</p>
+      </div>
+
+      <!-- Real-time Summary Badges -->
+      <div class="grid grid-cols-3 gap-4 w-full max-w-lg">
+        <div class="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
+          <p class="text-xs font-semibold text-slate-300">오늘 예약</p>
+          <p class="text-2xl font-extrabold text-amber-300 mt-1"><span id="standby-stat-bookings">0</span>건</p>
+        </div>
+        <div class="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
+          <p class="text-xs font-semibold text-slate-300">오늘 출석</p>
+          <p class="text-2xl font-extrabold text-emerald-400 mt-1"><span id="standby-stat-attendance">0</span>건</p>
+        </div>
+        <div class="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
+          <p class="text-xs font-semibold text-slate-300">수강 회원</p>
+          <p class="text-2xl font-extrabold text-sky-300 mt-1"><span id="standby-stat-members">0</span>명</p>
+        </div>
+      </div>
+
+      <!-- Wake-up Hint -->
+      <p class="text-xs text-slate-400 font-medium animate-bounce pt-2">
+        💡 화면을 클릭하거나 키보드를 누르면 대기모드가 해제됩니다.
+      </p>
+
     </div>
-  </aside>
+  </div>
 
-  <!-- Main Content -->
-  <main class="flex-1 flex flex-col bg-slate-50 relative h-full overflow-hidden">
-    
-    <!-- Header -->
-    <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 shrink-0 shadow-sm z-10">
-      <h2 id="header-title" class="text-xl font-bold text-slate-800 flex items-center gap-2">
-        📊 대시보드
-      </h2>
-      <div class="flex items-center gap-4">
-        <span class="text-xs font-bold px-3 py-1.5 bg-emerald-100 text-emerald-700 rounded-full flex items-center gap-1.5 shadow-inner">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 중앙 클라우드 연동중
-        </span>
-        <button onclick="window.openManualBookingModal()" class="px-5 py-2.5 bg-[#0C3559] hover:bg-[#082239] text-white rounded-xl text-sm font-bold shadow-md transition-all flex items-center gap-2">
-          📞 전화 예약 등록
+  <!-- Header / Top Bar -->
+  <header class="bg-[#0C3559] text-white h-16 px-8 flex items-center justify-between shrink-0 shadow-lg border-b border-white/10">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.switchTab('basic')">
+      <svg class="h-7 w-auto text-amber-300" viewBox="0 0 130 110" fill="none">
+        <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none" />
+        <circle cx="46" cy="18" r="9" fill="currentColor" />
+        <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="currentColor" stroke-width="11" stroke-linecap="round" fill="none" />
+        <path d="M 52 26 C 50 45, 38 72, 12 106 L 20 108 C 45 75, 58 48, 58 26 Z" fill="currentColor" />
+        <path d="M 50 30 L 76 4 L 82 26 Z" fill="currentColor" />
+      </svg>
+      <div>
+        <h1 class="font-extrabold text-lg tracking-tight leading-none">스트레칭온 회원관리프로그램 ERP</h1>
+        <p class="text-[10px] text-sky-300 font-semibold mt-0.5">Stretching ON Integrated Management System</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- Active Staff Badge & Login Switcher -->
+      <div class="flex items-center gap-2 bg-slate-800/90 px-3.5 py-1.5 rounded-xl border border-sky-400/30 text-xs shadow-inner">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-slate-400 font-medium">현재 접속:</span>
+        <span id="active-staff-badge" class="font-extrabold text-amber-300">김동수 (원장)</span>
+        <button onclick="window.openStaffLoginModal()" class="ml-1 px-2.5 py-1 bg-sky-500/20 hover:bg-sky-500/40 text-sky-300 rounded-lg font-bold text-[11px] border border-sky-400/40 transition-all flex items-center gap-1 active:scale-95">
+          👤 계정 전환
         </button>
       </div>
-    </header>
 
-    <!-- Scrollable Content Area -->
-    <div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
-      
-      <!-- Welcome View -->
-      <div id="welcome-view" class="h-full flex flex-col items-center justify-center text-center space-y-6">
-        <svg class="h-32 w-auto text-amber-300 drop-shadow-xl" viewBox="0 0 130 110" fill="none">
-          <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none" />
-          <circle cx="46" cy="18" r="9" fill="currentColor" />
-          <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="currentColor" stroke-width="11" stroke-linecap="round" fill="none" />
-          <path d="M 52 26 C 50 45, 38 72, 12 106 L 20 108 C 45 75, 58 48, 58 26 Z" fill="currentColor" />
-          <path d="M 50 30 L 76 4 L 82 26 Z" fill="currentColor" />
-        </svg>
+      <button onclick="window.enterStandbyMode()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-400/30 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-md">
+        🌙 대기모드
+      </button>
+      <button onclick="window.openManualBookingModal()" class="px-4 py-2 bg-[#0092B8] hover:bg-[#007a99] text-white rounded-xl text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
+        📞 예약등록
+      </button>
+    </div>
+  </header>
+
+  <!-- Top Navigation Bar -->
+  <nav class="bg-[#082239] text-slate-300 px-6 flex items-center gap-1 overflow-x-auto shadow-md border-b border-white/10 shrink-0">
+    <button onclick="window.switchTab('basic')" id="nav-top-basic" class="nav-top-btn active px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>⚙️</span> 기본관리
+    </button>
+    <button onclick="window.switchTab('members')" id="nav-top-members" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>👥</span> 회원관리
+    </button>
+    <button onclick="window.switchTab('passes')" id="nav-top-passes" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>🎫</span> 수강관리
+    </button>
+    <button onclick="window.switchTab('products')" id="nav-top-products" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>💳</span> 상품관리
+    </button>
+    <button onclick="window.switchTab('reservations')" id="nav-top-reservations" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>📅</span> 예약관리
+    </button>
+    <button onclick="window.switchTab('attendance')" id="nav-top-attendance" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>📟</span> 출석관리
+    </button>
+    <button onclick="window.switchTab('stats')" id="nav-top-stats" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>📈</span> 통계관리
+    </button>
+  </nav>
+
+  <!-- Sub Navigation Bar -->
+  <div id="sub-execution-bar" class="bg-white border-b border-slate-200 px-8 py-3 flex items-center justify-between shadow-sm shrink-0">
+    <div id="sub-nav-title" class="text-sm font-bold text-[#0C3559] flex items-center gap-2">
+      <span>⚙️</span> 기본관리: 센터 기본정보, 로그인 관리 및 직원 계정 설정
+    </div>
+    <div id="sub-nav-actions" class="flex items-center gap-2">
+      <button onclick="window.speakBookingNotificationVoice()" class="px-3 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+        🗣️ 예약 알림 음성 테스트
+      </button>
+      <span class="text-xs text-slate-400 font-semibold">실시간 동기화 상태: 정상</span>
+    </div>
+  </div>
+
+  <!-- Main Workspace -->
+  <main class="flex-1 overflow-y-auto p-6 custom-scrollbar">
+
+    <!-- 1. 기본관리 (Basic Management) -->
+    <div id="tab-basic" class="tab-content active space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400 mb-1">오늘 예약</p>
+          <p class="text-3xl font-extrabold text-[#0C3559]"><span id="basic-today-bookings">0</span>건</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400 mb-1">수강 회원</p>
+          <p class="text-3xl font-extrabold text-[#0092B8]"><span id="basic-active-members">0</span>명</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400 mb-1">오늘 출석 현황</p>
+          <p class="text-3xl font-extrabold text-emerald-600"><span id="basic-today-attendance">0</span>건</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400 mb-1">등록 직원 수</p>
+          <p class="text-3xl font-extrabold text-amber-500"><span id="basic-staff-count">0</span>명</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b pb-3">
+            <h3 class="font-bold text-[#0C3559] text-sm flex items-center gap-1.5">
+              <span>🏠</span> 센터 기본 정보 설정
+            </h3>
+            <button onclick="window.saveCenterInfo()" class="px-3 py-1 bg-[#0092B8] hover:bg-[#007a99] text-white text-xs font-bold rounded-lg transition-colors">
+              저장 ✓
+            </button>
+          </div>
+          <div class="space-y-3 text-xs font-medium text-slate-600">
+            <div>
+              <label class="block text-slate-400 mb-1">센터 상호명</label>
+              <input type="text" id="cfg-center-name" value="스트레칭온" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-[#0C3559] focus:outline-none focus:border-sky-500" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">대표자 성함</label>
+              <input type="text" id="cfg-owner-name" value="김동수" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-[#0C3559] focus:outline-none focus:border-sky-500" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">대표 연락처</label>
+              <input type="text" id="cfg-phone" value="010-6566-6369" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-[#0C3559] focus:outline-none focus:border-sky-500" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">사업자등록번호</label>
+              <input type="text" id="cfg-biz-num" value="605-40-96200" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-[#0C3559] focus:outline-none focus:border-sky-500" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">스튜디오 주소</label>
+              <input type="text" id="cfg-address" value="인천 서구 가정로 451 8층 803호" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-[#0C3559] focus:outline-none focus:border-sky-500" />
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b pb-3">
+            <h3 class="font-bold text-[#0C3559] text-sm flex items-center gap-1.5">
+              <span>🔒</span> 관리자 로그인 설정 (PIN)
+            </h3>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            원장 전용 ERP 및 웹사이트 관리자 진입 시 사용되는 암호 PIN 번호를 관리합니다.
+          </p>
+          <div class="space-y-3 text-xs font-medium text-slate-600 pt-1">
+            <div>
+              <label class="block text-slate-400 mb-1">현재 비밀번호 (PIN)</label>
+              <input type="password" id="pin-current" placeholder="현재 PIN 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">새 비밀번호 (PIN)</label>
+              <input type="password" id="pin-new" placeholder="새 숫자 PIN 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
+            </div>
+            <div>
+              <label class="block text-slate-400 mb-1">새 비밀번호 확인</label>
+              <input type="password" id="pin-confirm" placeholder="새 숫자 PIN 재입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
+            </div>
+            <button onclick="window.changeAdminPin()" class="w-full py-3 bg-[#0C3559] hover:bg-[#082239] text-white font-bold rounded-xl shadow-sm transition-all mt-2">
+              관리자 비밀번호 변경 ✓
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b pb-3">
+            <h3 class="font-bold text-[#0C3559] text-sm flex items-center gap-1.5">
+              <span>👤</span> 직원 계정 보안 및 직급 권한 관리
+            </h3>
+            <button onclick="window.requestStaffAuth('add')" class="px-3 py-1 bg-[#0092B8] hover:bg-[#007a99] text-white text-xs font-bold rounded-lg transition-colors">
+              🔒 + 직원 등록
+            </button>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            직원 등록 및 삭제 조치는 관리자(대표) PIN 인증 후에만 가능하며, 비밀번호는 보안 마스킹 처리됩니다.
+          </p>
+          <div id="staff-list-container" class="space-y-2 pt-1 max-h-[220px] overflow-y-auto custom-scrollbar">
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-bold text-[#0C3559] text-base border-b pb-3">📅 오늘 실시간 예약 현황</h3>
+        <div id="basic-booking-list" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- 2. 회원관리 (Member Management) -->
+    <div id="tab-members" class="tab-content space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <h2 class="text-3xl font-extrabold text-[#0C3559] mb-2">원장님, 환영합니다!</h2>
-          <p class="text-slate-500 font-medium">홈페이지 온라인 예약 및 회원 정보가 100% 실시간 연동됩니다.</p>
+          <h3 class="text-lg font-bold text-[#0C3559] flex items-center gap-2">
+            <span>👥</span> 회원 통합 관리 센터
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">회원 기본 정보(성함/연락처/성별/생년월일), 보유 수강권 및 출석, 통증 메모를 통합 관리합니다.</p>
         </div>
-      </div>
-
-      <!-- Dashboard Tab -->
-      <div id="tab-dashboard" class="tab-content">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <p class="text-sm font-bold text-slate-500 mb-1">오늘 예약 (홈페이지+전화)</p>
-            <p class="text-3xl font-extrabold text-[#0C3559]"><span id="dash-today-bookings">0</span>건</p>
-          </div>
-          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <p class="text-sm font-bold text-slate-500 mb-1">활성 수강 회원</p>
-            <p class="text-3xl font-extrabold text-[#0092B8]"><span id="dash-active-members">0</span>명</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Members Tab -->
-      <div id="tab-members" class="tab-content">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-bold text-slate-800">전체 회원 목록</h3>
-          <button onclick="window.openMemberModal()" class="px-5 py-2 bg-[#0092B8] hover:bg-[#007a99] text-white font-bold text-sm rounded-xl shadow-md transition-all">
+        <div class="flex items-center gap-2">
+          <button onclick="window.renderMemberList()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200">
+            🔄 새로고침
+          </button>
+          <button onclick="window.openMemberModal()" class="px-5 py-2.5 bg-[#0092B8] hover:bg-[#007a99] text-white font-bold text-xs rounded-xl shadow-md transition-all">
             + 신규 회원 등록
           </button>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <table class="w-full text-sm text-left">
-            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-              <tr>
-                <th class="px-6 py-4">이름</th>
-                <th class="px-6 py-4">연락처</th>
-                <th class="px-6 py-4">잔여 횟수</th>
-                <th class="px-6 py-4">관리</th>
-              </tr>
-            </thead>
-            <tbody id="member-table-body" class="divide-y divide-slate-100"></tbody>
-          </table>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div class="bg-white p-4.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-400">등록 회원</p>
+            <p class="text-2xl font-extrabold text-[#0C3559] mt-0.5" id="mem-stat-total">0명</p>
+          </div>
+          <span class="w-10 h-10 rounded-xl bg-sky-50 text-[#0092B8] flex items-center justify-center font-bold text-lg">👥</span>
+        </div>
+        <div class="bg-white p-4.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-400">수강 회원</p>
+            <p class="text-2xl font-extrabold text-emerald-600 mt-0.5" id="mem-stat-active">0명</p>
+          </div>
+          <span class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">🎟️</span>
+        </div>
+        <div class="bg-white p-4.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-400">수강권 소진 회원</p>
+            <p class="text-2xl font-extrabold text-amber-600 mt-0.5" id="mem-stat-expired">0명</p>
+          </div>
+          <span class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg">⚠️</span>
+        </div>
+        <div class="bg-white p-4.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-400">오늘 현장 출석</p>
+            <p class="text-2xl font-extrabold text-[#0092B8] mt-0.5" id="mem-stat-today-att">0건</p>
+          </div>
+          <span class="w-10 h-10 rounded-xl bg-sky-50 text-[#0092B8] flex items-center justify-center font-bold text-lg">📟</span>
         </div>
       </div>
 
-      <!-- Reservations Tab -->
-      <div id="tab-reservations" class="tab-content">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-lg font-bold text-slate-800">통합 예약 관리 (홈페이지 & 수기)</h3>
-          <button onclick="window.openManualBookingModal()" class="px-5 py-2 bg-[#0092B8] text-white font-bold text-sm rounded-xl shadow-md">
-            + 예약 등록
-          </button>
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-3">
+        <div class="relative w-full md:w-80">
+          <input type="text" id="member-search-input" onkeyup="window.renderMemberList()" placeholder="🔍 회원 성함 또는 연락처 검색..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-sky-500" />
+          <span class="absolute left-3 top-3 text-slate-400 text-xs">🔍</span>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-          <table class="w-full text-sm text-left">
-            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-              <tr>
-                <th class="px-6 py-4">예약일시</th>
-                <th class="px-6 py-4">고객명</th>
-                <th class="px-6 py-4">코스명</th>
-                <th class="px-6 py-4">접수경로</th>
-                <th class="px-6 py-4">상태</th>
-                <th class="px-6 py-4">관리</th>
-              </tr>
-            </thead>
-            <tbody id="booking-table-body" class="divide-y divide-slate-100"></tbody>
-          </table>
+
+        <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+          <span class="text-xs font-bold text-slate-500 shrink-0">상태 필터:</span>
+          <select id="member-filter-select" onchange="window.renderMemberList()" class="bg-slate-50 border border-slate-200 text-xs font-bold text-[#0C3559] rounded-xl px-4 py-2.5 outline-none focus:border-sky-500 cursor-pointer">
+            <option value="all">전체 회원 보기</option>
+            <option value="active">수강 회원 (잔여 1회 이상)</option>
+            <option value="expired">수강권 소진 회원 (0회)</option>
+          </select>
         </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-x-auto custom-scrollbar">
+        <table class="w-full text-xs text-left min-w-[700px]">
+          <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+            <tr>
+              <th class="px-6 py-4 whitespace-nowrap">성함 (성별/생년월일)</th>
+              <th class="px-6 py-4 whitespace-nowrap">연락처</th>
+              <th class="px-6 py-4 whitespace-nowrap">보유 수강권명</th>
+              <th class="px-6 py-4 whitespace-nowrap">잔여 횟수 / 만료일</th>
+              <th class="px-6 py-4 whitespace-nowrap">특이사항 / 통증 메모</th>
+              <th class="px-6 py-4 text-center whitespace-nowrap">실행 관리 (출석 / 수정 / 삭제)</th>
+            </tr>
+          </thead>
+          <tbody id="member-table-body" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. 수강관리 (Pass Management) -->
+    <div id="tab-passes" class="tab-content space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div class="border-b pb-4">
+            <h3 class="text-base font-bold text-[#0C3559] flex items-center gap-2">
+              <span>💳</span> 수강권 신규 등록
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">회원에게 신규 수강권을 결제 처리하고 부여합니다.</p>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div>
+              <label class="block font-bold text-slate-500 mb-1.5">대상 회원 선택 *</label>
+              <select id="pass-tab-member" class="w-full px-4 py-3 rounded-xl border border-slate-300 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500 cursor-pointer">
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-500 mb-1.5">수강권명 *</label>
+              <select id="pass-tab-type" onchange="window.onPassTabTypeChange()" class="w-full px-4 py-3 rounded-xl border border-slate-300 font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500 cursor-pointer">
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1.5">부여 수량 (회) *</label>
+                <input type="number" id="pass-tab-count" value="10" min="0" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-bold outline-none focus:border-sky-500 bg-white" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1.5">만료일 지정</label>
+                <input type="date" id="pass-tab-expiry" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-medium outline-none focus:border-sky-500 bg-white" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1.5">결제 금액 (원)</label>
+                <input type="number" id="pass-tab-price" value="600000" min="0" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-bold text-[#0092B8] outline-none focus:border-sky-500 bg-white" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-500 mb-1.5">결제 수단</label>
+                <select id="pass-tab-paymethod" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-medium bg-white outline-none">
+                  <option value="신용카드">신용카드</option>
+                  <option value="계좌이체">계좌이체 / 현금</option>
+                  <option value="무료부여(이벤트)">무료부여 (서비스)</option>
+                </select>
+              </div>
+            </div>
+
+            <button onclick="window.submitPassPurchaseFromTab()" class="w-full py-4 bg-[#0C3559] hover:bg-[#082239] text-white font-bold text-sm rounded-xl shadow-md transition-all mt-3">
+              💳 수강권 등록 ✓
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-5 flex flex-col justify-between">
+          <div class="space-y-5">
+            <div class="border-b pb-4">
+              <h3 class="text-base font-bold text-[#0C3559] flex items-center gap-2">
+                <span>⚙️</span> 수강권 코스 상품 등록 & 관리
+              </h3>
+              <p class="text-xs text-slate-400 mt-0.5">센터에서 판매 및 제공하는 패키지 상품을 등록하거나 수정/삭제합니다.</p>
+            </div>
+
+            <div class="p-4 bg-sky-50/70 rounded-2xl border border-sky-100 space-y-3 text-xs">
+              <p class="font-bold text-[#0C3559] text-sm" id="course-form-title">➕ 신규 수강권 상품 등록</p>
+              <input type="hidden" id="course-edit-id" value="" />
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">상품명 *</label>
+                <input type="text" id="course-name" placeholder="예: 솔루션 멤버십 20회" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500" />
+              </div>
+              
+              <div class="grid grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">기본 부여 수량 *</label>
+                  <input type="number" id="course-passes" min="0" placeholder="예: 20 (회)" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 font-bold bg-white outline-none focus:border-sky-500" />
+                </div>
+                <div>
+                  <label class="block font-bold text-amber-600 mb-1">유효 기간 (개월) *</label>
+                  <input type="number" id="course-months" min="0" placeholder="예: 2 (0=무제한)" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 font-bold text-amber-600 bg-white outline-none focus:border-sky-500" />
+                </div>
+                <div>
+                  <label class="block font-bold text-[#0092B8] mb-1">판매 가격 (원) *</label>
+                  <input type="number" id="course-price" min="0" placeholder="예: 1100000" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 font-bold text-[#0092B8] bg-white outline-none focus:border-sky-500" />
+                </div>
+              </div>
+
+              <div class="flex gap-2 pt-1">
+                <button onclick="window.resetCourseForm()" id="course-cancel-edit-btn" class="hidden flex-1 py-2 bg-slate-200 text-slate-700 font-bold rounded-xl transition-all">취소</button>
+                <button onclick="window.saveCourseProduct()" class="flex-1 py-2.5 bg-[#0C3559] text-white font-bold rounded-xl shadow-md hover:bg-[#082239] transition-all">
+                  ✓ 상품 저장
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <p class="font-bold text-[#0C3559] text-xs mb-2">📋 등록된 수강권 코스 목록</p>
+              <div id="course-product-list" class="space-y-2 max-h-[260px] overflow-y-auto custom-scrollbar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 상품관리 (POS / Product Management) -->
+    <div id="tab-products" class="tab-content space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h3 class="text-lg font-bold text-[#0C3559] flex items-center gap-2">
+            <span>💳</span> 통합 상품 관리 & 현장 POS 결제
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">1회 이용 프로그램 케어 코스 및 스포츠용품(폼롤러, 밴드, 오일 등)을 등록·판매하고 결제를 처리합니다.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-500">카테고리:</span>
+          <span class="px-3 py-1 bg-sky-100 text-[#0092B8] font-bold text-xs rounded-full">1회 이용 프로그램</span>
+          <span class="px-3 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-full">스포츠용품 판매</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+              <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+                <span>🛒</span> 현장 판매 상품 선택 (POS)
+              </h4>
+              
+              <div class="flex gap-1.5 text-xs font-bold">
+                <button onclick="window.filterPosCategory('all')" id="pos-filter-all" class="px-3 py-1.5 bg-[#0C3559] text-white rounded-lg transition-all">전체</button>
+                <button onclick="window.filterPosCategory('program')" id="pos-filter-program" class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-all">1회 이용 프로그램</button>
+                <button onclick="window.filterPosCategory('goods')" id="pos-filter-goods" class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-all">스포츠용품</button>
+              </div>
+            </div>
+
+            <div id="pos-product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+            <div class="border-b pb-3 flex justify-between items-center">
+              <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+                <span>📦</span> 상품 신규 등록 및 카탈로그 관리
+              </h4>
+              <button onclick="window.resetProductForm()" id="product-cancel-edit-btn" class="hidden text-xs text-rose-500 font-bold hover:underline">
+                취소
+              </button>
+            </div>
+
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3 text-xs">
+              <input type="hidden" id="prod-edit-id" value="" />
+              <p class="font-bold text-[#0C3559] text-xs" id="product-form-title">➕ 신규 상품 추가</p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">카테고리 *</label>
+                  <select id="prod-category" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500 cursor-pointer">
+                    <option value="1회 이용 프로그램">1회 이용 프로그램</option>
+                    <option value="스포츠용품">스포츠용품</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block font-bold text-slate-500 mb-1">상품명 *</label>
+                  <input type="text" id="prod-name" placeholder="예: 라텍스 스트레칭 밴드" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500" />
+                </div>
+
+                <div>
+                  <label class="block font-bold text-[#0092B8] mb-1">판매 가격 (원) *</label>
+                  <input type="number" id="prod-price" min="0" placeholder="예: 15000" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0092B8] bg-white outline-none focus:border-sky-500" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">상품 설명 / 수량 비고 (선택)</label>
+                <input type="text" id="prod-desc" placeholder="예: 재질: 최고급 천연 라텍스 (중급자 강도)" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-sky-500" />
+              </div>
+
+              <div class="text-right pt-1">
+                <button onclick="window.saveCatalogProduct()" class="px-5 py-2.5 bg-[#0C3559] hover:bg-[#082239] text-white font-bold text-xs rounded-xl shadow-md transition-all">
+                  ✓ 상품 정보 저장
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <p class="font-bold text-[#0C3559] text-xs mb-2">📋 등록 상품 카탈로그 목록</p>
+              <div id="product-catalog-list" class="space-y-2 max-h-[280px] overflow-y-auto custom-scrollbar">
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="border-b pb-3 flex justify-between items-center">
+              <h4 class="font-bold text-[#0C3559] flex items-center gap-1.5 text-sm">
+                <span>🛒</span> 결제 장바구니
+              </h4>
+              <button onclick="window.clearPosCart()" class="text-xs text-rose-500 font-bold hover:underline">비우기</button>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">구매자 (회원 선택)</label>
+              <select id="pos-buyer-member" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 font-bold text-[#0C3559] bg-slate-50 text-xs outline-none focus:border-sky-500 cursor-pointer">
+                <option value="">비회원 (현장 일반 구매)</option>
+              </select>
+            </div>
+
+            <div id="pos-selected-items" class="space-y-2 text-xs max-h-[300px] overflow-y-auto custom-scrollbar pt-1">
+              <p class="text-xs text-slate-400 py-8 text-center">선택된 상품이 없습니다.<br>좌측 상품 카드를 클릭해 주세요.</p>
+            </div>
+          </div>
+
+          <div class="border-t border-slate-100 pt-4 space-y-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">결제 수단</label>
+              <select id="pos-pay-method" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 font-bold text-xs text-[#0C3559] bg-white outline-none">
+                <option value="신용카드">💳 신용카드</option>
+                <option value="계좌이체/현금">💵 계좌이체 / 현금</option>
+                <option value="카카오페이">📱 간편결제 (페이)</option>
+              </select>
+            </div>
+
+            <div class="flex justify-between items-center font-bold text-base text-[#0C3559] pt-2">
+              <span>총 결제금액</span>
+              <span id="pos-total-price" class="text-xl font-extrabold text-[#0092B8]">0원</span>
+            </div>
+
+            <button onclick="window.processPosPayment()" class="w-full py-4 bg-[#0C3559] hover:bg-[#082239] text-white font-bold text-xs rounded-xl shadow-md transition-all mt-2">
+              💳 결제 승인 및 수강권/상품 처리 ✓
+            </button>
+          </div>
+        </div>
+
       </div>
 
     </div>
+
+    <!-- 5. 예약관리 (Reservation Management - Monthly Schedule Calendar View) -->
+    <div id="tab-reservations" class="tab-content space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h3 class="text-base font-bold text-[#0C3559] flex items-center gap-2">
+            <span>📅</span> 통합 예약 관리 (월간 스케줄 & 전화 수기 접수)
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">월간 달력에서 일자별 실시간 예약 스케줄을 한눈에 파악하고 관리합니다.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- View Switcher Toggle -->
+          <div class="bg-slate-100 p-1 rounded-xl flex gap-1 border border-slate-200">
+            <button onclick="window.switchReservationView('calendar')" id="res-view-btn-calendar" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#0C3559] text-white shadow-sm">
+              📅 월간 달력 스케줄
+            </button>
+            <button onclick="window.switchReservationView('table')" id="res-view-btn-table" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
+              📋 전체 예약 목록
+            </button>
+          </div>
+
+          <button onclick="window.openManualBookingModal()" class="px-4 py-2 bg-[#0092B8] hover:bg-[#007a99] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5">
+            📞 예약등록
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW 1: 월간 달력 스케줄 뷰 (Calendar View) -->
+      <div id="res-view-calendar-container" class="space-y-6">
+        <!-- Monthly Navigation Bar -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div class="flex items-center gap-3">
+            <button onclick="window.changeResMonth(-1)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs rounded-lg transition-all">
+              ◀ 이전달
+            </button>
+            <h4 id="res-calendar-month-title" class="text-lg font-black text-[#0C3559] tracking-tight">
+              2026년 08월
+            </h4>
+            <button onclick="window.changeResMonth(1)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs rounded-lg transition-all">
+              다음달 ▶
+            </button>
+            <button onclick="window.resetResMonthToday()" class="px-3 py-1.5 bg-sky-50 text-[#0092B8] border border-sky-200 font-bold text-xs rounded-lg hover:bg-sky-100 transition-all">
+              오늘
+            </button>
+          </div>
+
+          <div class="flex items-center gap-3 text-xs font-bold text-slate-500">
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> 예약 확정</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span> 취소됨</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> 전화 수기접수</span>
+          </div>
+        </div>
+
+        <!-- Monthly Calendar Grid -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-4 sm:p-6">
+          <div class="grid grid-cols-7 text-center font-extrabold text-xs text-slate-500 mb-3 border-b border-slate-100 pb-3">
+            <div class="text-rose-500">일 (Sun)</div>
+            <div>월 (Mon)</div>
+            <div>화 (Tue)</div>
+            <div>수 (Wed)</div>
+            <div>목 (Thu)</div>
+            <div>금 (Fri)</div>
+            <div class="text-sky-600">토 (Sat)</div>
+          </div>
+
+          <div id="res-calendar-grid" class="grid grid-cols-7 gap-1.5 sm:gap-2 text-xs">
+          </div>
+        </div>
+
+        <!-- Selected Date Details Drawer -->
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+          <div class="flex justify-between items-center border-b pb-3">
+            <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+              <span>📌</span> <span id="res-selected-date-label">선택 날짜 상세 예약 스케줄</span>
+            </h4>
+            <button onclick="window.openManualBookingModalForSelectedDate()" class="px-3 py-1.5 bg-[#0092B8] hover:bg-[#007a99] text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+              + 해당 날짜 수기 예약 등록
+            </button>
+          </div>
+
+          <div id="res-selected-date-list" class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
+            <p class="text-xs text-slate-400 py-6 text-center">날짜를 클릭하면 해당 일자의 상세 예약 스케줄이 표시됩니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: 전체 예약 목록 표 (Table View) -->
+      <div id="res-view-table-container" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-x-auto custom-scrollbar">
+        <table class="w-full text-xs text-left min-w-[700px]">
+          <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+            <tr>
+              <th class="px-6 py-4 whitespace-nowrap">예약일시</th>
+              <th class="px-6 py-4 whitespace-nowrap">고객명</th>
+              <th class="px-6 py-4 whitespace-nowrap">코스명</th>
+              <th class="px-6 py-4 whitespace-nowrap">접수경로</th>
+              <th class="px-6 py-4 whitespace-nowrap">상태 (클릭 시 변경)</th>
+              <th class="px-6 py-4 text-center whitespace-nowrap">관리 (취소 / 완전 삭제)</th>
+            </tr>
+          </thead>
+          <tbody id="booking-table-body" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 6. 출석관리 (Attendance Management) -->
+    <div id="tab-attendance" class="tab-content space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h3 class="text-base font-bold text-[#0C3559] flex items-center gap-2">
+            <span>📟</span> 출석 통합 관리 센터
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">현장 즉시 출석체크(1회 차감)와 오늘 실시간 출석/이용 내역을 관리합니다. (출석체크 시 차임벨 및 20대 여성 안내 음성 자동 재생)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.triggerAttendanceSoundAndVoice()" class="px-4 py-2.5 bg-sky-50 hover:bg-sky-100 text-[#0092B8] text-xs font-bold rounded-xl border border-sky-200 transition-all flex items-center gap-1.5 shadow-sm">
+            🔊 음성 / 차임벨 테스트
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="border-b pb-3 flex justify-between items-center">
+              <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+                <span>📟</span> 현장 출석 체크 (1회 차감)
+              </h4>
+              <span class="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> 🔊 음성안내 연동됨
+              </span>
+            </div>
+
+            <div class="p-4 bg-sky-50/80 border border-sky-200 rounded-2xl space-y-2.5 shadow-sm">
+              <label class="block text-xs font-extrabold text-[#0C3559] flex items-center gap-1.5">
+                <span>⚡</span> 전화번호 뒤 4자리 간편 출석체크
+              </label>
+              <div class="flex gap-2">
+                <input type="text" id="att-4digit-input" maxlength="4" placeholder="숫자 4자리 입력 (예: 6369)" onkeypress="if(event.key === 'Enter') window.quickCheckInBy4Digits()" class="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-xl text-center text-lg font-extrabold tracking-widest text-[#0C3559] outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200 shadow-inner" />
+                <button onclick="window.quickCheckInBy4Digits()" class="px-5 py-3 bg-[#0C3559] hover:bg-[#082239] text-white font-extrabold text-xs rounded-xl shadow-md transition-all shrink-0 active:scale-95">
+                  확인 / 출석 ➔
+                </button>
+              </div>
+              <p class="text-[11px] text-slate-500 font-medium leading-relaxed">
+                ※ 전화번호 뒤 4자리 입력 후 <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-bold text-slate-700">Enter</kbd> 키나 [확인/출석] 클릭 시 즉시 차감 및 음성안내가 실행됩니다.
+              </p>
+            </div>
+
+            <div class="relative">
+              <input type="text" id="att-search-input" onkeyup="window.renderAttendance()" placeholder="🔍 회원 성함 또는 전화번호 검색..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-sky-500" />
+              <span class="absolute left-3 top-2.5 text-slate-400 text-xs">🔍</span>
+            </div>
+
+            <div id="attendance-member-list" class="space-y-2.5 max-h-[420px] overflow-y-auto custom-scrollbar">
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="border-b pb-3 flex justify-between items-center">
+              <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+                <span>📋</span> 오늘 실시간 출석 / 이용 내역
+              </h4>
+              <span id="att-today-count-badge" class="text-xs font-extrabold text-[#0092B8] bg-sky-50 px-3 py-1 rounded-full border border-sky-200">오늘 총 0건</span>
+            </div>
+
+            <div id="attendance-today-logs" class="space-y-2.5 max-h-[460px] overflow-y-auto custom-scrollbar">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. 통계관리 (Statistics & Sales Management) -->
+    <div id="tab-stats" class="tab-content space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h3 class="text-lg font-bold text-[#0C3559] flex items-center gap-2">
+            <span>📈</span> 매출 및 결제 통계 분석
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">일매출, 월매출, 지정 기간별 매출 집계 및 수강권/상품 판매 결제 내역을 분석합니다.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="window.renderStats()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200">
+            🔄 통계 새로고침
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400">오늘 일매출 (Daily Sales)</p>
+          <p class="text-2xl font-extrabold text-[#0092B8] mt-1" id="stats-kpi-today">0원</p>
+          <p class="text-[11px] text-slate-400 mt-1" id="stats-kpi-today-count">오늘 결제 0건</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400">이번 달 월매출 (Monthly Sales)</p>
+          <p class="text-2xl font-extrabold text-[#0C3559] mt-1" id="stats-kpi-month">0원</p>
+          <p class="text-[11px] text-slate-400 mt-1" id="stats-kpi-month-count">이번 달 누적 0건</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400">검색 기간 총 매출</p>
+          <p class="text-2xl font-extrabold text-emerald-600 mt-1" id="stats-kpi-range-total">0원</p>
+          <p class="text-[11px] text-slate-400 mt-1" id="stats-kpi-range-count">해당 기간 총 0건</p>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold text-slate-400">카드 / 계좌이체 비중</p>
+          <p class="text-lg font-extrabold text-amber-600 mt-1" id="stats-kpi-paymethods">카드 0% / 계좌 0%</p>
+          <p class="text-[11px] text-slate-400 mt-1">검색 기간 결제수단 집계</p>
+        </div>
+      </div>
+
+      <!-- 기간별 매출 검색 필터 바 -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-4">
+          <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+            <span>🔍</span> 지난 기간 매출 검색 & 필터
+          </h4>
+
+          <div class="flex flex-wrap gap-1.5 text-xs font-bold">
+            <button onclick="window.setStatsRangePreset('today')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-all">오늘</button>
+            <button onclick="window.setStatsRangePreset('week')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-all">이번 주</button>
+            <button onclick="window.setStatsRangePreset('month')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-all">이번 달</button>
+            <button onclick="window.setStatsRangePreset('last30')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-all">최근 30일</button>
+            <button onclick="window.setStatsRangePreset('all')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition-all">전체 기간</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">시작일</label>
+            <input type="date" id="stats-start-date" onchange="window.renderStats()" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">종료일</label>
+            <input type="date" id="stats-end-date" onchange="window.renderStats()" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">카테고리 필터</label>
+            <select id="stats-category-filter" onchange="window.renderStats()" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500">
+              <option value="all">전체 카테고리</option>
+              <option value="수강권">수강권 코스</option>
+              <option value="1회 이용 프로그램">1회 이용 프로그램</option>
+              <option value="스포츠용품">스포츠용품</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">구매자 검색</label>
+            <input type="text" id="stats-search-keyword" onkeyup="window.renderStats()" placeholder="회원성함 또는 상품명..." class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 상세 매출 결제 거래 내역 테이블 -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden space-y-3 p-6">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+            <span>📋</span> 기간별 매출 거래 상세 내역
+          </h4>
+          <span id="stats-table-count-badge" class="text-xs font-bold text-[#0092B8] bg-sky-50 px-3 py-1 rounded-full border border-sky-100">총 0건</span>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-xs text-left min-w-[750px]">
+            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <tr>
+                <th class="px-6 py-3.5 whitespace-nowrap">거래 일시</th>
+                <th class="px-6 py-3.5 whitespace-nowrap">구매자 (성함/연락처)</th>
+                <th class="px-6 py-3.5 whitespace-nowrap">카테고리</th>
+                <th class="px-6 py-3.5 whitespace-nowrap">상품/수강권 명</th>
+                <th class="px-6 py-3.5 whitespace-nowrap">결제 수단</th>
+                <th class="px-6 py-3.5 text-right whitespace-nowrap">결제 금액</th>
+                <th class="px-6 py-3.5 text-center whitespace-nowrap">관리 (취소/삭제)</th>
+              </tr>
+            </thead>
+            <tbody id="stats-table-body" class="divide-y divide-slate-100">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </main>
 
-  <!-- Manual Booking Modal -->
+  <!-- MODALS -->
+
+  <!-- 1. 커스텀 안내 모달 -->
+  <div id="modal-custom-alert" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[60] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
+      <div class="w-12 h-12 bg-sky-100 text-[#0092B8] rounded-full flex items-center justify-center mx-auto text-xl font-bold">ℹ️</div>
+      <div>
+        <h4 id="alert-modal-title" class="font-bold text-slate-800 text-sm mb-1">알림</h4>
+        <p id="alert-modal-msg" class="text-xs text-slate-500 font-medium leading-relaxed"></p>
+      </div>
+      <button onclick="window.closeModal('modal-custom-alert')" class="w-full py-2.5 bg-[#0C3559] text-white rounded-xl text-xs font-bold shadow-md">
+        확인
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. 커스텀 확인 모달 -->
+  <div id="modal-custom-confirm" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[60] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
+      <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold">❓</div>
+      <div>
+        <h4 id="confirm-modal-title" class="font-bold text-slate-800 text-sm mb-1">확인 요청</h4>
+        <p id="confirm-modal-msg" class="text-xs text-slate-500 font-medium leading-relaxed"></p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="window.closeModal('modal-custom-confirm')" class="flex-1 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold">취소</button>
+        <button id="confirm-modal-ok-btn" class="flex-1 py-2.5 bg-rose-600 text-white rounded-xl text-xs font-bold shadow-md">확인 진행</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 관리자(대표) PIN 인증 모달 (직원 계정 관리용) -->
+  <div id="modal-staff-auth" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[65] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
+      <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto text-xl font-bold">🔒</div>
+      <div>
+        <h4 class="font-bold text-slate-800 text-sm mb-1">관리자(대표) PIN 인증</h4>
+        <p class="text-xs text-slate-500 font-medium leading-relaxed">직원 계정 관리를 위해 대표자 PIN 번호를 입력해 주세요.</p>
+      </div>
+      <input type="password" id="staff-auth-pin" placeholder="대표자 PIN 번호 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-center text-sm focus:outline-none focus:border-sky-500" />
+      <div class="flex gap-2">
+        <button onclick="window.closeModal('modal-staff-auth')" class="flex-1 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold">취소</button>
+        <button onclick="window.verifyStaffAuth()" class="flex-1 py-2.5 bg-[#0C3559] text-white rounded-xl text-xs font-bold shadow-md">인증 확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 직원 계정 전환 (로그인) 모달 -->
+  <div id="modal-staff-login" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[70] flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
+      <div class="w-12 h-12 bg-sky-100 text-[#0092B8] rounded-full flex items-center justify-center mx-auto text-xl font-bold">👤</div>
+      <div>
+        <h4 class="font-bold text-slate-800 text-sm mb-1">직원 계정 전환 (로그인)</h4>
+        <p class="text-xs text-slate-500 font-medium leading-relaxed">접속할 직원 계정을 선택하고 PIN 번호를 입력하세요.</p>
+      </div>
+      <select id="staff-login-select" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-xs text-[#0C3559] outline-none focus:border-sky-500">
+      </select>
+      <input type="password" id="staff-login-pin" maxlength="6" placeholder="직원 PIN 번호 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-center text-sm focus:outline-none focus:border-sky-500" />
+      <div class="flex gap-2">
+        <button onclick="window.closeModal('modal-staff-login')" class="flex-1 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-bold">취소</button>
+        <button onclick="window.processStaffLogin()" class="flex-1 py-2.5 bg-[#0C3559] text-white rounded-xl text-xs font-bold shadow-md">로그인 ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 전화 예약 등록 모달 -->
   <div id="modal-manual-booking" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
         <h3 class="text-lg font-bold text-slate-800">📞 수기 예약 등록</h3>
         <button onclick="window.closeModal('modal-manual-booking')" class="text-slate-400 hover:text-slate-600 font-bold text-xl">&times;</button>
       </div>
-      
-      <div class="p-6 overflow-y-auto space-y-5 custom-scrollbar">
-        <!-- Customer Info -->
-        <div class="space-y-3">
-          <label class="block text-xs font-bold text-slate-500 uppercase">예약자 정보</label>
-          <input type="text" id="manual-name" placeholder="고객 성함" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium focus:border-sky-500 focus:ring-1 focus:ring-sky-500 outline-none" />
-          <input type="tel" id="manual-phone" placeholder="연락처 (- 없이 입력)" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium focus:border-sky-500 outline-none" />
-        </div>
-
-        <!-- Schedule -->
-        <div class="space-y-3">
-          <label class="block text-xs font-bold text-slate-500 uppercase">일정 및 코스 (선택 시 온라인 즉시 마감됨)</label>
-          <div class="grid grid-cols-2 gap-3">
-            <input type="date" id="manual-date" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none" />
-            <select id="manual-time" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none bg-white">
-              <option value="10:00">10:00</option>
-              <option value="11:00">11:00</option>
-              <option value="12:00">12:00</option>
-              <option value="14:00">14:00</option>
-              <option value="15:00">15:00</option>
-              <option value="16:00">16:00</option>
-              <option value="17:00">17:00</option>
-              <option value="18:00">18:00</option>
-              <option value="19:00">19:00</option>
-              <option value="20:00">20:00</option>
-              <option value="21:00">21:00</option>
-            </select>
-          </div>
-          <select id="manual-program" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none bg-white">
-            <option value="Sol-Recovery (50분)">Sol-Recovery (50분)</option>
-            <option value="Sol-Balance (90분)">Sol-Balance (90분)</option>
-            <option value="솔루션 멤버십 10회">솔루션 멤버십 10회 차감 예약</option>
+      <div class="p-6 space-y-5">
+        <input type="text" id="manual-name" placeholder="고객 성함" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500" />
+        <input type="tel" id="manual-phone" placeholder="연락처 (- 없이)" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500" />
+        <div class="grid grid-cols-2 gap-3">
+          <input type="date" id="manual-date" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none" />
+          <select id="manual-time" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium bg-white outline-none">
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+            <option value="17:00">17:00</option>
+            <option value="18:00">18:00</option>
+            <option value="19:00">19:00</option>
+            <option value="20:00">20:00</option>
+            <option value="21:00">21:00</option>
           </select>
         </div>
-
-        <!-- Kakao Alimtalk Option -->
-        <div class="p-4 bg-sky-50 rounded-xl border border-sky-100 mt-2">
+        <select id="manual-program" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium bg-white outline-none">
+        </select>
+        <div class="p-4 bg-sky-50 rounded-xl border border-sky-100">
           <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" id="manual-send-kakao" checked class="w-5 h-5 rounded border-sky-300 text-[#0092B8] focus:ring-[#0092B8]" />
-            <div>
-              <p class="text-sm font-bold text-[#0C3559]">📱 카카오 알림톡 자동 발송</p>
-              <p class="text-xs text-sky-700 mt-0.5">예약 확정 시 고객 휴대폰으로 공식 알림톡 전송</p>
-            </div>
+            <input type="checkbox" id="manual-send-kakao" checked class="w-5 h-5 rounded border-sky-300 text-[#0092B8]" />
+            <span class="text-sm font-bold text-[#0C3559]">📱 카카오 알림톡 자동 발송</span>
           </label>
         </div>
       </div>
-      
       <div class="p-6 border-t border-slate-100 bg-slate-50 flex gap-3">
-        <button onclick="window.closeModal('modal-manual-booking')" class="flex-1 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50">취소</button>
-        <button onclick="window.submitManualBooking()" class="flex-1 py-3.5 bg-[#0C3559] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#082239]">예약 확정 및 전송 ✓</button>
+        <button onclick="window.closeModal('modal-manual-booking')" class="flex-1 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold">취소</button>
+        <button onclick="window.submitManualBooking()" class="flex-1 py-3 bg-[#0C3559] text-white rounded-xl text-sm font-bold shadow-md">예약 확정 및 전송 ✓</button>
       </div>
     </div>
   </div>
 
-  <!-- Member Registration Modal -->
+  <!-- 6. 회원 등록 / 수정 모달 -->
   <div id="modal-member" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden flex flex-col">
+    <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-        <h3 class="text-lg font-bold text-slate-800">👥 회원 등록</h3>
-        <button onclick="window.closeModal('modal-member')" class="text-slate-400 hover:text-slate-600 font-bold text-xl">&times;</button>
+        <h3 id="modal-member-title" class="text-lg font-bold text-slate-800">👥 회원 등록/수정</h3>
+        <button onclick="window.closeModal('modal-member')" class="text-slate-400 font-bold text-xl hover:text-slate-600">&times;</button>
+      </div>
+      
+      <div class="p-6 space-y-4 overflow-y-auto custom-scrollbar">
+        <input type="hidden" id="member-edit-id" value="" />
+        
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1">회원 성함 *</label>
+          <input type="text" id="member-name" placeholder="이름 입력" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500" />
+        </div>
+        
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1">연락처 *</label>
+          <input type="tel" id="member-phone" placeholder="연락처 (- 없이 입력)" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">성별 *</label>
+            <select id="member-gender" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500 cursor-pointer">
+              <option value="여성">여성</option>
+              <option value="남성">남성</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">생년월일 *</label>
+            <input type="date" id="member-birth" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500 bg-white" />
+          </div>
+        </div>
+
+        <div class="p-4 bg-sky-50/70 border border-sky-100 rounded-2xl space-y-3">
+          <p class="text-xs font-bold text-[#0092B8] flex items-center gap-1">🎟️ 수강권 정보 설정 및 수정</p>
+          
+          <div>
+            <label class="block text-xs font-bold text-slate-500 mb-1">보유 수강권 코스명</label>
+            <select id="member-pass-type" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500 cursor-pointer">
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">잔여 횟수 (회)</label>
+              <input type="number" id="member-passes" min="0" value="0" placeholder="0" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-[#0092B8] bg-white outline-none focus:border-sky-500" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-500 mb-1">만료일 지정</label>
+              <input type="date" id="member-expiry" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-medium bg-white outline-none focus:border-sky-500" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1">특이사항 / 통증 메모 (선택)</label>
+          <textarea id="member-note" rows="3" placeholder="예: 거북목 심함, 우측 골반 통증 호소, 디스크 이력 등" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500 resize-none"></textarea>
+        </div>
+
+      </div>
+      <div class="p-6 border-t border-slate-100 bg-slate-50 flex gap-3">
+        <button onclick="window.closeModal('modal-member')" class="flex-1 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-100 transition-colors">취소</button>
+        <button onclick="window.saveMember()" class="flex-1 py-3.5 bg-[#0C3559] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#082239] transition-colors">저장 ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 직원 등록 / 수정 모달 -->
+  <div id="modal-staff" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
+      <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <h3 class="text-lg font-bold text-slate-800">👤 직원 계정 등록</h3>
+        <button onclick="window.closeModal('modal-staff')" class="text-slate-400 font-bold text-xl hover:text-slate-600">&times;</button>
       </div>
       <div class="p-6 space-y-4">
-        <input type="text" id="member-name" placeholder="이름" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium" />
-        <input type="tel" id="member-phone" placeholder="연락처 (- 없이)" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium" />
-        <input type="number" id="member-passes" placeholder="수강 횟수 (예: 10)" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium" />
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1">직원 성함 *</label>
+          <input type="text" id="staff-name" placeholder="직원 성함 입력" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1">직책 / 역할 *</label>
+          <select id="staff-role" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500 cursor-pointer">
+            <option value="강사">강사</option>
+            <option value="매니저">매니저</option>
+            <option value="실장">실장</option>
+            <option value="원장">원장</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1">비밀번호 (PIN 4자리) *</label>
+          <input type="password" id="staff-pin" maxlength="6" placeholder="숫자 4자리 이상 PIN" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium outline-none focus:border-sky-500" />
+        </div>
       </div>
       <div class="p-6 border-t border-slate-100 bg-slate-50 flex gap-3">
-        <button onclick="window.closeModal('modal-member')" class="flex-1 py-3 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold">취소</button>
-        <button onclick="window.saveMember()" class="flex-1 py-3 bg-[#0C3559] text-white rounded-xl text-sm font-bold">저장 ✓</button>
+        <button onclick="window.closeModal('modal-staff')" class="flex-1 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-100 transition-colors">취소</button>
+        <button onclick="window.saveStaff()" class="flex-1 py-3.5 bg-[#0C3559] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#082239] transition-colors">등록 ✓</button>
       </div>
     </div>
   </div>
 
-  <!-- Javascript Logic (Standard) -->
+  <!-- Application Logic & Permission Engine -->
   <script>
     window.bookings = [];
     window.members = [];
+    window.attendanceLogs = [];
+    window.salesLogs = [];
+    window.staffs = [
+      { id: 'ST-1', name: '김동수', role: '원장', pin: '6369', status: '재직중' }
+    ];
 
-    window.showWelcomeView = function() {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-sky-500', 'text-white'));
-      document.getElementById('welcome-view').classList.remove('hidden');
-      document.getElementById('header-title').innerHTML = `📊 대시보드`;
+    // Current Staff Session State
+    window.currentStaff = { id: 'ST-1', name: '김동수', role: '원장' };
+
+    // Role Permission Matrix
+    window.rolePermissions = {
+      '원장': {
+        tabs: ['basic', 'members', 'passes', 'products', 'reservations', 'attendance', 'stats'],
+        actions: ['all']
+      },
+      '실장': {
+        tabs: ['basic', 'members', 'passes', 'products', 'reservations', 'attendance', 'stats'],
+        actions: ['checkIn', 'editMember', 'addMember', 'passPurchase', 'posPayment', 'manageCatalog', 'manageCourse', 'manualBooking', 'cancelBooking']
+      },
+      '매니저': {
+        tabs: ['members', 'passes', 'products', 'reservations', 'attendance', 'stats'],
+        actions: ['checkIn', 'editMember', 'addMember', 'passPurchase', 'posPayment', 'manualBooking', 'cancelBooking']
+      },
+      '강사': {
+        tabs: ['members', 'reservations', 'attendance'],
+        actions: ['checkIn', 'manualBooking']
+      }
+    };
+
+    window.canAccessTab = function(tabId) {
+      const role = window.currentStaff ? window.currentStaff.role : '원장';
+      const perms = window.rolePermissions[role] || window.rolePermissions['강사'];
+      return perms.tabs.includes(tabId);
+    };
+
+    window.canPerformAction = function(actionName) {
+      const role = window.currentStaff ? window.currentStaff.role : '원장';
+      const perms = window.rolePermissions[role] || window.rolePermissions['강사'];
+      if (perms.actions.includes('all')) return true;
+      return perms.actions.includes(actionName);
+    };
+
+    window.passCourses = [
+      { id: 'C-1', name: '솔루션 멤버십 10회', defaultPasses: 10, defaultPrice: 600000, defaultMonths: 2 },
+      { id: 'C-2', name: 'Sol-Recovery (50분)', defaultPasses: 1, defaultPrice: 70000, defaultMonths: 1 },
+      { id: 'C-3', name: 'Sol-Balance (90분)', defaultPasses: 1, defaultPrice: 100000, defaultMonths: 1 },
+      { id: 'C-4', name: '1:1 맞춤 수기케어 1회권', defaultPasses: 1, defaultPrice: 70000, defaultMonths: 1 }
+    ];
+
+    window.products = [
+      { id: 'PR-1', name: 'Sol-Recovery (50분)', category: '1회 이용 프로그램', price: 70000, desc: '거북목·승모근 이완 시그니처 1회 케어' },
+      { id: 'PR-2', name: 'Sol-Balance (90분)', category: '1회 이용 프로그램', price: 100000, desc: '골반·척추 무브먼트 정밀 1회 케어' },
+      { id: 'PR-3', name: '1:1 맞춤 수기케어 1회권', category: '1회 이용 프로그램', price: 70000, desc: '원장 전담 1:1 패시브 수기이완' },
+      { id: 'PR-4', name: '폼롤러 (EPP 딥마사지)', category: '스포츠용품', price: 25000, desc: '고밀도 EPP 마사지 전용 폼롤러' },
+      { id: 'PR-5', name: '천연 라텍스 스트레칭 밴드', category: '스포츠용품', price: 15000, desc: '근력 및 관절 가동 보조 라텍스 밴드' },
+      { id: 'PR-6', name: '듀얼 마사지 볼', category: '스포츠용품', price: 12000, desc: '근막 이완 및 흉추/승모근 타겟 마사지 볼' },
+      { id: 'PR-7', name: '스트레칭온 딥 바디 오일', category: '스포츠용품', price: 30000, desc: '수기 케어용 프리미엄 아로마 오일' }
+    ];
+    window.posCart = [];
+    window.posActiveCategory = 'all';
+    window.adminPin = '6369';
+    window.standbyTimer = null;
+    window.pendingStaffAuthAction = null;
+
+    // Reservation Calendar State
+    const nowInit = new Date();
+    window.resCalYear = nowInit.getFullYear();
+    window.resCalMonth = nowInit.getMonth(); // 0-based
+    window.selectedResDate = nowInit.toISOString().split('T')[0];
+    window.resViewMode = 'calendar'; // 'calendar' or 'table'
+
+    window.onload = function() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const startEl = document.getElementById('stats-start-date');
+      const endEl = document.getElementById('stats-end-date');
+      if (startEl && !startEl.value) startEl.value = todayStr;
+      if (endEl && !endEl.value) endEl.value = todayStr;
+
+      window.updateActiveStaffBadge();
+
+      window.addEventListener('keydown', function(e) {
+        const screen = document.getElementById('standby-screen');
+        if (screen && !screen.classList.contains('hidden')) {
+          window.exitStandbyMode();
+        }
+      });
+    };
+
+    window.updateActiveStaffBadge = function() {
+      const badge = document.getElementById('active-staff-badge');
+      if (badge && window.currentStaff) {
+        badge.innerText = `${window.currentStaff.name} (${window.currentStaff.role})`;
+      }
+    };
+
+    window.openStaffLoginModal = function() {
+      const select = document.getElementById('staff-login-select');
+      const pinInput = document.getElementById('staff-login-pin');
+      if (pinInput) pinInput.value = '';
+
+      if (select) {
+        select.innerHTML = window.staffs.map(s => `
+          <option value="${s.id}">${s.name} (${s.role})</option>
+        `).join('');
+      }
+      window.openModal('modal-staff-login');
+    };
+
+    window.processStaffLogin = function() {
+      const staffId = document.getElementById('staff-login-select').value;
+      const inputPin = document.getElementById('staff-login-pin').value.trim();
+
+      const targetStaff = window.staffs.find(s => s.id === staffId);
+      if (!targetStaff) return;
+
+      if (inputPin !== targetStaff.pin && inputPin !== window.adminPin) {
+        return window.showAlert('인증 실패', '비밀번호 PIN이 일치하지 않습니다.');
+      }
+
+      window.currentStaff = { id: targetStaff.id, name: targetStaff.name, role: targetStaff.role };
+      window.updateActiveStaffBadge();
+      window.closeModal('modal-staff-login');
+
+      // If currently on a tab that new role cannot access, switch to members
+      const activeTabId = document.querySelector('.tab-content.active')?.id?.replace('tab-', '') || 'members';
+      if (!window.canAccessTab(activeTabId)) {
+        window.switchTab('members');
+      } else {
+        window.switchTab(activeTabId);
+      }
+
+      window.showAlert('계정 전환 완료', `'${targetStaff.name}' (${targetStaff.role}) 계정으로 접속되었습니다.`);
+    };
+
+    window.enterStandbyMode = function() {
+      const screen = document.getElementById('standby-screen');
+      if (!screen) return;
+
+      window.updateStandbyClock();
+      screen.classList.remove('hidden');
+      screen.classList.add('flex');
+
+      if (window.standbyTimer) clearInterval(window.standbyTimer);
+      window.standbyTimer = setInterval(window.updateStandbyClock, 1000);
+    };
+
+    window.exitStandbyMode = function() {
+      const screen = document.getElementById('standby-screen');
+      if (!screen) return;
+
+      screen.classList.add('hidden');
+      screen.classList.remove('flex');
+
+      if (window.standbyTimer) {
+        clearInterval(window.standbyTimer);
+        window.standbyTimer = null;
+      }
+    };
+
+    window.updateStandbyClock = function() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const date = String(now.getDate()).padStart(2, '0');
+      const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+      const dayStr = dayNames[now.getDay()];
+
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      const dateEl = document.getElementById('standby-date-text');
+      const clockEl = document.getElementById('standby-clock-text');
+
+      if (dateEl) dateEl.innerText = `${year}년 ${month}월 ${date}일 ${dayStr}`;
+      if (clockEl) clockEl.innerText = `${hours}:${minutes}:${seconds}`;
+
+      const todayStr = now.toISOString().split('T')[0];
+      const todayBookingsCount = (window.bookings || []).filter(b => b.date === todayStr && b.status !== '취소').length;
+      const todayAttendanceCount = (window.attendanceLogs || []).filter(l => l.date === todayStr).length;
+      const activeMembersCount = (window.members || []).filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) > 0).length;
+
+      const bEl = document.getElementById('standby-stat-bookings');
+      const aEl = document.getElementById('standby-stat-attendance');
+      const mEl = document.getElementById('standby-stat-members');
+
+      if (bEl) bEl.innerText = todayBookingsCount;
+      if (aEl) aEl.innerText = todayAttendanceCount;
+      if (mEl) mEl.innerText = activeMembersCount;
+    };
+
+    window.playAttendanceChime = function() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+
+        const playNote = (freq, startTime, duration) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
+          gain.gain.setValueAtTime(0.3, ctx.currentTime + startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + startTime);
+          osc.stop(ctx.currentTime + startTime + duration);
+        };
+
+        playNote(659.25, 0, 0.4);   // E5
+        playNote(880.00, 0.22, 0.65); // A5
+      } catch (e) {
+        console.warn("Chime Audio Error:", e);
+      }
+    };
+
+    window.speakWelcomeVoice = function() {
+      try {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+
+        const text = "안녕하세요. 건강한 나를 만나는 스트레칭온입니다.";
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        utterance.pitch = 1.3;
+        utterance.rate = 1.05;
+
+        const voices = window.speechSynthesis.getVoices();
+        const koVoice = voices.find(v => v.lang.includes('ko') && (v.name.includes('Yuna') || v.name.includes('SunHi') || v.name.includes('Heami') || v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Korean')));
+        if (koVoice) utterance.voice = koVoice;
+
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        console.warn("TTS Voice Error:", e);
+      }
+    };
+
+    window.triggerAttendanceSoundAndVoice = function() {
+      window.playAttendanceChime();
+      setTimeout(() => {
+        window.speakWelcomeVoice();
+      }, 350);
+    };
+
+    window.speakBookingNotificationVoice = function(booking) {
+      try {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+
+        let text = "홈페이지에서 새로운 예약이 접수되었습니다.";
+        if (booking && booking.name) {
+          text = `홈페이지에서 ${booking.name} 고객님의 새로운 예약이 접수되었습니다.`;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        utterance.pitch = 1.25;
+        utterance.rate = 1.0;
+
+        const voices = window.speechSynthesis.getVoices();
+        const koVoice = voices.find(v => v.lang.includes('ko') && (v.name.includes('Yuna') || v.name.includes('SunHi') || v.name.includes('Heami') || v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Korean')));
+        if (koVoice) utterance.voice = koVoice;
+
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        console.warn("Booking Voice Notification Error:", e);
+      }
+    };
+
+    window.quickCheckInBy4Digits = function() {
+      const input = document.getElementById('att-4digit-input');
+      if (!input) return;
+      const digits = input.value.trim().replace(/[^0-9]/g, '');
+
+      if (digits.length !== 4) {
+        return window.showAlert('입력 오류', '휴대폰 번호 뒤 4자리를 정확히 입력해 주세요. (예: 6369)');
+      }
+
+      const matched = (window.members || []).filter(m => {
+        const cleanPhone = (m.phone || '').replace(/[^0-9]/g, '');
+        return cleanPhone.endsWith(digits);
+      });
+
+      if (matched.length === 0) {
+        return window.showAlert('회원 없음', `입력하신 뒷자리 [${digits}]로 등록된 회원을 찾을 수 없습니다.`);
+      }
+
+      if (matched.length === 1) {
+        const m = matched[0];
+        window.checkInMember(m.id, 'ERP 현장출석(4자리)');
+        input.value = '';
+      } else {
+        window.showAlert('중복 번호 안내', `전화번호 뒷자리 [${digits}]를 가진 회원이 ${matched.length}명 있습니다. 아래 검색 목록에서 출석할 회원을 선택해 주세요.`);
+        const searchInput = document.getElementById('att-search-input');
+        if (searchInput) searchInput.value = digits;
+        window.renderAttendance();
+      }
+    };
+
+    window.getLocalDateStr = function() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    window.cleanUpPastBookings = function() {
+      if (!window.bookings || window.bookings.length === 0) return;
+      const today = window.getLocalDateStr();
+      const pastBookings = window.bookings.filter(b => b.date < today);
+
+      if (pastBookings.length > 0) {
+        pastBookings.forEach(b => {
+          if (typeof window.deleteBookingFromCloud === 'function') {
+            window.deleteBookingFromCloud(b.id);
+          }
+        });
+        window.bookings = window.bookings.filter(b => b.date >= today);
+      }
+    };
+
+    window.calculateExpiryDate = function(months) {
+      if (!months || parseInt(months) <= 0) return '';
+      const d = new Date();
+      d.setMonth(d.getMonth() + parseInt(months));
+      return d.toISOString().split('T')[0];
+    };
+
+    window.openModal = function(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    };
+
+    window.closeModal = function(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    };
+
+    window.showAlert = function(title, msg) {
+      document.getElementById('alert-modal-title').innerText = title || '알림';
+      document.getElementById('alert-modal-msg').innerText = msg || '';
+      window.openModal('modal-custom-alert');
+    };
+
+    window.showConfirm = function(title, msg, onOk) {
+      document.getElementById('confirm-modal-title').innerText = title || '확인 요청';
+      document.getElementById('confirm-modal-msg').innerText = msg || '';
+      const okBtn = document.getElementById('confirm-modal-ok-btn');
+      okBtn.onclick = function() {
+        window.closeModal('modal-custom-confirm');
+        if (typeof onOk === 'function') onOk();
+      };
+      window.openModal('modal-custom-confirm');
     };
 
     window.switchTab = function(tabId) {
-      document.getElementById('welcome-view').classList.add('hidden');
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.getElementById('tab-' + tabId).classList.add('active');
-      
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('bg-sky-500', 'text-white'));
-      document.getElementById('btn-' + tabId).classList.add('bg-sky-500', 'text-white');
-      
-      const titles = { 'dashboard': '📊 대시보드', 'members': '👥 통합 회원 관리', 'reservations': '📅 통합 예약 관리' };
-      document.getElementById('header-title').innerHTML = titles[tabId];
+      if (!window.canAccessTab(tabId)) {
+        const staffName = window.currentStaff ? window.currentStaff.name : '직원';
+        const staffRole = window.currentStaff ? window.currentStaff.role : '강사';
+        return window.showAlert('🔒 접근 권한 제한', `'${staffName}' ${staffRole} 계정은 선택하신 메뉴에 접근할 권한이 없습니다.\n(원장 또는 매니저 계정으로 로그인해 주세요.)`);
+      }
 
-      if(tabId === 'dashboard') window.renderDashboard();
-      if(tabId === 'members') window.renderMemberList();
-      if(tabId === 'reservations') window.renderBookingList();
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      const activeContent = document.getElementById('tab-' + tabId);
+      if (activeContent) activeContent.classList.add('active');
+
+      document.querySelectorAll('.nav-top-btn').forEach(btn => btn.classList.remove('active'));
+      const activeNavBtn = document.getElementById('nav-top-' + tabId);
+      if (activeNavBtn) activeNavBtn.classList.add('active');
+
+      const titleEl = document.getElementById('sub-nav-title');
+      const titles = {
+        'basic': '⚙️ 기본관리: 센터 기본정보, 로그인 관리 및 직원 계정 설정',
+        'members': '👥 회원관리: 회원등록, 수정, 현장 출석체크 및 메모 관리',
+        'passes': '🎫 수강관리: 수강권 코스 등록, 회원 수강권 차감/부여 및 만료일 관리',
+        'products': '💳 상품관리: 1회 이용 프로그램 & 스포츠용품 결제 POS 및 상품 등록/관리',
+        'reservations': '📅 예약관리: 월간 달력 스케줄 및 실시간 예약 스케줄 관리',
+        'attendance': '📟 출석관리: 태블릿 키오스크 현장 출석 및 차감 내역',
+        'stats': '📈 통계관리: 일매출, 월매출, 지난기간 매출 검색 및 결제 내역 분석'
+      };
+      if (titleEl) titleEl.innerHTML = titles[tabId] || '⚙️ 통합 ERP 시스템';
+
+      if (tabId === 'basic') window.renderBasicDashboard();
+      if (tabId === 'members') window.renderMemberList();
+      if (tabId === 'passes') window.renderPasses();
+      if (tabId === 'products') window.renderProductsTab();
+      if (tabId === 'reservations') window.renderBookingList();
+      if (tabId === 'attendance') window.renderAttendance();
+      if (tabId === 'stats') window.renderStats();
     };
 
-    window.openModal = function(id) { document.getElementById(id).classList.remove('hidden'); };
-    window.closeModal = function(id) { document.getElementById(id).classList.add('hidden'); };
+    window.renderStaffList = function() {
+      const container = document.getElementById('staff-list-container');
+      const countEl = document.getElementById('basic-staff-count');
+      if (countEl) countEl.innerText = window.staffs ? window.staffs.length : 0;
 
-    window.renderDashboard = function() {
-      const today = new Date().toISOString().split('T')[0];
-      const todayCount = window.bookings.filter(b => b.date === today && b.status !== '취소').length;
-      const activeCount = window.members.filter(m => {
-        let passes = m.remainingPasses !== undefined ? m.remainingPasses : m.passCount;
-        return passes > 0;
-      }).length;
+      if (!container) return;
+      if (!window.staffs || window.staffs.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">등록된 직원이 없습니다.</p>`;
+        return;
+      }
 
-      document.getElementById('dash-today-bookings').innerText = todayCount;
-      document.getElementById('dash-active-members').innerText = activeCount;
+      container.innerHTML = window.staffs.map(s => `
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-[#0C3559]">${s.name}</span>
+            <span class="text-[10px] text-sky-600 bg-sky-50 px-2 py-0.5 rounded-full font-bold ml-1">${s.role}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] text-slate-400 font-mono">PIN: ****</span>
+            ${s.id !== 'ST-1' ? `<button onclick="window.requestStaffAuth('${s.id}')" class="text-rose-500 hover:underline text-[11px] font-bold">삭제</button>` : `<span class="text-[10px] text-emerald-600 font-bold">대표</span>`}
+          </div>
+        </div>
+      `).join('');
+    };
+
+    window.requestStaffAuth = function(actionOrId) {
+      if (window.currentStaff.role !== '원장') {
+        return window.showAlert('🔒 대표 권한 필요', '직원 계정 관리는 원장 계정만 가능합니다.');
+      }
+      window.pendingStaffAuthAction = actionOrId;
+      document.getElementById('staff-auth-pin').value = '';
+      window.openModal('modal-staff-auth');
+    };
+
+    window.verifyStaffAuth = function() {
+      const inputPin = document.getElementById('staff-auth-pin').value.trim();
+      if (inputPin !== window.adminPin) {
+        window.showAlert('인증 실패', '관리자(대표) PIN 번호가 일치하지 않습니다.');
+        return;
+      }
+
+      window.closeModal('modal-staff-auth');
+
+      const action = window.pendingStaffAuthAction;
+      if (action === 'add') {
+        window.openStaffModal();
+      } else if (action && action.startsWith('ST-')) {
+        window.deleteStaff(action);
+      }
+      window.pendingStaffAuthAction = null;
+    };
+
+    window.openStaffModal = function() {
+      document.getElementById('staff-name').value = '';
+      document.getElementById('staff-role').value = '강사';
+      document.getElementById('staff-pin').value = '';
+      window.openModal('modal-staff');
+    };
+
+    window.saveStaff = function() {
+      const name = document.getElementById('staff-name').value.trim();
+      const role = document.getElementById('staff-role').value;
+      const pin = document.getElementById('staff-pin').value.trim();
+
+      if (!name || !pin) {
+        return window.showAlert('입력 오류', '직원 성함과 비밀번호 PIN을 모두 입력해 주세요.');
+      }
+
+      const newStaff = { id: 'ST-' + Date.now(), name, role, pin, status: '재직중' };
+      window.staffs.push(newStaff);
+      window.renderStaffList();
+      window.closeModal('modal-staff');
+      window.showAlert('직원 등록 완료', `'${name}' ${role} 계정이 새로 등록되었습니다.`);
+    };
+
+    window.deleteStaff = function(id) {
+      const s = window.staffs.find(x => x.id === id);
+      if (!s) return;
+      window.showConfirm('직원 계정 삭제', `'${s.name}' 직원의 계정을 삭제하시겠습니까?`, function() {
+        window.staffs = window.staffs.filter(x => x.id !== id);
+        window.renderStaffList();
+        window.showAlert('삭제 완료', '직원 계정이 삭제되었습니다.');
+      });
+    };
+
+    window.saveCenterInfo = function() {
+      if (!window.canPerformAction('editCenterInfo')) {
+        return window.showAlert('🔒 접근 권한 제한', '센터 정보 설정은 원장 계정에서만 변경할 수 있습니다.');
+      }
+      window.showAlert('정보 저장 완료', '센터 기본정보 설정이 정상적으로 저장되었습니다.');
+    };
+
+    window.changeAdminPin = function() {
+      if (window.currentStaff.role !== '원장') {
+        return window.showAlert('🔒 접근 권한 제한', '관리자 비밀번호 변경은 대표 원장 계정에서만 가능합니다.');
+      }
+      const cur = document.getElementById('pin-current').value.trim();
+      const newPin = document.getElementById('pin-new').value.trim();
+      const confirmPin = document.getElementById('pin-confirm').value.trim();
+
+      if (cur !== window.adminPin) return window.showAlert('비밀번호 오류', '현재 비밀번호가 일치하지 않습니다.');
+      if (!newPin || newPin.length < 4) return window.showAlert('입력 오류', '새 비밀번호는 4자리 이상 입력해 주세요.');
+      if (newPin !== confirmPin) return window.showAlert('비밀번호 불일치', '새 비밀번호와 확인 입력이 일치하지 않습니다.');
+
+      window.adminPin = newPin;
+      document.getElementById('pin-current').value = '';
+      document.getElementById('pin-new').value = '';
+      document.getElementById('pin-confirm').value = '';
+      window.showAlert('변경 완료', '관리자 비밀번호가 성공적으로 변경되었습니다.');
+    };
+
+    window.renderCourseSelects = function() {
+      const selects = ['pass-tab-type', 'member-pass-type'];
+      selects.forEach(selectId => {
+        const el = document.getElementById(selectId);
+        if (!el) return;
+        const currentVal = el.value;
+        
+        let html = selectId === 'member-pass-type' ? `<option value="수강권 미보유">수강권 미보유</option>` : '';
+        html += window.passCourses.map(c => `
+          <option value="${c.name}" data-passes="${c.defaultPasses}" data-price="${c.defaultPrice}" data-months="${c.defaultMonths || 0}">
+            ${c.name} (${c.defaultPrice.toLocaleString()}원 / ${c.defaultMonths ? c.defaultMonths + '개월 유효' : '무제한'})
+          </option>
+        `).join('');
+
+        el.innerHTML = html;
+        if (currentVal && Array.from(el.options).some(opt => opt.value === currentVal)) {
+          el.value = currentVal;
+        }
+      });
+    };
+
+    window.resetCourseForm = function() {
+      document.getElementById('course-edit-id').value = '';
+      document.getElementById('course-name').value = '';
+      document.getElementById('course-passes').value = '';
+      document.getElementById('course-months').value = '';
+      document.getElementById('course-price').value = '';
+      document.getElementById('course-form-title').innerText = '➕ 신규 수강권 상품 등록';
+      document.getElementById('course-cancel-edit-btn').classList.add('hidden');
+    };
+
+    window.renderCourseProductList = function() {
+      const container = document.getElementById('course-product-list');
+      if (!container) return;
+      if (!window.passCourses || window.passCourses.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">등록된 수강권 코스 상품이 없습니다.</p>`;
+        return;
+      }
+      container.innerHTML = window.passCourses.map(c => `
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-[#0C3559]">${c.name}</span>
+            <p class="text-[11px] text-slate-500 mt-0.5">
+              기본 ${c.defaultPasses}회 · ${c.defaultPrice.toLocaleString()}원 · <span class="font-bold text-amber-600">${c.defaultMonths ? c.defaultMonths + '개월 유효' : '유효기간 무제한'}</span>
+            </p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="window.editCourseProduct('${c.id}')" class="px-2.5 py-1 bg-sky-100 text-[#0092B8] font-bold rounded-lg hover:bg-sky-200">수정</button>
+            <button onclick="window.deleteCourseProduct('${c.id}')" class="px-2.5 py-1 bg-rose-100 text-rose-600 font-bold rounded-lg hover:bg-rose-200">삭제</button>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    window.editCourseProduct = function(id) {
+      if (!window.canPerformAction('manageCourse')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 수강권 코스 수정이 불가합니다.');
+      }
+      const c = window.passCourses.find(x => x.id === id);
+      if (!c) return;
+      document.getElementById('course-edit-id').value = c.id;
+      document.getElementById('course-name').value = c.name;
+      document.getElementById('course-passes').value = c.defaultPasses;
+      document.getElementById('course-months').value = c.defaultMonths || 0;
+      document.getElementById('course-price').value = c.defaultPrice;
+      document.getElementById('course-form-title').innerText = '✏️ 코스 상품 정보 수정';
+      document.getElementById('course-cancel-edit-btn').classList.remove('hidden');
+    };
+
+    window.saveCourseProduct = function() {
+      if (!window.canPerformAction('manageCourse')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 수강권 코스 등록 및 수정 권한이 없습니다.');
+      }
+      const editId = document.getElementById('course-edit-id').value;
+      const name = document.getElementById('course-name').value.trim();
+      const passes = Math.max(0, parseInt(document.getElementById('course-passes').value || '0'));
+      const months = Math.max(0, parseInt(document.getElementById('course-months').value || '0'));
+      const price = Math.max(0, parseInt(document.getElementById('course-price').value || '0'));
+
+      if (!name || passes <= 0) {
+        return window.showAlert('입력 오류', '코스 상품명과 기본 수량(1회 이상)을 입력해 주세요.');
+      }
+
+      const courseData = {
+        id: editId ? editId : 'C-' + Date.now(),
+        name,
+        defaultPasses: passes,
+        defaultMonths: months,
+        defaultPrice: price
+      };
+
+      const idx = window.passCourses.findIndex(x => x.id === courseData.id);
+      if (idx > -1) {
+        window.passCourses[idx] = courseData;
+      } else {
+        window.passCourses.push(courseData);
+      }
+
+      window.renderCourseSelects();
+      window.onPassTabTypeChange();
+      window.renderCourseProductList();
+      window.resetCourseForm();
+
+      if (typeof window.syncCourseToCloud === 'function') {
+        window.syncCourseToCloud(courseData);
+      }
+
+      window.showAlert('저장 완료', `'${name}' (${months > 0 ? months + '개월' : '무제한'}) 수강권 코스 상품이 정상 저장되었습니다.`);
+    };
+
+    window.deleteCourseProduct = function(id) {
+      if (!window.canPerformAction('manageCourse')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 코스 상품 삭제가 불가합니다.');
+      }
+      const c = window.passCourses.find(x => x.id === id);
+      if (!c) return;
+      window.showConfirm('코스 삭제', `'${c.name}' 수강권 코스 상품을 삭제하시겠습니까?`, function() {
+        window.passCourses = window.passCourses.filter(x => x.id !== id);
+        window.renderCourseSelects();
+        window.onPassTabTypeChange();
+        window.renderCourseProductList();
+
+        if (typeof window.deleteCourseFromCloud === 'function') {
+          window.deleteCourseFromCloud(id);
+        }
+        window.showAlert('삭제 완료', '수강권 코스 상품이 삭제되었습니다.');
+      });
+    };
+
+    window.renderProductsTab = function() {
+      window.renderPosProductGrid();
+      window.renderProductCatalogList();
+      window.renderPosBuyerSelect();
+      window.renderPosCart();
+    };
+
+    window.filterPosCategory = function(cat) {
+      window.posActiveCategory = cat;
+      ['all', 'program', 'goods'].forEach(c => {
+        const btn = document.getElementById('pos-filter-' + c);
+        if (btn) {
+          if (c === cat) {
+            btn.className = 'px-3 py-1.5 bg-[#0C3559] text-white rounded-lg transition-all font-bold';
+          } else {
+            btn.className = 'px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-all font-bold';
+          }
+        }
+      });
+      window.renderPosProductGrid();
+    };
+
+    window.renderPosProductGrid = function() {
+      const grid = document.getElementById('pos-product-grid');
+      if (!grid) return;
+
+      let filtered = [...window.products];
+      if (window.posActiveCategory === 'program') {
+        filtered = filtered.filter(p => p.category === '1회 이용 프로그램');
+      } else if (window.posActiveCategory === 'goods') {
+        filtered = filtered.filter(p => p.category === '스포츠용품');
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<p class="text-xs text-slate-400 py-8 col-span-3 text-center">등록된 상품이 없습니다.</p>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => {
+        const isProg = p.category === '1회 이용 프로그램';
+        return `
+          <button onclick="window.addToPosCart('${p.id}')" class="p-4 border border-slate-200 rounded-xl text-left hover:border-[#0092B8] hover:shadow-md transition-all ${isProg ? 'bg-sky-50/60' : 'bg-slate-50/70'} flex flex-col justify-between h-28 group">
+            <div>
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${isProg ? 'bg-sky-100 text-[#0092B8]' : 'bg-amber-100 text-amber-800'}">${p.category}</span>
+                <span class="text-[10px] text-sky-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">+ 담기</span>
+              </div>
+              <p class="font-bold text-[#0C3559] text-xs mt-1.5 line-clamp-1">${p.name}</p>
+            </div>
+            <p class="text-xs font-extrabold text-[#0092B8]">${p.price.toLocaleString()}원</p>
+          </button>
+        `;
+      }).join('');
+    };
+
+    window.renderProductCatalogList = function() {
+      const container = document.getElementById('product-catalog-list');
+      if (!container) return;
+
+      if (!window.products || window.products.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">등록된 상품 카탈로그가 없습니다.</p>`;
+        return;
+      }
+
+      container.innerHTML = window.products.map(p => `
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center text-xs">
+          <div>
+            <span class="font-bold text-[#0C3559]">${p.name}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ml-1 ${p.category === '1회 이용 프로그램' ? 'bg-sky-100 text-[#0092B8]' : 'bg-amber-100 text-amber-800'}">${p.category}</span>
+            <p class="text-[11px] text-slate-500 mt-0.5">
+              ${p.price.toLocaleString()}원 ${p.desc ? ' · ' + p.desc : ''}
+            </p>
+          </div>
+          <div class="flex gap-1.5">
+            <button onclick="window.editCatalogProduct('${p.id}')" class="px-2.5 py-1 bg-sky-100 text-[#0092B8] font-bold rounded-lg hover:bg-sky-200">수정</button>
+            <button onclick="window.deleteCatalogProduct('${p.id}')" class="px-2.5 py-1 bg-rose-100 text-rose-600 font-bold rounded-lg hover:bg-rose-200">삭제</button>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    window.resetProductForm = function() {
+      document.getElementById('prod-edit-id').value = '';
+      document.getElementById('prod-name').value = '';
+      document.getElementById('prod-category').value = '1회 이용 프로그램';
+      document.getElementById('prod-price').value = '';
+      document.getElementById('prod-desc').value = '';
+      document.getElementById('product-form-title').innerText = '➕ 신규 상품 추가';
+      document.getElementById('product-cancel-edit-btn').classList.add('hidden');
+    };
+
+    window.editCatalogProduct = function(id) {
+      if (!window.canPerformAction('manageCatalog')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 상품 정보 수정을 진행할 수 없습니다.');
+      }
+      const p = window.products.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('prod-edit-id').value = p.id;
+      document.getElementById('prod-name').value = p.name;
+      document.getElementById('prod-category').value = p.category;
+      document.getElementById('prod-price').value = p.price;
+      document.getElementById('prod-desc').value = p.desc || '';
+      document.getElementById('product-form-title').innerText = '✏️ 상품 정보 수정';
+      document.getElementById('product-cancel-edit-btn').classList.remove('hidden');
+    };
+
+    window.saveCatalogProduct = function() {
+      if (!window.canPerformAction('manageCatalog')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 상품 카탈로그 등록 및 수정 권한이 없습니다.');
+      }
+      const editId = document.getElementById('prod-edit-id').value;
+      const name = document.getElementById('prod-name').value.trim();
+      const category = document.getElementById('prod-category').value;
+      const price = Math.max(0, parseInt(document.getElementById('prod-price').value || '0'));
+      const desc = document.getElementById('prod-desc').value.trim();
+
+      if (!name || price <= 0) {
+        return window.showAlert('입력 오류', '올바른 상품명과 판매 가격을 입력해 주세요.');
+      }
+
+      const prodData = {
+        id: editId ? editId : 'PR-' + Date.now(),
+        name,
+        category,
+        price,
+        desc
+      };
+
+      const idx = window.products.findIndex(x => x.id === prodData.id);
+      if (idx > -1) {
+        window.products[idx] = prodData;
+      } else {
+        window.products.push(prodData);
+      }
+
+      window.renderPosProductGrid();
+      window.renderProductCatalogList();
+      window.resetProductForm();
+
+      if (typeof window.syncProductToCloud === 'function') {
+        window.syncProductToCloud(prodData);
+      }
+
+      window.showAlert('저장 완료', `'${name}' (${category}) 상품이 카탈로그에 성공적으로 저장되었습니다.`);
+    };
+
+    window.deleteCatalogProduct = function(id) {
+      if (!window.canPerformAction('manageCatalog')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 상품 삭제가 불가합니다.');
+      }
+      const p = window.products.find(x => x.id === id);
+      if (!p) return;
+
+      window.showConfirm('상품 삭제', `'${p.name}' 상품을 카탈로그에서 삭제하시겠습니까?`, function() {
+        window.products = window.products.filter(x => x.id !== id);
+        window.posCart = window.posCart.filter(x => x.id !== id);
+
+        window.renderPosProductGrid();
+        window.renderProductCatalogList();
+        window.renderPosCart();
+
+        if (typeof window.deleteProductFromCloud === 'function') {
+          window.deleteProductFromCloud(id);
+        }
+        window.showAlert('삭제 완료', '상품이 삭제되었습니다.');
+      });
+    };
+
+    window.renderPosBuyerSelect = function() {
+      const select = document.getElementById('pos-buyer-member');
+      if (!select) return;
+      const curVal = select.value;
+
+      let html = `<option value="">비회원 (현장 일반 구매)</option>`;
+      if (window.members && window.members.length > 0) {
+        html += window.members.map(m => `
+          <option value="${m.id}" ${curVal === m.id ? 'selected' : ''}>
+            ${m.name} (${m.phone}) - 잔여 ${m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)}회
+          </option>
+        `).join('');
+      }
+
+      select.innerHTML = html;
+    };
+
+    window.addToPosCart = function(productId) {
+      const prod = window.products.find(p => p.id === productId);
+      if (!prod) return;
+
+      const existingCartItem = window.posCart.find(i => i.id === productId);
+      if (existingCartItem) {
+        existingCartItem.qty += 1;
+      } else {
+        window.posCart.push({
+          id: prod.id,
+          name: prod.name,
+          category: prod.category,
+          price: prod.price,
+          qty: 1
+        });
+      }
+
+      window.renderPosCart();
+    };
+
+    window.updateCartQty = function(productId, delta) {
+      const item = window.posCart.find(i => i.id === productId);
+      if (!item) return;
+
+      item.qty += delta;
+      if (item.qty <= 0) {
+        window.posCart = window.posCart.filter(i => i.id !== productId);
+      }
+      window.renderPosCart();
+    };
+
+    window.removeFromCart = function(productId) {
+      window.posCart = window.posCart.filter(i => i.id !== productId);
+      window.renderPosCart();
+    };
+
+    window.clearPosCart = function() {
+      window.posCart = [];
+      window.renderPosCart();
+    };
+
+    window.renderPosCart = function() {
+      const container = document.getElementById('pos-selected-items');
+      const totalEl = document.getElementById('pos-total-price');
+      if (!container) return;
+
+      if (!window.posCart || window.posCart.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 py-8 text-center">선택된 상품이 없습니다.<br>좌측 상품 카드를 클릭해 주세요.</p>`;
+        if (totalEl) totalEl.innerText = '0원';
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = window.posCart.map(item => {
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+        return `
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1.5">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="font-bold text-[#0C3559]">${item.name}</span>
+                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ml-1 ${item.category === '1회 이용 프로그램' ? 'bg-sky-100 text-[#0092B8]' : 'bg-amber-100 text-amber-800'}">${item.category}</span>
+              </div>
+              <button onclick="window.removeFromCart('${item.id}')" class="text-rose-500 hover:text-rose-700 font-bold text-xs">&times;</button>
+            </div>
+
+            <div class="flex justify-between items-center text-xs pt-1">
+              <div class="flex items-center gap-2">
+                <button onclick="window.updateCartQty('${item.id}', -1)" class="w-6 h-6 bg-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-300">-</button>
+                <span class="font-bold text-[#0C3559]">${item.qty}개</span>
+                <button onclick="window.updateCartQty('${item.id}', 1)" class="w-6 h-6 bg-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-300">+</button>
+              </div>
+              <span class="font-bold text-[#0092B8]">${itemTotal.toLocaleString()}원</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      if (totalEl) totalEl.innerText = total.toLocaleString() + '원';
+    };
+
+    window.processPosPayment = function() {
+      if (!window.posCart || window.posCart.length === 0) {
+        return window.showAlert('결제 오류', '결제할 상품을 선택해 주세요.');
+      }
+
+      const buyerMemberId = document.getElementById('pos-buyer-member').value;
+      const payMethod = document.getElementById('pos-pay-method').value;
+      const totalAmount = window.posCart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const buyerMember = buyerMemberId ? window.members.find(m => m.id === buyerMemberId) : null;
+
+      let programCountAdded = 0;
+      window.posCart.forEach(item => {
+        if (item.category === '1회 이용 프로그램') {
+          programCountAdded += item.qty;
+        }
+      });
+
+      if (buyerMember && programCountAdded > 0) {
+        let curPasses = buyerMember.remainingPasses !== undefined ? buyerMember.remainingPasses : (buyerMember.passCount || 0);
+        buyerMember.remainingPasses = Math.max(0, curPasses + programCountAdded);
+        buyerMember.passCount = buyerMember.remainingPasses;
+        buyerMember.totalPasses = (buyerMember.totalPasses || 0) + programCountAdded;
+
+        if (typeof window.syncMemberToCloud === 'function') {
+          window.syncMemberToCloud(buyerMember);
+        }
+      }
+
+      const summaryText = window.posCart.map(i => `${i.name} x${i.qty}`).join(', ');
+
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0];
+      const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+
+      const saleRecord = {
+        id: 'SALE-' + Date.now(),
+        date: todayStr,
+        time: timeStr,
+        memberName: buyerMember ? buyerMember.name : '비회원 (현장구매)',
+        memberPhone: buyerMember ? buyerMember.phone : '-',
+        category: programCountAdded > 0 ? '1회 이용 프로그램' : '스포츠용품',
+        itemName: summaryText,
+        amount: totalAmount,
+        payMethod: payMethod,
+        createdAt: now.toISOString()
+      };
+
+      if (!window.salesLogs) window.salesLogs = [];
+      window.salesLogs.unshift(saleRecord);
+
+      if (typeof window.syncSaleToCloud === 'function') {
+        window.syncSaleToCloud(saleRecord);
+      }
+
+      window.posCart = [];
+      window.renderPosCart();
+      window.renderMemberList();
+      window.renderPasses();
+
+      let msg = `총 ${totalAmount.toLocaleString()}원 (${payMethod}) 결제가 승인되었습니다.\n[구매 항목: ${summaryText}]`;
+      if (buyerMember && programCountAdded > 0) {
+        msg += `\n\n🎉 '${buyerMember.name}' 회원님께 1회 이용 수강권 ${programCountAdded}회가 자동 충전되었습니다!`;
+      }
+
+      window.showAlert('결제 및 승인 완료', msg);
+    };
+
+    window.renderBasicDashboard = function() {
+      window.cleanUpPastBookings();
+      const today = window.getLocalDateStr();
+      const todayBookings = window.bookings.filter(b => b.date === today && b.status !== '취소');
+      
+      const elemTodayBookings = document.getElementById('basic-today-bookings');
+      if (elemTodayBookings) elemTodayBookings.innerText = todayBookings.length;
+      
+      const elemActiveMembers = document.getElementById('basic-active-members');
+      if (elemActiveMembers) elemActiveMembers.innerText = window.members.filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) > 0).length;
+
+      window.renderStaffList();
+
+      const listEl = document.getElementById('basic-booking-list');
+      if (listEl) {
+        if (todayBookings.length === 0) {
+          listEl.innerHTML = `<p class="text-xs text-slate-400 py-6 text-center">오늘 예정된 실시간 예약이 없습니다.</p>`;
+        } else {
+          listEl.innerHTML = todayBookings.map(b => `
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center text-xs">
+              <div>
+                <span class="font-bold text-[#0C3559]">${b.time}</span> - <span class="font-bold">${b.name} (${b.phone.slice(-4)})</span>
+                <p class="text-[11px] text-slate-400 mt-0.5">${b.programTitle}</p>
+              </div>
+              <button onclick="window.changeBookingStatus('${b.id}')" class="px-2.5 py-1 rounded-full text-[10px] font-bold transition-all shadow-sm cursor-pointer ${b.status === '취소' ? 'bg-rose-100 text-rose-700 hover:bg-rose-200' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'}">${b.status} ▾</button>
+            </div>
+          `).join('');
+        }
+      }
     };
 
     window.renderMemberList = function() {
       const tbody = document.getElementById('member-table-body');
-      tbody.innerHTML = window.members.map(m => {
-        let passes = m.remainingPasses !== undefined ? m.remainingPasses : m.passCount;
+      if (!tbody) return;
+
+      const totalEl = document.getElementById('mem-stat-total');
+      const activeEl = document.getElementById('mem-stat-active');
+      const expiredEl = document.getElementById('mem-stat-expired');
+
+      const totalCount = window.members ? window.members.length : 0;
+      const activeCount = window.members ? window.members.filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) > 0).length : 0;
+      const expiredCount = totalCount - activeCount;
+
+      if (totalEl) totalEl.innerText = `${totalCount}명`;
+      if (activeEl) activeEl.innerText = `${activeCount}명`;
+      if (expiredEl) expiredEl.innerText = `${expiredCount}명`;
+
+      if (!window.members || window.members.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400 text-xs">등록된 회원이 없습니다. [+ 신규 회원 등록] 버튼을 눌러주세요.</td></tr>`;
+        return;
+      }
+
+      const searchVal = document.getElementById('member-search-input')?.value.trim().toLowerCase() || '';
+      const filterVal = document.getElementById('member-filter-select')?.value || 'all';
+
+      let filtered = [...window.members];
+
+      if (searchVal) {
+        filtered = filtered.filter(m => 
+          (m.name && m.name.toLowerCase().includes(searchVal)) || 
+          (m.phone && m.phone.includes(searchVal))
+        );
+      }
+
+      if (filterVal === 'active') {
+        filtered = filtered.filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) > 0);
+      } else if (filterVal === 'expired') {
+        filtered = filtered.filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) <= 0);
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400 text-xs">조건에 해당하는 회원이 존재하지 않습니다.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(m => {
+        let passes = Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0));
+        let expiryHtml = m.expiryDate ? `<br><span class="text-[10px] text-slate-400">만료일: ${m.expiryDate}</span>` : '';
+        let noteText = m.note ? `<span class="px-2 py-1 bg-amber-50 text-amber-800 font-bold rounded-lg border border-amber-200/80 text-[11px] block max-w-xs truncate">📝 ${m.note}</span>` : `<span class="text-slate-300">-</span>`;
+        let genderBirthInfo = (m.gender || m.birth) ? `<br><span class="text-[10px] text-sky-600 font-semibold">${m.gender || '여성'}${m.birth ? ' (' + m.birth + ')' : ''}</span>` : '';
+
         return `
         <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
-          <td class="px-6 py-4 font-bold text-[#0C3559]">${m.name}</td>
-          <td class="px-6 py-4 text-slate-500 font-mono">${m.phone}</td>
-          <td class="px-6 py-4">
-            <span class="px-3 py-1 bg-sky-100 text-[#0092B8] font-bold rounded-full text-xs">잔여 ${passes}회</span>
+          <td class="px-6 py-4 font-bold text-[#0C3559]">
+            ${m.name}
+            ${genderBirthInfo}
           </td>
+          <td class="px-6 py-4 text-slate-500 font-mono">${m.phone}</td>
+          <td class="px-6 py-4 font-semibold text-slate-700">${m.passType || '수강권 미보유'}</td>
           <td class="px-6 py-4">
-            <button onclick="window.deleteMember('${m.id}')" class="text-xs text-rose-500 font-bold hover:underline">삭제</button>
+            <span class="font-bold text-sm ${passes > 0 ? 'text-[#0092B8]' : 'text-rose-600'}">${passes}회</span>
+            ${expiryHtml}
+          </td>
+          <td class="px-6 py-4">${noteText}</td>
+          <td class="px-6 py-4 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="window.checkInMember('${m.id}', '회원관리')" class="px-2.5 py-1.5 ${passes > 0 ? 'bg-[#0C3559] hover:bg-[#082239] text-white' : 'bg-slate-200 text-slate-400 cursor-not-allowed'} font-bold rounded-lg text-[11px] transition-all shadow-sm">
+                📟 출석 -1
+              </button>
+              <button onclick="window.editMember('${m.id}')" class="px-2.5 py-1.5 bg-sky-50 text-[#0092B8] font-bold rounded-lg text-[11px] hover:bg-sky-100 transition-all border border-sky-200">
+                ✏️ 수정
+              </button>
+              <button onclick="window.deleteMember('${m.id}')" class="px-2.5 py-1.5 bg-rose-50 text-rose-600 font-bold rounded-lg text-[11px] hover:bg-rose-100 transition-all border border-rose-200">
+                🗑️ 삭제
+              </button>
+            </div>
           </td>
         </tr>
-      `}).join('');
+        `;
+      }).join('');
+    };
+
+    window.checkInMember = function(id, source = 'ERP 현장출석') {
+      const m = window.members.find(x => x.id === id);
+      if (!m) return;
+
+      let passes = Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0));
+
+      if (passes <= 0) {
+        return window.showAlert('수강권 소진', `'${m.name}' 회원님은 잔여 수강권이 0회입니다. [수강관리]에서 수강권 결제 후 이용이 가능합니다.`);
+      }
+
+      const nextPasses = Math.max(0, passes - 1);
+
+      window.showConfirm('현장 출석체크', `'${m.name}' 회원님의 수강권을 1회 차감하고 현장 출석 처리하시겠습니까? (잔여: ${passes}회 ➔ ${nextPasses}회)`, function() {
+        m.remainingPasses = nextPasses;
+        m.passCount = m.remainingPasses;
+
+        window.triggerAttendanceSoundAndVoice();
+
+        const now = new Date();
+        const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+        const todayStr = window.getLocalDateStr();
+
+        const logEntry = {
+          id: 'ATT-' + Date.now(),
+          date: todayStr,
+          time: timeStr,
+          memberId: m.id,
+          memberName: m.name,
+          phone: m.phone,
+          passType: m.passType || '수강권',
+          remainingPasses: nextPasses,
+          source: source
+        };
+
+        if (!window.attendanceLogs) window.attendanceLogs = [];
+        window.attendanceLogs.unshift(logEntry);
+
+        window.renderMemberList();
+        window.renderPasses();
+        window.renderBasicDashboard();
+        window.renderAttendance();
+
+        if (typeof window.syncMemberToCloud === 'function') {
+          window.syncMemberToCloud(m);
+        }
+        if (typeof window.syncAttendanceToCloud === 'function') {
+          window.syncAttendanceToCloud(logEntry);
+        }
+
+        window.showAlert('출석 완료', `'${m.name}' 회원님의 출석이 완료되었습니다. (잔여 수강권: ${m.remainingPasses}회)`);
+      });
     };
 
     window.openMemberModal = function() {
+      window.renderCourseSelects();
+      document.getElementById('member-edit-id').value = '';
+      document.getElementById('modal-member-title').innerText = '👥 신규 회원 등록';
       document.getElementById('member-name').value = '';
       document.getElementById('member-phone').value = '';
-      document.getElementById('member-passes').value = '10';
+      document.getElementById('member-gender').value = '여성';
+      document.getElementById('member-birth').value = '';
+      document.getElementById('member-pass-type').value = '수강권 미보유';
+      document.getElementById('member-passes').value = '0';
+      document.getElementById('member-expiry').value = '';
+      document.getElementById('member-note').value = '';
+      window.openModal('modal-member');
+    };
+
+    window.editMember = function(id) {
+      const m = window.members.find(x => x.id === id);
+      if (!m) return;
+      window.renderCourseSelects();
+      document.getElementById('member-edit-id').value = m.id;
+      document.getElementById('modal-member-title').innerText = '✏️ 회원 정보 수정';
+      document.getElementById('member-name').value = m.name || '';
+      document.getElementById('member-phone').value = m.phone || '';
+      document.getElementById('member-gender').value = m.gender || '여성';
+      document.getElementById('member-birth').value = m.birth || '';
+      
+      const select = document.getElementById('member-pass-type');
+      const passVal = m.passType || '수강권 미보유';
+      if (!Array.from(select.options).some(opt => opt.value === passVal)) {
+        const opt = document.createElement('option');
+        opt.value = passVal;
+        opt.text = passVal;
+        select.add(opt);
+      }
+      select.value = passVal;
+
+      document.getElementById('member-passes').value = Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0));
+      document.getElementById('member-expiry').value = m.expiryDate || '';
+      document.getElementById('member-note').value = m.note || '';
       window.openModal('modal-member');
     };
 
     window.saveMember = function() {
-      const name = document.getElementById('member-name').value;
+      const editId = document.getElementById('member-edit-id').value;
+      const name = document.getElementById('member-name').value.trim();
       const phone = document.getElementById('member-phone').value.replace(/[^0-9]/g, '');
-      const passes = parseInt(document.getElementById('member-passes').value || '10');
+      const gender = document.getElementById('member-gender').value;
+      const birth = document.getElementById('member-birth').value;
+      const passType = document.getElementById('member-pass-type').value;
+      let passes = Math.max(0, parseInt(document.getElementById('member-passes').value || '0'));
+      const expiryDate = document.getElementById('member-expiry').value;
+      const note = document.getElementById('member-note').value.trim();
 
-      if(!name || !phone) return alert('이름과 연락처를 입력해주세요.');
+      if (!name || !phone) {
+        return window.showAlert('입력 오류', '성함과 연락처를 모두 입력해 주세요.');
+      }
 
-      const newMember = {
-        id: 'M-' + Date.now(),
-        name, phone,
+      const existingMember = editId ? window.members.find(m => m.id === editId) : null;
+
+      const memberData = {
+        id: editId ? editId : 'M-' + Date.now(),
+        name: name,
+        phone: phone,
+        gender: gender,
+        birth: birth,
+        note: note,
+        passType: passType,
         remainingPasses: passes,
-        totalPasses: passes
+        passCount: passes,
+        expiryDate: expiryDate,
+        totalPasses: existingMember ? (existingMember.totalPasses || passes) : passes
       };
 
-      // 클라우드 동기화 
-      if (typeof window.syncMemberToCloud === 'function') {
-        window.syncMemberToCloud(newMember);
+      const existingIdx = window.members.findIndex(m => m.id === memberData.id);
+      if (existingIdx > -1) {
+        window.members[existingIdx] = memberData;
+      } else {
+        window.members.unshift(memberData);
       }
-      
+
+      window.renderMemberList();
+      window.renderPasses();
+      window.renderPosBuyerSelect();
+      window.renderBasicDashboard();
+
+      if (typeof window.syncMemberToCloud === 'function') {
+        window.syncMemberToCloud(memberData);
+      }
+
       window.closeModal('modal-member');
+      window.showAlert('저장 완료', editId ? '회원 정보 및 수강권 설정이 수정되었습니다!' : '신규 회원이 정상 등록되었습니다!');
     };
 
     window.deleteMember = function(id) {
-      if(confirm('이 회원을 삭제하시겠습니까? 데이터가 홈페이지에서도 연동 삭제됩니다.')) {
+      if (!window.canPerformAction('deleteMember')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 회원 완전 삭제 권한이 없습니다.');
+      }
+      const m = window.members.find(x => x.id === id);
+      const nameStr = m ? `'${m.name}' ` : '';
+
+      window.showConfirm('회원 삭제 확인', `${nameStr}회원을 삭제하시겠습니까? 클라우드에서도 함께 삭제됩니다.`, function() {
+        window.members = window.members.filter(m => m.id !== id);
+        window.renderMemberList();
+        window.renderPasses();
+        window.renderPosBuyerSelect();
+        window.renderBasicDashboard();
+
         if (typeof window.deleteMemberFromCloud === 'function') {
           window.deleteMemberFromCloud(id);
+        }
+        window.showAlert('삭제 완료', '회원 데이터가 성공적으로 삭제되었습니다.');
+      });
+    };
+
+    window.renderPasses = function() {
+      window.renderCourseSelects();
+      window.onPassTabTypeChange();
+      window.renderCourseProductList();
+
+      const tabMemberSelect = document.getElementById('pass-tab-member');
+      if (tabMemberSelect && window.members) {
+        const curMemberVal = tabMemberSelect.value;
+        if (window.members.length === 0) {
+          tabMemberSelect.innerHTML = `<option value="">등록된 회원이 없습니다</option>`;
+        } else {
+          tabMemberSelect.innerHTML = window.members.map(m => `
+            <option value="${m.id}" ${curMemberVal === m.id ? 'selected' : ''}>
+              ${m.name} (${m.phone}) - 잔여 ${Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0))}회
+            </option>
+          `).join('');
         }
       }
     };
 
-    window.renderBookingList = function() {
-      // 날짜/시간 순 정렬 (가까운 예약순)
-      const sorted = [...window.bookings].sort((a, b) => {
-        return new Date(b.date + 'T' + b.time) - new Date(a.date + 'T' + a.time);
-      });
+    window.onPassTabTypeChange = function() {
+      const selectEl = document.getElementById('pass-tab-type');
+      if (!selectEl || selectEl.selectedIndex < 0) return;
+      const selectedOpt = selectEl.options[selectEl.selectedIndex];
+      const defaultPasses = selectedOpt.getAttribute('data-passes') || '10';
+      const defaultPrice = selectedOpt.getAttribute('data-price') || '600000';
+      const defaultMonths = selectedOpt.getAttribute('data-months') || '2';
 
+      document.getElementById('pass-tab-count').value = defaultPasses;
+      document.getElementById('pass-tab-price').value = defaultPrice;
+      document.getElementById('pass-tab-expiry').value = window.calculateExpiryDate(defaultMonths);
+    };
+
+    window.submitPassPurchaseFromTab = function() {
+      const memberId = document.getElementById('pass-tab-member').value;
+      const passType = document.getElementById('pass-tab-type').value;
+      const addPasses = Math.max(0, parseInt(document.getElementById('pass-tab-count').value || '0'));
+      const expiryDate = document.getElementById('pass-tab-expiry').value;
+      const price = Math.max(0, parseInt(document.getElementById('pass-tab-price').value || '0'));
+      const payMethod = document.getElementById('pass-tab-paymethod').value;
+
+      if (!memberId) return window.showAlert('오류', '수강권을 부여할 대상 회원을 선택해 주세요.');
+
+      const m = window.members.find(x => x.id === memberId);
+      if (!m) return window.showAlert('오류', '선택된 회원을 찾을 수 없습니다.');
+
+      let currentPasses = Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0));
+      m.remainingPasses = currentPasses + addPasses;
+      m.passCount = m.remainingPasses;
+      m.totalPasses = (m.totalPasses || 0) + addPasses;
+      m.passType = passType;
+      m.expiryDate = expiryDate;
+
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0];
+      const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+
+      const saleRecord = {
+        id: 'SALE-' + Date.now(),
+        date: todayStr,
+        time: timeStr,
+        memberName: m.name,
+        memberPhone: m.phone,
+        category: '수강권',
+        itemName: `${passType} (${addPasses}회)`,
+        amount: price,
+        payMethod: payMethod,
+        createdAt: now.toISOString()
+      };
+
+      if (!window.salesLogs) window.salesLogs = [];
+      window.salesLogs.unshift(saleRecord);
+
+      if (typeof window.syncSaleToCloud === 'function') {
+        window.syncSaleToCloud(saleRecord);
+      }
+
+      window.renderPasses();
+      window.renderMemberList();
+      window.renderPosBuyerSelect();
+      window.renderBasicDashboard();
+
+      if (typeof window.syncMemberToCloud === 'function') {
+        window.syncMemberToCloud(m);
+      }
+
+      window.showAlert('구매등록 완료', `'${m.name}' 회원님께 '${passType}' 수강권 (${addPasses}회, ${price.toLocaleString()}원, ${payMethod}) 부여 및 결제 연동이 정상적으로 반영되었습니다!`);
+    };
+
+    // ----------------------------------------------------
+    // 📅 예약 관리 - 월간 달력 스케줄 & 표 뷰 로직
+    // ----------------------------------------------------
+    window.switchReservationView = function(mode) {
+      window.resViewMode = mode;
+      const calBtn = document.getElementById('res-view-btn-calendar');
+      const tblBtn = document.getElementById('res-view-btn-table');
+      const calCont = document.getElementById('res-view-calendar-container');
+      const tblCont = document.getElementById('res-view-table-container');
+
+      if (mode === 'calendar') {
+        calBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#0C3559] text-white shadow-sm';
+        tblBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900';
+        calCont.classList.remove('hidden');
+        tblCont.classList.add('hidden');
+        window.renderReservationCalendar();
+      } else {
+        tblBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#0C3559] text-white shadow-sm';
+        calBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900';
+        tblCont.classList.remove('hidden');
+        calCont.classList.add('hidden');
+        window.renderBookingTable();
+      }
+    };
+
+    window.changeResMonth = function(delta) {
+      window.resCalMonth += delta;
+      if (window.resCalMonth > 11) {
+        window.resCalMonth = 0;
+        window.resCalYear += 1;
+      } else if (window.resCalMonth < 0) {
+        window.resCalMonth = 11;
+        window.resCalYear -= 1;
+      }
+      window.renderReservationCalendar();
+    };
+
+    window.resetResMonthToday = function() {
+      const d = new Date();
+      window.resCalYear = d.getFullYear();
+      window.resCalMonth = d.getMonth();
+      window.selectedResDate = d.toISOString().split('T')[0];
+      window.renderReservationCalendar();
+    };
+
+    window.selectResCalendarDate = function(dateStr) {
+      window.selectedResDate = dateStr;
+      window.renderReservationCalendar();
+    };
+
+    window.openManualBookingModalForSelectedDate = function() {
+      document.getElementById('manual-date').value = window.selectedResDate || new Date().toISOString().split('T')[0];
+      window.renderManualBookingPrograms();
+      window.openModal('modal-manual-booking');
+    };
+
+    window.renderReservationCalendar = function() {
+      const year = window.resCalYear;
+      const month = window.resCalMonth; // 0..11
+      const monthTitleEl = document.getElementById('res-calendar-month-title');
+      if (monthTitleEl) {
+        monthTitleEl.innerText = `${year}년 ${String(month + 1).padStart(2, '0')}월`;
+      }
+
+      const gridEl = document.getElementById('res-calendar-grid');
+      if (!gridEl) return;
+
+      const firstDay = new Date(year, month, 1).getDay(); // 0(Sun)..6(Sat)
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      let html = '';
+
+      for (let i = 0; i < firstDay; i++) {
+        html += `<div class="min-h-[90px] sm:min-h-[110px] bg-slate-50/50 rounded-xl border border-slate-100 p-1.5 opacity-40"></div>`;
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateObj = new Date(year, month, day);
+        const dayOfWeek = dateObj.getDay();
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+        const isToday = dateStr === todayStr;
+        const isSelected = dateStr === window.selectedResDate;
+
+        const dayBookings = (window.bookings || []).filter(b => b.date === dateStr);
+        const activeBookingsCount = dayBookings.filter(b => b.status !== '취소').length;
+
+        let dateNumClass = 'font-extrabold text-[#0C3559]';
+        if (dayOfWeek === 0) dateNumClass = 'font-extrabold text-rose-500';
+        if (dayOfWeek === 6) dateNumClass = 'font-extrabold text-sky-600';
+
+        html += `
+          <div onclick="window.selectResCalendarDate('${dateStr}')" class="min-h-[90px] sm:min-h-[110px] rounded-xl border transition-all p-1.5 flex flex-col justify-between cursor-pointer ${isSelected ? 'bg-sky-50/90 border-[#0092B8] ring-2 ring-sky-300 shadow-md' : (isToday ? 'bg-amber-50/80 border-amber-300' : 'bg-white border-slate-200 hover:border-sky-300 hover:bg-slate-50')}">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <span class="${dateNumClass} text-xs ${isToday ? 'bg-amber-400 text-slate-900 px-1.5 py-0.5 rounded-full text-[10px]' : ''}">${day}일</span>
+                ${activeBookingsCount > 0 ? `<span class="bg-[#0C3559] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full">${activeBookingsCount}건</span>` : ''}
+              </div>
+
+              <div class="space-y-1 max-h-[65px] overflow-y-auto custom-scrollbar">
+                ${dayBookings.slice(0, 3).map(b => {
+                  let badgeBg = b.status === '취소' ? 'bg-rose-100 text-rose-700 border-rose-200' : 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                  let isErpManual = b.id && b.id.startsWith('ERP');
+                  if (b.status !== '취소' && isErpManual) badgeBg = 'bg-amber-100 text-amber-800 border-amber-200';
+
+                  return `
+                    <div class="px-1.5 py-0.5 rounded text-[10px] font-bold border truncate ${badgeBg}" title="${b.time} ${b.name} (${b.programTitle})">
+                      ${b.time} ${b.name}
+                    </div>
+                  `;
+                }).join('')}
+                ${dayBookings.length > 3 ? `<p class="text-[9px] text-slate-400 font-bold text-center">+${dayBookings.length - 3}건 더보기</p>` : ''}
+              </div>
+            </div>
+
+            <div class="text-[9px] text-right text-slate-400 font-medium">
+              ${isSelected ? '선택됨 ✓' : ''}
+            </div>
+          </div>
+        `;
+      }
+
+      gridEl.innerHTML = html;
+      window.renderResSelectedDateDetails();
+    };
+
+    window.renderResSelectedDateDetails = function() {
+      const labelEl = document.getElementById('res-selected-date-label');
+      const listEl = document.getElementById('res-selected-date-list');
+      if (!listEl) return;
+
+      const dateStr = window.selectedResDate || new Date().toISOString().split('T')[0];
+      if (labelEl) labelEl.innerText = `${dateStr} 상세 예약 스케줄`;
+
+      const dayBookings = (window.bookings || []).filter(b => b.date === dateStr).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+
+      if (dayBookings.length === 0) {
+        listEl.innerHTML = `<p class="text-xs text-slate-400 py-8 text-center">[${dateStr}] 해당 날짜에 예정된 예약이 없습니다.<br>우측 상단 [+ 해당 날짜 수기 예약 등록] 버튼으로 신규 예약을 등록하실 수 있습니다.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = dayBookings.map(b => `
+        <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-sm text-[#0C3559]">${b.time}</span>
+              <span class="font-bold text-slate-800">${b.name}</span>
+              <span class="text-slate-400 font-mono text-[10px]">(${b.phone})</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${b.id && b.id.startsWith('ERP') ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-[#0092B8]'}">${b.id && b.id.startsWith('ERP') ? '전화(수기)' : '홈페이지'}</span>
+            </div>
+            <p class="text-slate-500 mt-1 text-[11px] font-medium">
+              코스: <span class="font-bold text-slate-700">${b.programTitle}</span>
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <button onclick="window.changeBookingStatus('${b.id}')" class="px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer ${b.status === '취소' ? 'bg-rose-100 text-rose-700 hover:bg-rose-200 border border-rose-200' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border border-emerald-200'}">
+              ${b.status} ▾
+            </button>
+            <button onclick="window.deleteBooking('${b.id}')" class="px-2.5 py-1.5 bg-rose-50 text-rose-600 font-bold rounded-lg text-[11px] hover:bg-rose-100 transition-all border border-rose-200">
+              🗑️ 삭제
+            </button>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    window.renderBookingList = function() {
+      window.cleanUpPastBookings();
+      if (window.resViewMode === 'calendar') {
+        window.renderReservationCalendar();
+      } else {
+        window.renderBookingTable();
+      }
+    };
+
+    window.renderBookingTable = function() {
+      const sorted = [...window.bookings].sort((a, b) => new Date(b.date + 'T' + b.time) - new Date(a.date + 'T' + a.time));
       const tbody = document.getElementById('booking-table-body');
-      tbody.innerHTML = sorted.map(b => {
-        const isERP = b.id.startsWith('ERP');
-        return `
+      if (!tbody) return;
+
+      if (sorted.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400 text-xs">예정된 예약 내역이 없습니다. (지나간 날짜 예약은 자동으로 완전 정리되었습니다)</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = sorted.map(b => `
         <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
           <td class="px-6 py-4 font-semibold text-slate-600">${b.date} ${b.time}</td>
-          <td class="px-6 py-4 font-bold text-[#0C3559]">${b.name} <span class="text-[10px] text-slate-400 font-mono ml-1">${b.phone.slice(-4)}</span></td>
+          <td class="px-6 py-4 font-bold text-[#0C3559]">${b.name} <span class="text-[10px] text-slate-400 font-mono">${b.phone.slice(-4)}</span></td>
           <td class="px-6 py-4 text-xs font-semibold text-slate-500">${b.programTitle}</td>
+          <td class="px-6 py-4"><span class="px-2 py-1 rounded text-[10px] font-bold ${b.id.startsWith('ERP') ? 'bg-amber-100 text-amber-700' : 'bg-[#0C3559]/10 text-[#0C3559]'}">${b.id.startsWith('ERP') ? '전화(수기)' : '홈페이지'}</span></td>
           <td class="px-6 py-4">
-            <span class="px-2 py-1 rounded text-[10px] font-bold ${isERP ? 'bg-amber-100 text-amber-700' : 'bg-[#0C3559]/10 text-[#0C3559]'}">${isERP ? '전화(수기)' : '홈페이지'}</span>
+            <button onclick="window.changeBookingStatus('${b.id}')" class="px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all shadow-sm cursor-pointer ${b.status === '취소' ? 'bg-rose-100 text-rose-700 hover:bg-rose-200 border border-rose-200' : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border border-emerald-200'}">
+              ${b.status} ▾
+            </button>
           </td>
           <td class="px-6 py-4">
-            <span class="px-2 py-1 rounded-md text-[10px] font-bold ${b.status === '취소' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-700'}">${b.status}</span>
-          </td>
-          <td class="px-6 py-4">
-            ${b.status !== '취소' ? `<button onclick="window.cancelBooking('${b.id}')" class="text-xs text-rose-500 font-bold hover:underline">취소처리</button>` : ''}
+            <div class="flex items-center justify-center gap-1.5">
+              ${b.status !== '취소' ? `
+                <button onclick="window.cancelBooking('${b.id}')" class="px-2.5 py-1.5 bg-amber-50 text-amber-700 font-bold rounded-lg text-[11px] hover:bg-amber-100 transition-all border border-amber-200">
+                  취소
+                </button>
+              ` : ''}
+              <button onclick="window.deleteBooking('${b.id}')" class="px-2.5 py-1.5 bg-rose-50 text-rose-600 font-bold rounded-lg text-[11px] hover:bg-rose-100 transition-all border border-rose-200">
+                🗑️ 삭제
+              </button>
+            </div>
           </td>
         </tr>
-      `}).join('');
+      `).join('');
+    };
+
+    window.changeBookingStatus = function(id) {
+      const b = window.bookings.find(x => x.id === id);
+      if (!b) return;
+
+      if (b.status === '취소') {
+        window.showConfirm('예약 상태 복구', `'${b.name}' 고객님의 취소된 예약을 다시 [예약 확정] 상태로 변경하시겠습니까?`, function() {
+          b.status = '예약 확정';
+          if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(b);
+          window.renderBookingList();
+          window.renderBasicDashboard();
+          window.showAlert('상태 변경 완료', '예약이 [예약 확정] 상태로 복구되었습니다.');
+        });
+      } else {
+        window.showConfirm('예약 취소 처리', `'${b.name}' 고객님의 예약 상태를 [취소]로 변경하시겠습니까?`, function() {
+          b.status = '취소';
+          if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(b);
+          window.renderBookingList();
+          window.renderBasicDashboard();
+          window.showAlert('취소 처리 완료', '예약 상태가 [취소]로 변경되었습니다.');
+        });
+      }
+    };
+
+    window.deleteBooking = function(id) {
+      if (!window.canPerformAction('deleteBooking')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 예약 완전 삭제가 제한됩니다. (취소 처리만 가능)');
+      }
+      const b = window.bookings.find(x => x.id === id);
+      if (!b) return;
+
+      window.showConfirm('예약 완전 삭제', `'${b.name}' 고객님의 예약건(${b.date} ${b.time})을 완전히 삭제하시겠습니까?\n이 작업은 되돌릴 수 없으며 클라우드에서도 영구히 삭제됩니다.`, function() {
+        window.bookings = window.bookings.filter(x => x.id !== id);
+        window.renderBookingList();
+        window.renderBasicDashboard();
+
+        if (typeof window.deleteBookingFromCloud === 'function') {
+          window.deleteBookingFromCloud(id);
+        }
+        window.showAlert('삭제 완료', '선택한 예약 데이터가 성공적으로 삭제되었습니다.');
+      });
+    };
+
+    window.renderAttendance = function() {
+      const memberContainer = document.getElementById('attendance-member-list');
+      const todayLogsContainer = document.getElementById('attendance-today-logs');
+      const todayCountBadge = document.getElementById('att-today-count-badge');
+      const basicAttBadge = document.getElementById('basic-today-attendance');
+      const memAttStatBadge = document.getElementById('mem-stat-today-att');
+
+      const todayStr = window.getLocalDateStr();
+      const todayLogs = (window.attendanceLogs || []).filter(l => l && l.date === todayStr);
+
+      if (todayCountBadge) todayCountBadge.innerText = `오늘 총 ${todayLogs.length}건`;
+      if (basicAttBadge) basicAttBadge.innerText = todayLogs.length;
+      if (memAttStatBadge) memAttStatBadge.innerText = `${todayLogs.length}건`;
+
+      if (memberContainer) {
+        if (!window.members || window.members.length === 0) {
+          memberContainer.innerHTML = `<p class="text-xs text-slate-400 py-8 text-center">등록된 회원이 없습니다.</p>`;
+        } else {
+          const searchVal = document.getElementById('att-search-input')?.value.trim().toLowerCase() || '';
+          let filteredMembers = [...window.members];
+
+          if (searchVal) {
+            filteredMembers = filteredMembers.filter(m => 
+              (m.name && m.name.toLowerCase().includes(searchVal)) || 
+              (m.phone && m.phone.includes(searchVal))
+            );
+          }
+
+          if (filteredMembers.length === 0) {
+            memberContainer.innerHTML = `<p class="text-xs text-slate-400 py-8 text-center">검색 결과에 해당하는 회원이 없습니다.</p>`;
+          } else {
+            memberContainer.innerHTML = filteredMembers.map(m => {
+              let passes = Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0));
+              return `
+                <div class="p-3.5 rounded-xl border border-slate-200 flex justify-between items-center text-xs ${passes > 0 ? 'bg-slate-50/70 hover:bg-slate-100/80' : 'bg-rose-50/40 border-rose-200'} transition-colors">
+                  <div>
+                    <span class="font-bold text-[#0C3559] text-sm">${m.name || '회원'}</span>
+                    <span class="text-slate-400 font-mono text-[11px] ml-1">(${m.phone || ''})</span>
+                    <p class="text-slate-500 mt-0.5 text-[11px]">
+                      ${m.passType || '수강권 미보유'} · 잔여: <span class="font-bold ${passes > 0 ? 'text-[#0092B8]' : 'text-rose-600'}">${passes}회</span>
+                    </p>
+                  </div>
+                  <button onclick="window.checkInMember('${m.id}', 'ERP 현장출석')" class="px-3.5 py-2 ${passes > 0 ? 'bg-[#0C3559] hover:bg-[#082239] text-white' : 'bg-slate-200 text-slate-400 cursor-not-allowed'} font-bold rounded-xl text-xs transition-all shadow-sm shrink-0">
+                    📟 현장 출석 (-1)
+                  </button>
+                </div>
+              `;
+            }).join('');
+          }
+        }
+      }
+
+      if (todayLogsContainer) {
+        if (todayLogs.length === 0) {
+          todayLogsContainer.innerHTML = `<p class="text-xs text-slate-400 py-12 text-center">오늘 현장 및 키오스크 출석 내역이 없습니다.</p>`;
+        } else {
+          todayLogsContainer.innerHTML = todayLogs.map(log => `
+            <div class="p-3.5 rounded-xl border border-slate-200 bg-sky-50/50 flex justify-between items-center text-xs gap-2">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-[#0C3559] text-sm">${log.memberName || '회원'}</span>
+                  <span class="text-slate-400 font-mono text-[10px]">(${log.phone ? String(log.phone).slice(-4) : ''})</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold ${log.source && log.source.includes('키오스크') ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-[#0092B8]'}">${log.source || '현장출석'}</span>
+                </div>
+                <p class="text-slate-500 mt-1 text-[11px]">
+                  ${log.passType || '수강권'} · 출석 후 잔여 수강권: <span class="font-bold text-[#0092B8]">${log.remainingPasses !== undefined ? log.remainingPasses : 0}회</span>
+                </p>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <div class="text-right">
+                  <span class="font-bold text-[#0C3559] text-xs font-mono">${log.time || ''}</span>
+                  <p class="text-[10px] text-emerald-600 font-bold mt-0.5">✓ 차감 완료</p>
+                </div>
+                <button onclick="window.deleteAttendanceLog('${log.id}')" class="px-2.5 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold rounded-lg text-[11px] transition-all border border-rose-200 shadow-sm">
+                  🗑️ 삭제
+                </button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+    };
+
+    window.deleteAttendanceLog = function(logId) {
+      if (window.canPerformAction && !window.canPerformAction('deleteAttendance')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 출석 내역 삭제가 차단됩니다.');
+      }
+      const log = (window.attendanceLogs || []).find(x => x.id === logId);
+      if (!log) return;
+
+      window.showConfirm('출석 기록 삭제 & 수강권 복구', `'${log.memberName}' 회원님의 출석 기록을 삭제하고 차감되었던 수강권 1회를 복구하시겠습니까?`, function() {
+        // 1. 출석 목록에서 삭제
+        window.attendanceLogs = (window.attendanceLogs || []).filter(x => x.id !== logId);
+
+        // 2. 회원 수강권 1회 복구
+        if (log.memberId) {
+          const m = (window.members || []).find(x => x.id === log.memberId);
+          if (m) {
+            let passes = Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0));
+            m.remainingPasses = passes + 1;
+            m.passCount = m.remainingPasses;
+            if (typeof window.syncMemberToCloud === 'function') {
+              window.syncMemberToCloud(m);
+            }
+          }
+        }
+
+        // 3. 클라우드 DB에서 기록 삭제
+        if (typeof window.deleteAttendanceFromCloud === 'function') {
+          window.deleteAttendanceFromCloud(logId);
+        }
+
+        window.renderAttendance();
+        window.renderMemberList();
+        window.renderPasses();
+        window.renderBasicDashboard();
+
+        window.showAlert('삭제 및 복구 완료', '출석 기록이 삭제되고 수강권 1회가 정상 복구되었습니다.');
+      });
+    };
+
+    window.setStatsRangePreset = function(preset) {
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
+      const startEl = document.getElementById('stats-start-date');
+      const endEl = document.getElementById('stats-end-date');
+      if (!startEl || !endEl) return;
+
+      endEl.value = todayStr;
+
+      if (preset === 'today') {
+        startEl.value = todayStr;
+      } else if (preset === 'week') {
+        const firstDayOfWeek = new Date(today);
+        const day = today.getDay();
+        const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+        firstDayOfWeek.setDate(diff);
+        startEl.value = firstDayOfWeek.toISOString().split('T')[0];
+      } else if (preset === 'month') {
+        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        startEl.value = firstDayOfMonth.toISOString().split('T')[0];
+      } else if (preset === 'last30') {
+        const past30 = new Date(today);
+        past30.setDate(past30.getDate() - 30);
+        startEl.value = past30.toISOString().split('T')[0];
+      } else if (preset === 'all') {
+        startEl.value = '2025-01-01';
+      }
+
+      window.renderStats();
+    };
+
+    window.renderStats = function() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const currentYearMonth = todayStr.substring(0, 7);
+
+      const startDate = document.getElementById('stats-start-date')?.value || todayStr;
+      const endDate = document.getElementById('stats-end-date')?.value || todayStr;
+      const categoryFilter = document.getElementById('stats-category-filter')?.value || 'all';
+      const searchKeyword = document.getElementById('stats-search-keyword')?.value.trim().toLowerCase() || '';
+
+      const sales = window.salesLogs || [];
+
+      const todaySalesList = sales.filter(s => s.date === todayStr);
+      const todayTotalAmount = todaySalesList.reduce((sum, s) => sum + (s.amount || 0), 0);
+
+      const monthSalesList = sales.filter(s => s.date && s.date.startsWith(currentYearMonth));
+      const monthTotalAmount = monthSalesList.reduce((sum, s) => sum + (s.amount || 0), 0);
+
+      let rangeSalesList = sales.filter(s => s.date >= startDate && s.date <= endDate);
+
+      if (categoryFilter !== 'all') {
+        rangeSalesList = rangeSalesList.filter(s => s.category === categoryFilter);
+      }
+
+      if (searchKeyword) {
+        rangeSalesList = rangeSalesList.filter(s => 
+          (s.memberName && s.memberName.toLowerCase().includes(searchKeyword)) ||
+          (s.itemName && s.itemName.toLowerCase().includes(searchKeyword))
+        );
+      }
+
+      const rangeTotalAmount = rangeSalesList.reduce((sum, s) => sum + (s.amount || 0), 0);
+
+      let cardTotal = 0;
+      let cashTotal = 0;
+      rangeSalesList.forEach(s => {
+        if (s.payMethod && s.payMethod.includes('카드')) cardTotal += s.amount || 0;
+        else cashTotal += s.amount || 0;
+      });
+
+      const cardPct = rangeTotalAmount > 0 ? Math.round((cardTotal / rangeTotalAmount) * 100) : 0;
+      const cashPct = rangeTotalAmount > 0 ? Math.round((cashTotal / rangeTotalAmount) * 100) : 0;
+
+      const kpiToday = document.getElementById('stats-kpi-today');
+      const kpiTodayCount = document.getElementById('stats-kpi-today-count');
+      const kpiMonth = document.getElementById('stats-kpi-month');
+      const kpiMonthCount = document.getElementById('stats-kpi-month-count');
+      const kpiRangeTotal = document.getElementById('stats-kpi-range-total');
+      const kpiRangeCount = document.getElementById('stats-kpi-range-count');
+      const kpiPaymethods = document.getElementById('stats-kpi-paymethods');
+      const tableCountBadge = document.getElementById('stats-table-count-badge');
+
+      if (kpiToday) kpiToday.innerText = todayTotalAmount.toLocaleString() + '원';
+      if (kpiTodayCount) kpiTodayCount.innerText = `오늘 결제 ${todaySalesList.length}건`;
+      if (kpiMonth) kpiMonth.innerText = monthTotalAmount.toLocaleString() + '원';
+      if (kpiMonthCount) kpiMonthCount.innerText = `이번 달 누적 ${monthSalesList.length}건`;
+      if (kpiRangeTotal) kpiRangeTotal.innerText = rangeTotalAmount.toLocaleString() + '원';
+      if (kpiRangeCount) kpiRangeCount.innerText = `해당 기간 총 ${rangeSalesList.length}건`;
+      if (kpiPaymethods) kpiPaymethods.innerText = `카드 ${cardPct}% / 계좌·현금 ${cashPct}%`;
+      if (tableCountBadge) tableCountBadge.innerText = `총 ${rangeSalesList.length}건 (${rangeTotalAmount.toLocaleString()}원)`;
+
+      const tbody = document.getElementById('stats-table-body');
+      if (!tbody) return;
+
+      if (rangeSalesList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="px-6 py-10 text-center text-slate-400 text-xs">선택하신 기간 동안 결제/매출 거래 내역이 존재하지 않습니다.</td></tr>`;
+        return;
+      }
+
+      const sortedRangeSales = [...rangeSalesList].sort((a, b) => new Date((b.date || '') + 'T' + (b.time || '00:00')) - new Date((a.date || '') + 'T' + (a.time || '00:00')));
+
+      tbody.innerHTML = sortedRangeSales.map(s => {
+        let categoryBadgeClass = 'bg-sky-100 text-[#0092B8]';
+        if (s.category === '1회 이용 프로그램') categoryBadgeClass = 'bg-emerald-100 text-emerald-800';
+        if (s.category === '스포츠용품') categoryBadgeClass = 'bg-amber-100 text-amber-800';
+
+        return `
+          <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
+            <td class="px-6 py-4 font-mono font-bold text-slate-600">${s.date} <span class="text-slate-400 font-normal ml-1">${s.time || ''}</span></td>
+            <td class="px-6 py-4 font-bold text-[#0C3559]">
+              ${s.memberName || '비회원'}
+              ${s.memberPhone ? `<span class="text-[10px] text-slate-400 font-mono block">(${s.memberPhone})</span>` : ''}
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${categoryBadgeClass}">
+                ${s.category || '기타'}
+              </span>
+            </td>
+            <td class="px-6 py-4 font-semibold text-slate-800">${s.itemName}</td>
+            <td class="px-6 py-4 font-medium text-slate-600">
+              <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold text-[10px]">
+                ${s.payMethod || '신용카드'}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right font-extrabold text-sm text-[#0092B8]">
+              ${(s.amount || 0).toLocaleString()}원
+            </td>
+            <td class="px-6 py-4 text-center">
+              <button onclick="window.deleteSaleRecord('${s.id}')" class="px-2.5 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold rounded-lg text-[11px] transition-all border border-rose-200">
+                🗑️ 취소/삭제
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    };
+
+    window.deleteSaleRecord = function(id) {
+      if (!window.canPerformAction('deleteSale')) {
+        return window.showAlert('🔒 접근 권한 제한', '강사 계정은 결제 매출 삭제가 불가합니다.');
+      }
+      const s = (window.salesLogs || []).find(x => x.id === id);
+      if (!s) return;
+
+      window.showConfirm('매출 거래 취소 및 삭제', `'${s.memberName}' 고객의 ${s.itemName} (${(s.amount || 0).toLocaleString()}원) 결제 매출 건을 삭제하시겠습니까?`, function() {
+        window.salesLogs = (window.salesLogs || []).filter(x => x.id !== id);
+        window.renderStats();
+
+        if (typeof window.deleteSaleFromCloud === 'function') {
+          window.deleteSaleFromCloud(id);
+        }
+        window.showAlert('삭제 완료', '선택한 매출 결제 데이터가 삭제되었습니다.');
+      });
+    };
+
+    window.renderManualBookingPrograms = function() {
+      const select = document.getElementById('manual-program');
+      if (!select) return;
+
+      let optionsHtml = '';
+
+      const courses = window.passCourses || [];
+      if (courses.length > 0) {
+        optionsHtml += `<optgroup label="🎫 [수강관리] 코스 상품">`;
+        courses.forEach(c => {
+          optionsHtml += `<option value="${c.name}">${c.name} (${c.defaultPasses}회 / ${c.defaultPrice ? c.defaultPrice.toLocaleString() + '원' : '가격 미정'})</option>`;
+        });
+        optionsHtml += `</optgroup>`;
+      }
+
+      const singlePrograms = (window.products || []).filter(p => p.category === '1회 이용 프로그램');
+      if (singlePrograms.length > 0) {
+        optionsHtml += `<optgroup label="💳 [상품관리] 1회 이용 프로그램">`;
+        singlePrograms.forEach(p => {
+          optionsHtml += `<option value="${p.name}">${p.name} (${p.price ? p.price.toLocaleString() + '원' : '가격 미정'})</option>`;
+        });
+        optionsHtml += `</optgroup>`;
+      }
+
+      if (!optionsHtml) {
+        optionsHtml = `<option value="일반 1:1 예약">일반 1:1 예약</option>`;
+      }
+
+      select.innerHTML = optionsHtml;
     };
 
     window.openManualBookingModal = function() {
       document.getElementById('manual-date').value = new Date().toISOString().split('T')[0];
+      window.renderManualBookingPrograms();
       window.openModal('modal-manual-booking');
     };
 
     window.cancelBooking = function(id) {
-      if(confirm('이 예약을 취소 처리하시겠습니까? 해당 시간대가 즉시 다시 오픈됩니다.')) {
-        const b = window.bookings.find(x => x.id === id);
-        if(b) {
-          b.status = '취소';
-          // 클라우드 상태 변경 반영
-          if (typeof window.syncBookingToCloud === 'function') {
-            window.syncBookingToCloud(b);
-          }
-        }
-      }
+      const b = window.bookings.find(x => x.id === id);
+      if (!b) return;
+
+      window.showConfirm('예약 취소 확인', `'${b.name}' 고객님의 예약을 취소 처리하시겠습니까?`, function() {
+        b.status = '취소'; 
+        if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(b); 
+        window.renderBookingList();
+        window.renderBasicDashboard();
+        window.showAlert('취소 완료', '예약이 취소되었습니다.');
+      });
     };
 
-    // 카카오 알림톡 연동 모듈 호출
     window.sendKakaoAlimtalk = async function({ name, phone, programTitle, date, time }) {
       try {
         const cleanPhone = phone.replace(/[^0-9]/g, '');
-        // 홈페이지 백엔드 서버 경유 발송
-        await fetch('https://solutionstretching.com/api/send-alimtalk', {
+        const res = await fetch('https://solutionstretching.com/api/send-alimtalk', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, phone: cleanPhone, programTitle, duration: "50", date, time })
         });
+        
+        const data = await res.json();
+        if (!res.ok || (data.code && data.code !== '2000')) {
+          window.showAlert('알림톡 발송 안내', `⚠️ 카톡 발송 실패: ${data.message || data.error || '설정 오류'}`);
+          return false;
+        }
+        return true;
       } catch (err) {
-        console.error("알림톡 발송 에러:", err);
+        console.error("Alimtalk error:", err);
+        window.showAlert('통신 안내', "⚠️ 서버와 통신할 수 없습니다.");
+        return false;
       }
     };
 
@@ -390,49 +3013,43 @@
       const name = document.getElementById('manual-name').value.trim();
       const phone = document.getElementById('manual-phone').value.trim().replace(/[^0-9]/g, '');
       const date = document.getElementById('manual-date').value;
-      const time = document.getElementById('manual-time').value;
+      const time = document.getElementById('manual-time').value.trim();
       const programTitle = document.getElementById('manual-program').value;
       const sendKakao = document.getElementById('manual-send-kakao').checked;
 
-      if(!name || !phone || !date) return alert('예약자 정보를 모두 입력해주세요.');
-
-      // 중복 시간대 체크 (홈페이지 데이터 포함)
-      const isDuplicate = window.bookings.some(b => b.date === date && b.time === time && b.status !== '취소');
-      if (isDuplicate) {
-        return alert('🚨 이미 예약이 확정(마감)된 시간대입니다. (홈페이지 또는 다른 경로로 예약됨)');
+      if (!name || !phone || !date || !time) {
+        return window.showAlert('입력 오류', '예약 고객 정보 및 일시를 작성해 주세요.');
       }
 
-      const newBooking = {
-        id: 'ERP-' + Date.now(),
-        name, phone, date, time, programTitle,
-        status: '예약 확정'
-      };
-
-      // ☁️ 1. 클라우드에 예약 전송 (홈페이지 달력 즉각 차단)
-      if (typeof window.syncBookingToCloud === 'function') {
-        window.syncBookingToCloud(newBooking);
-      } else {
-        window.bookings.unshift(newBooking);
-        window.renderBookingList();
+      // 중복 예약 방지 검증
+      const isAlreadyBooked = (window.bookings || []).some(b => b.date === date && (b.time || '').trim() === time && b.status !== '취소');
+      if (isAlreadyBooked) {
+        return window.showAlert('중복 예약 불가', `[${date} ${time}] 시간대는 이미 예약이 마감되었습니다. 다른 시간대를 선택해 주세요.`);
       }
+      
+      const newB = { id: 'ERP-' + Date.now(), name, phone, date, time, programTitle, status: '예약 확정' };
+      
+      window.bookings.unshift(newB);
+      window.renderBookingList();
 
-      // 📱 2. 카카오 알림톡 전송
+      if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(newB);
+      
       if (sendKakao) {
-        alert('예약이 클라우드에 확정되었으며 고객님께 카카오 알림톡이 전송됩니다.');
-        await window.sendKakaoAlimtalk({ name, phone, programTitle, date, time });
+        const isSuccess = await window.sendKakaoAlimtalk({ name, phone, programTitle, date, time });
+        if(isSuccess) {
+          window.showAlert('예약 완료', '수기 예약이 반영되었으며 카카오 알림톡이 전송되었습니다!');
+        } else {
+          window.showAlert('예약 완료', '예약은 저장되었으나 카카오톡 전송에 실패했습니다.');
+        }
       } else {
-        alert('예약이 클라우드에 정상 반영 확정되었습니다.');
+        window.showAlert('예약 완료', '수기 예약이 정상 등록되었습니다.');
       }
-
+      
       window.closeModal('modal-manual-booking');
-    };
-
-    window.onload = function() {
-      window.showWelcomeView();
     };
   </script>
 
-  <!-- ☁️ Firebase Cloud Firestore SDK (Real-time Sync module) -->
+  <!-- Firebase Cloud Sync -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -450,52 +3067,115 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // Bookings 실시간 감지 리스너 (홈페이지 예약 시 ERP 자동 업데이트)
-      onSnapshot(collection(db, "bookings"), (snapshot) => {
-        const cloudBookings = [];
-        snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
-        window.bookings = cloudBookings;
-        
-        if (document.getElementById('tab-reservations').classList.contains('active')) {
-          window.renderBookingList();
-        }
-        if (document.getElementById('tab-dashboard').classList.contains('active')) {
-          window.renderDashboard();
+      onSnapshot(collection(db, "courses"), (snapshot) => {
+        if (!snapshot.empty) {
+          const cloudCourses = [];
+          snapshot.forEach((docSnap) => cloudCourses.push(docSnap.data()));
+          window.passCourses = cloudCourses;
+          window.renderCourseSelects();
+          if (document.getElementById('tab-passes')?.classList.contains('active')) window.onPassTabTypeChange();
         }
       });
 
-      // Members 실시간 감지 리스너
+      onSnapshot(collection(db, "products"), (snapshot) => {
+        if (!snapshot.empty) {
+          const cloudProducts = [];
+          snapshot.forEach((docSnap) => cloudProducts.push(docSnap.data()));
+          window.products = cloudProducts;
+          if (document.getElementById('tab-products')?.classList.contains('active')) window.renderProductsTab();
+        }
+      });
+
+      let isInitialBookingLoad = true;
+      onSnapshot(collection(db, "bookings"), (snapshot) => {
+        const cloudBookings = [];
+        snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
+
+        if (!isInitialBookingLoad) {
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+              const newB = change.doc.data();
+              window.speakBookingNotificationVoice(newB);
+              window.showAlert(
+                '🔔 신규 온라인 예약 접수', 
+                `[홈페이지 실시간 예약이 접수되었습니다!]\n• 고객명: ${newB.name || '고객'} (${newB.phone ? newB.phone.slice(-4) : ''})\n• 예약일시: ${newB.date || ''} ${newB.time || ''}\n• 코스: ${newB.programTitle || '1:1 맞춤 예약'}`
+              );
+            }
+          });
+        }
+        isInitialBookingLoad = false;
+
+        window.bookings = cloudBookings;
+        window.cleanUpPastBookings();
+        if (document.getElementById('tab-reservations')?.classList.contains('active')) window.renderBookingList();
+        if (document.getElementById('tab-basic')?.classList.contains('active')) window.renderBasicDashboard();
+      });
+
       onSnapshot(collection(db, "members"), (snapshot) => {
         const cloudMembers = [];
         snapshot.forEach((docSnap) => cloudMembers.push(docSnap.data()));
         window.members = cloudMembers;
-        
-        if (document.getElementById('tab-members').classList.contains('active')) {
-          window.renderMemberList();
-        }
-        if (document.getElementById('tab-dashboard').classList.contains('active')) {
-          window.renderDashboard();
-        }
+        if (document.getElementById('tab-members')?.classList.contains('active')) window.renderMemberList();
+        if (document.getElementById('tab-passes')?.classList.contains('active')) window.renderPasses();
+        if (document.getElementById('tab-products')?.classList.contains('active')) window.renderPosBuyerSelect();
+        if (document.getElementById('tab-basic')?.classList.contains('active')) window.renderBasicDashboard();
+        if (document.getElementById('tab-attendance')?.classList.contains('active')) window.renderAttendance();
+        if (document.getElementById('tab-stats')?.classList.contains('active')) window.renderStats();
       });
 
-      // 저장 및 삭제 공용 함수
-      window.syncBookingToCloud = async function(bookingObj) {
-        await setDoc(doc(db, "bookings", bookingObj.id), bookingObj);
-      };
-      
-      window.syncMemberToCloud = async function(memberObj) {
-        await setDoc(doc(db, "members", memberObj.id), memberObj);
-      };
+      let isInitialAttendanceLoad = true;
+      onSnapshot(collection(db, "attendances"), (snapshot) => {
+        const cloudAttendance = [];
+        snapshot.forEach((docSnap) => cloudAttendance.push(docSnap.data()));
+        window.attendanceLogs = cloudAttendance.sort((a, b) => {
+          const tA = (a.date || '') + 'T' + (a.time || '00:00');
+          const tB = (b.date || '') + 'T' + (b.time || '00:00');
+          return tB.localeCompare(tA);
+        });
 
-      window.deleteMemberFromCloud = async function(memberId) {
-        await deleteDoc(doc(db, "members", memberId));
-      };
-      
-      console.log("🔥 Firebase ERP Cloud Sync Connected.");
+        if (!isInitialAttendanceLoad) {
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+              const newAtt = change.doc.data();
+              if (newAtt.source && newAtt.source.includes('키오스크')) {
+                window.triggerAttendanceSoundAndVoice();
+                window.showAlert(
+                  '📟 태블릿 키오스크 출석 알림',
+                  `[태블릿 키오스크 현장 출석 완료]\n• 회원명: ${newAtt.memberName || '회원'} (${newAtt.phone ? String(newAtt.phone).slice(-4) : ''})\n• 잔여 수강권: ${newAtt.remainingPasses}회`
+                );
+              }
+            }
+          });
+        }
+        isInitialAttendanceLoad = false;
+
+        window.renderAttendance();
+        window.renderBasicDashboard();
+        window.renderMemberList();
+      });
+
+      onSnapshot(collection(db, "sales"), (snapshot) => {
+        const cloudSales = [];
+        snapshot.forEach((docSnap) => cloudSales.push(docSnap.data()));
+        window.salesLogs = cloudSales.sort((a, b) => new Date((b.date || '') + 'T' + (b.time || '00:00')) - new Date((a.date || '') + 'T' + (a.time || '00:00')));
+        if (document.getElementById('tab-stats')?.classList.contains('active')) window.renderStats();
+      });
+
+      window.syncCourseToCloud = async function(c) { await setDoc(doc(db, "courses", c.id), c); };
+      window.deleteCourseFromCloud = async function(id) { await deleteDoc(doc(db, "courses", id)); };
+      window.syncProductToCloud = async function(p) { await setDoc(doc(db, "products", p.id), p); };
+      window.deleteProductFromCloud = async function(id) { await deleteDoc(doc(db, "products", id)); };
+      window.syncBookingToCloud = async function(b) { await setDoc(doc(db, "bookings", b.id), b); };
+      window.deleteBookingFromCloud = async function(id) { await deleteDoc(doc(db, "bookings", id)); };
+      window.syncMemberToCloud = async function(m) { await setDoc(doc(db, "members", m.id), m); };
+      window.deleteMemberFromCloud = async function(id) { await deleteDoc(doc(db, "members", id)); };
+      window.syncAttendanceToCloud = async function(att) { await setDoc(doc(db, "attendances", att.id), att); };
+      window.deleteAttendanceFromCloud = async function(id) { await deleteDoc(doc(db, "attendances", id)); };
+      window.syncSaleToCloud = async function(sale) { await setDoc(doc(db, "sales", sale.id), sale); };
+      window.deleteSaleFromCloud = async function(id) { await deleteDoc(doc(db, "sales", id)); };
     } catch(err) {
-      console.warn("Firebase Init Error:", err);
+      console.warn("Firebase Init:", err);
     }
   </script>
-
 </body>
 </html>
