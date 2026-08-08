@@ -10,6 +10,11 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // 브라우저 주소창 직접 접속(GET) 테스트 시 성공 안내 문구 출력
+  if (req.method === 'GET') {
+    return res.status(200).json({ success: true, message: 'Solapi Alimtalk API Server is running!' });
+  }
+
   if (req.method !== 'POST') {
     return res.status(200).json({ success: false, error: 'Method not allowed' });
   }
