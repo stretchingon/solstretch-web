@@ -59,7 +59,13 @@ export default async function handler(req, res) {
       process.env.SOLAPI_SENDER_PHONE || ''
     ).replace(/[^0-9]/g, '');
 
-    if (!apiKey || !apiSecret || !pfId || !templateId || !senderPhone) {
+    if (
+      !apiKey ||
+      !apiSecret ||
+      !pfId ||
+      !templateId ||
+      !senderPhone
+    ) {
       return res.status(500).json({
         success: false,
         error: 'SOLAPI 환경변수가 모두 설정되지 않았습니다.'
@@ -75,25 +81,29 @@ export default async function handler(req, res) {
       .digest('hex');
 
     const authorization =
-      'HMAC-SHA256 ' +
-      'apiKey=' + apiKey + ', ' +
-      'date=' + dateHeader + ', ' +
-      'salt=' + salt + ', ' +
-      'signature=' + signature;
+      `HMAC-SHA256 apiKey=${apiKey}, ` +
+      `date=${dateHeader}, ` +
+      `salt=${salt}, ` +
+      `signature=${signature}`;
 
-    // 고객 알림톡
-    const alimtalkMessage = {
-      to: cleanedPhone,
-      from: senderPhone,
-      kakaoOptions: {
-        pfId: pfId,
-        templateId: templateId,
-        variables: {
-          '#{고객명}': String(name || '고객'),
-          '#{코스명}': String(programTitle || '1:1 맞춤 예약'),
-          '#{소요시간}': String(duration || '50'),
-          '#{예약일자}': String(date || ''),
-          '#{예약시간}': String(time || '')
+    // ============================================
+    // 1. 고객 알림톡
+    // ============================================
+
+    const alimtalkPayload = {
+      message: {
+        to: cleanedPhone,
+        from: senderPhone,
+        kakaoOptions: {
+          pfId: pfId,
+          templateId: templateId,
+          variables: {
+            '#{고객명}': String(name || '고객'),
+            '#{코스명}': String(programTitle || '1:1 맞춤 예약'),
+            '#{소요시간}': String(duration || '50'),
+            '#{예약일자}': String(date || ''),
+            '#{예약시간}': String(time || '')
+          }
         }
       }
     };
@@ -112,7 +122,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
           Authorization: authorization
         },
-        body: JSON.stringify(alimtalkMessage)
+        body: JSON.stringify(alimtalkPayload)
       }
     );
 
@@ -133,19 +143,22 @@ export default async function handler(req, res) {
       });
     }
 
-    // 원장님 LMS
-    const adminMessage = {
-      to: senderPhone,
-      from: senderPhone,
-      text:
-        '[스트레칭온 실시간 예약 접수]\n' +
-        '고객명: ' + String(name || '미입력') + '\n' +
-        '연락처: ' + cleanedPhone + '\n' +
-        '코스: ' + String(programTitle || '맞춤 케어') +
-        ' (' + String(duration || '50') + '분)\n' +
-        '일시: ' + String(date || '') +
-        ' ' + String(time || '') + '\n' +
-        '요청사항: ' + String(note || '없음')
+    // ============================================
+    // 2. 원장님 예약 접수 LMS
+    // ============================================
+
+    const adminPayload = {
+      message: {
+        to: senderPhone,
+        from: senderPhone,
+        text:
+          `[스트레칭온 실시간 예약 접수]\n` +
+          `고객명: ${name || '미입력'}\n` +
+          `연락처: ${cleanedPhone}\n` +
+          `코스: ${programTitle || '맞춤 케어'} (${duration || '50'}분)\n` +
+          `일시: ${date || ''} ${time || ''}\n` +
+          `요청사항: ${note || '없음'}`
+      }
     };
 
     const adminResponse = await fetch(
@@ -156,7 +169,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
           Authorization: authorization
         },
-        body: JSON.stringify(adminMessage)
+        body: JSON.stringify(adminPayload)
       }
     );
 
@@ -165,9 +178,23 @@ export default async function handler(req, res) {
 
     console.log('원장님 문자 응답:', adminData);
 
+    if (!adminResponse.ok) {
+      console.error('원장님 문자 발송 실패:', adminData);
+
+      return res.status(500).json({
+        success: false,
+        stage: 'admin_sms',
+        error:
+          adminData.errorMessage ||
+          adminData.message ||
+          '원장님 문자 발송 실패',
+        solapi: adminData
+      });
+    }
+
     return res.status(200).json({
       success: true,
-      message: '알림톡 및 예약 접수 문자가 처리되었습니다.',
+      message: '알림톡 및 예약 접수 문자가 정상 발송되었습니다.',
       alimtalk: alimtalkData,
       adminSms: adminData
     });
@@ -177,7 +204,9 @@ export default async function handler(req, res) {
 
     return res.status(500).json({
       success: false,
-      error: error.message || '알림 발송 중 서버 오류가 발생했습니다.'
+      error:
+        error.message ||
+        '알림 발송 중 서버 오류가 발생했습니다.'
     });
   }
 }
