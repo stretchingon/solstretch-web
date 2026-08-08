@@ -205,7 +205,7 @@
   <!-- ================================================================= -->
   <div id="main-website" class="flex-1 flex flex-col justify-between">
 
-    <!-- Header (관리자 관련 버튼 100% 제거) -->
+    <!-- Header -->
     <header class="fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-2xl border-b border-stone-200/80 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         <div onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="cursor-pointer group flex items-center gap-3.5">
@@ -715,9 +715,7 @@
 
   </div>
 
-  <!-- ================================================================= -->
   <!-- MODALS -->
-  <!-- ================================================================= -->
 
   <!-- 1. Booking Success Modal -->
   <div id="modal-booking-success" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
@@ -770,7 +768,7 @@
     </div>
   </div>
 
-  <!-- JavaScript Application Logic (고객 전용 로직만 포함) -->
+  <!-- JavaScript Application Logic -->
   <script>
     const STORAGE_KEY = 'solstretch_bookings_v1';
     const MEMBERS_KEY = 'solstretch_members_v1';
@@ -911,6 +909,29 @@
     // ==========================================
     // 📟 [현장 전용 키오스크 출석체크 (?view=checkin)]
     // ==========================================
+    let audioUnlocked = false;
+    function unlockAudioAndSpeech() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          const ctx = new AudioCtx();
+          ctx.resume();
+        }
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.resume();
+          window.speechSynthesis.getVoices();
+        }
+      } catch (e) {}
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
     function updateKioskDisplay() {
       const displayContainer = document.getElementById('kiosk-digits-display');
       if (!displayContainer) return;
@@ -921,6 +942,7 @@
     }
 
     function pressKioskKey(key) {
+      unlockAudioAndSpeech();
       if (key === 'C') {
         kioskInputDigits = '';
       } else if (key === 'OK') {
@@ -934,10 +956,63 @@
       updateKioskDisplay();
     }
 
+    function playKioskChime() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        const playNote = (freq, startTime, duration) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
+          gain.gain.setValueAtTime(0.3, ctx.currentTime + startTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + startTime);
+          osc.stop(ctx.currentTime + startTime + duration);
+        };
+        playNote(659.25, 0, 0.4);   // E5
+        playNote(880.00, 0.22, 0.65); // A5
+      } catch (e) {
+        console.warn("Chime Audio Error:", e);
+      }
+    }
+
+    function speakKioskVoice(message) {
+      try {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.resume();
+
+        const utterance = new SpeechSynthesisUtterance(message);
+        utterance.lang = 'ko-KR';
+        utterance.pitch = 1.1;
+        utterance.rate = 1.0;
+
+        window.currentUtterance = utterance;
+
+        const voices = window.speechSynthesis.getVoices();
+        const koVoice = voices.find(v => v.lang.includes('ko') && (v.name.includes('Yuna') || v.name.includes('SunHi') || v.name.includes('Heami') || v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Korean') || v.name.includes('ko')));
+        if (koVoice) utterance.voice = koVoice;
+
+        utterance.onend = () => { window.currentUtterance = null; };
+        utterance.onerror = (err) => { console.warn("Speech Synthesis Error:", err); };
+
+        setTimeout(() => {
+          window.speechSynthesis.speak(utterance);
+        }, 100);
+      } catch (e) {
+        console.warn("Kiosk Voice Speech Error:", e);
+      }
+    }
+
     function processKioskCheckin() {
       const digits = kioskInputDigits;
       const matchedMembers = window.members.filter(m => {
-        const cleanPhone = m.phone.replace(/[^0-9]/g, '');
+        const cleanPhone = (m.phone || '').replace(/[^0-9]/g, '');
         return cleanPhone.endsWith(digits);
       });
 
@@ -948,43 +1023,87 @@
         resBox.className = 'p-6 rounded-3xl bg-rose-50 text-rose-900 shadow-2xl border-2 border-rose-400';
         resBox.innerHTML = `
           <h3 class="text-xl font-extrabold mb-1">등록되지 않은 번호입니다</h3>
-          <p class="text-xs text-rose-700">입력하신 [${digits}] 번호로 등록된 수강권 정보를 찾을 수 없습니다.</p>
+          <p class="text-xs text-rose-700">입력하신 뒷자리 [${digits}] 번호로 등록된 회원을 찾을 수 없습니다.</p>
         `;
       } else {
         const member = matchedMembers[0];
-        const curPasses = member.remainingPasses !== undefined ? member.remainingPasses : member.passCount;
+        const curPasses = member.remainingPasses !== undefined 
+          ? Number(member.remainingPasses) 
+          : (member.passCount !== undefined ? Number(member.passCount) : 0);
 
         if (curPasses <= 0) {
           resBox.className = 'p-6 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400';
           resBox.innerHTML = `
-            <h3 class="text-xl font-extrabold mb-1">${member.name} 회원님 (잔여 0회)</h3>
-            <p class="text-xs text-amber-800">수강권 횟수가 소진되었습니다. 원장님께 안내받으시기 바랍니다.</p>
+            <h3 class="text-xl font-extrabold mb-1">${member.name} 회원님</h3>
+            <p class="text-base font-bold text-amber-800 mt-1">잔여 수강권이 0회입니다.</p>
+            <p class="text-xs text-amber-700 mt-1">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
           `;
+          playKioskChime();
+          setTimeout(() => {
+            speakKioskVoice(`${member.name} 회원님. 잔여 수강권이 0회입니다.`);
+          }, 350);
         } else {
           // 1회 차감 및 클라우드 동기화
-          member.remainingPasses = curPasses - 1;
-          member.passCount = curPasses - 1;
+          const nextPasses = Math.max(0, curPasses - 1);
+          member.remainingPasses = nextPasses;
+          member.passCount = nextPasses;
           saveMembersLocal();
+
           if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
 
-          resBox.className = 'p-6 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-emerald-400';
+          // 출석 기록(attendanceLogs) 생성 및 클라우드 동기화 (한국 로컬 날짜 기준 적용)
+          const now = new Date();
+          const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+          const year = now.getFullYear();
+          const month = String(now.getMonth() + 1).padStart(2, '0');
+          const day = String(now.getDate()).padStart(2, '0');
+          const todayStr = `${year}-${month}-${day}`;
+
+          const logEntry = {
+            id: 'ATT-' + Date.now(),
+            date: todayStr,
+            time: timeStr,
+            memberId: member.id || ('M-' + Date.now()),
+            memberName: member.name || '회원',
+            phone: member.phone || '',
+            passType: member.passType || '수강권',
+            remainingPasses: nextPasses,
+            source: '태블릿 키오스크 출석'
+          };
+
+          if (!window.attendanceLogs) window.attendanceLogs = [];
+          window.attendanceLogs.unshift(logEntry);
+
+          if (typeof window.syncAttendanceToCloud === 'function') {
+            window.syncAttendanceToCloud(logEntry);
+          }
+
+          // 태블릿 자체 차임벨 & 20대 여성 안내 음성 재생
+          playKioskChime();
+          setTimeout(() => {
+            speakKioskVoice(`${member.name} 회원님 환영합니다. 잔여 수강권은 ${nextPasses}회 입니다.`);
+          }, 350);
+
+          // 태블릿 화면 결과 모달 표출
+          resBox.className = 'p-6 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-emerald-400 space-y-4';
           resBox.innerHTML = `
-            <div class="text-3xl mb-1">🎉</div>
-            <h3 class="text-2xl font-extrabold text-[#0C3559]">${member.name} 회원님 환영합니다!</h3>
-            <p class="text-xs text-stone-500 my-2">현장 출석체크 및 수강권 1회 차감이 완료되었습니다.</p>
-            <div class="p-3 bg-sky-50 rounded-2xl border border-sky-200 inline-block font-extrabold text-[#0092B8] text-sm">
-              잔여 수강권: ${curPasses - 1} / ${member.totalPasses || 10}회
+            <div class="text-4xl">🎉</div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">${member.name} 회원님 환영합니다!</h3>
+            <div class="p-5 bg-sky-50 rounded-2xl border-2 border-[#0092B8] text-center w-full shadow-inner space-y-1">
+              <p class="text-xs font-bold text-slate-500">출석 완료 후 잔여 수강권</p>
+              <p class="text-4xl sm:text-5xl font-black text-[#0092B8] my-1">${nextPasses}회 <span class="text-sm text-slate-500 font-bold">/ 총 ${member.totalPasses || 10}회</span></p>
+              <p class="text-xs text-slate-600 font-semibold">${member.passType || '수강권'}${member.expiryDate ? ' · 만료일: ' + member.expiryDate : ''}</p>
             </div>
           `;
         }
       }
 
-      // 3.5초 후 키오스크 자동 리셋
+      // 4초 후 키오스크 화면 자동 리셋
       setTimeout(() => {
         kioskInputDigits = '';
         updateKioskDisplay();
         resBox.classList.add('hidden');
-      }, 3500);
+      }, 4000);
     }
 
     // ==========================================
@@ -1164,6 +1283,17 @@
 
       const cleanPhone = phone.replace(/[^0-9]/g, '');
 
+      // 중복 예약 실시간 이중 방어 검증
+      const bookedTimes = window.bookings
+        .filter(b => b.date === selectedDate && b.status !== '취소')
+        .map(b => (b.time || '').trim());
+
+      if (bookedTimes.includes(selectedTime.trim())) {
+        showToast(`[${selectedDate} ${selectedTime}] 시간대는 방금 마감되었습니다. 다른 시간을 선택해 주세요.`);
+        renderStep2();
+        return;
+      }
+
       // 10회권 선택 시 회원 자격 검증
       if (selectedProgram.id === 'p3' || selectedProgram.badge === 'MEMBERSHIP') {
         const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
@@ -1174,9 +1304,6 @@
           return;
         }
       }
-
-      const bookedTimes = window.bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
-      if (bookedTimes.includes(selectedTime)) return showToast('이미 예약 마감된 시간대입니다.');
 
       const newB = {
         id: 'SOL-' + Math.floor(100000 + Math.random() * 900000),
@@ -1573,7 +1700,7 @@
     };
   </script>
 
-  <!-- Firebase Cloud Firestore SDK Modules (고객 예약/조회 전용 동기화) -->
+  <!-- Firebase Cloud Firestore SDK Modules -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -1592,7 +1719,7 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // Realtime listener for members (내 예약 조회용)
+      // Realtime listener for members
       onSnapshot(collection(db, "members"), (snapshot) => {
         if (!snapshot.empty) {
           const cloudMembers = [];
@@ -1602,20 +1729,23 @@
         }
       }, (err) => console.log("Members listener:", err));
 
-      // Realtime listener for bookings (예약 마감 확인용)
+      // Realtime listener for bookings
       onSnapshot(collection(db, "bookings"), (snapshot) => {
-        if (!snapshot.empty) {
-          const cloudBookings = [];
-          snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
-          window.bookings = cloudBookings;
-          localStorage.setItem('solstretch_bookings_v1', JSON.stringify(cloudBookings));
-          if (typeof renderStep2 === 'function') renderStep2();
-        }
+        const cloudBookings = [];
+        snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
+        window.bookings = cloudBookings;
+        localStorage.setItem('solstretch_bookings_v1', JSON.stringify(cloudBookings));
+        if (typeof renderStep2 === 'function') renderStep2();
       }, (err) => console.log("Bookings listener:", err));
 
       window.syncMemberToCloud = async function(memberObj) {
         try { await setDoc(doc(db, "members", memberObj.id), memberObj); }
         catch (e) { console.error("Cloud member save:", e); }
+      };
+
+      window.syncAttendanceToCloud = async function(attObj) {
+        try { await setDoc(doc(db, "attendances", attObj.id), attObj); }
+        catch (e) { console.error("Cloud attendance save:", e); }
       };
 
       window.syncBookingToCloud = async function(bookingObj) {
