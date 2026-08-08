@@ -1,9 +1,12 @@
 import crypto from 'crypto';
 
 export default async function handler(req, res) {
-  // CORS 헤더 설정 (메인 PC ERP admin.html 및 파일 접속 완벽 허용)
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS 규격 준수: Origin 동적 헤더 설정 (Credentials와 Wildcard 충돌 해결)
+  const clientOrigin = req.headers.origin || '*';
+  res.setHeader('Access-Control-Allow-Origin', clientOrigin);
+  if (clientOrigin !== '*') {
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -27,7 +30,7 @@ export default async function handler(req, res) {
     const pfId = process.env.SOLAPI_PF_ID || "KA01PF260804020356564lHGfPOx0VFG";
     const templateId = process.env.SOLAPI_TEMPLATE_ID || "KA01TP260804022040688lMSG2sF9i8k";
 
-    // Solapi HMAC SHA256 서명 인증 생성 (외부 패키지 미사용, 순수 표준 암호화)
+    // Solapi HMAC SHA256 서명 생성
     const isoDate = new Date().toISOString();
     const salt = crypto.randomBytes(16).toString('hex');
     const signature = crypto.createHmac('sha256', apiSecret).update(isoDate + salt).digest('hex');
