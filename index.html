@@ -64,56 +64,80 @@
   </div>
 
   <!-- ================================================================= -->
-  <!-- 📟 스튜디오 현장 전용 키오스크 출석 뷰 (주소창에 ?view=checkin 접속 시 표시) -->
+  <!-- 📟 스튜디오 현장 전용 키오스크 출석 뷰 (가로 모드 2단 배분 디자인) -->
   <!-- ================================================================= -->
-  <div id="checkin-view" class="hidden min-h-screen bg-[#0C3559] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden select-none">
+  <div id="checkin-view" class="hidden min-h-screen bg-[#0C3559] text-white flex flex-col items-center justify-between p-6 sm:p-8 relative overflow-hidden select-none">
     
-    <div class="absolute top-6 left-8 flex items-center gap-3">
-      <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
-      <span class="font-extrabold text-xl tracking-tight text-white">스트레칭 온</span>
-      <span class="text-xs font-semibold bg-sky-500/20 text-sky-300 px-3 py-1 rounded-full border border-sky-400/30">스튜디오 현장 출석 키오스크</span>
+    <!-- Top Bar Header -->
+    <div class="w-full max-w-6xl flex items-center justify-between border-b border-white/10 pb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-3.5 h-3.5 rounded-full bg-emerald-400 animate-ping"></div>
+        <span class="font-extrabold text-2xl tracking-tight text-white">스트레칭 온</span>
+        <span class="text-xs font-semibold bg-sky-500/20 text-sky-300 px-3.5 py-1 rounded-full border border-sky-400/30">스튜디오 현장 출석 키오스크</span>
+      </div>
+      <a href="index.html" class="text-xs text-stone-400 hover:text-white underline">일반 홈페이지 이동</a>
     </div>
 
-    <div class="max-w-md w-full text-center space-y-6">
-      <div>
-        <p class="text-sm font-semibold text-sky-300 tracking-wider uppercase mb-1">STRETCHING ON CHECK-IN</p>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">연락처 뒷자리 4자리를 눌러주세요</h2>
-      </div>
+    <!-- Main Content: Landscape 2-Column Grid (Left: Keypad, Right: Welcome Card) -->
+    <div class="w-full max-w-6xl my-auto py-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left Side (7 Cols): Title, Display & Touch Keypad -->
+        <div class="lg:col-span-6 space-y-5 text-center lg:text-left">
+          <div>
+            <p class="text-xs font-bold text-sky-300 tracking-wider uppercase mb-1">STRETCHING ON CHECK-IN</p>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">연락처 뒷자리 4자리를 눌러주세요</h2>
+          </div>
 
-      <!-- 번호 입력창 -->
-      <div class="bg-[#082239] border-2 border-sky-400/40 rounded-3xl p-5 shadow-2xl flex items-center justify-center gap-3">
-        <span class="text-xl sm:text-2xl font-mono text-stone-400">010 - **** -</span>
-        <div id="kiosk-digits-display" class="flex gap-2">
-          <span class="w-10 h-12 border-b-4 border-sky-400 text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
-          <span class="w-10 h-12 border-b-4 border-sky-400 text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
-          <span class="w-10 h-12 border-b-4 border-sky-400 text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
-          <span class="w-10 h-12 border-b-4 border-sky-400 text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
+          <!-- 번호 입력창 -->
+          <div class="bg-[#082239] border-2 border-sky-400/40 rounded-3xl p-4 sm:p-5 shadow-2xl flex items-center justify-center gap-3 max-w-md mx-auto lg:mx-0">
+            <span class="text-lg sm:text-2xl font-mono text-stone-400">010 - **** -</span>
+            <div id="kiosk-digits-display" class="flex gap-2">
+              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
+              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
+              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
+              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
+            </div>
+          </div>
+
+          <!-- 대형 터치 키패드 -->
+          <div class="grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto lg:mx-0">
+            <button onclick="pressKioskKey('1')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">1</button>
+            <button onclick="pressKioskKey('2')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">2</button>
+            <button onclick="pressKioskKey('3')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">3</button>
+            <button onclick="pressKioskKey('4')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">4</button>
+            <button onclick="pressKioskKey('5')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">5</button>
+            <button onclick="pressKioskKey('6')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">6</button>
+            <button onclick="pressKioskKey('7')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">7</button>
+            <button onclick="pressKioskKey('8')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">8</button>
+            <button onclick="pressKioskKey('9')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">9</button>
+            <button onclick="pressKioskKey('C')" class="h-14 sm:h-16 rounded-2xl bg-rose-500/30 hover:bg-rose-500/50 border border-rose-400/40 text-sm font-bold text-rose-200 active:scale-95 transition-all">지우기</button>
+            <button onclick="pressKioskKey('0')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">0</button>
+            <button onclick="pressKioskKey('OK')" class="h-14 sm:h-16 rounded-2xl bg-amber-400 hover:bg-amber-300 text-[#0C3559] text-base font-extrabold shadow-lg active:scale-95 transition-all">확인 ➔</button>
+          </div>
         </div>
-      </div>
 
-      <!-- 대형 터치 키패드 -->
-      <div class="grid grid-cols-3 gap-3 max-w-sm mx-auto">
-        <button onclick="pressKioskKey('1')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">1</button>
-        <button onclick="pressKioskKey('2')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">2</button>
-        <button onclick="pressKioskKey('3')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">3</button>
-        <button onclick="pressKioskKey('4')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">4</button>
-        <button onclick="pressKioskKey('5')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">5</button>
-        <button onclick="pressKioskKey('6')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">6</button>
-        <button onclick="pressKioskKey('7')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">7</button>
-        <button onclick="pressKioskKey('8')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">8</button>
-        <button onclick="pressKioskKey('9')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">9</button>
-        <button onclick="pressKioskKey('C')" class="h-16 rounded-2xl bg-rose-500/30 hover:bg-rose-500/50 border border-rose-400/40 text-sm font-bold text-rose-200 active:scale-95 transition-all">지우기</button>
-        <button onclick="pressKioskKey('0')" class="h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">0</button>
-        <button onclick="pressKioskKey('OK')" class="h-16 rounded-2xl bg-amber-400 hover:bg-amber-300 text-[#0C3559] text-base font-extrabold shadow-lg active:scale-95 transition-all">확인 ➔</button>
-      </div>
+        <!-- Right Side (6 Cols): Welcome Message & Remaining Pass Result Display -->
+        <div class="lg:col-span-6 flex items-center justify-center">
+          <div id="kiosk-result-box" class="w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-sky-400 text-center space-y-4">
+            <div class="w-16 h-16 rounded-2xl bg-sky-50 text-[#0092B8] flex items-center justify-center mx-auto text-3xl font-bold">
+              👋
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">스트레칭온 스튜디오</h3>
+            <p class="text-sm font-semibold text-slate-500 leading-relaxed">
+              연락처 뒷자리 4자리를 누르시면<br />
+              <strong class="text-[#0092B8]">1:1 출석체크 및 잔여 수강권</strong>이 바로 확인됩니다.
+            </p>
+          </div>
+        </div>
 
-      <!-- 결과 메시지 카드 -->
-      <div id="kiosk-result-box" class="hidden p-6 rounded-3xl bg-white text-[#0C3559] shadow-2xl animate-fade-in border-2 border-emerald-400">
-        <!-- JS로 성공 메시지 동적 삽입 -->
       </div>
     </div>
 
-    <a href="index.html" class="absolute bottom-6 right-8 text-xs text-stone-400 hover:text-white underline">일반 홈페이지 이동</a>
+    <!-- Bottom Footer Status -->
+    <div class="text-xs text-stone-400 font-medium text-center pt-2">
+      © Stretching ON Studio Interactive Kiosk
+    </div>
   </div>
 
   <!-- ================================================================= -->
@@ -1009,6 +1033,22 @@
       }
     }
 
+    function resetKioskDefaultWelcomeCard() {
+      const resBox = document.getElementById('kiosk-result-box');
+      if (!resBox) return;
+      resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-sky-400 text-center space-y-4';
+      resBox.innerHTML = `
+        <div class="w-16 h-16 rounded-2xl bg-sky-50 text-[#0092B8] flex items-center justify-center mx-auto text-3xl font-bold">
+          👋
+        </div>
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">스트레칭온 스튜디오</h3>
+        <p class="text-sm font-semibold text-slate-500 leading-relaxed">
+          연락처 뒷자리 4자리를 누르시면<br />
+          <strong class="text-[#0092B8]">1:1 출석체크 및 잔여 수강권</strong>이 바로 확인됩니다.
+        </p>
+      `;
+    }
+
     function processKioskCheckin() {
       const digits = kioskInputDigits;
       const matchedMembers = window.members.filter(m => {
@@ -1017,13 +1057,14 @@
       });
 
       const resBox = document.getElementById('kiosk-result-box');
-      resBox.classList.remove('hidden');
+      if (!resBox) return;
 
       if (matchedMembers.length === 0) {
-        resBox.className = 'p-6 rounded-3xl bg-rose-50 text-rose-900 shadow-2xl border-2 border-rose-400';
+        resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-rose-50 text-rose-900 shadow-2xl border-2 border-rose-400 text-center space-y-3';
         resBox.innerHTML = `
-          <h3 class="text-xl font-extrabold mb-1">등록되지 않은 번호입니다</h3>
-          <p class="text-xs text-rose-700">입력하신 뒷자리 [${digits}] 번호로 등록된 회원을 찾을 수 없습니다.</p>
+          <div class="text-4xl">⚠️</div>
+          <h3 class="text-xl sm:text-2xl font-extrabold">등록되지 않은 번호입니다</h3>
+          <p class="text-xs sm:text-sm text-rose-700">입력하신 뒷자리 [${digits}] 번호로 등록된 회원을 찾을 수 없습니다.</p>
         `;
       } else {
         const member = matchedMembers[0];
@@ -1032,11 +1073,12 @@
           : (member.passCount !== undefined ? Number(member.passCount) : 0);
 
         if (curPasses <= 0) {
-          resBox.className = 'p-6 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400';
+          resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400 text-center space-y-3';
           resBox.innerHTML = `
-            <h3 class="text-xl font-extrabold mb-1">${member.name} 회원님</h3>
-            <p class="text-base font-bold text-amber-800 mt-1">잔여 수강권이 0회입니다.</p>
-            <p class="text-xs text-amber-700 mt-1">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
+            <div class="text-4xl">⚠️</div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">${member.name} 회원님</h3>
+            <p class="text-base font-bold text-amber-800">잔여 수강권이 0회입니다.</p>
+            <p class="text-xs text-amber-700">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
           `;
           playKioskChime();
           setTimeout(() => {
@@ -1084,8 +1126,8 @@
             speakKioskVoice(`${member.name} 회원님 환영합니다. 잔여 수강권은 ${nextPasses}회 입니다.`);
           }, 350);
 
-          // 태블릿 화면 결과 모달 표출
-          resBox.className = 'p-6 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-emerald-400 space-y-4';
+          // 태블릿 가로화면 대형 결과 카드 표출
+          resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-emerald-400 text-center space-y-4';
           resBox.innerHTML = `
             <div class="text-4xl">🎉</div>
             <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">${member.name} 회원님 환영합니다!</h3>
@@ -1098,12 +1140,12 @@
         }
       }
 
-      // 4초 후 키오스크 화면 자동 리셋
+      // 4초 후 키오스크 화면 자동 기본 상태 복원
       setTimeout(() => {
         kioskInputDigits = '';
         updateKioskDisplay();
-        resBox.classList.add('hidden');
-      }, 4000);
+        resetKioskDefaultWelcomeCard();
+      }, 4500);
     }
 
     // ==========================================
