@@ -1,0 +1,8 @@
+{
+  "name": "solstretch-web",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "solapi": "^5.0.0"
+  }
+}
