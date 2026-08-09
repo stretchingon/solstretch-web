@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>스트레칭온 | 회원가입 및 정밀 문진표 키오스크</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      font-family: "Pretendard", -apple-system, sans-serif;
+    }
+    input, select, textarea {
+      -webkit-user-select: text;
+      user-select: text;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* 칩 체크박스 기본 (비활성화 상태) */
+    .chip-checkbox + label {
+      background-color: #f8fafc;
+      color: #64748b;
+      border-color: #cbd5e1;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      user-select: none;
+    }
+    .chip-checkbox + label::before {
+      content: '○';
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .chip-checkbox + label:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+      color: #334155;
+    }
+
+    /* 칩 체크박스 활성화 상태 (체크 시) */
+    .chip-checkbox:checked + label {
+      background-color: #0d9488 !important;
+      color: #ffffff !important;
+      border-color: #0f766e !important;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.35);
+      font-weight: 800 !important;
+      transform: translateY(-2px) scale(1.02);
+    }
+    .chip-checkbox:checked + label::before {
+      content: '✓';
+      color: #ffffff;
+      font-size: 0.85rem;
+    }
+
+    /* 라디오 버튼 칩 활성화 상태 */
+    .radio-chip + div {
+      background-color: #f8fafc;
+      color: #64748b;
+      border-color: #cbd5e1;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .radio-chip + div:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+      color: #334155;
+    }
+    .radio-chip:checked + div {
+      background-color: #0d9488 !important;
+      color: #ffffff !important;
+      border-color: #0f766e !important;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.35);
+      font-weight: 800 !important;
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    /* 프로그램 선택 카드 전용 활성화 스타일 */
+    .program-chip + div {
+      background-color: #ffffff;
+      color: #334155;
+      border: 1.5px solid #cbd5e1;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .program-chip + div:hover {
+      border-color: #14b8a6;
+      background-color: #f0fdfa;
+    }
+    .program-chip:checked + div {
+      background-color: #0d9488 !important;
+      color: #ffffff !important;
+      border-color: #0f766e !important;
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);
+      font-weight: 800 !important;
+      transform: translateY(-2px) scale(1.01);
+    }
+    .program-chip:checked + div .program-price {
+      color: #ccfbf1 !important;
+    }
+    .program-chip:checked + div .check-icon {
+      opacity: 1 !important;
+      color: #ffffff !important;
+    }
+
+    /* 이용 약관 박스 체크 시 활성화 반응 */
+    .agree-card {
+      transition: all 0.25s ease;
+      border: 1px solid #e2e8f0;
+      background-color: #ffffff;
+    }
+    .agree-card:has(input[type="checkbox"]:checked) {
+      background-color: #f0fdfa !important;
+      border-color: #14b8a6 !important;
+      box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans antialiased flex flex-col">
+
+  <!-- 상단 네비게이션 헤더 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-teal-400 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+          <i class="fa-solid me-0.5 fa-child-reaching text-xl"></i>
+        </div>
+        <div>
+          <h1 class="font-display font-extrabold text-xl text-slate-900 tracking-tight leading-none">STRETCHING ON</h1>
+          <p class="text-xs text-brand-700 font-semibold mt-0.5">회원가입 및 서비스 이용 동의</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 뷰: 키오스크 가입화면 -->
+  <main id="view-kiosk" class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 my-2">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
+      
+      <!-- 상단 타이틀 배너 -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-brand-900 text-white px-6 py-6 sm:px-8 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        <div>
+          <span class="inline-block bg-brand-500/30 text-brand-200 text-xs font-bold px-2.5 py-1 rounded-full mb-2 border border-brand-400/30">신규 회원 문진표 및 동의서</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold">회원 가입 및 서비스 이용 동의</h2>
+        </div>
+        <div class="text-left sm:text-right text-slate-300 text-sm font-medium">
+          <p><i class="fa-regular fa-calendar-check mr-1.5 text-brand-400"></i>작성일자</p>
+          <p id="today-date-display" class="font-bold text-white text-base sm:text-lg">-</p>
+        </div>
+      </div>
+
+      <form id="registration-form" onsubmit="handleFormSubmit(event)" class="p-6 sm:p-8 space-y-8">
+
+        <!-- 인적 사항 섹션 -->
+        <section class="space-y-4">
+          <div class="flex items-center justify-between pb-2 border-b-2 border-brand-500">
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-brand-100 text-brand-700 text-sm font-black flex items-center justify-center">1</span>
+              회원 기본 인적사항
+            </h3>
+            <span class="text-xs text-rose-500 font-bold">* 필수 입력</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="input-user-name" class="block text-xs font-bold text-slate-700 mb-1">성명 <span class="text-rose-500">*</span></label>
+              <input type="text" id="input-user-name" placeholder="성함을 입력하세요 (예: 홍길동)" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none text-sm font-medium transition-all">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">성별 <span class="text-rose-500">*</span></label>
+              <div class="grid grid-cols-2 gap-2" id="group-user-gender">
+                <label class="cursor-pointer">
+                  <input type="radio" name="user_gender" value="남성" class="radio-chip sr-only">
+                  <div class="py-3 text-center rounded-xl border border-slate-300 font-semibold text-xs sm:text-sm select-none">
+                    남성
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="user_gender" value="여성" class="radio-chip sr-only" checked>
+                  <div class="py-3 text-center rounded-xl border border-slate-300 font-semibold text-xs sm:text-sm select-none">
+                    여성
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div>
+              <label for="input-birth" class="block text-xs font-bold text-slate-700 mb-1">생년월일 <span class="text-rose-500">*</span></label>
+              <input type="date" id="input-birth" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none text-sm font-medium transition-all">
+            </div>
+
+            <div>
+              <label for="input-phone" class="block text-xs font-bold text-slate-700 mb-1">연락처 (- 없이) <span class="text-rose-500">*</span></label>
+              <input type="tel" id="input-phone" placeholder="01065666369" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none text-sm font-medium transition-all">
+            </div>
+          </div>
+        </section>
+
+        <!-- 근골격계 건강상태 및 문진표 섹션 -->
+        <section class="space-y-6 pt-2 border-t-2 border-slate-200">
+          <div class="flex items-center justify-between pb-3 border-b-2 border-brand-500">
+            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-7 h-7 rounded-lg bg-brand-100 text-brand-700 text-sm font-black flex items-center justify-center">2</span>
+              근골격계 건강 상태 사전 문진표
+            </h3>
+            <span class="text-xs text-brand-700 bg-brand-50 px-2.5 py-1 rounded-full font-semibold border border-brand-200">맞춤케어 평가 도구</span>
+          </div>
+
+          <!-- (1) 방문 목적 -->
+          <div class="space-y-2">
+            <label class="block text-sm font-bold text-slate-800">
+              1. 방문 목적 <span class="text-xs text-slate-500 font-normal">(중복 선택 가능)</span>
+            </label>
+            <div class="flex flex-wrap gap-2" id="group-purpose">
+              <input type="checkbox" id="purp-1" value="자세교정" class="sr-only chip-checkbox">
+              <label for="purp-1" class="px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-700 text-sm font-semibold cursor-pointer hover:bg-slate-100 transition-all select-none">자세교정</label>
+
+              <input type="checkbox" id="purp-2" value="체형교정" class="sr-only chip-checkbox">
+              <label for="purp-2" class="px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-700 text-sm font-semibold cursor-pointer hover:bg-slate-100 transition-all select-none">체형교정</label>
+
+              <input type="checkbox" id="purp-3" value="만성통증개선" class="sr-only chip-checkbox">
+              <label for="purp-3" class="px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-700 text-sm font-semibold cursor-pointer hover:bg-slate-100 transition-all select-none">만성통증개선</label>
+
+              <input type="checkbox" id="purp-4" value="패시브스트레칭" class="sr-only chip-checkbox">
+              <label for="purp-4" class="px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-700 text-sm font-semibold cursor-pointer hover:bg-slate-100 transition-all select-none">패시브스트레칭</label>
+
+              <input type="checkbox" id="purp-5" value="키성장" class="sr-only chip-checkbox">
+              <label for="purp-5" class="px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-700 text-sm font-semibold cursor-pointer hover:bg-slate-100 transition-all select-none">키성장</label>
+
+              <input type="checkbox" id="purp-6" value="재활목적" class="sr-only chip-checkbox">
+              <label for="purp-6" class="px-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-slate-700 text-sm font-semibold cursor-pointer hover:bg-slate-100 transition-all select-none">재활목적</label>
+            </div>
+          </div>
+
+          <!-- (2) 주요 불편 부위 / 통증 체크 -->
+          <div class="space-y-3 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <label class="block text-sm font-bold text-slate-800">
+                2. 주요 불편 부위 <span class="text-xs text-slate-500 font-normal">(중복 선택 가능)</span>
+              </label>
+              <span class="text-xs text-slate-500">회원님이 주로 불편하신 부위를 모두 체크해 주세요.</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2" id="group-pain-area">
+              <input type="checkbox" id="pain-1" value="목" class="sr-only chip-checkbox">
+              <label for="pain-1" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">목</label>
+
+              <input type="checkbox" id="pain-2" value="어깨" class="sr-only chip-checkbox">
+              <label for="pain-2" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">어깨</label>
+
+              <input type="checkbox" id="pain-3" value="팔/팔꿈치/손목" class="sr-only chip-checkbox">
+              <label for="pain-3" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">팔/팔꿈치/손목</label>
+
+              <input type="checkbox" id="pain-4" value="등" class="sr-only chip-checkbox">
+              <label for="pain-4" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">등</label>
+
+              <input type="checkbox" id="pain-5" value="허리" class="sr-only chip-checkbox">
+              <label for="pain-5" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">허리</label>
+
+              <input type="checkbox" id="pain-6" value="골반" class="sr-only chip-checkbox">
+              <label for="pain-6" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">골반</label>
+
+              <input type="checkbox" id="pain-7" value="허벅지" class="sr-only chip-checkbox">
+              <label for="pain-7" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">허벅지</label>
+
+              <input type="checkbox" id="pain-8" value="무릎" class="sr-only chip-checkbox">
+              <label for="pain-8" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">무릎</label>
+
+              <input type="checkbox" id="pain-9" value="종아리" class="sr-only chip-checkbox">
+              <label for="pain-9" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">종아리</label>
+
+              <input type="checkbox" id="pain-10" value="발/발목" class="sr-only chip-checkbox">
+              <label for="pain-10" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">발/발목</label>
+
+              <input type="checkbox" id="pain-11" value="발바닥" class="sr-only chip-checkbox">
+              <label for="pain-11" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">발바닥</label>
+            </div>
+
+            <!-- (3) 통증 정도 VAS Scale (1 ~ 10) -->
+            <div class="pt-3 border-t border-slate-200 space-y-2">
+              <div class="flex justify-between items-center">
+                <label class="block text-sm font-bold text-slate-800">
+                  3. 통증 정도 <span class="text-xs text-slate-500 font-normal">(VAS 1~10)</span>
+                </label>
+                <span id="vas-display-badge" class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-800 font-black text-xs">선택 안됨</span>
+              </div>
+              <div class="grid grid-cols-10 gap-1 sm:gap-1.5 text-center">
+                <div id="vas-buttons-container" class="contents"></div>
+              </div>
+            </div>
+
+            <!-- (4) 통증 기간 -->
+            <div class="pt-3 border-t border-slate-200 space-y-1.5">
+              <label class="block text-sm font-bold text-slate-800">4. 통증 기간</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="group-pain-duration">
+                <label class="cursor-pointer">
+                  <input type="radio" name="pain_duration" value="1개월이내" class="radio-chip sr-only">
+                  <div class="py-2.5 text-center rounded-xl border border-slate-300 font-semibold text-xs sm:text-sm select-none">
+                    1개월이내
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="pain_duration" value="1~6개월" class="radio-chip sr-only">
+                  <div class="py-2.5 text-center rounded-xl border border-slate-300 font-semibold text-xs sm:text-sm select-none">
+                    1~6개월
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="pain_duration" value="6개월~1년" class="radio-chip sr-only">
+                  <div class="py-2.5 text-center rounded-xl border border-slate-300 font-semibold text-xs sm:text-sm select-none">
+                    6개월~1년
+                  </div>
+                </label>
+                <label class="cursor-pointer">
+                  <input type="radio" name="pain_duration" value="1년이상" class="radio-chip sr-only">
+                  <div class="py-2.5 text-center rounded-xl border border-slate-300 font-semibold text-xs sm:text-sm select-none">
+                    1년이상
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- (5) 병력 및 의학적 정보 -->
+            <div class="pt-3 border-t border-slate-200 space-y-3">
+              <label class="block text-sm font-bold text-slate-800">
+                5. 병력 및 의학적 정보 <span class="text-xs text-slate-500 font-normal">(중복 선택 가능)</span>
+              </label>
+              <div class="flex flex-wrap gap-2" id="group-medical-history">
+                <input type="checkbox" id="med-1" value="디스크" class="sr-only chip-checkbox">
+                <label for="med-1" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">디스크</label>
+
+                <input type="checkbox" id="med-2" value="척추측만" class="sr-only chip-checkbox">
+                <label for="med-2" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">척추측만</label>
+
+                <input type="checkbox" id="med-3" value="협착증" class="sr-only chip-checkbox">
+                <label for="med-3" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">협착증</label>
+
+                <input type="checkbox" id="med-4" value="오십견" class="sr-only chip-checkbox">
+                <label for="med-4" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">오십견</label>
+
+                <input type="checkbox" id="med-5" value="회전근개" class="sr-only chip-checkbox">
+                <label for="med-5" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">회전근개</label>
+
+                <input type="checkbox" id="med-6" value="관절염" class="sr-only chip-checkbox">
+                <label for="med-6" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">관절염</label>
+
+                <input type="checkbox" id="med-7" value="근막통증" class="sr-only chip-checkbox">
+                <label for="med-7" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">근막통증</label>
+
+                <input type="checkbox" id="med-8" value="이상근증후군" class="sr-only chip-checkbox">
+                <label for="med-8" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">이상근증후군</label>
+
+                <input type="checkbox" id="med-9" value="신경계질환" class="sr-only chip-checkbox">
+                <label for="med-9" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">신경계질환</label>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                <div>
+                  <label for="input-surgery" class="block text-xs font-bold text-slate-600 mb-1">수술/시술 경험</label>
+                  <input type="text" id="input-surgery" placeholder="예: 2년 전 목 디스크 시술" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:border-brand-500 outline-none">
+                </div>
+                <div>
+                  <label for="input-medication" class="block text-xs font-bold text-slate-600 mb-1">복용 중인 약</label>
+                  <input type="text" id="input-medication" placeholder="예: 소염진통제, 혈압약 등" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:border-brand-500 outline-none">
+                </div>
+                <div>
+                  <label for="input-other-health" class="block text-xs font-bold text-slate-600 mb-1">기타 건강 상태</label>
+                  <input type="text" id="input-other-health" placeholder="특이체질, 골다공증 등" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:border-brand-500 outline-none">
+                </div>
+              </div>
+            </div>
+
+            <!-- (6) 생활 습관 및 직업 패턴 -->
+            <div class="pt-3 border-t border-slate-200 space-y-3">
+              <label class="block text-sm font-bold text-slate-800">
+                6. 생활 습관 및 직업 패턴 <span class="text-xs text-slate-500 font-normal">(중복 선택 가능)</span>
+              </label>
+              <div class="flex flex-wrap gap-2" id="group-lifestyle">
+                <input type="checkbox" id="life-1" value="오래앉음" class="sr-only chip-checkbox">
+                <label for="life-1" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">오래앉음</label>
+
+                <input type="checkbox" id="life-2" value="서서근무" class="sr-only chip-checkbox">
+                <label for="life-2" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">서서근무</label>
+
+                <input type="checkbox" id="life-3" value="무거운 물건 취급" class="sr-only chip-checkbox">
+                <label for="life-3" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">무거운 물건 취급</label>
+
+                <input type="checkbox" id="life-4" value="스마트폰과다" class="sr-only chip-checkbox">
+                <label for="life-4" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">스마트폰과다</label>
+
+                <input type="checkbox" id="life-5" value="운동부족" class="sr-only chip-checkbox">
+                <label for="life-5" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">운동부족</label>
+
+                <input type="checkbox" id="life-6" value="수면부족" class="sr-only chip-checkbox">
+                <label for="life-6" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">수면부족</label>
+
+                <input type="checkbox" id="life-7" value="스트레스과다" class="sr-only chip-checkbox">
+                <label for="life-7" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">스트레스과다</label>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label for="input-sleep-time" class="block text-xs font-bold text-slate-600 mb-1">수면 시간</label>
+                  <input type="text" id="input-sleep-time" placeholder="예: 평균 6시간" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:border-brand-500 outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">운동 빈도</label>
+                  <div class="grid grid-cols-4 gap-1.5" id="group-exercise-freq">
+                    <label class="cursor-pointer">
+                      <input type="radio" name="exercise_freq" value="없음" class="radio-chip sr-only">
+                      <div class="py-2 text-center rounded-lg border border-slate-300 font-semibold text-xs select-none">없음</div>
+                    </label>
+                    <label class="cursor-pointer">
+                      <input type="radio" name="exercise_freq" value="주1~2회" class="radio-chip sr-only">
+                      <div class="py-2 text-center rounded-lg border border-slate-300 font-semibold text-xs select-none">주1~2회</div>
+                    </label>
+                    <label class="cursor-pointer">
+                      <input type="radio" name="exercise_freq" value="주3~4회" class="radio-chip sr-only">
+                      <div class="py-2 text-center rounded-lg border border-slate-300 font-semibold text-xs select-none">주3~4회</div>
+                    </label>
+                    <label class="cursor-pointer">
+                      <input type="radio" name="exercise_freq" value="매일" class="radio-chip sr-only">
+                      <div class="py-2 text-center rounded-lg border border-slate-300 font-semibold text-xs select-none">매일</div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- (7) 운동 / 교정 / 치료 경험 -->
+            <div class="pt-3 border-t border-slate-200 space-y-3">
+              <label class="block text-sm font-bold text-slate-800">
+                7. 운동 · 교정 · 치료 경험 <span class="text-xs text-slate-500 font-normal">(중복 선택 가능)</span>
+              </label>
+              <div class="flex flex-wrap gap-2" id="group-treatment-exp">
+                <input type="checkbox" id="exp-1" value="헬스" class="sr-only chip-checkbox">
+                <label for="exp-1" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">헬스</label>
+
+                <input type="checkbox" id="exp-2" value="필라테스" class="sr-only chip-checkbox">
+                <label for="exp-2" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">필라테스</label>
+
+                <input type="checkbox" id="exp-3" value="요가" class="sr-only chip-checkbox">
+                <label for="exp-3" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">요가</label>
+
+                <input type="checkbox" id="exp-4" value="도수치료" class="sr-only chip-checkbox">
+                <label for="exp-4" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">도수치료</label>
+
+                <input type="checkbox" id="exp-5" value="교정치료" class="sr-only chip-checkbox">
+                <label for="exp-5" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">교정치료</label>
+
+                <input type="checkbox" id="exp-6" value="물리치료" class="sr-only chip-checkbox">
+                <label for="exp-6" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">물리치료</label>
+
+                <input type="checkbox" id="exp-7" value="재활운동" class="sr-only chip-checkbox">
+                <label for="exp-7" class="px-3.5 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-xs font-bold cursor-pointer transition-all select-none">재활운동</label>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label for="input-exp-other" class="block text-xs font-bold text-slate-600 mb-1">기타 경험</label>
+                  <input type="text" id="input-exp-other" placeholder="기타 운동 및 치료 내용" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:border-brand-500 outline-none">
+                </div>
+                <div>
+                  <label for="input-exp-effect" class="block text-xs font-bold text-slate-600 mb-1">효과 / 느낀 점</label>
+                  <input type="text" id="input-exp-effect" placeholder="예: 일시적 완화, 효과 적었음 등" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:border-brand-500 outline-none">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- 이용 안내 및 약관 동의 -->
+        <section class="space-y-4 pt-2 border-t-2 border-slate-200">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-file-contract text-brand-600"></i>
+              운영 및 서비스 이용 안내
+            </h3>
+          </div>
+
+          <!-- 프로그램 선택 & 이용 금액 안내 카드 -->
+          <div class="space-y-2 agree-card p-3.5 rounded-2xl">
+            <div class="p-4 bg-teal-50/70 border border-teal-200/90 rounded-2xl space-y-3 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <h4 class="text-xs sm:text-sm font-extrabold text-teal-950 flex items-center gap-1.5">
+                  <i class="fa-solid fa-tags text-brand-600"></i> 스트레칭 온 프로그램 선택 및 이용 금액 안내
+                </h4>
+                <span class="text-[11px] text-teal-700 font-bold">* 희망하시는 프로그램을 클릭/터치하여 선택해 주세요</span>
+              </div>
+              
+              <!-- 4개 프로그램 개별 선택형 대형 인터랙티브 카드 -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs" id="group-selected-program">
+                
+                <label class="cursor-pointer block">
+                  <input type="radio" name="selected_program" value="첫방문 1회 체험 (50,000원)" class="radio-chip program-chip sr-only" checked>
+                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
+                    <span class="font-bold flex items-center gap-2">
+                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
+                      <span>첫방문 1회 체험</span>
+                    </span>
+                    <span class="font-extrabold text-brand-700 program-price">50,000원</span>
+                  </div>
+                </label>
+
+                <label class="cursor-pointer block">
+                  <input type="radio" name="selected_program" value="컨디셔닝 패시브 스트레칭 50분 (70,000원)" class="radio-chip program-chip sr-only">
+                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
+                    <span class="font-bold flex items-center gap-2">
+                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
+                      <span>Sol-Recovery (50분)</span>
+                    </span>
+                    <span class="font-extrabold text-brand-700 program-price">70,000원</span>
+                  </div>
+                </label>
+
+                <label class="cursor-pointer block">
+                  <input type="radio" name="selected_program" value="무브먼트 리밸런스 딥 케어 90분 (100,000원)" class="radio-chip program-chip sr-only">
+                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
+                    <span class="font-bold flex items-center gap-2">
+                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
+                      <span>Sol-Balance (90분)</span>
+                    </span>
+                    <span class="font-extrabold text-brand-700 program-price">100,000원</span>
+                  </div>
+                </label>
+
+                <label class="cursor-pointer block">
+                  <input type="radio" name="selected_program" value="멤버십 솔루션 10회 (600,000원)" class="radio-chip program-chip sr-only">
+                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
+                    <span class="font-bold flex items-center gap-2">
+                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
+                      <span>솔루션 멤버십 (10회)</span>
+                    </span>
+                    <span class="font-extrabold text-brand-700 program-price">600,000원</span>
+                  </div>
+                </label>
+
+              </div>
+            </div>
+            
+            <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-slate-800 pt-1">
+              <input type="checkbox" id="agree-program-price" required class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500 accent-teal-600">
+              <span>선택한 프로그램 및 이용 금액 안내를 확인하였으며 이에 동의합니다. <span class="text-rose-500">*</span></span>
+            </label>
+          </div>
+
+          <!-- 패시브 스트레칭 사전 안내 약관 -->
+          <div class="space-y-2 agree-card p-3.5 rounded-2xl">
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 leading-relaxed max-h-28 overflow-y-auto custom-scrollbar">
+              <p class="font-bold text-slate-800 mb-1">[패시브 스트레칭 및 신체 접촉에 관한 사전 안내]</p>
+              본 센터의 서비스는 전문가의 지도하에 1:1 패시브 스트레칭(Passive Stretching) 방식으로 진행됩니다. 근육 이완 및 관절 가동범위 확장을 위해 불가피하게 신체적 접촉이 수반됩니다. 지도자는 서비스 목적 외의 불필요한 접촉을 하지 않으며, 회원은 언제든지 거부권 및 중단을 요청할 수 있습니다. 사전 예방 및 회원 안전을 위해 센터 내 CCTV가 상시 가동 중입니다.
+            </div>
+            <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-slate-800 pt-1">
+              <input type="checkbox" id="agree-stretch" required class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500 accent-teal-600">
+              <span>패시브 스트레칭 신체 접촉 및 사전 수칙을 확인하였으며 이에 동의합니다. <span class="text-rose-500">*</span></span>
+            </label>
+          </div>
+
+          <!-- 환불 및 예약 수칙 -->
+          <div class="space-y-2 agree-card p-3.5 rounded-2xl">
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 leading-relaxed max-h-28 overflow-y-auto custom-scrollbar">
+              <p class="font-bold text-slate-800 mb-1">[환불 규정 및 이용 수칙]</p>
+              1. 등록 후 시작일 이내 개시 전일 경우 전액 환불 가능합니다.<br>
+              2. 서비스 개시 이후 해지 시, 진행된 회차의 정가 차감 및 위약금 10%를 차감 후 잔액이 환불됩니다.<br>
+              3. 멤버십 솔루션 10회권 유효기간 경과 후에는 자동 소멸됩니다.<br>
+              4. 당일 예약 취소 및 무단 노쇼(No-Show)는 1회 차감 처리됩니다.
+            </div>
+            <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-slate-800 pt-1">
+              <input type="checkbox" id="agree-refund" required class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500 accent-teal-600">
+              <span>환불 및 이용 수칙을 확인하였으며 이에 동의합니다. <span class="text-rose-500">*</span></span>
+            </label>
+          </div>
+
+          <!-- 개인정보 수집 동의 -->
+          <div class="space-y-2 agree-card p-3.5 rounded-2xl">
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 leading-relaxed max-h-24 overflow-y-auto custom-scrollbar">
+              <p class="font-bold text-slate-800 mb-1">[개인정보 수집 및 이용 동의]</p>
+              - 수집 항목: 성명, 성별, 생년월일, 연락처, 건강 문진 내역, 전자 서명<br>
+              - 수집 목적: 맞춤 스트레칭 케어, 회원 정보 관리, 일정 안내 및 본인 확인<br>
+              - 보유 기간: 회원 탈퇴 시까지 (관계 법령에 따른 기간 보존)
+            </div>
+            <label class="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-slate-800 pt-1">
+              <input type="checkbox" id="agree-privacy" required class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500 accent-teal-600">
+              <span>개인정보 수집 및 이용에 동의합니다. <span class="text-rose-500">*</span></span>
+            </label>
+          </div>
+        </section>
+
+        <!-- 회원 서명 (Signature Canvas) -->
+        <section class="space-y-3 pt-2 border-t-2 border-slate-200">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-file-signature text-brand-600"></i>
+              회원 전자 서명 <span class="text-rose-500 text-sm">*</span>
+            </h3>
+            <button type="button" onclick="clearCanvas()" class="text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-3 py-1.5 rounded-lg border border-rose-200 transition-all flex items-center gap-1">
+              <i class="fa-solid fa-rotate-left"></i> 서명 지우기
+            </button>
+          </div>
+
+          <p class="text-xs text-slate-500">아래 박스 안에 손가락이나 터치펜으로 회원 서명을 작성해 주세요.</p>
+          
+          <div class="relative w-full bg-slate-50 rounded-xl border-2 border-dashed border-slate-300 overflow-hidden touch-none flex justify-center items-center">
+            <canvas id="signature-canvas" class="w-full h-44 cursor-crosshair bg-white"></canvas>
+            
+            <div id="canvas-placeholder" class="absolute pointer-events-none text-slate-300 flex flex-col items-center gap-2 select-none">
+              <i class="fa-solid fa-pen-nib text-3xl"></i>
+              <span class="text-sm font-medium">이곳에 서명하세요</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 지도자 평가 & 상담자 차트 (전문가 진료/상담 퍼포먼스 영역) -->
+        <section class="space-y-4 pt-4 border-t-2 border-teal-500 bg-teal-50/50 p-5 rounded-2xl border border-teal-200">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-teal-200">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base sm:text-lg font-bold text-teal-950 flex items-center gap-1.5">
+                  <i class="fa-solid fa-user-doctor text-brand-600"></i>
+                  지도자 평가 & 전문가 체형 차트
+                </h3>
+              </div>
+              <p class="text-xs text-teal-700 mt-1">회원 작성 완료 후 지도자가 해부도 위에 직접 터치/마킹하여 체형 및 근막 불균형을 측정/평가 설명할 수 있는 차트입니다.</p>
+            </div>
+            <span class="text-xs bg-brand-600 text-white font-bold px-3 py-1 rounded-full border border-brand-700 shadow-sm self-start sm:self-auto">
+              지도자 상담
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label for="input-counselor-name" class="block text-xs font-bold text-slate-800 mb-1">상담자 / 담당 지도자 성명</label>
+              <input type="text" id="input-counselor-name" placeholder="김동수 대표원장" class="w-full px-3 py-2.5 rounded-xl border border-teal-300 bg-white text-xs font-bold focus:border-brand-600 outline-none shadow-sm">
+            </div>
+            <div class="sm:col-span-2">
+              <label for="input-trainer-eval" class="block text-xs font-bold text-slate-800 mb-1">체형 · 가동범위 · 근막 소견 메모</label>
+              <input type="text" id="input-trainer-eval" placeholder="예: 우측 어깨 거상, 골반 후방경사, L4-L5 압박 소견, 경추 ROM 제한" class="w-full px-3 py-2.5 rounded-xl border border-teal-300 bg-white text-xs focus:border-brand-600 outline-none shadow-sm">
+            </div>
+          </div>
+
+          <!-- 전문가 인체 해부도 터치 차트 (HD Vector Anatomy SVG) -->
+          <div class="bg-white border border-teal-200 rounded-xl p-3 sm:p-4 space-y-3 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs font-bold text-teal-900 flex items-center gap-1.5">
+                <i class="fa-solid fa-stethoscope text-brand-600"></i> Anatomy Muscle Chart (전면 & 후면 고화질 해부도 차트)
+              </span>
+              
+              <!-- Drawing Tool Controls -->
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs text-slate-500 font-semibold mr-1">펜 색상:</span>
+                <button type="button" onclick="setMarkerColor('#ef4444')" id="btn-color-red" class="w-6 h-6 rounded-full bg-rose-500 border-2 border-white ring-2 ring-rose-500 ring-offset-1 transition-all" title="통증/불편 (빨강)"></button>
+                <button type="button" onclick="setMarkerColor('#3b82f6')" id="btn-color-blue" class="w-6 h-6 rounded-full bg-blue-500 border-2 border-white transition-all" title="체형/불균형 (파랑)"></button>
+                <button type="button" onclick="setMarkerColor('#10b981')" id="btn-color-green" class="w-6 h-6 rounded-full bg-emerald-500 border-2 border-white transition-all" title="근막/긴장 (초록)"></button>
+                
+                <div class="h-4 w-px bg-slate-300 mx-1"></div>
+
+                <button type="button" onclick="clearPainMarkers()" class="text-xs text-rose-600 hover:text-rose-700 bg-rose-50 px-2.5 py-1 rounded-lg border border-rose-200 font-bold transition-all flex items-center gap-1">
+                  <i class="fa-solid fa-rotate-left"></i> 마킹 초기화
+                </button>
+              </div>
+            </div>
+
+            <!-- 전신 인체 근육 해부도 SVG Vector + Touch Canvas Overlay -->
+            <div class="relative w-full max-w-2xl mx-auto aspect-[4/3] bg-[#f8fafc] rounded-2xl flex items-center justify-center overflow-hidden border border-slate-200/80 shadow-inner">
+              <!-- 앞/뒤 전신 해부도 정밀 SVG -->
+              <svg id="anatomy-svg-bg" viewBox="0 0 800 600" class="absolute inset-0 w-full h-full pointer-events-none select-none p-2" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0d9488" stroke-width="0.5" stroke-opacity="0.08"/>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+
+                <!-- Title Labels -->
+                <text x="220" y="32" font-family="'Pretendard', sans-serif" font-size="17" font-weight="900" fill="#0f766e" text-anchor="middle" letter-spacing="1">ANTERIOR (전면)</text>
+                <text x="580" y="32" font-family="'Pretendard', sans-serif" font-size="17" font-weight="900" fill="#0f766e" text-anchor="middle" letter-spacing="1">POSTERIOR (후면)</text>
+
+                <!-- 중앙 영역 구분 가이드 라인 -->
+                <line x1="400" y1="20" x2="400" y2="580" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.6"/>
+
+                <!-- ================= FRONT VIEW (ANTERIOR) ================= -->
+                <g id="front-view" transform="translate(50, 30)">
+                  <!-- Head & Neck -->
+                  <ellipse cx="170" cy="50" rx="28" ry="36" fill="#cbd5e1" stroke="#0f766e" stroke-width="2.5"/>
+                  <path d="M158,82 L152,112 L188,112 L182,82 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
+                  
+                  <!-- Shoulder / Trapezius -->
+                  <path d="M152,112 C135,115 110,122 98,135 C92,150 90,172 95,190 C108,185 120,165 125,145 Z" fill="#64748b" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M188,112 C205,115 230,122 242,135 C248,150 250,172 245,190 C232,185 220,165 215,145 Z" fill="#64748b" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Torso Outline & Pectorals -->
+                  <path d="M125,112 L215,112 L225,195 C220,245 208,285 198,310 L142,310 C132,285 120,245 115,195 Z" fill="#f1f5f9" stroke="#0f766e" stroke-width="2.5"/>
+                  
+                  <!-- Pectoralis Major (가슴) -->
+                  <path d="M125,118 C148,116 168,138 168,162 C145,168 122,152 118,132 Z" fill="#94a3b8" stroke="#0d9488" stroke-width="2"/>
+                  <path d="M215,118 C192,116 172,138 172,162 C195,168 218,152 222,132 Z" fill="#94a3b8" stroke="#0d9488" stroke-width="2"/>
+                  
+                  <!-- Abs (Rectus Abdominis) -->
+                  <g fill="#e2e8f0" stroke="#0d9488" stroke-width="1.8">
+                    <rect x="148" y="172" width="20" height="24" rx="4"/>
+                    <rect x="172" y="172" width="20" height="24" rx="4"/>
+                    <rect x="149" y="200" width="19" height="24" rx="4"/>
+                    <rect x="172" y="200" width="19" height="24" rx="4"/>
+                    <rect x="151" y="228" width="17" height="24" rx="4"/>
+                    <rect x="172" y="228" width="17" height="24" rx="4"/>
+                  </g>
+
+                  <!-- Biceps & Forearms -->
+                  <path d="M95,190 C85,210 82,245 92,275 C104,275 112,240 115,195 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M92,275 C82,305 78,340 85,365 C97,365 104,330 106,275 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M245,190 C255,210 258,245 248,275 C236,275 228,240 225,195 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M248,275 C258,305 262,340 255,365 C243,365 236,330 234,275 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Pelvis / Hip Band -->
+                  <path d="M120,310 C140,325 200,325 220,310 L210,350 C180,365 160,365 130,350 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2.5"/>
+
+                  <!-- Thighs (Quadriceps) -->
+                  <path d="M130,350 C125,405 132,450 140,478 C160,478 168,425 170,358 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2.5"/>
+                  <path d="M150,358 L147,472" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="3,3"/>
+                  <path d="M210,350 C215,405 208,450 200,478 C180,478 172,425 170,358 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2.5"/>
+                  <path d="M190,358 L193,472" stroke="#0d9488" stroke-width="1.8" stroke-dasharray="3,3"/>
+
+                  <!-- Knees -->
+                  <circle cx="147" cy="492" r="10" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+                  <circle cx="193" cy="492" r="10" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Shins / Calves -->
+                  <path d="M138,502 C134,530 137,560 142,578 C155,578 158,540 156,502 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M202,502 C206,530 203,560 198,578 C185,578 182,540 184,502 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Feet -->
+                  <path d="M142,578 L130,596 L158,596 L154,578 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M198,578 L210,596 L182,596 L186,578 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Crisp High-Contrast Text Badges & Labels -->
+                  <!-- 목/승모근 -->
+                  <rect x="130" y="90" width="80" height="18" rx="9" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="103" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">목 / 승모근</text>
+
+                  <!-- 대흉근(가슴) -->
+                  <rect x="125" y="136" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="150" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">대흉근 (가슴)</text>
+
+                  <!-- 복직근(복부) -->
+                  <rect x="125" y="202" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="216" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">복직근 (복부)</text>
+
+                  <!-- 대퇴사두 / 허벅지 -->
+                  <rect x="105" y="405" width="130" height="22" rx="11" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="420" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">대퇴사두 / 허벅지</text>
+
+                  <!-- 무릎 / 정강이 -->
+                  <rect x="105" y="525" width="130" height="22" rx="11" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="540" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">무릎 / 정강이</text>
+                </g>
+
+                <!-- ================= BACK VIEW (POSTERIOR) ================= -->
+                <g id="back-view" transform="translate(410, 30)">
+                  <!-- Head & Neck -->
+                  <ellipse cx="170" cy="50" rx="28" ry="36" fill="#cbd5e1" stroke="#0f766e" stroke-width="2.5"/>
+                  <path d="M158,82 L152,112 L188,112 L182,82 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Trapezius & Torso -->
+                  <path d="M170,98 L115,115 L120,180 L170,210 L220,180 L225,115 Z" fill="#cbd5e1" stroke="#0d9488" stroke-width="2"/>
+                  <path d="M115,112 C145,108 195,108 225,112 C240,150 232,210 220,270 C200,285 140,285 120,270 C108,210 100,150 115,112 Z" fill="#f1f5f9" stroke="#0f766e" stroke-width="2.5"/>
+                  
+                  <!-- Spine Center Line -->
+                  <line x1="170" y1="82" x2="170" y2="280" stroke="#0f766e" stroke-width="2.5" stroke-dasharray="5,3"/>
+
+                  <!-- Shoulders -->
+                  <path d="M115,112 C95,125 90,150 102,168 C110,150 118,135 120,122 Z" fill="#64748b" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M225,112 C245,125 250,150 238,168 C230,150 222,135 220,122 Z" fill="#64748b" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Arms Back -->
+                  <path d="M102,168 C90,185 88,220 95,245 C108,245 115,210 118,170 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M92,245 C82,270 78,310 85,335 C97,335 104,300 106,245 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M238,168 C250,185 252,220 245,245 C232,245 225,210 222,170 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M245,245 C255,270 260,310 252,335 C242,335 234,300 232,245 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Glutes -->
+                  <ellipse cx="145" cy="305" rx="27" ry="32" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+                  <ellipse cx="195" cy="305" rx="27" ry="32" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Hamstrings -->
+                  <path d="M122,335 C120,388 128,430 138,455 C158,455 162,410 165,335 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2.5"/>
+                  <path d="M218,335 C220,388 212,430 202,455 C182,455 178,410 175,335 Z" fill="#e2e8f0" stroke="#0f766e" stroke-width="2.5"/>
+
+                  <!-- Popliteal (무릎 뒤) -->
+                  <path d="M138,455 L162,455 L158,472 L138,472 Z" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+                  <path d="M202,455 L178,455 L182,472 L202,472 Z" fill="#ffffff" stroke="#0f766e" stroke-width="1.5"/>
+
+                  <!-- Calves -->
+                  <path d="M136,472 C126,500 130,535 142,565 C154,565 158,525 156,472 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M204,472 C214,500 210,535 198,565 C186,565 182,525 184,472 Z" fill="#cbd5e1" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Feet Back -->
+                  <path d="M138,565 L135,592 L150,592 L152,565 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
+                  <path d="M202,565 L205,592 L190,592 L188,565 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
+
+                  <!-- Crisp High-Contrast Text Badges & Labels -->
+                  <!-- 승모근/목근육 -->
+                  <rect x="120" y="118" width="100" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="132" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">승모근 / 목근육</text>
+
+                  <!-- 등 / 광배근 -->
+                  <rect x="125" y="165" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="179" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">등 / 광배근</text>
+
+                  <!-- 요추(허리) -->
+                  <rect x="125" y="228" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="242" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">요추 (허리)</text>
+
+                  <!-- 둔근(골반/엉덩이) -->
+                  <rect x="100" y="295" width="140" height="22" rx="11" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="310" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">둔근 (골반 / 엉덩이)</text>
+
+                  <!-- 햄스트링(허벅지뒤) -->
+                  <rect x="100" y="390" width="140" height="22" rx="11" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="405" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">햄스트링 (허벅지뒤)</text>
+
+                  <!-- 종아리/아킬레스 -->
+                  <rect x="105" y="505" width="130" height="22" rx="11" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
+                  <text x="170" y="520" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">종아리 / 아킬레스</text>
+                </g>
+              </svg>
+
+              <!-- 실제 마킹이 그려지는 터치 캔버스 -->
+              <canvas id="body-map-canvas" class="absolute inset-0 w-full h-full cursor-crosshair touch-none z-10"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- 제출 버튼 -->
+        <div class="pt-4">
+          <button type="submit" class="w-full py-4 px-6 bg-gradient-to-r from-brand-600 to-teal-600 hover:from-brand-700 hover:to-teal-700 text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-lg shadow-brand-600/30 active:scale-[0.99] transition-all flex items-center justify-center gap-3">
+            <i class="fa-solid fa-circle-check text-2xl"></i>
+            <span>동의 완료 및 회원 가입 등록</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- 메인 뷰: 관리자 대시보드 (숨김 상태) -->
+  <main id="view-admin" class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-6 my-2 hidden">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden p-6 sm:p-8 space-y-6">
+      
+      <!-- 관리자 헤더 컨트롤 -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-users text-brand-600"></i>
+            '스트레칭 온' 가입 회원목록 (클라우드 ERP 동기화)
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">태블릿 및 메인 PC ERP와 실시간 동기화되는 회원 동의서 목록 및 서명 내역입니다.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="exportToCSV()" class="px-3.5 py-2 rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 font-bold text-xs sm:text-sm transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-file-excel"></i> 엑셀(CSV) 저장
+          </button>
+          <button onclick="clearAllMembers()" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-600 hover:bg-rose-50 hover:text-rose-600 border border-slate-200 font-semibold text-xs sm:text-sm transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-trash-can"></i> 전체 삭제
+          </button>
+        </div>
+      </div>
+
+      <!-- 검색 바 -->
+      <div class="relative max-w-md">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input type="text" id="admin-search-input" onkeyup="filterMemberList()" placeholder="성명, 연락처, 불편부위 검색..."
+          class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none text-sm transition-all">
+      </div>
+
+      <!-- 회원 목록 테이블 -->
+      <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-bold text-xs uppercase">
+              <th class="p-3.5">등록일시</th>
+              <th class="p-3.5">성명</th>
+              <th class="p-3.5">성별/생년월일</th>
+              <th class="p-3.5">연락처</th>
+              <th class="p-3.5">선택 프로그램</th>
+              <th class="p-3.5">주요 불편 부위</th>
+              <th class="p-3.5 text-center">통증(VAS)</th>
+              <th class="p-3.5 text-center">서명</th>
+              <th class="p-3.5 text-center">상세/삭제</th>
+            </tr>
+          </thead>
+          <tbody id="member-table-body" class="divide-y divide-slate-200 font-medium">
+            <!-- 자바스크립트로 동적 렌더링 -->
+          </tbody>
+        </table>
+        
+        <div id="empty-members-msg" class="p-12 text-center text-slate-400 hidden">
+          <i class="fa-solid fa-user-slash text-4xl mb-3 text-slate-300"></i>
+          <p class="font-bold text-slate-500">등록된 회원이 없습니다.</p>
+          <p class="text-xs text-slate-400 mt-1">키오스크 화면에서 신규 회원 동의를 진행하세요.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="mt-auto py-4 text-center text-xs text-slate-400">
+    &copy; 2026 스트레칭 온 (STRETCHING ON). All rights reserved.
+  </footer>
+
+  <!-- 모달 1: 가입 완료 안내 모달 -->
+  <div id="modal-success" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl transform scale-95 transition-transform duration-300" id="modal-success-card">
+      <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-4 shadow-inner">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <h3 class="text-2xl font-extrabold text-slate-900 mb-1">가입 동의 완료!</h3>
+      <p class="text-slate-600 text-sm mb-6"><span id="success-user-name" class="font-bold text-brand-700">회원</span> 님의 동의서 및 문진표가 ERP에 안전하게 보관되었습니다.</p>
+      
+      <div class="p-3 bg-slate-50 rounded-xl mb-6 border border-slate-200">
+        <p class="text-xs text-slate-500">잠시 후 키오스크가 초기화됩니다.</p>
+        <p id="countdown-timer" class="text-xl font-extrabold text-brand-600 mt-1">3초</p>
+      </div>
+
+      <button onclick="closeSuccessModal()" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition-all">
+        확인 (바로 다음 손님)
+      </button>
+    </div>
+  </div>
+
+  <!-- 모달 2: 회원 상세 보기 모달 -->
+  <div id="modal-detail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+      <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-id-card text-brand-600"></i> 회원 상세 문진표 및 전자 서명
+      </h3>
+      
+      <div id="detail-modal-body" class="space-y-4 text-sm">
+        <!-- 내용 동적 삽입 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 토스트 알림 컨테이너 -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- 자바스크립트 및 파이어베이스 클라우드 연동 로직 -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // 원장님 스튜디오 전용 파이어베이스 설정
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
+      authDomain: "solutionstretching.firebaseapp.com",
+      projectId: "solutionstretching",
+      storageBucket: "solutionstretching.firebasestorage.app",
+      messagingSenderId: "567579240099",
+      appId: "1:567579240099:web:1b32c98d04fbd4e55d0116"
+    };
+
+    let db = null;
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+
+      // 클라우드 데이터베이스 실시간 동기화 수신
+      onSnapshot(collection(db, "members"), (snapshot) => {
+        const cloudMembers = [];
+        snapshot.forEach((docSnap) => {
+          cloudMembers.push(docSnap.data());
+        });
+        
+        if (cloudMembers.length > 0) {
+          window.members = cloudMembers.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+          localStorage.setItem('stretching_on_members', JSON.stringify(window.members));
+          window.updateMemberCountBadge();
+          if (!document.getElementById('view-admin').classList.contains('hidden')) {
+            window.renderMemberList();
+          }
+        }
+      });
+      console.log("Firebase Firestore Connected successfully on Kiosk.");
+    } catch(err) {
+      console.warn("Firebase Init Error:", err);
+    }
+
+    window.db = db;
+    window.syncMemberToCloud = async function(memberObj) {
+      if (!db) return;
+      try {
+        await setDoc(doc(db, "members", memberObj.id), memberObj);
+      } catch (e) {
+        console.error("Cloud member save error:", e);
+      }
+    };
+
+    window.deleteMemberFromCloud = async function(memberId) {
+      if (!db) return;
+      try {
+        await deleteDoc(doc(db, "members", memberId));
+      } catch (e) {
+        console.error("Cloud member delete error:", e);
+      }
+    };
+  </script>
+
+  <script>
+    /* ==========================================================================
+       전역 상태 변수
+       ========================================================================== */
+    window.members = JSON.parse(localStorage.getItem('stretching_on_members') || '[]');
+    let selectedVasScore = null;
+    let painMarkers = [];
+    let currentMarkerColor = '#ef4444'; // 기본 빨강 (통증)
+    let canvas, ctx, isDrawing = false, hasSignature = false;
+    let mapCanvas, mapCtx;
+    let countdownTimer = null;
+
+    /* ==========================================================================
+       페이지 로드 초기화
+       ========================================================================== */
+    window.addEventListener('load', () => {
+      // 오늘 날짜 표시
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}년 ${String(now.getMonth() + 1).padStart(2, '0')}월 ${String(now.getDate()).padStart(2, '0')}일`;
+      const dateEl = document.getElementById('today-date-display');
+      if (dateEl) dateEl.innerText = dateStr;
+
+      initVasButtons();
+      initRadioToggle();
+      initCanvas();
+      initBodyMap();
+      window.updateMemberCountBadge();
+
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        resizeBodyMap();
+      });
+    });
+
+    /* ==========================================================================
+       VAS 통증 스케일 버튼 및 라디오 칩 토글 로직
+       ========================================================================== */
+    function initVasButtons() {
+      const container = document.getElementById('vas-buttons-container');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 1; i <= 10; i++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'py-2.5 rounded-xl border border-slate-300 bg-white font-black text-slate-700 text-xs sm:text-sm hover:border-brand-500 hover:bg-brand-50 transition-all select-none vas-btn';
+        btn.setAttribute('data-vas', i);
+        btn.innerText = i;
+        btn.onclick = () => selectVasScore(i);
+        container.appendChild(btn);
+      }
+    }
+
+    function selectVasScore(score) {
+      if (selectedVasScore === score) {
+        selectedVasScore = null;
+      } else {
+        selectedVasScore = score;
+      }
+
+      const buttons = document.querySelectorAll('.vas-btn');
+      buttons.forEach(btn => {
+        const val = parseInt(btn.getAttribute('data-vas'));
+        if (selectedVasScore !== null && val === selectedVasScore) {
+          btn.className = 'py-2.5 rounded-xl border-2 border-rose-600 bg-rose-600 text-white font-black text-xs sm:text-sm shadow-md transform scale-105 transition-all select-none vas-btn';
+        } else {
+          btn.className = 'py-2.5 rounded-xl border border-slate-300 bg-white font-black text-slate-700 text-xs sm:text-sm hover:border-brand-500 hover:bg-brand-50 transition-all select-none vas-btn';
+        }
+      });
+
+      const badge = document.getElementById('vas-display-badge');
+      if (badge) {
+        if (selectedVasScore === null) {
+          badge.innerText = '선택 안됨';
+          badge.className = 'px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-800 font-black text-xs';
+        } else {
+          badge.innerText = `${selectedVasScore}점 (VAS)`;
+          if (selectedVasScore <= 3) {
+            badge.className = 'px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-black text-xs border border-emerald-300';
+          } else if (selectedVasScore <= 6) {
+            badge.className = 'px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-black text-xs border border-amber-300';
+          } else {
+            badge.className = 'px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-black text-xs border border-rose-300 animate-pulse';
+          }
+        }
+      }
+    }
+
+    function initRadioToggle() {
+      document.querySelectorAll('.radio-chip').forEach(radio => {
+        radio.addEventListener('click', function() {
+          if (this.dataset.wasChecked === 'true') {
+            this.checked = false;
+            this.dataset.wasChecked = 'false';
+          } else {
+            const name = this.name;
+            document.querySelectorAll(`.radio-chip[name="${name}"]`).forEach(r => {
+              r.dataset.wasChecked = 'false';
+            });
+            this.dataset.wasChecked = 'true';
+          }
+        });
+      });
+    }
+
+    /* ==========================================================================
+       ANATOMY MAP 터치/마킹 로직
+       ========================================================================== */
+    function setMarkerColor(color) {
+      currentMarkerColor = color;
+      const redBtn = document.getElementById('btn-color-red');
+      const blueBtn = document.getElementById('btn-color-blue');
+      const greenBtn = document.getElementById('btn-color-green');
+
+      if (redBtn) redBtn.className = color === '#ef4444' ? "w-6 h-6 rounded-full bg-rose-500 border-2 border-white ring-2 ring-rose-500 ring-offset-1 transition-all" : "w-6 h-6 rounded-full bg-rose-500 border-2 border-white transition-all";
+      if (blueBtn) blueBtn.className = color === '#3b82f6' ? "w-6 h-6 rounded-full bg-blue-500 border-2 border-white ring-2 ring-blue-500 ring-offset-1 transition-all" : "w-6 h-6 rounded-full bg-blue-500 border-2 border-white transition-all";
+      if (greenBtn) greenBtn.className = color === '#10b981' ? "w-6 h-6 rounded-full bg-emerald-500 border-2 border-white ring-2 ring-emerald-500 ring-offset-1 transition-all" : "w-6 h-6 rounded-full bg-emerald-500 border-2 border-white transition-all";
+    }
+
+    function initBodyMap() {
+      mapCanvas = document.getElementById('body-map-canvas');
+      if (!mapCanvas) return;
+      mapCtx = mapCanvas.getContext('2d');
+      resizeBodyMap();
+
+      const addMarkerAtPos = (clientX, clientY) => {
+        const rect = mapCanvas.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return;
+        const x = (clientX - rect.left) / rect.width;
+        const y = (clientY - rect.top) / rect.height;
+        painMarkers.push({ x, y, color: currentMarkerColor });
+        drawBodyMarkers();
+      };
+
+      mapCanvas.addEventListener('click', (e) => {
+        addMarkerAtPos(e.clientX, e.clientY);
+      });
+
+      mapCanvas.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length > 0) {
+          e.preventDefault();
+          addMarkerAtPos(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: false });
+    }
+
+    function resizeBodyMap() {
+      if (!mapCanvas || !mapCanvas.parentElement) return;
+      const rect = mapCanvas.parentElement.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      mapCanvas.width = rect.width * dpr;
+      mapCanvas.height = rect.height * dpr;
+      if (mapCtx) mapCtx.scale(dpr, dpr);
+
+      drawBodyMarkers();
+    }
+
+    function drawBodyMarkers() {
+      if (!mapCtx || !mapCanvas) return;
+      const rect = mapCanvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      mapCtx.clearRect(0, 0, rect.width, rect.height);
+
+      painMarkers.forEach((m) => {
+        const px = m.x * rect.width;
+        const py = m.y * rect.height;
+        const color = m.color || '#ef4444';
+
+        mapCtx.beginPath();
+        mapCtx.arc(px, py, 11, 0, Math.PI * 2);
+        mapCtx.fillStyle = color + '55';
+        mapCtx.fill();
+
+        mapCtx.beginPath();
+        mapCtx.arc(px, py, 5.5, 0, Math.PI * 2);
+        mapCtx.fillStyle = color;
+        mapCtx.fill();
+        mapCtx.lineWidth = 1.5;
+        mapCtx.strokeStyle = '#ffffff';
+        mapCtx.stroke();
+      });
+    }
+
+    function clearPainMarkers() {
+      painMarkers = [];
+      drawBodyMarkers();
+    }
+
+    /* ==========================================================================
+       전자 서명 캔버스 로직
+       ========================================================================== */
+    function initCanvas() {
+      canvas = document.getElementById('signature-canvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+      resizeCanvas();
+
+      canvas.addEventListener('mousedown', startDrawing);
+      canvas.addEventListener('mousemove', draw);
+      canvas.addEventListener('mouseup', stopDrawing);
+      canvas.addEventListener('mouseleave', stopDrawing);
+
+      canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        startDrawing(e.touches[0]);
+      }, { passive: false });
+
+      canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        draw(e.touches[0]);
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', stopDrawing);
+    }
+
+    function resizeCanvas() {
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      let tempCanvas = null;
+
+      if (hasSignature && canvas.width > 0 && canvas.height > 0) {
+        tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.width;
+        tempCanvas.height = canvas.height;
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCtx.drawImage(canvas, 0, 0);
+      }
+
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      
+      ctx.scale(dpr, dpr);
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#0f172a';
+
+      if (hasSignature && tempCanvas && tempCanvas.width > 0 && tempCanvas.height > 0) {
+        ctx.drawImage(tempCanvas, 0, 0, tempCanvas.width / dpr, tempCanvas.height / dpr);
+      }
+    }
+
+    function getCanvasPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      hasSignature = true;
+      const placeholder = document.getElementById('canvas-placeholder');
+      if (placeholder) placeholder.style.display = 'none';
+      const pos = getCanvasPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const pos = getCanvasPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+
+    function stopDrawing() {
+      if (isDrawing) {
+        ctx.closePath();
+        isDrawing = false;
+      }
+    }
+
+    function clearCanvas() {
+      if (!ctx || !canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+      hasSignature = false;
+      const placeholder = document.getElementById('canvas-placeholder');
+      if (placeholder) placeholder.style.display = 'flex';
+    }
+
+    /* ==========================================================================
+       폼 제출 및 클라우드 DB 연동 등록 로직
+       ========================================================================== */
+    function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const userName = document.getElementById('input-user-name')?.value.trim();
+      const genderEl = document.querySelector('input[name="user_gender"]:checked');
+      const userGender = genderEl ? genderEl.value : '여성';
+      const userBirth = document.getElementById('input-birth')?.value;
+      const rawPhone = document.getElementById('input-phone')?.value.trim();
+      const cleanPhone = (rawPhone || '').replace(/[^0-9]/g, '');
+
+      if (!userName || !cleanPhone || !userBirth) {
+        showToast('성함, 생년월일, 연락처를 빠짐없이 입력해 주세요.', 'error');
+        return;
+      }
+
+      if (!hasSignature) {
+        showToast('하단 서명란에 손가락이나 펜으로 서명을 입력해 주세요.', 'error');
+        return;
+      }
+
+      const getCheckedValues = (selector) => {
+        return Array.from(document.querySelectorAll(selector + ':checked')).map(el => el.value);
+      };
+
+      const durationEl = document.querySelector('input[name="pain_duration"]:checked');
+      const exerciseFreqEl = document.querySelector('input[name="exercise_freq"]:checked');
+      const selectedProgEl = document.querySelector('input[name="selected_program"]:checked');
+      const selectedProgTitle = selectedProgEl ? selectedProgEl.value : '첫방문 1회 체험 (50,000원)';
+
+      let defaultPassCount = 1;
+      let defaultMonths = 1;
+      if (selectedProgTitle.includes('10회')) {
+        defaultPassCount = 10;
+        defaultMonths = 2;
+      }
+
+      const calculateExpiry = (months) => {
+        const d = new Date();
+        d.setMonth(d.getMonth() + months);
+        return d.toISOString().split('T')[0];
+      };
+
+      const questionnaire = {
+        selectedProgram: selectedProgTitle,
+        purposes: getCheckedValues('#group-purpose input'),
+        painAreas: getCheckedValues('#group-pain-area input'),
+        vasScore: selectedVasScore !== null ? selectedVasScore : '미선택',
+        painDuration: durationEl ? durationEl.value : '미선택',
+        painMarkers: painMarkers,
+        medicalHistory: getCheckedValues('#group-medical-history input'),
+        surgery: document.getElementById('input-surgery')?.value.trim() || '',
+        medication: document.getElementById('input-medication')?.value.trim() || '',
+        otherHealth: document.getElementById('input-other-health')?.value.trim() || '',
+        lifestyle: getCheckedValues('#group-lifestyle input'),
+        sleepTime: document.getElementById('input-sleep-time')?.value.trim() || '',
+        exerciseFreq: exerciseFreqEl ? exerciseFreqEl.value : '미선택',
+        treatmentExp: getCheckedValues('#group-treatment-exp input'),
+        expOther: document.getElementById('input-exp-other')?.value.trim() || '',
+        expEffect: document.getElementById('input-exp-effect')?.value.trim() || '',
+        counselorName: document.getElementById('input-counselor-name')?.value.trim() || '김동수 대표원장',
+        trainerEval: document.getElementById('input-trainer-eval')?.value.trim() || ''
+      };
+
+      const signatureImg = canvas.toDataURL('image/png');
+      const now = new Date();
+      const memberId = 'M-' + Date.now();
+
+      // ERP 및 파이어베이스 클라우드 완벽 연동 표준 데이터 구조
+      const newMember = {
+        id: memberId,
+        created_at: now.toLocaleString('ko-KR'),
+        name: userName,
+        gender: userGender,
+        birth: userBirth,
+        phone: cleanPhone,
+        passType: selectedProgTitle,
+        remainingPasses: defaultPassCount,
+        passCount: defaultPassCount,
+        totalPasses: defaultPassCount,
+        expiryDate: calculateExpiry(defaultMonths),
+        note: `[문진] 주요불편: ${(questionnaire.painAreas || []).join(',') || '없음'} | VAS: ${questionnaire.vasScore}점 | 목적: ${(questionnaire.purposes || []).join(',') || '없음'}`,
+        questionnaire: questionnaire,
+        signature: signatureImg
+      };
+
+      // 1. 로컬 상태 업데이트
+      const existingIdx = window.members.findIndex(m => m.phone === cleanPhone);
+      if (existingIdx > -1) {
+        window.members[existingIdx] = newMember;
+      } else {
+        window.members.unshift(newMember);
+      }
+      localStorage.setItem('stretching_on_members', JSON.stringify(window.members));
+
+      // 2. 파이어베이스 Cloud Firestore 실시간 저장
+      if (typeof window.syncMemberToCloud === 'function') {
+        window.syncMemberToCloud(newMember);
+      }
+
+      window.updateMemberCountBadge();
+      showSuccessModal(userName);
+    }
+
+    function resetForm() {
+      const form = document.getElementById('registration-form');
+      if (form) form.reset();
+      clearCanvas();
+      clearPainMarkers();
+      selectedVasScore = null;
+
+      document.querySelectorAll('.radio-chip').forEach(r => {
+        r.checked = false;
+        r.dataset.wasChecked = 'false';
+      });
+
+      const textInputIds = [
+        'input-user-name', 'input-birth', 'input-phone',
+        'input-surgery', 'input-medication', 'input-other-health',
+        'input-sleep-time', 'input-exp-other', 'input-exp-effect',
+        'input-counselor-name', 'input-trainer-eval'
+      ];
+      textInputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      const vasButtons = document.querySelectorAll('.vas-btn');
+      vasButtons.forEach(btn => {
+        btn.className = 'py-2.5 rounded-xl border border-slate-300 bg-white font-black text-slate-700 text-xs sm:text-sm hover:border-brand-500 hover:bg-brand-50 transition-all select-none vas-btn';
+      });
+
+      const badge = document.getElementById('vas-display-badge');
+      if (badge) {
+        badge.innerText = '선택 안됨';
+        badge.className = 'px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-800 font-black text-xs';
+      }
+    }
+
+    /* ==========================================================================
+       모달 및 탭 네비게이션
+       ========================================================================== */
+    function showSuccessModal(name) {
+      const modal = document.getElementById('modal-success');
+      const userDisplay = document.getElementById('success-user-name');
+      const timerDisplay = document.getElementById('countdown-timer');
+
+      if (userDisplay) userDisplay.innerText = name || '회원';
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      
+      let count = 3;
+      if (timerDisplay) timerDisplay.innerText = `${count}초`;
+
+      if (countdownTimer) clearInterval(countdownTimer);
+      countdownTimer = setInterval(() => {
+        count--;
+        if (timerDisplay) timerDisplay.innerText = `${count}초`;
+        if (count <= 0) {
+          clearInterval(countdownTimer);
+          closeSuccessModal();
+        }
+      }, 1000);
+    }
+
+    function closeSuccessModal() {
+      if (countdownTimer) clearInterval(countdownTimer);
+      const modal = document.getElementById('modal-success');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      resetForm();
+    }
+
+    function closeDetailModal() {
+      const modal = document.getElementById('modal-detail');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function switchTab(tab) {
+      const viewKiosk = document.getElementById('view-kiosk');
+      const viewAdmin = document.getElementById('view-admin');
+      const btnKiosk = document.getElementById('tab-kiosk');
+      const btnAdmin = document.getElementById('tab-admin');
+
+      if (tab === 'kiosk') {
+        if (viewKiosk) viewKiosk.classList.remove('hidden');
+        if (viewAdmin) viewAdmin.classList.add('hidden');
+
+        if (btnKiosk) btnKiosk.className = 'px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 bg-white text-brand-700 shadow-sm';
+        if (btnAdmin) btnAdmin.className = 'px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-2';
+
+        setTimeout(() => {
+          resizeCanvas();
+          resizeBodyMap();
+        }, 50);
+      } else {
+        if (viewKiosk) viewKiosk.classList.add('hidden');
+        if (viewAdmin) viewAdmin.classList.remove('hidden');
+
+        if (btnAdmin) btnAdmin.className = 'px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 bg-white text-brand-700 shadow-sm';
+        if (btnKiosk) btnKiosk.className = 'px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-2';
+
+        renderMemberList();
+      }
+    }
+
+    window.updateMemberCountBadge = function() {
+      const badge = document.getElementById('member-count-badge');
+      if (badge) badge.innerText = window.members.length;
+    }
+
+    function filterMemberList() {
+      const query = document.getElementById('admin-search-input').value.trim().toLowerCase();
+      renderMemberList(query);
+    }
+
+    function renderMemberList(filterQuery = '') {
+      const tbody = document.getElementById('member-table-body');
+      const emptyMsg = document.getElementById('empty-members-msg');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const filtered = window.members.filter(m => {
+        const q = m.questionnaire || {};
+        const nameMatch = (m.name || '').toLowerCase().includes(filterQuery);
+        const phoneMatch = (m.phone || '').includes(filterQuery);
+        const painMatch = (q.painAreas || []).join(' ').includes(filterQuery);
+        const progMatch = (q.selectedProgram || '').toLowerCase().includes(filterQuery);
+        return nameMatch || phoneMatch || painMatch || progMatch;
+      });
+
+      if (filtered.length === 0) {
+        if (emptyMsg) emptyMsg.classList.remove('hidden');
+        return;
+      } else {
+        if (emptyMsg) emptyMsg.classList.add('hidden');
+      }
+
+      filtered.forEach((m) => {
+        const q = m.questionnaire || {};
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition-colors';
+        tr.innerHTML = `
+          <td class="p-3.5 text-xs text-slate-500 font-mono">${m.created_at || '-'}</td>
+          <td class="p-3.5 font-bold text-slate-900">${m.name || '-'}</td>
+          <td class="p-3.5 text-slate-700 text-xs">${m.gender || '-'} / ${m.birth || '-'}</td>
+          <td class="p-3.5 text-slate-700 font-mono text-xs">${m.phone || '-'}</td>
+          <td class="p-3.5 text-slate-800 text-xs font-extrabold text-brand-700">${q.selectedProgram || m.passType || '미선택'}</td>
+          <td class="p-3.5 text-slate-700 text-xs font-semibold">${(q.painAreas || []).join(', ') || '-'}</td>
+          <td class="p-3.5 text-center font-black text-rose-600">${q.vasScore !== undefined ? q.vasScore : '-'}</td>
+          <td class="p-3.5 text-center">
+            <button onclick="viewMemberDetail('${m.id}')" class="p-1.5 rounded-lg bg-slate-100 hover:bg-brand-50 hover:text-brand-700 text-slate-600 border border-slate-200 text-xs transition-all">
+              <img src="${m.signature}" class="h-6 max-w-16 object-contain inline-block" alt="서명">
+            </button>
+          </td>
+          <td class="p-3.5 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button onclick="viewMemberDetail('${m.id}')" title="상세보기" class="px-2.5 py-1 rounded-lg bg-brand-50 text-brand-700 hover:bg-brand-100 text-xs font-bold border border-brand-200">
+                조회
+              </button>
+              <button onclick="deleteMember('${m.id}')" title="삭제" class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-100 text-xs font-bold border border-rose-200">
+                삭제
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function viewMemberDetail(id) {
+      const member = window.members.find(m => m.id === id);
+      if (!member) return;
+
+      const q = member.questionnaire || {};
+
+      const body = document.getElementById('detail-modal-body');
+      body.innerHTML = `
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-xs">
+          <div class="flex justify-between"><span class="text-slate-500">성명 / 성별</span><span class="font-bold text-slate-900">${member.name} (${member.gender})</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">생년월일 / 연락처</span><span class="font-bold text-slate-900">${member.birth} / ${member.phone}</span></div>
+          <div class="flex justify-between border-t pt-1.5"><span class="text-slate-500">등록 일시</span><span class="font-mono font-bold text-slate-900">${member.created_at || '-'}</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">보유 수강권 / 만료일</span><span class="font-bold text-brand-700">${member.passType || '수강권'} (${member.remainingPasses !== undefined ? member.remainingPasses : member.passCount}회 / ${member.expiryDate || '무제한'})</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">담당 지도자</span><span class="font-bold text-brand-700">${q.counselorName || '김동수 대표원장'}</span></div>
+        </div>
+
+        <div class="p-3.5 bg-brand-50/60 border border-brand-200 rounded-xl space-y-2 text-xs max-h-80 overflow-y-auto custom-scrollbar">
+          <h4 class="font-bold text-brand-900 flex items-center gap-1 border-b border-brand-200 pb-1.5 text-sm">
+            <i class="fa-solid fa-clipboard-list text-brand-600"></i> 희망 프로그램 및 문진표 내역
+          </h4>
+          <p><strong>선택 프로그램:</strong> <span class="font-black text-brand-800 bg-brand-100 px-2 py-0.5 rounded">${q.selectedProgram || member.passType || '미선택'}</span></p>
+          <p><strong>1. 방문 목적:</strong> ${(q.purposes || []).join(', ') || '없음'}</p>
+          <p><strong>2. 주요 불편 부위:</strong> <span class="text-rose-600 font-bold">${(q.painAreas || []).join(', ') || '없음'}</span></p>
+          <p><strong>3. 통증 정도 (VAS):</strong> <span class="font-extrabold text-rose-600">${q.vasScore} 점</span></p>
+          <p><strong>4. 통증 기간:</strong> ${q.painDuration || '미선택'}</p>
+          <p><strong>5. 병력 및 의학적 정보:</strong> ${(q.medicalHistory || []).join(', ') || '없음'}
+            ${q.surgery ? `<br>ㆍ수술/시술: ${q.surgery}` : ''}
+            ${q.medication ? `<br>ㆍ복용 약: ${q.medication}` : ''}
+            ${q.otherHealth ? `<br>ㆍ기타: ${q.otherHealth}` : ''}
+          </p>
+          <p><strong>6. 생활 습관:</strong> ${(q.lifestyle || []).join(', ') || '없음'}
+            <br>ㆍ수면시간: ${q.sleepTime || '미입력'} / 운동빈도: ${q.exerciseFreq || '미선택'}
+          </p>
+          <p><strong>7. 운동/치료 경험:</strong> ${(q.treatmentExp || []).join(', ') || '없음'}
+            ${q.expOther ? `<br>ㆍ기타: ${q.expOther}` : ''}
+            ${q.expEffect ? `<br>ㆍ느낀점: ${q.expEffect}` : ''}
+          </p>
+          <p class="pt-1 border-t border-brand-200"><strong>지도자 소견:</strong> <span class="text-teal-800 font-bold">${q.trainerEval || '소견 없음'}</span></p>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block text-xs font-bold text-slate-600">회원 전자 서명</label>
+          <div class="bg-white border-2 border-dashed border-slate-300 rounded-xl p-2 flex justify-center">
+            <img src="${member.signature}" alt="서명 이미지" class="h-20 object-contain">
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="closeDetailModal()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs">
+            닫기
+          </button>
+        </div>
+      `;
+
+      const modal = document.getElementById('modal-detail');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function exportToCSV() {
+      if (window.members.length === 0) {
+        showToast('저장된 회원 데이터가 없습니다.', 'error');
+        return;
+      }
+
+      let csvContent = "\uFEFF";
+      csvContent += "ID,등록일시,성명,성별,생년월일,연락처,선택프로그램,방문목적,주요불편부위,통증정도(VAS),통증기간,병력사항,수술/시술,복용약,기타건강,생활습관,수면시간,운동빈도,치료경험,경험느낀점,상담자,지도자소견\n";
+
+      window.members.forEach(m => {
+        const q = m.questionnaire || {};
+        const purp = (q.purposes || []).join(';');
+        const pain = (q.painAreas || []).join(';');
+        const med = (q.medicalHistory || []).join(';');
+        const life = (q.lifestyle || []).join(';');
+        const exp = (q.treatmentExp || []).join(';');
+
+        csvContent += `"${m.id}","${m.created_at}","${m.name || ''}","${m.gender || ''}","${m.birth || ''}","${m.phone || ''}","${q.selectedProgram || m.passType || ''}","${purp}","${pain}","${q.vasScore || ''}","${q.painDuration || ''}","${med}","${q.surgery || ''}","${q.medication || ''}","${q.otherHealth || ''}","${life}","${q.sleepTime || ''}","${q.exerciseFreq || ''}","${exp}","${q.expEffect || ''}","${q.counselorName || ''}","${q.trainerEval || ''}"\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `스트레칭온_회원명단_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      showToast('CSV 파일 다운로드가 시작되었습니다.', 'success');
+    }
+
+    function deleteMember(id) {
+      window.members = window.members.filter(m => m.id !== id);
+      localStorage.setItem('stretching_on_members', JSON.stringify(window.members));
+      if (typeof window.deleteMemberFromCloud === 'function') {
+        window.deleteMemberFromCloud(id);
+      }
+      window.updateMemberCountBadge();
+      renderMemberList();
+      showToast('회원 정보가 삭제되었습니다.', 'info');
+    }
+
+    function clearAllMembers() {
+      if (window.members.length === 0) {
+        showToast('삭제할 회원 데이터가 없습니다.', 'error');
+        return;
+      }
+      window.members.forEach(m => {
+        if (typeof window.deleteMemberFromCloud === 'function') {
+          window.deleteMemberFromCloud(m.id);
+        }
+      });
+      window.members = [];
+      localStorage.setItem('stretching_on_members', JSON.stringify(window.members));
+      window.updateMemberCountBadge();
+      renderMemberList();
+      showToast('전체 회원 데이터가 초기화되었습니다.', 'info');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      
+      let bgClass = 'bg-slate-800 text-white';
+      let icon = 'fa-circle-info';
+      
+      if (type === 'success') { bgClass = 'bg-emerald-600 text-white'; icon = 'fa-circle-check'; }
+      if (type === 'error') { bgClass = 'bg-rose-600 text-white'; icon = 'fa-circle-exclamation'; }
+
+      toast.className = `${bgClass} px-4 py-3 rounded-xl shadow-lg text-sm font-bold flex items-center gap-2 transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto`;
+      toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      }, 50);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
