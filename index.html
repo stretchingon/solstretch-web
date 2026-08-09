@@ -247,7 +247,7 @@
       </div>
     </header>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-stone-200/80 shadow-sm text-xs font-semibold text-[#0C3559] mb-6">
@@ -301,7 +301,7 @@
       </div>
     </section>
 
-    <!-- Brand Story Section -->
+    <!-- Brand Story -->
     <section id="brand-story" class="py-24 bg-white border-y border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -392,7 +392,7 @@
       </div>
     </section>
 
-    <!-- Body Zones Section -->
+    <!-- Body Zones -->
     <section id="body-zones" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-14">
         <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">ANALYSIS & SOLUTIONS</span>
@@ -404,7 +404,7 @@
       <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card"></div>
     </section>
 
-    <!-- Programs Section -->
+    <!-- Programs -->
     <section id="programs" class="py-24 bg-stone-100/70 border-y border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-16">
@@ -417,7 +417,7 @@
       </div>
     </section>
 
-    <!-- Academy Section -->
+    <!-- Academy -->
     <section id="academy" class="py-24 bg-white border-b border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-br from-[#0C3559] via-[#0A2D4C] to-[#082239] text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
@@ -475,7 +475,7 @@
       </div>
     </section>
 
-    <!-- Realtime Reservation Section (당일 예약 100% 차단 로직 적용) -->
+    <!-- Realtime Reservation (당일 및 지난 날짜 KST 고정 차단) -->
     <section id="reservation" class="py-24 bg-[#0C3559] text-white">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-xl mx-auto mb-12">
@@ -483,7 +483,7 @@
           <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-3 mb-3">실시간 1:1 맞춤 예약</h2>
           <p class="text-stone-300 text-xs sm:text-sm font-normal leading-relaxed">
             * 원장의 100% 1:1 단독 집중 케어로 진행됩니다. <br class="hidden sm:inline" />
-            * 당일 예약은 불가하며, 최소 1일 전 예약 선택만 가능합니다.
+            * 당일 예약은 불가하며, 최소 1일 전 사전예약 선택만 가능합니다.
           </p>
         </div>
 
@@ -553,7 +553,7 @@
       </div>
     </section>
 
-    <!-- Location & Guidelines Section -->
+    <!-- Location & Guidelines -->
     <section id="location" class="py-24 bg-stone-100/70 border-t border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -695,7 +695,7 @@
     const REVIEWS = [
       { name: '김*아 님', job: 'IT 개발팀 리더', program: 'Sol-Recovery (50분)', comment: '단순 피로 해소 마사지인 줄 알았는데, 제 체형의 불균형 원인을 정확히 짚어주셨습니다. 50분 만에 몸의 가벼움이 완전히 달라졌고 일상 속 집중력이 눈에 띄게 높아졌습니다.', rating: '★★★★★' },
       { name: '박*진 님', job: '운수업', program: 'Sol-Balance (90분)', comment: '오래된 골반,허리통증으로 많이 고생했습니다. 원장님의 해부학적 수기 이완 덕분에 걸음걸이가 편해지고 밤마다 느끼던 뻐근함이 크게 줄어 삶의 질이 향상되었습니다.', rating: '★★★★★' },
-      { name: '최*진 님', job: '사무직 임원', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡어가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★' }
+      { name: '최*진 님', job: '사무직 임원', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡아가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★' }
     ];
 
     const FAQS = [
@@ -714,12 +714,27 @@
     let appSelectedTime = '';
     let kioskInputDigits = '';
 
-    // 최소 내일부터만 예약 가능 (당일 예약 원천 차단 기준일 함수)
+    // 한국 표준시(KST) 기준 날짜 변환 유틸리티 (UTC 시차 오류 완전 차단)
+    function getLocalDateStr(offsetDays = 0) {
+      const d = new Date();
+      d.setDate(d.getDate() + offsetDays);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    // 최소 예약 가능일 (한국시각 기준 당일 100% 차단 -> 내일부터, 내일이 일요일이면 월요일부터)
     function getNextWorkingDateStr() {
       const d = new Date();
-      d.setDate(d.getDate() + 1);
-      if (d.getDay() === 0) d.setDate(d.getDate() + 1);
-      return d.toISOString().split('T')[0];
+      d.setDate(d.getDate() + 1); // 내일
+      if (d.getDay() === 0) {     // 내일이 일요일이면 월요일로
+        d.setDate(d.getDate() + 1);
+      }
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     }
 
     function isSundayDate(dateStr) {
@@ -921,12 +936,8 @@
 
           if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
 
-          const now = new Date();
-          const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2, '0');
-          const day = String(now.getDate()).padStart(2, '0');
-          const todayStr = `${year}-${month}-${day}`;
+          const todayStr = getLocalDateStr(0);
+          const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
 
           const logEntry = {
             id: 'ATT-' + Date.now(),
@@ -1044,10 +1055,11 @@
     function renderAppTimeSlots() {
       const dateVal = document.getElementById('app-date').value;
       const minDate = getNextWorkingDateStr();
+      const todayStr = getLocalDateStr(0);
 
-      // 당일 및 지난 날짜 예외 100% 차단
-      if (dateVal < minDate) {
-        showToast('당일 및 지난 날짜는 예약이 불가능합니다.');
+      // 당일 및 지난 날짜 예외 100% 차단 (KST 고정)
+      if (dateVal <= todayStr || dateVal < minDate) {
+        showToast('당일 예약은 불가능합니다. (최소 1일 전 사전예약만 가능)');
         document.getElementById('app-date').value = minDate;
         return renderAppTimeSlots();
       }
@@ -1090,7 +1102,9 @@
       const date = document.getElementById('app-date').value;
 
       const minDate = getNextWorkingDateStr();
-      if (date < minDate) return showToast('당일 및 지난 날짜는 예약이 불가능합니다.');
+      const todayStr = getLocalDateStr(0);
+
+      if (date <= todayStr || date < minDate) return showToast('당일 및 지난 날짜는 예약이 불가능합니다.');
       if (!appSelectedTime) return showToast('시간대를 선택해 주세요.');
 
       const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(phone));
@@ -1161,7 +1175,7 @@
       }
     }
 
-    // 웹사이트 실시간 예약 신청 (당일 예약 2중 완벽 검증)
+    // 웹사이트 실시간 예약 신청 (KST 고정 당일 예약 3중 차단)
     function submitBooking() {
       const name = document.getElementById('user-name').value.trim();
       const phone = document.getElementById('user-phone').value.trim();
@@ -1172,7 +1186,17 @@
       if (!name || !phone) return showToast('성함과 연락처를 입력해 주세요.');
 
       const minDate = getNextWorkingDateStr();
-      if (selectedDate < minDate) return showToast('당일 및 지난 날짜는 예약이 불가능합니다. (최소 1일 전 사전예약)');
+      const todayStr = getLocalDateStr(0);
+
+      // 당일 및 이전 날짜 강력 검증
+      if (selectedDate <= todayStr || selectedDate < minDate) {
+        showToast('당일 예약은 불가능합니다. (최소 1일 전 사전예약만 가능)');
+        document.getElementById('booking-date-input').value = minDate;
+        selectedDate = minDate;
+        renderStep2();
+        return;
+      }
+
       if (isSundayDate(selectedDate)) return showToast('일요일은 정기 휴무일입니다.');
 
       const cleanPhone = phone.replace(/[^0-9]/g, '');
@@ -1416,10 +1440,11 @@
 
     function handleBookingDateChange(val) {
       const minDate = getNextWorkingDateStr();
+      const todayStr = getLocalDateStr(0);
 
-      // 당일 및 이전 날짜 수동 입력 차단
-      if (val < minDate) {
-        showToast('당일 및 지난 날짜는 예약이 불가능합니다. (최소 1일 전 사전예약)');
+      // 당일 및 이전 날짜 수동 입력 강력 차단 (한국 시각 고정)
+      if (val <= todayStr || val < minDate) {
+        showToast('당일 및 지난 날짜는 예약이 불가능합니다. (최소 1일 전 사전예약만 가능)');
         document.getElementById('booking-date-input').value = minDate;
         selectedDate = minDate;
         renderStep2();
