@@ -38,8 +38,8 @@
 
       <!-- Live Digital Clock & Date -->
       <div class="bg-[#0C3559]/80 border border-sky-400/30 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-2 w-full max-w-lg">
-        <p id="standby-date-text" class="text-sm sm:text-base font-semibold text-sky-300">2026년 08월 08일 토요일</p>
-        <p id="standby-clock-text" class="text-5xl sm:text-6xl font-black font-mono tracking-wider text-amber-300">14:35:00</p>
+        <p id="standby-date-text" class="text-sm sm:text-base font-semibold text-sky-300">-</p>
+        <p id="standby-clock-text" class="text-5xl sm:text-6xl font-black font-mono tracking-wider text-amber-300">00:00:00</p>
       </div>
 
       <!-- Real-time Summary Badges -->
@@ -1135,15 +1135,25 @@
     window.standbyTimer = null;
     window.pendingStaffAuthAction = null;
 
-    // Reservation Calendar State
+    // 한국 로컬 표준시(KST) YYYY-MM-DD 날짜 구하기 유틸리티 (UTC 시차 오류 완전 제거)
+    window.getLocalDateStr = function(offsetDays = 0) {
+      const d = new Date();
+      if (offsetDays !== 0) d.setDate(d.getDate() + offsetDays);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    // Reservation Calendar State (KST 고정)
     const nowInit = new Date();
     window.resCalYear = nowInit.getFullYear();
     window.resCalMonth = nowInit.getMonth(); // 0-based
-    window.selectedResDate = nowInit.toISOString().split('T')[0];
+    window.selectedResDate = window.getLocalDateStr();
     window.resViewMode = 'calendar'; // 'calendar' or 'table'
 
     window.onload = function() {
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = window.getLocalDateStr();
       const startEl = document.getElementById('stats-start-date');
       const endEl = document.getElementById('stats-end-date');
       if (startEl && !startEl.value) startEl.value = todayStr;
@@ -1194,7 +1204,6 @@
       window.updateActiveStaffBadge();
       window.closeModal('modal-staff-login');
 
-      // If currently on a tab that new role cannot access, switch to members
       const activeTabId = document.querySelector('.tab-content.active')?.id?.replace('tab-', '') || 'members';
       if (!window.canAccessTab(activeTabId)) {
         window.switchTab('members');
@@ -1248,7 +1257,8 @@
       if (dateEl) dateEl.innerText = `${year}년 ${month}월 ${date}일 ${dayStr}`;
       if (clockEl) clockEl.innerText = `${hours}:${minutes}:${seconds}`;
 
-      const todayStr = now.toISOString().split('T')[0];
+      // KST 한국 로컬 날짜 기준 실시간 연동
+      const todayStr = window.getLocalDateStr();
       const todayBookingsCount = (window.bookings || []).filter(b => b.date === todayStr && b.status !== '취소').length;
       const todayAttendanceCount = (window.attendanceLogs || []).filter(l => l.date === todayStr).length;
       const activeMembersCount = (window.members || []).filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) > 0).length;
@@ -1288,32 +1298,8 @@
       }
     };
 
-    window.speakWelcomeVoice = function() {
-      try {
-        if (!('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-
-        const text = "안녕하세요. 건강한 나를 만나는 스트레칭온입니다.";
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ko-KR';
-        utterance.pitch = 1.3;
-        utterance.rate = 1.05;
-
-        const voices = window.speechSynthesis.getVoices();
-        const koVoice = voices.find(v => v.lang.includes('ko') && (v.name.includes('Yuna') || v.name.includes('SunHi') || v.name.includes('Heami') || v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Korean')));
-        if (koVoice) utterance.voice = koVoice;
-
-        window.speechSynthesis.speak(utterance);
-      } catch (e) {
-        console.warn("TTS Voice Error:", e);
-      }
-    };
-
     window.triggerAttendanceSoundAndVoice = function() {
       window.playAttendanceChime();
-      setTimeout(() => {
-        window.speakWelcomeVoice();
-      }, 350);
     };
 
     window.speakBookingNotificationVoice = function(booking) {
@@ -1371,14 +1357,6 @@
       }
     };
 
-    window.getLocalDateStr = function() {
-      const d = new Date();
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
-
     window.cleanUpPastBookings = function() {
       if (!window.bookings || window.bookings.length === 0) return;
       const today = window.getLocalDateStr();
@@ -1398,7 +1376,10 @@
       if (!months || parseInt(months) <= 0) return '';
       const d = new Date();
       d.setMonth(d.getMonth() + parseInt(months));
-      return d.toISOString().split('T')[0];
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     };
 
     window.openModal = function(id) {
@@ -2001,7 +1982,7 @@
       const summaryText = window.posCart.map(i => `${i.name} x${i.qty}`).join(', ');
 
       const now = new Date();
-      const todayStr = now.toISOString().split('T')[0];
+      const todayStr = window.getLocalDateStr();
       const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
 
       const saleRecord = {
@@ -2370,7 +2351,7 @@
       m.expiryDate = expiryDate;
 
       const now = new Date();
-      const todayStr = now.toISOString().split('T')[0];
+      const todayStr = window.getLocalDateStr();
       const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
 
       const saleRecord = {
@@ -2446,7 +2427,7 @@
       const d = new Date();
       window.resCalYear = d.getFullYear();
       window.resCalMonth = d.getMonth();
-      window.selectedResDate = d.toISOString().split('T')[0];
+      window.selectedResDate = window.getLocalDateStr();
       window.renderReservationCalendar();
     };
 
@@ -2456,7 +2437,7 @@
     };
 
     window.openManualBookingModalForSelectedDate = function() {
-      document.getElementById('manual-date').value = window.selectedResDate || new Date().toISOString().split('T')[0];
+      document.getElementById('manual-date').value = window.selectedResDate || window.getLocalDateStr();
       window.renderManualBookingPrograms();
       window.openModal('modal-manual-booking');
     };
@@ -2474,7 +2455,7 @@
 
       const firstDay = new Date(year, month, 1).getDay(); // 0(Sun)..6(Sat)
       const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = window.getLocalDateStr(); // KST 한국 로컬 일자 기준 사용
 
       let html = '';
 
@@ -2498,10 +2479,10 @@
         if (dayOfWeek === 6) dateNumClass = 'font-extrabold text-sky-600';
 
         html += `
-          <div onclick="window.selectResCalendarDate('${dateStr}')" class="min-h-[90px] sm:min-h-[110px] rounded-xl border transition-all p-1.5 flex flex-col justify-between cursor-pointer ${isSelected ? 'bg-sky-50/90 border-[#0092B8] ring-2 ring-sky-300 shadow-md' : (isToday ? 'bg-amber-50/80 border-amber-300' : 'bg-white border-slate-200 hover:border-sky-300 hover:bg-slate-50')}">
+          <div onclick="window.selectResCalendarDate('${dateStr}')" class="min-h-[90px] sm:min-h-[110px] rounded-xl border transition-all p-1.5 flex flex-col justify-between cursor-pointer ${isSelected ? 'bg-sky-50/90 border-[#0092B8] ring-2 ring-sky-300 shadow-md' : (isToday ? 'bg-amber-50/80 border-amber-300 ring-2 ring-amber-300' : 'bg-white border-slate-200 hover:border-sky-300 hover:bg-slate-50')}">
             <div>
               <div class="flex justify-between items-center mb-1">
-                <span class="${dateNumClass} text-xs ${isToday ? 'bg-amber-400 text-slate-900 px-1.5 py-0.5 rounded-full text-[10px]' : ''}">${day}일</span>
+                <span class="${dateNumClass} text-xs ${isToday ? 'bg-amber-400 text-slate-900 px-1.5 py-0.5 rounded-full text-[10px] font-black' : ''}">${day}일</span>
                 ${activeBookingsCount > 0 ? `<span class="bg-[#0C3559] text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full">${activeBookingsCount}건</span>` : ''}
               </div>
 
@@ -2537,7 +2518,7 @@
       const listEl = document.getElementById('res-selected-date-list');
       if (!listEl) return;
 
-      const dateStr = window.selectedResDate || new Date().toISOString().split('T')[0];
+      const dateStr = window.selectedResDate || window.getLocalDateStr();
       if (labelEl) labelEl.innerText = `${dateStr} 상세 예약 스케줄`;
 
       const dayBookings = (window.bookings || []).filter(b => b.date === dateStr).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
@@ -2752,10 +2733,8 @@
       if (!log) return;
 
       window.showConfirm('출석 기록 삭제 & 수강권 복구', `'${log.memberName}' 회원님의 출석 기록을 삭제하고 차감되었던 수강권 1회를 복구하시겠습니까?`, function() {
-        // 1. 출석 목록에서 삭제
         window.attendanceLogs = (window.attendanceLogs || []).filter(x => x.id !== logId);
 
-        // 2. 회원 수강권 1회 복구
         if (log.memberId) {
           const m = (window.members || []).find(x => x.id === log.memberId);
           if (m) {
@@ -2768,7 +2747,6 @@
           }
         }
 
-        // 3. 클라우드 DB에서 기록 삭제
         if (typeof window.deleteAttendanceFromCloud === 'function') {
           window.deleteAttendanceFromCloud(logId);
         }
@@ -2783,8 +2761,7 @@
     };
 
     window.setStatsRangePreset = function(preset) {
-      const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
+      const todayStr = window.getLocalDateStr();
       const startEl = document.getElementById('stats-start-date');
       const endEl = document.getElementById('stats-end-date');
       if (!startEl || !endEl) return;
@@ -2794,18 +2771,12 @@
       if (preset === 'today') {
         startEl.value = todayStr;
       } else if (preset === 'week') {
-        const firstDayOfWeek = new Date(today);
-        const day = today.getDay();
-        const diff = today.getDate() - day + (day === 0 ? -6 : 1);
-        firstDayOfWeek.setDate(diff);
-        startEl.value = firstDayOfWeek.toISOString().split('T')[0];
+        startEl.value = window.getLocalDateStr(-7);
       } else if (preset === 'month') {
-        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-        startEl.value = firstDayOfMonth.toISOString().split('T')[0];
+        const d = new Date();
+        startEl.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`;
       } else if (preset === 'last30') {
-        const past30 = new Date(today);
-        past30.setDate(past30.getDate() - 30);
-        startEl.value = past30.toISOString().split('T')[0];
+        startEl.value = window.getLocalDateStr(-30);
       } else if (preset === 'all') {
         startEl.value = '2025-01-01';
       }
@@ -2814,7 +2785,7 @@
     };
 
     window.renderStats = function() {
-      const todayStr = new Date().toISOString().split('T')[0];
+      const todayStr = window.getLocalDateStr();
       const currentYearMonth = todayStr.substring(0, 7);
 
       const startDate = document.getElementById('stats-start-date')?.value || todayStr;
@@ -2969,7 +2940,7 @@
     };
 
     window.openManualBookingModal = function() {
-      document.getElementById('manual-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('manual-date').value = window.getLocalDateStr();
       window.renderManualBookingPrograms();
       window.openModal('modal-manual-booking');
     };
@@ -2988,25 +2959,41 @@
     };
 
     window.sendKakaoAlimtalk = async function({ name, phone, programTitle, date, time }) {
-      try {
-        const cleanPhone = phone.replace(/[^0-9]/g, '');
-        const res = await fetch('https://solutionstretching.com/api/send-alimtalk', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, phone: cleanPhone, programTitle, duration: "50", date, time })
-        });
-        
-        const data = await res.json();
-        if (!res.ok || (data.code && data.code !== '2000')) {
-          window.showAlert('알림톡 발송 안내', `⚠️ 카톡 발송 실패: ${data.message || data.error || '설정 오류'}`);
-          return false;
+      const cleanPhone = phone.replace(/[^0-9]/g, '');
+      const payload = JSON.stringify({ name, phone: cleanPhone, programTitle, duration: "50", date, time });
+
+      const endpoints = [
+        'https://solutionstretching.com/api/send-alimtalk',
+        'https://solstretch-web.vercel.app/api/send-alimtalk',
+        'https://www.solutionstretching.com/api/send-alimtalk'
+      ];
+
+      let lastError = '';
+
+      for (const endpoint of endpoints) {
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (res.ok && data.success !== false) {
+            return { success: true };
+          } else {
+            lastError = data.error || data.message || `상태코드: ${res.status}`;
+          }
+        } catch (err) {
+          lastError = err.message || '네트워크 연결 실패';
+          console.warn(`[Alimtalk Try Failed] ${endpoint}:`, err);
         }
-        return true;
-      } catch (err) {
-        console.error("Alimtalk error:", err);
-        window.showAlert('통신 안내', "⚠️ 서버와 통신할 수 없습니다.");
-        return false;
       }
+
+      return {
+        success: false,
+        error: `알림톡 서버 접속 실패 (${lastError})`
+      };
     };
 
     window.submitManualBooking = async function() {
@@ -3021,7 +3008,6 @@
         return window.showAlert('입력 오류', '예약 고객 정보 및 일시를 작성해 주세요.');
       }
 
-      // 중복 예약 방지 검증
       const isAlreadyBooked = (window.bookings || []).some(b => b.date === date && (b.time || '').trim() === time && b.status !== '취소');
       if (isAlreadyBooked) {
         return window.showAlert('중복 예약 불가', `[${date} ${time}] 시간대는 이미 예약이 마감되었습니다. 다른 시간대를 선택해 주세요.`);
@@ -3031,15 +3017,16 @@
       
       window.bookings.unshift(newB);
       window.renderBookingList();
+      window.renderBasicDashboard();
 
       if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(newB);
       
       if (sendKakao) {
-        const isSuccess = await window.sendKakaoAlimtalk({ name, phone, programTitle, date, time });
-        if(isSuccess) {
-          window.showAlert('예약 완료', '수기 예약이 반영되었으며 카카오 알림톡이 전송되었습니다!');
+        const result = await window.sendKakaoAlimtalk({ name, phone, programTitle, date, time });
+        if(result.success) {
+          window.showAlert('예약 완료', '수기 예약이 반영되었으며 카카오 알림톡이 정상 발송되었습니다!');
         } else {
-          window.showAlert('예약 완료', '예약은 저장되었으나 카카오톡 전송에 실패했습니다.');
+          window.showAlert('예약 완료 (알림톡 실패)', `예약은 정상 저장되었으나 카카오톡 전송에 실패했습니다.\n\n⚠️ 실패 이유: ${result.error}`);
         }
       } else {
         window.showAlert('예약 완료', '수기 예약이 정상 등록되었습니다.');
@@ -3109,6 +3096,7 @@
         window.cleanUpPastBookings();
         if (document.getElementById('tab-reservations')?.classList.contains('active')) window.renderBookingList();
         if (document.getElementById('tab-basic')?.classList.contains('active')) window.renderBasicDashboard();
+        window.updateStandbyClock();
       });
 
       onSnapshot(collection(db, "members"), (snapshot) => {
@@ -3121,6 +3109,7 @@
         if (document.getElementById('tab-basic')?.classList.contains('active')) window.renderBasicDashboard();
         if (document.getElementById('tab-attendance')?.classList.contains('active')) window.renderAttendance();
         if (document.getElementById('tab-stats')?.classList.contains('active')) window.renderStats();
+        window.updateStandbyClock();
       });
 
       let isInitialAttendanceLoad = true;
@@ -3152,6 +3141,7 @@
         window.renderAttendance();
         window.renderBasicDashboard();
         window.renderMemberList();
+        window.updateStandbyClock();
       });
 
       onSnapshot(collection(db, "sales"), (snapshot) => {
