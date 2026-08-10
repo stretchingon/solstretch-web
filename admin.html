@@ -2172,6 +2172,16 @@
       const activeNavBtn = document.getElementById('nav-top-' + tabId);
       if (activeNavBtn) activeNavBtn.classList.add('active');
 
+      // 보조 바 '설정 카드 접기/펼치기' 버튼 표시 제어 (기본관리 탭에서만 활성화)
+      const btnToggle = document.getElementById('btn-toggle-settings-panel');
+      if (btnToggle) {
+        if (tabId === 'basic') {
+          btnToggle.classList.remove('hidden');
+        } else {
+          btnToggle.classList.add('hidden');
+        }
+      }
+
       const titleEl = document.getElementById('sub-nav-title');
       const titles = {
         'basic': '⚙️ 기본관리: 센터 기본정보, 로그인 관리 및 직원 계정 설정',
@@ -2194,8 +2204,18 @@
     };
 
     window.toggleBasicSettingsPanel = function() {
+      const activeTab = document.querySelector('.tab-content.active');
+      const activeTabId = activeTab ? activeTab.id.replace('tab-', '') : 'basic';
+
       const panel = document.getElementById('basic-settings-panel');
       if (!panel) return;
+
+      // 다른 탭에 있을 때 버튼을 누른 경우, '기본관리' 탭으로 전환 후 설정 카드를 보여줌
+      if (activeTabId !== 'basic') {
+        window.switchTab('basic');
+        panel.classList.remove('hidden');
+        return;
+      }
 
       if (panel.classList.contains('hidden')) {
         panel.classList.remove('hidden');
