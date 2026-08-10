@@ -120,7 +120,7 @@
 
   <!-- Header / Top Bar -->
   <header class="bg-[#0C3559] text-white h-16 px-8 flex items-center justify-between shrink-0 shadow-lg border-b border-white/10">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="window.switchTab('basic')">
+    <div class="flex items-center gap-3 select-none">
       <img src="심볼100_100.png" alt="스트레칭온 로고" class="h-9 w-auto drop-shadow-sm object-contain" onerror="this.onerror=null; this.src='https://placehold.co/40x40/0C3559/FCD34D?text=SOL';" />
       <div>
         <h1 class="font-extrabold text-lg tracking-tight leading-none">스트레칭온 회원관리 ERP</h1>
@@ -2199,10 +2199,8 @@
 
       if (panel.classList.contains('hidden')) {
         panel.classList.remove('hidden');
-        window.showAlert('⚙️ 설정 카드 표시', '센터 정보, PIN 설정 및 직원 관리 카드가 나타났습니다.');
       } else {
         panel.classList.add('hidden');
-        window.showAlert('⚙️ 설정 카드 숨김', '센터 정보, PIN 설정 및 직원 관리 카드가 숨겨졌습니다.\n(상단 [기본관리] 버튼을 한 번 더 누르면 다시 나타납니다)');
       }
     };
 
