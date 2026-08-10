@@ -168,6 +168,14 @@
           <p class="text-xs text-brand-700 font-semibold mt-0.5">회원가입 및 서비스 이용 동의</p>
         </div>
       </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="switchTab('kiosk')" id="tab-kiosk" class="px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 bg-white text-brand-700 shadow-sm">
+          <i class="fa-solid fa-tablet-screen-button"></i> 키오스크 문진표
+        </button>
+        <button type="button" onclick="switchTab('admin')" id="tab-admin" class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-user-shield"></i> 가입 명단 (<span id="member-count-badge">0</span>)
+        </button>
+      </div>
     </div>
   </header>
 
@@ -771,27 +779,6 @@
                   <!-- Feet -->
                   <path d="M142,578 L130,596 L158,596 L154,578 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
                   <path d="M198,578 L210,596 L182,596 L186,578 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
-
-                  <!-- Crisp High-Contrast Text Badges & Labels -->
-                  <!-- 목/승모근 -->
-                  <rect x="130" y="90" width="80" height="18" rx="9" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="103" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">목 / 승모근</text>
-
-                  <!-- 대흉근(가슴) -->
-                  <rect x="125" y="136" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="150" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">대흉근 (가슴)</text>
-
-                  <!-- 복직근(복부) -->
-                  <rect x="125" y="202" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="216" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">복직근 (복부)</text>
-
-                  <!-- 대퇴사두 / 허벅지 -->
-                  <rect x="105" y="405" width="130" height="22" rx="11" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="420" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">대퇴사두 / 허벅지</text>
-
-                  <!-- 무릎 / 정강이 -->
-                  <rect x="105" y="525" width="130" height="22" rx="11" fill="#f8fafc" fill-opacity="0.9" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="540" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">무릎 / 정강이</text>
                 </g>
 
                 <!-- ================= BACK VIEW (POSTERIOR) ================= -->
@@ -836,31 +823,6 @@
                   <!-- Feet Back -->
                   <path d="M138,565 L135,592 L150,592 L152,565 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
                   <path d="M202,565 L205,592 L190,592 L188,565 Z" fill="#94a3b8" stroke="#0f766e" stroke-width="2"/>
-
-                  <!-- Crisp High-Contrast Text Badges & Labels -->
-                  <!-- 승모근/목근육 -->
-                  <rect x="120" y="118" width="100" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="132" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">승모근 / 목근육</text>
-
-                  <!-- 등 / 광배근 -->
-                  <rect x="125" y="165" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="179" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">등 / 광배근</text>
-
-                  <!-- 요추(허리) -->
-                  <rect x="125" y="228" width="90" height="20" rx="10" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="242" font-family="'Pretendard', sans-serif" font-size="11" font-weight="900" fill="#0f766e" text-anchor="middle">요추 (허리)</text>
-
-                  <!-- 둔근(골반/엉덩이) -->
-                  <rect x="100" y="295" width="140" height="22" rx="11" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="310" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">둔근 (골반 / 엉덩이)</text>
-
-                  <!-- 햄스트링(허벅지뒤) -->
-                  <rect x="100" y="390" width="140" height="22" rx="11" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="405" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">햄스트링 (허벅지뒤)</text>
-
-                  <!-- 종아리/아킬레스 -->
-                  <rect x="105" y="505" width="130" height="22" rx="11" fill="#f8fafc" fill-opacity="0.95" stroke="#0f766e" stroke-width="1"/>
-                  <text x="170" y="520" font-family="'Pretendard', sans-serif" font-size="12" font-weight="900" fill="#0f766e" text-anchor="middle">종아리 / 아킬레스</text>
                 </g>
               </svg>
 
@@ -993,7 +955,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // 원장님 스튜디오 전용 파이어베이스 설정
     const firebaseConfig = {
       apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
       authDomain: "solutionstretching.firebaseapp.com",
@@ -1065,7 +1026,6 @@
        페이지 로드 초기화
        ========================================================================== */
     window.addEventListener('load', () => {
-      // 오늘 날짜 표시
       const now = new Date();
       const dateStr = `${now.getFullYear()}년 ${String(now.getMonth() + 1).padStart(2, '0')}월 ${String(now.getDate()).padStart(2, '0')}일`;
       const dateEl = document.getElementById('today-date-display');
