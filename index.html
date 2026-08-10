@@ -63,7 +63,9 @@
     <span id="toast-text" class="text-xs sm:text-sm font-semibold"></span>
   </div>
 
+  <!-- ================================================================= -->
   <!-- 📟 스튜디오 현장 전용 키오스크 출석 뷰 (?view=checkin) -->
+  <!-- ================================================================= -->
   <div id="checkin-view" class="hidden min-h-screen bg-[#0C3559] text-white flex flex-col items-center justify-between p-6 sm:p-8 relative overflow-hidden select-none">
     <div class="w-full max-w-6xl flex items-center justify-between border-b border-white/10 pb-4">
       <div class="flex items-center gap-3">
@@ -1588,13 +1590,35 @@
 
       document.getElementById('faqs-container').innerHTML = FAQS.map((f, idx) => `
         <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
-          <button onclick="document.getElementById('faq-ans-${idx}').classList.toggle('hidden')" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
+          <button onclick="toggleFaq(${idx})" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
             <span>${f.q}</span>
-            <span class="text-[#0092B8] text-xs">▼</span>
+            <span id="faq-icon-${idx}" class="text-[#0092B8] text-xs">▼</span>
           </button>
           <div id="faq-ans-${idx}" class="hidden px-5 pb-5 text-xs sm:text-sm text-[#0C3559]/85 leading-relaxed border-t border-stone-100 pt-3.5 font-normal">${f.a}</div>
         </div>
       `).join('');
+    }
+
+    function toggleFaq(idx) {
+      FAQS.forEach((_, i) => {
+        const el = document.getElementById(`faq-ans-${i}`);
+        const icon = document.getElementById(`faq-icon-${i}`);
+        if (el) {
+          if (i === idx) {
+            const isHidden = el.classList.contains('hidden');
+            if (isHidden) {
+              el.classList.remove('hidden');
+              if (icon) icon.innerText = '▲';
+            } else {
+              el.classList.add('hidden');
+              if (icon) icon.innerText = '▼';
+            }
+          } else {
+            el.classList.add('hidden');
+            if (icon) icon.innerText = '▼';
+          }
+        }
+      });
     }
 
     window.onload = function() {
