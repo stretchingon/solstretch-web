@@ -15,9 +15,65 @@
     .nav-top-btn.disabled { opacity: 0.4; cursor: not-allowed; }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+    .login-blur-bg { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
   </style>
 </head>
-<body class="text-slate-800 h-screen flex flex-col overflow-hidden bg-slate-100">
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden bg-slate-100 relative">
+
+  <!-- 🔒 [최우선 보안 관문] 최초 실행 시 무조건 표시되는 최고 관리자 로그인 화면 (z-[9999]) -->
+  <div id="admin-login-screen" class="fixed inset-0 z-[9999] bg-[#061626] text-white flex items-center justify-center p-4 select-none transition-all duration-300">
+    <div class="max-w-md w-full bg-[#0C3559]/95 border-2 border-sky-400/40 rounded-3xl p-8 shadow-2xl space-y-6 login-blur-bg relative overflow-hidden text-center">
+      
+      <!-- Glow Effect Background -->
+      <div class="absolute -right-20 -top-20 w-48 h-48 bg-sky-500/25 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -bottom-20 w-48 h-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Logo & Header -->
+      <div class="flex flex-col items-center justify-center gap-3">
+        <img src="심볼100_100.png" alt="스트레칭온 로고" class="h-20 w-auto drop-shadow-[0_0_20px_rgba(56,189,248,0.5)] object-contain" onerror="this.onerror=null; this.src='https://placehold.co/80x80/0C3559/FCD34D?text=SOL';" />
+        <div>
+          <h2 class="text-2xl font-black text-white tracking-tight">스트레칭온 ERP</h2>
+          <p class="text-xs font-bold text-sky-400 tracking-widest uppercase mt-0.5">MASTER SECURITY LOGIN GATE</p>
+        </div>
+      </div>
+
+      <!-- Welcome Message & Warning -->
+      <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-white/10 text-xs text-slate-300 leading-relaxed shadow-inner">
+        <p class="font-bold text-amber-300 flex items-center justify-center gap-1.5 mb-1">
+          <span>🔒</span> 보안 로그인 필수 인증
+        </p>
+        <p>프로그램 이용 및 데이터 보호를 위해 관리자 계정으로 로그인해 주세요.</p>
+      </div>
+
+      <!-- Login Form -->
+      <form onsubmit="window.processAdminMasterLogin(event)" class="space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-bold text-sky-200 mb-1.5 ml-1">관리자 아이디 (ID)</label>
+          <div class="relative">
+            <input type="text" id="master-login-id" value="admin" required placeholder="관리자 ID 입력" class="w-full px-4 py-3 bg-slate-900/90 border border-sky-400/50 rounded-xl text-sm font-bold text-white placeholder-slate-500 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/40 transition-all" />
+            <span class="absolute right-3.5 top-3 text-slate-400 text-sm">👤</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-sky-200 mb-1.5 ml-1">비밀번호 (PIN)</label>
+          <div class="relative">
+            <input type="password" id="master-login-pw" value="0000" required placeholder="비밀번호 입력" class="w-full px-4 py-3 bg-slate-900/90 border border-sky-400/50 rounded-xl text-sm font-bold text-white placeholder-slate-500 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/40 transition-all" />
+            <span class="absolute right-3.5 top-3 text-slate-400 text-sm">🔑</span>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-[#0092B8] to-sky-600 hover:from-[#007a99] hover:to-sky-700 text-white font-black text-sm rounded-xl shadow-lg shadow-sky-900/50 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+          <span>ERP 대시보드 로그인</span>
+          <span>➔</span>
+        </button>
+      </form>
+
+      <p class="text-[10px] text-slate-400 font-medium pt-1">
+        ※ 로그인 정보는 [기본관리] 탭에서 자유롭게 변경하실 수 있습니다.
+      </p>
+    </div>
+  </div>
 
   <!-- 🌙 대기모드 (Standby Mode Screen) -->
   <div id="standby-screen" onclick="window.exitStandbyMode()" class="fixed inset-0 z-[100] bg-[#081b2e] text-white hidden flex-col items-center justify-center p-8 select-none transition-all duration-300">
@@ -25,13 +81,7 @@
       
       <!-- Centered Logo & Emblem -->
       <div class="flex flex-col items-center justify-center gap-4 animate-pulse">
-        <svg class="h-24 w-auto text-amber-300 drop-shadow-[0_0_20px_rgba(252,211,77,0.4)]" viewBox="0 0 130 110" fill="none">
-          <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none" />
-          <circle cx="46" cy="18" r="9" fill="currentColor" />
-          <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="currentColor" stroke-width="11" stroke-linecap="round" fill="none" />
-          <path d="M 52 26 C 50 45, 38 72, 12 106 L 20 108 C 45 75, 58 48, 58 26 Z" fill="currentColor" />
-          <path d="M 50 30 L 76 4 L 82 26 Z" fill="currentColor" />
-        </svg>
+        <img src="심볼100_100.png" alt="스트레칭온 로고" class="h-28 w-auto drop-shadow-[0_0_25px_rgba(252,211,77,0.5)] object-contain" onerror="this.onerror=null; this.src='https://placehold.co/100x100/0C3559/FCD34D?text=SOL';" />
         <div>
           <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">스트레칭온 ERP</h1>
           <p class="text-sm font-bold text-sky-400 tracking-widest uppercase mt-1">SOLSTRETCH INTEGRATED MANAGEMENT SYSTEM</p>
@@ -71,15 +121,9 @@
   <!-- Header / Top Bar -->
   <header class="bg-[#0C3559] text-white h-16 px-8 flex items-center justify-between shrink-0 shadow-lg border-b border-white/10">
     <div class="flex items-center gap-3 cursor-pointer" onclick="window.switchTab('basic')">
-      <svg class="h-7 w-auto text-amber-300" viewBox="0 0 130 110" fill="none">
-        <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="currentColor" stroke-width="14" stroke-linecap="round" fill="none" />
-        <circle cx="46" cy="18" r="9" fill="currentColor" />
-        <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="currentColor" stroke-width="11" stroke-linecap="round" fill="none" />
-        <path d="M 52 26 C 50 45, 38 72, 12 106 L 20 108 C 45 75, 58 48, 58 26 Z" fill="currentColor" />
-        <path d="M 50 30 L 76 4 L 82 26 Z" fill="currentColor" />
-      </svg>
+      <img src="심볼100_100.png" alt="스트레칭온 로고" class="h-9 w-auto drop-shadow-sm object-contain" onerror="this.onerror=null; this.src='https://placehold.co/40x40/0C3559/FCD34D?text=SOL';" />
       <div>
-        <h1 class="font-extrabold text-lg tracking-tight leading-none">스트레칭온 회원관리프로그램 ERP</h1>
+        <h1 class="font-extrabold text-lg tracking-tight leading-none">스트레칭온 회원관리 ERP</h1>
         <p class="text-[10px] text-sky-300 font-semibold mt-0.5">Stretching ON Integrated Management System</p>
       </div>
     </div>
@@ -93,6 +137,11 @@
           👤 계정 전환
         </button>
       </div>
+
+      <!-- [화면 즉시 잠금 버튼] -->
+      <button onclick="window.lockAdminScreen()" class="px-3.5 py-2 bg-rose-950/90 hover:bg-rose-900 text-rose-300 border border-rose-500/40 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-md active:scale-95">
+        🔒 화면 잠금
+      </button>
 
       <button onclick="window.enterStandbyMode()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-400/30 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-md">
         🌙 대기모드
@@ -203,27 +252,32 @@
           </div>
         </div>
 
+        <!-- 최고 관리자 ID & 비밀번호 설정 카드 -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div class="flex justify-between items-center border-b pb-3">
             <h3 class="font-bold text-[#0C3559] text-sm flex items-center gap-1.5">
-              <span>🔒</span> 관리자 로그인 설정 (PIN)
+              <span>🔒</span> 최고 관리자 로그인 설정 (ID & PIN)
             </h3>
           </div>
           <p class="text-xs text-slate-400 leading-relaxed">
-            원장 전용 ERP 및 웹사이트 관리자 진입 시 사용되는 암호 PIN 번호를 관리합니다.
+            원장 전용 ERP 로그인 시 사용되는 최고 관리자 ID 및 비밀번호(PIN)를 설정합니다.
           </p>
           <div class="space-y-3 text-xs font-medium text-slate-600 pt-1">
             <div>
+              <label class="block text-slate-400 mb-1">관리자 아이디 (ID)</label>
+              <input type="text" id="cfg-admin-id" value="admin" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
+            </div>
+            <div>
               <label class="block text-slate-400 mb-1">현재 비밀번호 (PIN)</label>
-              <input type="password" id="pin-current" placeholder="현재 PIN 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
+              <input type="password" id="pin-current" placeholder="현재 비밀번호 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
             </div>
             <div>
               <label class="block text-slate-400 mb-1">새 비밀번호 (PIN)</label>
-              <input type="password" id="pin-new" placeholder="새 숫자 PIN 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
+              <input type="password" id="pin-new" placeholder="새 비밀번호 입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
             </div>
             <div>
               <label class="block text-slate-400 mb-1">새 비밀번호 확인</label>
-              <input type="password" id="pin-confirm" placeholder="새 숫자 PIN 재입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
+              <input type="password" id="pin-confirm" placeholder="새 비밀번호 재입력" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold focus:outline-none focus:border-sky-500" />
             </div>
             <button onclick="window.changeAdminPin()" class="w-full py-3 bg-[#0C3559] hover:bg-[#082239] text-white font-bold rounded-xl shadow-sm transition-all mt-2">
               관리자 비밀번호 변경 ✓
@@ -898,7 +952,7 @@
   <!-- MODALS -->
 
   <!-- 1. 커스텀 안내 모달 -->
-  <div id="modal-custom-alert" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[60] flex items-center justify-center p-4">
+  <div id="modal-custom-alert" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[10000] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
       <div class="w-12 h-12 bg-sky-100 text-[#0092B8] rounded-full flex items-center justify-center mx-auto text-xl font-bold">ℹ️</div>
       <div>
@@ -912,7 +966,7 @@
   </div>
 
   <!-- 2. 커스텀 확인 모달 -->
-  <div id="modal-custom-confirm" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[60] flex items-center justify-center p-4">
+  <div id="modal-custom-confirm" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[10000] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
       <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl font-bold">❓</div>
       <div>
@@ -927,7 +981,7 @@
   </div>
 
   <!-- 3. 관리자(대표) PIN 인증 모달 (직원 계정 관리용) -->
-  <div id="modal-staff-auth" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[65] flex items-center justify-center p-4">
+  <div id="modal-staff-auth" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[10005] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
       <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto text-xl font-bold">🔒</div>
       <div>
@@ -943,7 +997,7 @@
   </div>
 
   <!-- 4. 직원 계정 전환 (로그인) 모달 -->
-  <div id="modal-staff-login" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[70] flex items-center justify-center p-4">
+  <div id="modal-staff-login" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[10010] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-xs w-full p-6 text-center shadow-2xl space-y-4">
       <div class="w-12 h-12 bg-sky-100 text-[#0092B8] rounded-full flex items-center justify-center mx-auto text-xl font-bold">👤</div>
       <div>
@@ -1111,7 +1165,7 @@
     window.attendanceLogs = [];
     window.salesLogs = [];
     window.staffs = [
-      { id: 'ST-1', name: '김동수', role: '원장', pin: '6369', status: '재직중' }
+      { id: 'ST-1', name: '김동수', role: '원장', pin: '0000', status: '재직중' }
     ];
 
     window.currentStaff = { id: 'ST-1', name: '김동수', role: '원장' };
@@ -1154,7 +1208,12 @@
     ];
     window.posCart = [];
     window.posActiveCategory = 'all';
-    window.adminPin = '6369';
+
+    // [보안 인증 상태 관리]
+    window.adminId = 'admin';
+    window.adminPin = '0000';
+    window.isAdminLoggedIn = false;
+
     window.standbyTimer = null;
     window.pendingStaffAuthAction = null;
 
@@ -1185,12 +1244,47 @@
       window.updateActiveStaffBadge();
       window.renderBasicDashboard();
 
+      // [보안 관문 강제 실행]: 최초 실행 및 새로고침 시 무조건 보안 로그인 화면을 전체 표출
+      window.lockAdminScreen();
+
       window.addEventListener('keydown', function(e) {
         const screen = document.getElementById('standby-screen');
         if (screen && !screen.classList.contains('hidden')) {
           window.exitStandbyMode();
         }
       });
+    };
+
+    // [신규] 최고 관리자 마스터 로그인 처리
+    window.processAdminMasterLogin = function(event) {
+      if (event) event.preventDefault();
+      const inputId = document.getElementById('master-login-id')?.value.trim();
+      const inputPw = document.getElementById('master-login-pw')?.value.trim();
+
+      if (inputId === window.adminId && inputPw === window.adminPin) {
+        window.isAdminLoggedIn = true;
+        const loginScreen = document.getElementById('admin-login-screen');
+        if (loginScreen) {
+          loginScreen.classList.add('hidden');
+          loginScreen.classList.remove('flex');
+        }
+        window.showAlert('보안 인증 완료', `'${window.adminId}' 관리자 계정으로 정상 접속되었습니다.`);
+      } else {
+        window.showAlert('인증 실패', '관리자 아이디 또는 비밀번호(PIN)가 올바르지 않습니다.');
+      }
+    };
+
+    // [신규] 관리자 화면 즉시 잠금
+    window.lockAdminScreen = function() {
+      window.isAdminLoggedIn = false;
+      const pwInput = document.getElementById('master-login-pw');
+      if (pwInput) pwInput.value = '';
+
+      const loginScreen = document.getElementById('admin-login-screen');
+      if (loginScreen) {
+        loginScreen.classList.remove('hidden');
+        loginScreen.classList.add('flex');
+      }
     };
 
     // 엑셀 내보내기 (Export)
@@ -1410,20 +1504,25 @@
       window.showAlert('저장 완료', `'${name}' (${owner} 대표) 센터 기본 정보가 성공적으로 저장되었습니다.`);
     };
 
+    // 최고 관리자 ID & 비밀번호(PIN) 변경 로직
     window.changeAdminPin = function() {
-      const cur = document.getElementById('pin-current')?.value;
-      const newPin = document.getElementById('pin-new')?.value;
-      const confirmPin = document.getElementById('pin-confirm')?.value;
+      const newAdminId = document.getElementById('cfg-admin-id')?.value.trim();
+      const cur = document.getElementById('pin-current')?.value.trim();
+      const newPin = document.getElementById('pin-new')?.value.trim();
+      const confirmPin = document.getElementById('pin-confirm')?.value.trim();
 
       if (cur !== window.adminPin) return window.showAlert('PIN 오류', '현재 비밀번호가 일치하지 않습니다.');
+      if (!newAdminId) return window.showAlert('입력 오류', '관리자 ID를 입력해 주세요.');
       if (!newPin || newPin.length < 4) return window.showAlert('입력 오류', '새 비밀번호는 4자리 이상 입력해 주세요.');
       if (newPin !== confirmPin) return window.showAlert('입력 오류', '새 비밀번호 확인이 일치하지 않습니다.');
 
+      window.adminId = newAdminId;
       window.adminPin = newPin;
+
       document.getElementById('pin-current').value = '';
       document.getElementById('pin-new').value = '';
       document.getElementById('pin-confirm').value = '';
-      window.showAlert('변경 완료', '관리자(대표) PIN 번호가 변경되었습니다.');
+      window.showAlert('변경 완료', `관리자 계정이 정상 변경되었습니다!\n• 아이디: ${window.adminId}\n• 새 비밀번호 설정 완료`);
     };
 
     window.requestStaffAuth = function(action) {
@@ -2047,6 +2146,12 @@
     };
 
     window.switchTab = function(tabId) {
+      // 미인증 상태에서 탭 변경 시도 시 차단
+      if (!window.isAdminLoggedIn) {
+        window.lockAdminScreen();
+        return;
+      }
+
       if (!window.canAccessTab(tabId)) {
         const staffName = window.currentStaff ? window.currentStaff.name : '직원';
         const staffRole = window.currentStaff ? window.currentStaff.role : '강사';
