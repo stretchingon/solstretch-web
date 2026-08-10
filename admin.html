@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>스트레칭온 | 통합 회원관리 ERP</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SheetJS CDN for Excel Upload/Download (.xlsx, .csv) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     body { font-family: "Pretendard", -apple-system, sans-serif; background-color: #f1f5f9; }
     .tab-content { display: none; }
@@ -254,18 +256,28 @@
 
     <!-- 2. 회원관리 (Member Management) -->
     <div id="tab-members" class="tab-content space-y-6">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <h3 class="text-lg font-bold text-[#0C3559] flex items-center gap-2">
             <span>👥</span> 회원 통합 관리 센터
           </h3>
           <p class="text-xs text-slate-400 mt-1">회원 기본 정보(성함/연락처/성별/생년월일), 보유 수강권 및 출석, 통증 메모를 통합 관리합니다.</p>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="window.renderMemberList()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200">
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="window.downloadMemberTemplate()" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200 flex items-center gap-1 shadow-sm">
+            📥 엑셀 양식 다운로드
+          </button>
+          <button onclick="window.triggerExcelUpload()" class="px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-all shadow-md flex items-center gap-1">
+            📂 엑셀(CSV) 업로드
+          </button>
+          <input type="file" id="member-excel-file" class="hidden" accept=".xlsx, .xls, .csv" onchange="window.handleExcelUpload(event)" />
+          <button onclick="window.exportMembersToExcel()" class="px-3.5 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl transition-all flex items-center gap-1 shadow-sm">
+            📤 회원명부 엑셀 내보내기
+          </button>
+          <button onclick="window.renderMemberList()" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200">
             🔄 새로고침
           </button>
-          <button onclick="window.openMemberModal()" class="px-5 py-2.5 bg-[#0092B8] hover:bg-[#007a99] text-white font-bold text-xs rounded-xl shadow-md transition-all">
+          <button onclick="window.openMemberModal()" class="px-4 py-2.5 bg-[#0092B8] hover:bg-[#007a99] text-white font-bold text-xs rounded-xl shadow-md transition-all">
             + 신규 회원 등록
           </button>
         </div>
@@ -302,19 +314,35 @@
         </div>
       </div>
 
+      <!-- 검색, 수강 상태 필터, 정렬 기준 조율 바 -->
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="relative w-full md:w-80">
           <input type="text" id="member-search-input" onkeyup="window.renderMemberList()" placeholder="🔍 회원 성함 또는 연락처 검색..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-sky-500" />
           <span class="absolute left-3 top-3 text-slate-400 text-xs">🔍</span>
         </div>
 
-        <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-          <span class="text-xs font-bold text-slate-500 shrink-0">상태 필터:</span>
-          <select id="member-filter-select" onchange="window.renderMemberList()" class="bg-slate-50 border border-slate-200 text-xs font-bold text-[#0C3559] rounded-xl px-4 py-2.5 outline-none focus:border-sky-500 cursor-pointer">
-            <option value="all">전체 회원 보기</option>
-            <option value="active">수강 회원 (잔여 1회 이상)</option>
-            <option value="expired">수강권 소진 회원 (0회)</option>
-          </select>
+        <div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs font-bold text-slate-500 shrink-0">수강 상태:</span>
+            <select id="member-filter-select" onchange="window.renderMemberList()" class="bg-slate-50 border border-slate-200 text-xs font-bold text-[#0C3559] rounded-xl px-3 py-2.5 outline-none focus:border-sky-500 cursor-pointer">
+              <option value="all">전체 회원 보기</option>
+              <option value="active">수강 회원 (잔여 1회 이상)</option>
+              <option value="expired">수강권 소진 회원 (0회)</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs font-bold text-slate-500 shrink-0">정렬 기준:</span>
+            <select id="member-sort-select" onchange="window.renderMemberList()" class="bg-slate-50 border border-slate-200 text-xs font-bold text-[#0C3559] rounded-xl px-3 py-2.5 outline-none focus:border-sky-500 cursor-pointer">
+              <option value="created_desc">최신 등록순 ⬇</option>
+              <option value="created_asc">오래된 등록순 ⬆</option>
+              <option value="name_asc">성함 가나다순 (ㄱ-ㅎ) ⬇</option>
+              <option value="name_desc">성함 역순 (ㅎ-ㄱ) ⬆</option>
+              <option value="passes_desc">잔여 횟수 많은순 ⬇</option>
+              <option value="passes_asc">잔여 횟수 적은순 ⬆</option>
+              <option value="expiry_asc">만료일 임박순 ⏳</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -1154,6 +1182,138 @@
       });
     };
 
+    // 엑셀 내보내기 (Export)
+    window.exportMembersToExcel = function() {
+      if (!window.members || window.members.length === 0) {
+        return window.showAlert('내보내기 실패', '내보낼 회원 데이터가 없습니다.');
+      }
+      const data = window.members.map((m, idx) => ({
+        '번호': idx + 1,
+        '회원성함': m.name || '',
+        '연락처': m.phone || '',
+        '성별': m.gender || '여성',
+        '생년월일': m.birth || '',
+        '보유수강권': m.passType || '수강권 미보유',
+        '잔여횟수': Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)),
+        '만료일': m.expiryDate || '',
+        '특이사항/메모': m.note || ''
+      }));
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "회원명부");
+      const todayStr = window.getLocalDateStr();
+      XLSX.writeFile(workbook, `스트레칭온_회원명부_${todayStr}.xlsx`);
+      window.showAlert('엑셀 내보내기 완료', '회원명부 엑셀 파일(.xlsx)이 정상적으로 다운로드되었습니다.');
+    };
+
+    // 엑셀 업로드용 서식 양식 다운로드
+    window.downloadMemberTemplate = function() {
+      const sampleData = [
+        { '회원성함': '홍길동', '연락처': '01012345678', '성별': '여성', '생년월일': '1990-05-15', '보유수강권': '솔루션 멤버십 10회', '잔여횟수': 10, '만료일': '2026-10-31', '특이사항/메모': '거북목 심함, 우측 어깨 통증' },
+        { '회원성함': '김철수', '연락처': '01098765432', '성별': '남성', '생년월일': '1985-11-20', '보유수강권': 'Sol-Recovery (50분)', '잔여횟수': 1, '만료일': '2026-09-30', '특이사항/메모': '골반 비대칭, 디스크 수술이력' }
+      ];
+      const worksheet = XLSX.utils.json_to_sheet(sampleData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "회원등록양식");
+      XLSX.writeFile(workbook, "스트레칭온_회원등록_엑셀양식.xlsx");
+    };
+
+    window.triggerExcelUpload = function() {
+      const fileInput = document.getElementById('member-excel-file');
+      if (fileInput) fileInput.click();
+    };
+
+    // 엑셀 파일 업로드 및 일괄 수신 파싱 로직
+    window.handleExcelUpload = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const rows = XLSX.utils.sheet_to_json(worksheet);
+
+          if (!rows || rows.length === 0) {
+            return window.showAlert('업로드 실패', '엑셀 파일 내에 데이터가 존재하지 않습니다.');
+          }
+
+          let addedCount = 0;
+          let updatedCount = 0;
+
+          rows.forEach(row => {
+            const name = String(row['회원성함'] || row['성함'] || row['이름'] || '').trim();
+            const rawPhone = String(row['연락처'] || row['전화번호'] || row['휴대폰'] || '').trim();
+            const phone = rawPhone.replace(/[^0-9]/g, '');
+
+            if (!name || !phone) return; // 필수값 스킵
+
+            const gender = String(row['성별'] || '여성').trim();
+            const birth = String(row['생년월일'] || '').trim();
+            const passType = String(row['보유수강권'] || row['수강권명'] || '수강권 미보유').trim();
+            const passes = Math.max(0, parseInt(row['잔여횟수'] || row['잔여수강권'] || row['횟수'] || '0'));
+            const expiryDate = String(row['만료일'] || '').trim();
+            const note = String(row['특이사항/메모'] || row['메모'] || row['특이사항'] || '').trim();
+
+            const existingMember = window.members.find(m => m.phone === phone || (m.name === name && m.phone.slice(-4) === phone.slice(-4)));
+
+            if (existingMember) {
+              existingMember.name = name;
+              existingMember.phone = phone;
+              existingMember.gender = gender;
+              if (birth) existingMember.birth = birth;
+              if (passType) existingMember.passType = passType;
+              existingMember.remainingPasses = passes;
+              existingMember.passCount = passes;
+              if (expiryDate) existingMember.expiryDate = expiryDate;
+              if (note) existingMember.note = note;
+
+              if (typeof window.syncMemberToCloud === 'function') {
+                window.syncMemberToCloud(existingMember);
+              }
+              updatedCount++;
+            } else {
+              const newMember = {
+                id: 'M-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+                name: name,
+                phone: phone,
+                gender: gender,
+                birth: birth,
+                passType: passType,
+                remainingPasses: passes,
+                passCount: passes,
+                totalPasses: passes,
+                expiryDate: expiryDate,
+                note: note
+              };
+              window.members.unshift(newMember);
+
+              if (typeof window.syncMemberToCloud === 'function') {
+                window.syncMemberToCloud(newMember);
+              }
+              addedCount++;
+            }
+          });
+
+          event.target.value = '';
+
+          window.renderMemberList();
+          window.renderPasses();
+          window.renderPosBuyerSelect();
+          window.renderBasicDashboard();
+
+          window.showAlert('엑셀 등록 완료', `엑셀 회원 등록이 정상 완료되었습니다!\n• 신규 등록: ${addedCount}명\n• 기존 수정: ${updatedCount}명`);
+        } catch (err) {
+          console.error("Excel import error:", err);
+          window.showAlert('파일 읽기 오류', '엑셀 파일을 읽는 도중 오류가 발생했습니다. 올바른 엑셀/CSV 파일인지 확인해 주세요.');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    };
+
     // 1. 기본 관리 대시보드 렌더링 함수
     window.renderBasicDashboard = function() {
       const todayStr = window.getLocalDateStr();
@@ -1731,7 +1891,7 @@
 
       const bEl = document.getElementById('standby-stat-bookings');
       const aEl = document.getElementById('standby-stat-attendance');
-      const mEl = document.getElementById('standby-stat-members');
+      const mEl = document.getElementById('standby-stat-[#0092B8]');
 
       if (bEl) bEl.innerText = todayBookingsCount;
       if (aEl) aEl.innerText = todayAttendanceCount;
@@ -1899,7 +2059,7 @@
       const titleEl = document.getElementById('sub-nav-title');
       const titles = {
         'basic': '⚙️ 기본관리: 센터 기본정보, 로그인 관리 및 직원 계정 설정',
-        'members': '👥 회원관리: 회원등록, 수정, 현장 출석체크 및 메모 관리',
+        'members': '👥 회원관리: 회원등록, 수정, 현장 출석체크, 엑셀 관리 및 메모',
         'passes': '🎫 수강관리: 수강권 코스 등록, 회원 수강권 차감/부여 및 만료일 관리',
         'products': '💳 상품관리: 1회 이용 프로그램 & 스포츠용품 결제 POS 및 상품 등록/관리',
         'reservations': '📅 예약관리: 월간 달력 스케줄 및 실시간 예약 스케줄 관리',
@@ -1930,6 +2090,7 @@
       }
     };
 
+    // 회원 목록 렌더링 (검색, 수강상태 필터링, 다양한 정렬 지원)
     window.renderMemberList = function() {
       const tbody = document.getElementById('member-table-body');
       if (!tbody) return;
@@ -1947,12 +2108,13 @@
       if (expiredEl) expiredEl.innerText = `${expiredCount}명`;
 
       if (!window.members || window.members.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400 text-xs">등록된 회원이 없습니다. [+ 신규 회원 등록] 버튼을 눌러주세요.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400 text-xs">등록된 회원이 없습니다. [+ 신규 회원 등록] 또는 [📂 엑셀 업로드] 버튼을 눌러주세요.</td></tr>`;
         return;
       }
 
       const searchVal = document.getElementById('member-search-input')?.value.trim().toLowerCase() || '';
       const filterVal = document.getElementById('member-filter-select')?.value || 'all';
+      const sortVal = document.getElementById('member-sort-select')?.value || 'created_desc';
 
       let filtered = [...window.members];
 
@@ -1967,6 +2129,35 @@
         filtered = filtered.filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) > 0);
       } else if (filterVal === 'expired') {
         filtered = filtered.filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) <= 0);
+      }
+
+      // 정렬 처리 (Sort Order)
+      if (sortVal === 'created_desc') {
+        filtered.sort((a, b) => (b.id || '').localeCompare(a.id || ''));
+      } else if (sortVal === 'created_asc') {
+        filtered.sort((a, b) => (a.id || '').localeCompare(b.id || ''));
+      } else if (sortVal === 'name_asc') {
+        filtered.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ko'));
+      } else if (sortVal === 'name_desc') {
+        filtered.sort((a, b) => (b.name || '').localeCompare(a.name || '', 'ko'));
+      } else if (sortVal === 'passes_desc') {
+        filtered.sort((a, b) => {
+          const passesA = a.remainingPasses !== undefined ? a.remainingPasses : (a.passCount || 0);
+          const passesB = b.remainingPasses !== undefined ? b.remainingPasses : (b.passCount || 0);
+          return passesB - passesA;
+        });
+      } else if (sortVal === 'passes_asc') {
+        filtered.sort((a, b) => {
+          const passesA = a.remainingPasses !== undefined ? a.remainingPasses : (a.passCount || 0);
+          const passesB = b.remainingPasses !== undefined ? b.remainingPasses : (b.passCount || 0);
+          return passesA - passesB;
+        });
+      } else if (sortVal === 'expiry_asc') {
+        filtered.sort((a, b) => {
+          const expA = a.expiryDate || '9999-12-31';
+          const expB = b.expiryDate || '9999-12-31';
+          return expA.localeCompare(expB);
+        });
       }
 
       if (filtered.length === 0) {
@@ -2948,7 +3139,7 @@
           const cloudProducts = [];
           snapshot.forEach((docSnap) => cloudProducts.push(docSnap.data()));
           window.products = cloudProducts;
-          if (document.getElementById('tab-[#0C3559]') || document.getElementById('tab-products')?.classList.contains('active')) window.renderProductsTab();
+          if (document.getElementById('tab-products')?.classList.contains('active')) window.renderProductsTab();
         }
       });
 
