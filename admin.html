@@ -15,12 +15,12 @@
     .nav-top-btn.disabled { opacity: 0.4; cursor: not-allowed; }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
-    .login-blur-bg { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .login-blur-bg { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
   </style>
 </head>
 <body class="text-slate-800 h-screen flex flex-col overflow-hidden bg-slate-100 relative">
 
-  <!-- 🔒 [최우선 보안 관문] 최초 실행 시 무조건 표시되는 최고 관리자 로그인 화면 (z-[9999]) -->
+  <!-- 🔒 최고 관리자 보안 로그인 관문 -->
   <div id="admin-login-screen" class="fixed inset-0 z-[9999] bg-[#061626] text-white flex items-center justify-center p-4 select-none transition-all duration-300">
     <div class="max-w-md w-full bg-[#0C3559]/95 border-2 border-sky-400/40 rounded-3xl p-8 shadow-2xl space-y-6 login-blur-bg relative overflow-hidden text-center">
       
@@ -75,11 +75,9 @@
     </div>
   </div>
 
-  <!-- 🌙 대기모드 (Standby Mode Screen) -->
+  <!-- 🌙 대기모드 Screen -->
   <div id="standby-screen" onclick="window.exitStandbyMode()" class="fixed inset-0 z-[100] bg-[#081b2e] text-white hidden flex-col items-center justify-center p-8 select-none transition-all duration-300">
     <div class="max-w-2xl w-full text-center space-y-8 flex flex-col items-center justify-center">
-      
-      <!-- Centered Logo & Emblem -->
       <div class="flex flex-col items-center justify-center gap-4 animate-pulse">
         <img src="심볼100_100.png" alt="스트레칭온 로고" class="h-28 w-auto drop-shadow-[0_0_25px_rgba(252,211,77,0.5)] object-contain" onerror="this.onerror=null; this.src='https://placehold.co/100x100/0C3559/FCD34D?text=SOL';" />
         <div>
@@ -88,13 +86,11 @@
         </div>
       </div>
 
-      <!-- Live Digital Clock & Date -->
       <div class="bg-[#0C3559]/80 border border-sky-400/30 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-2 w-full max-w-lg">
         <p id="standby-date-text" class="text-sm sm:text-base font-semibold text-sky-300">-</p>
         <p id="standby-clock-text" class="text-5xl sm:text-6xl font-black font-mono tracking-wider text-amber-300">00:00:00</p>
       </div>
 
-      <!-- Real-time Summary Badges -->
       <div class="grid grid-cols-3 gap-4 w-full max-w-lg">
         <div class="bg-white/10 border border-white/10 rounded-2xl p-4 text-center">
           <p class="text-xs font-semibold text-slate-300">오늘 예약</p>
@@ -110,11 +106,9 @@
         </div>
       </div>
 
-      <!-- Wake-up Hint -->
       <p class="text-xs text-slate-400 font-medium animate-bounce pt-2">
         💡 화면을 클릭하거나 키보드를 누르면 대기모드가 해제됩니다.
       </p>
-
     </div>
   </div>
 
@@ -138,7 +132,6 @@
         </button>
       </div>
 
-      <!-- [화면 즉시 잠금 버튼] -->
       <button onclick="window.lockAdminScreen()" class="px-3.5 py-2 bg-rose-950/90 hover:bg-rose-900 text-rose-300 border border-rose-500/40 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shadow-md active:scale-95">
         🔒 화면 잠금
       </button>
@@ -213,7 +206,6 @@
         </div>
       </div>
 
-      <!-- 상단바 [기본관리] 클릭 시 토글되는 설정 카드 3종 영역 -->
       <div id="basic-settings-panel" class="grid grid-cols-1 lg:grid-cols-3 gap-6 transition-all duration-300">
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div class="flex justify-between items-center border-b pb-3">
@@ -248,7 +240,6 @@
           </div>
         </div>
 
-        <!-- 최고 관리자 ID & 비밀번호 설정 카드 -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
           <div class="flex justify-between items-center border-b pb-3">
             <h3 class="font-bold text-[#0C3559] text-sm flex items-center gap-1.5">
@@ -311,7 +302,7 @@
           <h3 class="text-lg font-bold text-[#0C3559] flex items-center gap-2">
             <span>👥</span> 회원 통합 관리 센터
           </h3>
-          <p class="text-xs text-slate-400 mt-1">회원 기본 정보(성함/연락처/성별/생년월일), 보유 수강권 및 출석, 통증 메모를 통합 관리합니다.</p>
+          <p class="text-xs text-slate-400 mt-1">회원 기본 정보(성함/연락처/성별/생년월일), 보유 수강권 및 출석, 개인별 통합 이력을 통합 관리합니다.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <button onclick="window.downloadMemberTemplate()" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all border border-slate-200 flex items-center gap-1 shadow-sm">
@@ -364,7 +355,6 @@
         </div>
       </div>
 
-      <!-- 검색, 수강 상태 필터, 정렬 기준 조율 바 -->
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-3">
         <div class="relative w-full md:w-80">
           <input type="text" id="member-search-input" onkeyup="window.renderMemberList()" placeholder="🔍 회원 성함 또는 연락처 검색..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-sky-500" />
@@ -397,7 +387,7 @@
       </div>
 
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-x-auto custom-scrollbar">
-        <table class="w-full text-xs text-left min-w-[700px]">
+        <table class="w-full text-xs text-left min-w-[780px]">
           <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
             <tr>
               <th class="px-6 py-4 whitespace-nowrap">성함 (성별/생년월일)</th>
@@ -405,7 +395,7 @@
               <th class="px-6 py-4 whitespace-nowrap">보유 수강권명</th>
               <th class="px-6 py-4 whitespace-nowrap">잔여 횟수 / 만료일</th>
               <th class="px-6 py-4 whitespace-nowrap">특이사항 / 통증 메모</th>
-              <th class="px-6 py-4 text-center whitespace-nowrap">실행 관리 (출석 / 수정 / 삭제)</th>
+              <th class="px-6 py-4 text-center whitespace-nowrap">실행 관리 (이력 / 출석 / 수정 / 삭제)</th>
             </tr>
           </thead>
           <tbody id="member-table-body" class="divide-y divide-slate-100"></tbody>
@@ -1150,6 +1140,74 @@
       <div class="p-6 border-t border-slate-100 bg-slate-50 flex gap-3">
         <button onclick="window.closeModal('modal-staff')" class="flex-1 py-3.5 bg-white border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-100 transition-colors">취소</button>
         <button onclick="window.saveStaff()" class="flex-1 py-3.5 bg-[#0C3559] text-white rounded-xl text-sm font-bold shadow-md hover:bg-[#082239] transition-colors">등록 ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. [신규] 개인별 상세 통합 이력 (출석 / 수강권 결제 / 예약) 모달 -->
+  <div id="modal-member-history" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[10020] flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-3xl shadow-2xl overflow-hidden flex flex-col max-h-[88vh]">
+      <!-- Header -->
+      <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+        <div>
+          <h3 id="history-modal-title" class="text-lg font-bold text-[#0C3559] flex items-center gap-2">
+            <span>📜</span> 개인별 상세 통합 이력
+          </h3>
+          <p id="history-modal-subtitle" class="text-xs text-slate-400 font-medium mt-0.5">-</p>
+        </div>
+        <button onclick="window.closeModal('modal-member-history')" class="text-slate-400 font-bold text-xl hover:text-slate-600">&times;</button>
+      </div>
+
+      <!-- Member Basic Summary Bar -->
+      <div id="history-modal-member-summary" class="bg-sky-50/70 border-b border-sky-100 px-6 py-4 flex flex-wrap justify-between items-center text-xs gap-3 shrink-0">
+      </div>
+
+      <!-- Content Area with Tabs or Stacked Sections -->
+      <div class="p-6 space-y-6 overflow-y-auto custom-scrollbar flex-1">
+        
+        <!-- SECTION 1: 📟 출석 이력 -->
+        <div class="space-y-3">
+          <div class="flex justify-between items-center border-b pb-2">
+            <h4 class="font-extrabold text-[#0C3559] text-sm flex items-center gap-1.5">
+              <span>📟</span> 출석체크 이력
+            </h4>
+            <span id="history-att-count" class="text-[11px] font-bold text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-full">총 0건</span>
+          </div>
+          <div id="history-att-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar">
+          </div>
+        </div>
+
+        <!-- SECTION 2: 🎫 수강권 및 상품 결제/등록 이력 -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+          <div class="flex justify-between items-center border-b pb-2">
+            <h4 class="font-extrabold text-[#0C3559] text-sm flex items-center gap-1.5">
+              <span>💳</span> 수강권 결제 & 상품 등록 이력
+            </h4>
+            <span id="history-sales-count" class="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">총 0건</span>
+          </div>
+          <div id="history-sales-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar">
+          </div>
+        </div>
+
+        <!-- SECTION 3: 📅 예약 신청 및 스케줄 이력 -->
+        <div class="space-y-3 pt-2 border-t border-slate-100">
+          <div class="flex justify-between items-center border-b pb-2">
+            <h4 class="font-extrabold text-[#0C3559] text-sm flex items-center gap-1.5">
+              <span>📅</span> 예약 신청 및 스케줄 이력
+            </h4>
+            <span id="history-bookings-count" class="text-[11px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">총 0건</span>
+          </div>
+          <div id="history-bookings-list" class="space-y-2 max-h-[200px] overflow-y-auto custom-scrollbar">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="p-4 border-t border-slate-100 bg-slate-50 text-right shrink-0">
+        <button onclick="window.closeModal('modal-member-history')" class="px-5 py-2.5 bg-[#0C3559] text-white font-bold text-xs rounded-xl shadow-md hover:bg-[#082239] transition-all">
+          닫기
+        </button>
       </div>
     </div>
   </div>
@@ -2142,7 +2200,6 @@
     };
 
     window.switchTab = function(tabId) {
-      // 미인증 상태에서 탭 변경 시도 시 차단
       if (!window.isAdminLoggedIn) {
         window.lockAdminScreen();
         return;
@@ -2168,7 +2225,6 @@
       const activeNavBtn = document.getElementById('nav-top-' + tabId);
       if (activeNavBtn) activeNavBtn.classList.add('active');
 
-      // 보조 바 '설정 카드 접기/펼치기' 버튼 표시 제어 (기본관리 탭에서만 활성화)
       const btnToggle = document.getElementById('btn-toggle-settings-panel');
       if (btnToggle) {
         if (tabId === 'basic') {
@@ -2181,7 +2237,7 @@
       const titleEl = document.getElementById('sub-nav-title');
       const titles = {
         'basic': '⚙️ 기본관리: 센터 기본정보, 로그인 관리 및 직원 계정 설정',
-        'members': '👥 회원관리: 회원등록, 수정, 현장 출석체크, 엑셀 관리 및 메모',
+        'members': '👥 회원관리: 회원등록, 수정, 현장 출석체크, 엑셀 관리 및 개인별 상세 이력',
         'passes': '🎫 수강관리: 수강권 코스 등록, 회원 수강권 차감/부여 및 만료일 관리',
         'products': '💳 상품관리: 1회 이용 프로그램 & 스포츠용품 결제 POS 및 상품 등록/관리',
         'reservations': '📅 예약관리: 월간 달력 스케줄 및 실시간 예약 스케줄 관리',
@@ -2206,7 +2262,6 @@
       const panel = document.getElementById('basic-settings-panel');
       if (!panel) return;
 
-      // 다른 탭에 있을 때 버튼을 누른 경우, '기본관리' 탭으로 전환 후 설정 카드를 보여줌
       if (activeTabId !== 'basic') {
         window.switchTab('basic');
         panel.classList.remove('hidden');
@@ -2220,7 +2275,124 @@
       }
     };
 
-    // 회원 목록 렌더링 (검색, 수강상태 필터링, 다양한 정렬 지원)
+    // [신규] 회원 개인별 상세 통합 이력 (출석 / 수강권 결제 / 예약 이력) 모달 렌더링
+    window.viewMemberHistory = function(memberId) {
+      const m = window.members.find(x => x.id === memberId);
+      if (!m) return window.showAlert('오류', '회원 정보를 찾을 수 없습니다.');
+
+      const cleanPhone = (m.phone || '').replace(/[^0-9]/g, '');
+      const passes = Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0));
+
+      const titleEl = document.getElementById('history-modal-title');
+      const subTitleEl = document.getElementById('history-modal-subtitle');
+      const summaryEl = document.getElementById('history-modal-member-summary');
+
+      if (titleEl) titleEl.innerHTML = `<span>📜</span> '${m.name}' 회원님 개인별 상세 통합 이력`;
+      if (subTitleEl) subTitleEl.innerText = `회원번호: ${m.id} · 연락처: ${m.phone}`;
+
+      if (summaryEl) {
+        summaryEl.innerHTML = `
+          <div>
+            <span class="font-extrabold text-[#0C3559] text-sm">${m.name}</span>
+            <span class="text-sky-600 font-bold ml-1">${m.gender || '여성'}${m.birth ? ' (' + m.birth + ')' : ''}</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-medium">보유 수강권:</span>
+            <span class="font-bold text-[#0C3559] ml-1">${m.passType || '수강권 미보유'}</span>
+          </div>
+          <div>
+            <span class="text-slate-400 font-medium">잔여 횟수:</span>
+            <span class="font-extrabold text-sm ${passes > 0 ? 'text-[#0092B8]' : 'text-rose-600'} ml-1">${passes}회</span>
+            ${m.expiryDate ? `<span class="text-slate-400 font-mono ml-1.5">(만료일: ${m.expiryDate})</span>` : ''}
+          </div>
+        `;
+      }
+
+      // 1. 출석 이력 필터링 (memberId 또는 전화번호 기준)
+      const attLogs = (window.attendanceLogs || []).filter(log => {
+        const logPhone = (log.phone || '').replace(/[^0-9]/g, '');
+        return (log.memberId && log.memberId === m.id) || (cleanPhone && logPhone === cleanPhone) || (log.memberName === m.name);
+      });
+
+      const attListEl = document.getElementById('history-att-list');
+      const attCountEl = document.getElementById('history-att-count');
+      if (attCountEl) attCountEl.innerText = `총 ${attLogs.length}건`;
+
+      if (attListEl) {
+        if (attLogs.length === 0) {
+          attListEl.innerHTML = `<p class="text-xs text-slate-400 py-3 text-center">기록된 출석 내역이 없습니다.</p>`;
+        } else {
+          attListEl.innerHTML = attLogs.map(log => `
+            <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50 flex justify-between items-center text-xs">
+              <div>
+                <span class="font-bold text-[#0C3559] font-mono">${log.date || ''} ${log.time || ''}</span>
+                <span class="ml-2 font-semibold text-slate-700">${log.passType || '수강권'}</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${log.source && log.source.includes('키오스크') ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-[#0092B8]'} ml-1.5">${log.source || '현장출석'}</span>
+              </div>
+              <span class="font-bold text-emerald-600">출석 후 잔여: ${log.remainingPasses !== undefined ? log.remainingPasses : 0}회</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      // 2. 수강권 및 상품 결제/구매 이력 필터링
+      const salesLogs = (window.salesLogs || []).filter(s => {
+        const sPhone = (s.memberPhone || '').replace(/[^0-9]/g, '');
+        return (cleanPhone && sPhone === cleanPhone) || (s.memberName === m.name);
+      });
+
+      const salesListEl = document.getElementById('history-sales-list');
+      const salesCountEl = document.getElementById('history-sales-count');
+      if (salesCountEl) salesCountEl.innerText = `총 ${salesLogs.length}건`;
+
+      if (salesListEl) {
+        if (salesLogs.length === 0) {
+          salesListEl.innerHTML = `<p class="text-xs text-slate-400 py-3 text-center">기록된 결제/수강권 부여 내역이 없습니다.</p>`;
+        } else {
+          salesListEl.innerHTML = salesLogs.map(s => `
+            <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50 flex justify-between items-center text-xs">
+              <div>
+                <span class="font-bold text-slate-500 font-mono">${s.date || ''} ${s.time || ''}</span>
+                <span class="font-bold text-[#0C3559] ml-2">${s.itemName || '상품'}</span>
+                <span class="text-[10px] font-semibold bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded ml-1.5">${s.payMethod || '결제'}</span>
+              </div>
+              <span class="font-extrabold text-[#0092B8]">${(s.amount || 0).toLocaleString()}원</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      // 3. 예약 이력 필터링
+      const bookingLogs = (window.bookings || []).filter(b => {
+        const bPhone = (b.phone || '').replace(/[^0-9]/g, '');
+        return (cleanPhone && bPhone === cleanPhone) || (b.name === m.name);
+      });
+
+      const bookingListEl = document.getElementById('history-bookings-list');
+      const bookingCountEl = document.getElementById('history-bookings-count');
+      if (bookingCountEl) bookingCountEl.innerText = `총 ${bookingLogs.length}건`;
+
+      if (bookingListEl) {
+        if (bookingLogs.length === 0) {
+          bookingListEl.innerHTML = `<p class="text-xs text-slate-400 py-3 text-center">기록된 예약 신청 내역이 없습니다.</p>`;
+        } else {
+          bookingListEl.innerHTML = bookingLogs.map(b => `
+            <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50 flex justify-between items-center text-xs">
+              <div>
+                <span class="font-bold text-[#0C3559] font-mono">${b.date || ''} ${b.time || ''}</span>
+                <span class="font-semibold text-slate-700 ml-2">${b.programTitle || '코스'}</span>
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${b.id && b.id.startsWith('ERP') ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-[#0092B8]'} ml-1.5">${b.id && b.id.startsWith('ERP') ? '전화(수기)' : '홈페이지'}</span>
+              </div>
+              <span class="font-bold px-2 py-0.5 rounded ${b.status === '취소' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'} text-[10px]">${b.status || '확정'}</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      window.openModal('modal-member-history');
+    };
+
+    // 회원 목록 렌더링 (검색, 수강상태 필터링, 정렬, 이력보기 버튼 추가)
     window.renderMemberList = function() {
       const tbody = document.getElementById('member-table-body');
       if (!tbody) return;
@@ -2316,6 +2488,9 @@
           <td class="px-6 py-4">${noteText}</td>
           <td class="px-6 py-4 text-center">
             <div class="flex items-center justify-center gap-1.5">
+              <button onclick="window.viewMemberHistory('${m.id}')" class="px-2.5 py-1.5 bg-amber-50 text-amber-800 font-bold rounded-lg text-[11px] hover:bg-amber-100 transition-all border border-amber-200 shadow-sm" title="개인별 통합 이력 보기">
+                📜 이력
+              </button>
               <button onclick="window.checkInMember('${m.id}', '회원관리')" class="px-2.5 py-1.5 ${passes > 0 ? 'bg-[#0C3559] hover:bg-[#082239] text-white' : 'bg-slate-200 text-slate-400 cursor-not-allowed'} font-bold rounded-lg text-[11px] transition-all shadow-sm">
                 📟 출석 -1
               </button>
