@@ -405,10 +405,11 @@
               </div>
               <div>
                 <label class="block font-bold text-slate-500 mb-1.5">결제 수단</label>
-                <select id="pass-tab-paymethod" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-medium bg-white outline-none">
-                  <option value="신용카드">신용카드</option>
-                  <option value="계좌이체">계좌이체 / 현금</option>
-                  <option value="무료부여(이벤트)">무료부여 (서비스)</option>
+                <select id="pass-tab-paymethod" class="w-full px-4 py-3 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-white outline-none">
+                  <option value="💳 신용카드">💳 신용카드</option>
+                  <option value="💵 계좌이체/현금">💵 계좌이체 / 현금</option>
+                  <option value="📱 간편결제(페이)">📱 간편결제 (페이)</option>
+                  <option value="🎁 무료부여(서비스)">🎁 무료부여 (서비스)</option>
                 </select>
               </div>
             </div>
@@ -584,9 +585,9 @@
             <div>
               <label class="block text-xs font-bold text-slate-500 mb-1">결제 수단</label>
               <select id="pos-pay-method" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 font-bold text-xs text-[#0C3559] bg-white outline-none">
-                <option value="신용카드">💳 신용카드</option>
-                <option value="계좌이체/현금">💵 계좌이체 / 현금</option>
-                <option value="카카오페이">📱 간편결제 (페이)</option>
+                <option value="💳 신용카드">💳 신용카드</option>
+                <option value="💵 계좌이체/현금">💵 계좌이체 / 현금</option>
+                <option value="📱 간편결제(페이)">📱 간편결제 (페이)</option>
               </select>
             </div>
 
@@ -807,8 +808,8 @@
           <p class="text-[11px] text-slate-400 mt-1" id="stats-kpi-range-count">해당 기간 총 0건</p>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-          <p class="text-xs font-bold text-slate-400">카드 / 계좌이체 비중</p>
-          <p class="text-lg font-extrabold text-amber-600 mt-1" id="stats-kpi-paymethods">카드 0% / 계좌 0%</p>
+          <p class="text-xs font-bold text-slate-400">결제 수단별 비중 (카드/계좌/페이)</p>
+          <p class="text-xs sm:text-sm font-extrabold text-amber-600 mt-1 leading-snug" id="stats-kpi-paymethods">카드 0% / 계좌 0% / 페이 0%</p>
           <p class="text-[11px] text-slate-400 mt-1">검색 기간 결제수단 집계</p>
         </div>
       </div>
@@ -829,7 +830,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 text-xs">
           <div>
             <label class="block font-bold text-slate-500 mb-1">시작일</label>
             <input type="date" id="stats-start-date" onchange="window.renderStats()" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500" />
@@ -845,6 +846,16 @@
               <option value="수강권">수강권 코스</option>
               <option value="1회 이용 프로그램">1회 이용 프로그램</option>
               <option value="스포츠용품">스포츠용품</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-500 mb-1">결제 수단 필터</label>
+            <select id="stats-paymethod-filter" onchange="window.renderStats()" class="w-full px-3 py-2 rounded-xl border border-slate-200 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500 cursor-pointer">
+              <option value="all">전체 결제수단</option>
+              <option value="카드">💳 신용카드</option>
+              <option value="계좌">💵 계좌이체 / 현금</option>
+              <option value="페이">📱 간편결제 (페이)</option>
+              <option value="무료">🎁 무료부여 (서비스)</option>
             </select>
           </div>
           <div>
@@ -1249,7 +1260,7 @@
             const rawPhone = String(row['연락처'] || row['전화번호'] || row['휴대폰'] || '').trim();
             const phone = rawPhone.replace(/[^0-9]/g, '');
 
-            if (!name || !phone) return; // 필수값 스킵
+            if (!name || !phone) return;
 
             const gender = String(row['성별'] || '여성').trim();
             const birth = String(row['생년월일'] || '').trim();
@@ -1891,7 +1902,7 @@
 
       const bEl = document.getElementById('standby-stat-bookings');
       const aEl = document.getElementById('standby-stat-attendance');
-      const mEl = document.getElementById('standby-stat-[#0092B8]');
+      const mEl = document.getElementById('standby-stat-members');
 
       if (bEl) bEl.innerText = todayBookingsCount;
       if (aEl) aEl.innerText = todayAttendanceCount;
@@ -2861,6 +2872,7 @@
       const startDate = document.getElementById('stats-start-date')?.value || todayStr;
       const endDate = document.getElementById('stats-end-date')?.value || todayStr;
       const categoryFilter = document.getElementById('stats-category-filter')?.value || 'all';
+      const paymethodFilter = document.getElementById('stats-paymethod-filter')?.value || 'all';
       const searchKeyword = document.getElementById('stats-search-keyword')?.value.trim().toLowerCase() || '';
 
       const sales = window.salesLogs || [];
@@ -2877,6 +2889,17 @@
         rangeSalesList = rangeSalesList.filter(s => s.category === categoryFilter);
       }
 
+      if (paymethodFilter !== 'all') {
+        rangeSalesList = rangeSalesList.filter(s => {
+          const pm = s.payMethod || '';
+          if (paymethodFilter === '카드') return pm.includes('카드');
+          if (paymethodFilter === '계좌') return pm.includes('계좌') || pm.includes('현금');
+          if (paymethodFilter === '페이') return pm.includes('간편') || pm.includes('페이');
+          if (paymethodFilter === '무료') return pm.includes('무료') || pm.includes('이벤트');
+          return true;
+        });
+      }
+
       if (searchKeyword) {
         rangeSalesList = rangeSalesList.filter(s => 
           (s.memberName && s.memberName.toLowerCase().includes(searchKeyword)) ||
@@ -2888,13 +2911,19 @@
 
       let cardTotal = 0;
       let cashTotal = 0;
+      let payTotal = 0;
+      let freeTotal = 0;
       rangeSalesList.forEach(s => {
-        if (s.payMethod && s.payMethod.includes('카드')) cardTotal += s.amount || 0;
-        else cashTotal += s.amount || 0;
+        const pm = s.payMethod || '';
+        if (pm.includes('카드')) cardTotal += s.amount || 0;
+        else if (pm.includes('계좌') || pm.includes('현금')) cashTotal += s.amount || 0;
+        else if (pm.includes('간편') || pm.includes('페이')) payTotal += s.amount || 0;
+        else freeTotal += s.amount || 0;
       });
 
       const cardPct = rangeTotalAmount > 0 ? Math.round((cardTotal / rangeTotalAmount) * 100) : 0;
       const cashPct = rangeTotalAmount > 0 ? Math.round((cashTotal / rangeTotalAmount) * 100) : 0;
+      const payPct = rangeTotalAmount > 0 ? Math.round((payTotal / rangeTotalAmount) * 100) : 0;
 
       const kpiToday = document.getElementById('stats-kpi-today');
       const kpiTodayCount = document.getElementById('stats-kpi-today-count');
@@ -2911,7 +2940,7 @@
       if (kpiMonthCount) kpiMonthCount.innerText = `이번 달 누적 ${monthSalesList.length}건`;
       if (kpiRangeTotal) kpiRangeTotal.innerText = rangeTotalAmount.toLocaleString() + '원';
       if (kpiRangeCount) kpiRangeCount.innerText = `해당 기간 총 ${rangeSalesList.length}건`;
-      if (kpiPaymethods) kpiPaymethods.innerText = `카드 ${cardPct}% / 계좌·현금 ${cashPct}%`;
+      if (kpiPaymethods) kpiPaymethods.innerText = `카드 ${cardPct}% / 계좌 ${cashPct}% / 페이 ${payPct}%`;
       if (tableCountBadge) tableCountBadge.innerText = `총 ${rangeSalesList.length}건 (${rangeTotalAmount.toLocaleString()}원)`;
 
       const tbody = document.getElementById('stats-table-body');
@@ -2944,7 +2973,7 @@
             <td class="px-6 py-4 font-semibold text-slate-800">${s.itemName}</td>
             <td class="px-6 py-4 font-medium text-slate-600">
               <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold text-[10px]">
-                ${s.payMethod || '신용카드'}
+                ${s.payMethod || '💳 신용카드'}
               </span>
             </td>
             <td class="px-6 py-4 text-right font-extrabold text-sm text-[#0092B8]">
