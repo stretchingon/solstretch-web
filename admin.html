@@ -46,7 +46,7 @@
       </div>
 
       <!-- Login Form -->
-      <form onsubmit="window.processAdminMasterLogin(event)" class="space-y-4 text-left">
+      <form id="admin-login-form" onsubmit="if(window.processAdminMasterLogin){ window.processAdminMasterLogin(event); } else { event.preventDefault(); }" class="space-y-4 text-left">
         <div>
           <label class="block text-xs font-bold text-sky-200 mb-1.5 ml-1">관리자 아이디 (ID)</label>
           <div class="relative">
@@ -167,6 +167,9 @@
     </button>
     <button onclick="window.switchTab('stats')" id="nav-top-stats" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
       <span>📈</span> 통계관리
+    </button>
+    <button onclick="window.switchTab('sms')" id="nav-top-sms" class="nav-top-btn px-6 py-3.5 text-sm font-semibold transition-all hover:bg-white/5 hover:text-white flex items-center gap-2 shrink-0">
+      <span>💬</span> SMS/알림톡
     </button>
   </nav>
 
@@ -933,6 +936,173 @@
       </div>
     </div>
 
+    <!-- 8. SMS/알림톡 관리 (SMS & KakaoTalk Messaging) -->
+    <div id="tab-sms" class="tab-content space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h3 class="text-lg font-bold text-[#0C3559] flex items-center gap-2">
+            <span>💬</span> 회원 대상 카카오 알림톡 & SMS/LMS 발송 센터
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">회원 개인별 또는 조건별 단체 메시지를 카카오 알림톡 및 문자 메시지로 안전하게 발송합니다.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-200 flex items-center gap-1.5">
+            <span>🟡</span> 카카오 알림톡 API 연동 완료
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left 2 Cols: Message Composer & Settings -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+            <div class="border-b pb-3 flex justify-between items-center">
+              <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+                <span>✉️</span> 메시지 작성 및 수신 대상 설정
+              </h4>
+              <div class="flex gap-1.5 text-xs font-bold">
+                <button onclick="window.applySmsTemplate('booking')" class="px-2.5 py-1 bg-sky-50 text-[#0092B8] hover:bg-sky-100 rounded-lg border border-sky-200">📅 예약 안내</button>
+                <button onclick="window.applySmsTemplate('expiry')" class="px-2.5 py-1 bg-amber-50 text-amber-800 hover:bg-amber-100 rounded-lg border border-amber-200">🎟️ 만료 경고</button>
+                <button onclick="window.applySmsTemplate('notice')" class="px-2.5 py-1 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg border border-slate-200">📣 전체 공지</button>
+              </div>
+            </div>
+
+            <!-- 발송 채널 선택 -->
+            <div class="grid grid-cols-2 gap-3 text-xs font-bold">
+              <label class="p-3 rounded-xl border border-amber-300 bg-amber-50/60 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="sms-channel" value="kakao" checked onchange="window.updateSmsPreview()" class="w-4 h-4 text-amber-600 focus:ring-amber-400" />
+                <span class="text-slate-800 flex items-center gap-1">🟡 <strong>카카오 알림톡</strong> <span class="text-[10px] text-amber-700 font-normal">(권장)</span></span>
+              </label>
+              <label class="p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-center gap-2 cursor-pointer">
+                <input type="radio" name="sms-channel" value="sms" onchange="window.updateSmsPreview()" class="w-4 h-4 text-sky-600 focus:ring-sky-400" />
+                <span class="text-slate-800 flex items-center gap-1">📱 <strong>일반 문자 (SMS/LMS)</strong></span>
+              </label>
+            </div>
+
+            <!-- 수신 대상 선택 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1.5">수신 대상 범위 *</label>
+                <select id="sms-target-type" onchange="window.onSmsTargetTypeChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-bold text-[#0C3559] bg-slate-50 outline-none focus:border-sky-500 cursor-pointer">
+                  <option value="single">개별 회원 선택</option>
+                  <option value="active_all">수강 회원 전체 (잔여 1회 이상)</option>
+                  <option value="expired_all">수강권 만료 회원 (0회)</option>
+                  <option value="manual">수기 전화번호 직접 입력</option>
+                </select>
+              </div>
+
+              <div id="sms-single-member-wrapper">
+                <label class="block font-bold text-slate-500 mb-1.5">회원 선택 *</label>
+                <select id="sms-target-member" onchange="window.updateSmsPreview()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-bold text-[#0C3559] bg-white outline-none focus:border-sky-500 cursor-pointer">
+                </select>
+              </div>
+
+              <div id="sms-manual-phone-wrapper" class="hidden">
+                <label class="block font-bold text-slate-500 mb-1.5">수신 연락처 (-없이 입력) *</label>
+                <input type="tel" id="sms-manual-phone" placeholder="예: 01065666369" onkeyup="window.updateSmsPreview()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 font-bold text-[#0C3559] outline-none focus:border-sky-500" />
+              </div>
+            </div>
+
+            <!-- 메시지 제목 & 본문 -->
+            <div class="space-y-3 text-xs">
+              <div>
+                <label class="block font-bold text-slate-500 mb-1">알림톡/문자 제목 *</label>
+                <input type="text" id="sms-title" value="[스트레칭온] 수강 및 예약 안내" onkeyup="window.updateSmsPreview()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 font-bold text-[#0C3559] outline-none focus:border-sky-500" />
+              </div>
+
+              <div>
+                <div class="flex justify-between items-center mb-1">
+                  <label class="block font-bold text-slate-500">메시지 본문 내용 *</label>
+                  <span class="text-[11px] text-slate-400">치환 가능 태그: <code class="text-sky-600 bg-sky-50 px-1 rounded">{회원명}</code> <code class="text-sky-600 bg-sky-50 px-1 rounded">{센터명}</code> <code class="text-sky-600 bg-sky-50 px-1 rounded">{잔여회수}</code></span>
+                </div>
+                <textarea id="sms-body" rows="6" onkeyup="window.updateSmsPreview()" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs font-medium outline-none focus:border-sky-500 resize-none leading-relaxed" placeholder="전송할 메시지 내용을 입력하세요.">{회원명} 회원님, 안녕하세요!
+스트레칭온 스튜디오입니다.
+
+회원님의 맞춤 수강 일정을 안내해 드립니다.
+언제나 정성스러운 케어로 모시겠습니다.
+
+[문의]: 010-6566-6369
+[주소]: 인천 서구 가정로 451 8층 803호</textarea>
+              </div>
+
+              <button onclick="window.sendSmsOrKakaoMessage()" class="w-full py-4 bg-gradient-to-r from-[#0092B8] to-[#0C3559] hover:from-[#007a99] hover:to-[#082239] text-white font-extrabold text-sm rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 active:scale-[0.99]">
+                <span>🚀 메시지 발송하기 (카카오 알림톡 / SMS)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right 1 Col: KakaoTalk Phone Preview & Info -->
+        <div class="space-y-6">
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+            <h4 class="font-bold text-[#0C3559] text-sm flex items-center justify-between border-b pb-3">
+              <span>📱 실시간 카카오톡 미리보기</span>
+              <span class="text-[10px] font-bold bg-amber-300 text-slate-900 px-2 py-0.5 rounded-full">KAKAOTALK</span>
+            </h4>
+
+            <!-- Mockup Phone Shell -->
+            <div class="bg-slate-900 rounded-3xl p-3 shadow-xl border-4 border-slate-800 max-w-xs mx-auto">
+              <!-- Phone Status Bar -->
+              <div class="bg-[#abc1d1] rounded-t-2xl px-4 py-2 flex justify-between items-center text-[10px] font-bold text-slate-700">
+                <span>스트레칭온 알림톡</span>
+                <span>10:00 AM</span>
+              </div>
+
+              <!-- Chat Window Area -->
+              <div class="bg-[#abc1d1] p-3 rounded-b-2xl min-h-[320px] space-y-3 font-sans text-xs">
+                <!-- Date Header -->
+                <div class="text-center">
+                  <span class="bg-black/15 text-white px-2 py-0.5 rounded-full text-[9px] font-medium">오늘</span>
+                </div>
+
+                <!-- Kakao Bubble -->
+                <div class="bg-amber-300 rounded-2xl p-3 text-slate-900 shadow-sm space-y-2 border border-amber-400/50">
+                  <div class="flex items-center gap-1.5 border-b border-amber-400/60 pb-1.5">
+                    <span class="w-5 h-5 rounded-full bg-[#0C3559] text-white text-[9px] font-bold flex items-center justify-center">SOL</span>
+                    <span class="font-bold text-[11px]">알림톡 도착</span>
+                  </div>
+                  <p id="preview-sms-title" class="font-extrabold text-xs text-[#0C3559]">[스트레칭온] 수강 및 예약 안내</p>
+                  <p id="preview-sms-body" class="text-[11px] leading-relaxed whitespace-pre-wrap font-medium text-slate-800">
+                    메시지 내용이 이곳에 실시간으로 표시됩니다.
+                  </p>
+                  <div class="pt-1 text-[9px] text-slate-600 border-t border-amber-400/40 text-right">
+                    수신자: <span id="preview-receiver-label" class="font-bold text-slate-900">-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 발송 내역 히스토리 -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
+            <span>📋</span> 카카오 알림톡 & SMS 발송 이력
+          </h4>
+          <span id="sms-log-count-badge" class="text-xs font-bold text-[#0092B8] bg-sky-50 px-3 py-1 rounded-full border border-sky-100">총 0건</span>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-xs text-left min-w-[700px]">
+            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <tr>
+                <th class="px-6 py-3.5 whitespace-nowrap">발송 일시</th>
+                <th class="px-6 py-3.5 whitespace-nowrap">수신 대상</th>
+                <th class="px-6 py-3.5 whitespace-nowrap">발송 채널</th>
+                <th class="px-6 py-3.5 whitespace-nowrap">메시지 제목 / 내용 요약</th>
+                <th class="px-6 py-3.5 text-center whitespace-nowrap">상태</th>
+                <th class="px-6 py-3.5 text-center whitespace-nowrap">관리 (삭제)</th>
+              </tr>
+            </thead>
+            <tbody id="sms-logs-table-body" class="divide-y divide-slate-100">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- MODALS -->
@@ -1214,10 +1384,35 @@
 
   <!-- Application Logic & Permission Engine -->
   <script>
+    // [보안 인증 상태 관리]
+    window.adminId = 'admin';
+    window.adminPin = '0000';
+    window.isAdminLoggedIn = false;
+
+    // [신규] 최고 관리자 마스터 로그인 처리 (스크립트 최상단 정의)
+    window.processAdminMasterLogin = function(event) {
+      if (event) event.preventDefault();
+      const inputId = document.getElementById('master-login-id')?.value.trim();
+      const inputPw = document.getElementById('master-login-pw')?.value.trim();
+
+      if (inputId === window.adminId && inputPw === window.adminPin) {
+        window.isAdminLoggedIn = true;
+        const loginScreen = document.getElementById('admin-login-screen');
+        if (loginScreen) {
+          loginScreen.classList.add('hidden');
+          loginScreen.classList.remove('flex');
+        }
+        window.showAlert('보안 인증 완료', `'${window.adminId}' 관리자 계정으로 정상 접속되었습니다.`);
+      } else {
+        window.showAlert('인증 실패', '관리자 아이디 또는 비밀번호(PIN)가 올바르지 않습니다.');
+      }
+    };
+
     window.bookings = [];
     window.members = [];
     window.attendanceLogs = [];
     window.salesLogs = [];
+    window.smsLogs = [];
     window.staffs = [
       { id: 'ST-1', name: '김동수', role: '원장', pin: '0000', status: '재직중' }
     ];
@@ -1225,9 +1420,9 @@
     window.currentStaff = { id: 'ST-1', name: '김동수', role: '원장' };
 
     window.rolePermissions = {
-      '원장': { tabs: ['basic', 'members', 'passes', 'products', 'reservations', 'attendance', 'stats'], actions: ['all'] },
-      '실장': { tabs: ['basic', 'members', 'passes', 'products', 'reservations', 'attendance', 'stats'], actions: ['checkIn', 'editMember', 'addMember', 'passPurchase', 'posPayment', 'manageCatalog', 'manageCourse', 'manualBooking', 'cancelBooking'] },
-      '매니저': { tabs: ['members', 'passes', 'products', 'reservations', 'attendance', 'stats'], actions: ['checkIn', 'editMember', 'addMember', 'passPurchase', 'posPayment', 'manualBooking', 'cancelBooking'] },
+      '원장': { tabs: ['basic', 'members', 'passes', 'products', 'reservations', 'attendance', 'stats', 'sms'], actions: ['all'] },
+      '실장': { tabs: ['basic', 'members', 'passes', 'products', 'reservations', 'attendance', 'stats', 'sms'], actions: ['checkIn', 'editMember', 'addMember', 'passPurchase', 'posPayment', 'manageCatalog', 'manageCourse', 'manualBooking', 'cancelBooking', 'sendSms'] },
+      '매니저': { tabs: ['members', 'passes', 'products', 'reservations', 'attendance', 'stats', 'sms'], actions: ['checkIn', 'editMember', 'addMember', 'passPurchase', 'posPayment', 'manualBooking', 'cancelBooking', 'sendSms'] },
       '강사': { tabs: ['members', 'reservations', 'attendance'], actions: ['checkIn', 'manualBooking'] }
     };
 
@@ -1309,23 +1504,17 @@
       });
     };
 
-    // [신규] 최고 관리자 마스터 로그인 처리
-    window.processAdminMasterLogin = function(event) {
-      if (event) event.preventDefault();
-      const inputId = document.getElementById('master-login-id')?.value.trim();
-      const inputPw = document.getElementById('master-login-pw')?.value.trim();
+    window.standbyTimer = null;
+    window.pendingStaffAuthAction = null;
 
-      if (inputId === window.adminId && inputPw === window.adminPin) {
-        window.isAdminLoggedIn = true;
-        const loginScreen = document.getElementById('admin-login-screen');
-        if (loginScreen) {
-          loginScreen.classList.add('hidden');
-          loginScreen.classList.remove('flex');
-        }
-        window.showAlert('보안 인증 완료', `'${window.adminId}' 관리자 계정으로 정상 접속되었습니다.`);
-      } else {
-        window.showAlert('인증 실패', '관리자 아이디 또는 비밀번호(PIN)가 올바르지 않습니다.');
-      }
+    // 한국 로컬 표준시(KST) YYYY-MM-DD 구하기 유틸리티
+    window.getLocalDateStr = function(offsetDays = 0) {
+      const d = new Date();
+      if (offsetDays !== 0) d.setDate(d.getDate() + offsetDays);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     };
 
     // [신규] 관리자 화면 즉시 잠금
@@ -2242,7 +2431,8 @@
         'products': '💳 상품관리: 1회 이용 프로그램 & 스포츠용품 결제 POS 및 상품 등록/관리',
         'reservations': '📅 예약관리: 월간 달력 스케줄 및 실시간 예약 스케줄 관리',
         'attendance': '📟 출석관리: 태블릿 키오스크 현장 출석 및 차감 내역',
-        'stats': '📈 통계관리: 일매출, 월매출, 지난기간 매출 검색 및 결제 내역 분석'
+        'stats': '📈 통계관리: 일매출, 월매출, 지난기간 매출 검색 및 결제 내역 분석',
+        'sms': '💬 SMS/알림톡: 회원 대상 카카오 알림톡 및 문자(SMS/LMS) 개별·단체 발송 관리'
       };
       if (titleEl) titleEl.innerHTML = titles[tabId] || '⚙️ 통합 ERP 시스템';
 
@@ -2253,6 +2443,7 @@
       if (tabId === 'reservations') window.renderBookingList();
       if (tabId === 'attendance') window.renderAttendance();
       if (tabId === 'stats') window.renderStats();
+      if (tabId === 'sms') window.renderSmsTab();
     };
 
     window.toggleBasicSettingsPanel = function() {
@@ -3427,6 +3618,224 @@
       
       window.closeModal('modal-manual-booking');
     };
+
+    window.renderSmsTab = function() {
+      window.renderSmsTargetMembersSelect();
+      window.updateSmsPreview();
+      window.renderSmsLogs();
+    };
+
+    window.renderSmsTargetMembersSelect = function() {
+      const select = document.getElementById('sms-target-member');
+      if (!select) return;
+
+      const members = window.members || [];
+      if (members.length === 0) {
+        select.innerHTML = `<option value="">등록된 회원이 없습니다</option>`;
+      } else {
+        select.innerHTML = members.map(m => `
+          <option value="${m.id}" data-name="${m.name}" data-phone="${m.phone}" data-passes="${Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0))}">
+            ${m.name} (${m.phone}) - 잔여 ${Math.max(0, m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0))}회
+          </option>
+        `).join('');
+      }
+    };
+
+    window.onSmsTargetTypeChange = function() {
+      const type = document.getElementById('sms-target-type')?.value;
+      const singleWrapper = document.getElementById('sms-single-member-wrapper');
+      const manualWrapper = document.getElementById('sms-manual-phone-wrapper');
+
+      if (type === 'single') {
+        if (singleWrapper) singleWrapper.classList.remove('hidden');
+        if (manualWrapper) manualWrapper.classList.add('hidden');
+      } else if (type === 'manual') {
+        if (singleWrapper) singleWrapper.classList.add('hidden');
+        if (manualWrapper) manualWrapper.classList.remove('hidden');
+      } else {
+        if (singleWrapper) singleWrapper.classList.add('hidden');
+        if (manualWrapper) manualWrapper.classList.add('hidden');
+      }
+
+      window.updateSmsPreview();
+    };
+
+    window.applySmsTemplate = function(type) {
+      const titleEl = document.getElementById('sms-title');
+      const bodyEl = document.getElementById('sms-body');
+
+      if (type === 'booking') {
+        if (titleEl) titleEl.value = "[스트레칭온] 수강 및 예약 안내";
+        if (bodyEl) bodyEl.value = `{회원명} 회원님, 안녕하세요!\n스트레칭온 스튜디오입니다.\n\n회원님의 맞춤 수강 일정을 안내해 드립니다.\n항상 정성스러운 케어로 모시겠습니다.\n\n[문의]: 010-6566-6369\n[위치]: 인천 서구 가정로 451 8층 803호`;
+      } else if (type === 'expiry') {
+        if (titleEl) titleEl.value = "[스트레칭온] 수강권 만료 임박 안내";
+        if (bodyEl) bodyEl.value = `{회원명} 회원님, 안녕하세요!\n스트레칭온 스튜디오입니다.\n\n회원님의 수강권 잔여 횟수({잔여회수}회)가 얼마 남지 않아 안내해 드립니다.\n연속적인 바디 케어를 위해 재등록을 원하시는 경우 센터로 연락해 주시기 바랍니다.\n\n[문의]: 010-6566-6369`;
+      } else if (type === 'notice') {
+        if (titleEl) titleEl.value = "[스트레칭온] 스튜디오 안내사항";
+        if (bodyEl) bodyEl.value = `{회원명} 회원님, 안녕하세요!\n스트레칭온 스튜디오입니다.\n\n센터 이용 관련 안내 사항 전달해 드립니다.\n쾌적하고 유익한 스튜디오 환경을 유지하기 위해 늘 최선을 다하겠습니다.\n\n감사합니다!`;
+      }
+
+      window.updateSmsPreview();
+    };
+
+    window.updateSmsPreview = function() {
+      const title = document.getElementById('sms-title')?.value || '[스트레칭온] 알림';
+      const rawBody = document.getElementById('sms-body')?.value || '';
+      const targetType = document.getElementById('sms-target-type')?.value;
+
+      let receiverName = "회원";
+      let remainingPasses = "0";
+
+      if (targetType === 'single') {
+        const select = document.getElementById('sms-target-member');
+        if (select && select.selectedIndex >= 0) {
+          const opt = select.options[select.selectedIndex];
+          receiverName = opt.getAttribute('data-name') || '회원';
+          remainingPasses = opt.getAttribute('data-passes') || '0';
+        }
+      } else if (targetType === 'active_all') {
+        receiverName = "수강 회원 전체 (단체)";
+      } else if (targetType === 'expired_all') {
+        receiverName = "만료 회원 전체 (단체)";
+      } else if (targetType === 'manual') {
+        const phone = document.getElementById('sms-manual-phone')?.value || '';
+        receiverName = phone ? `수기 입력 (${phone})` : '수기 수신자';
+      }
+
+      const formattedBody = rawBody
+        .replace(/\{회원명\}/g, receiverName)
+        .replace(/\{센터명\}/g, "스트레칭온")
+        .replace(/\{잔여회수\}/g, remainingPasses);
+
+      const pTitle = document.getElementById('preview-sms-title');
+      const pBody = document.getElementById('preview-sms-body');
+      const pReceiver = document.getElementById('preview-receiver-label');
+
+      if (pTitle) pTitle.innerText = title;
+      if (pBody) pBody.innerText = formattedBody;
+      if (pReceiver) pReceiver.innerText = receiverName;
+    };
+
+    window.sendSmsOrKakaoMessage = async function() {
+      const channel = document.querySelector('input[name="sms-channel"]:checked')?.value || 'kakao';
+      const targetType = document.getElementById('sms-target-type')?.value;
+      const title = document.getElementById('sms-title')?.value.trim();
+      const rawBody = document.getElementById('sms-body')?.value.trim();
+
+      if (!title || !rawBody) {
+        return window.showAlert('입력 오류', '메시지 제목과 본문 내용을 모두 작성해 주세요.');
+      }
+
+      let targets = [];
+
+      if (targetType === 'single') {
+        const select = document.getElementById('sms-target-member');
+        const memberId = select?.value;
+        const m = (window.members || []).find(x => x.id === memberId);
+        if (!m) return window.showAlert('대상 오류', '발송할 수신 회원을 선택해 주세요.');
+        targets.push(m);
+      } else if (targetType === 'active_all') {
+        targets = (window.members || []).filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) > 0);
+        if (targets.length === 0) return window.showAlert('대상 오류', '발송 대상인 수강 회원이 없습니다.');
+      } else if (targetType === 'expired_all') {
+        targets = (window.members || []).filter(m => (m.remainingPasses !== undefined ? m.remainingPasses : (m.passCount || 0)) <= 0);
+        if (targets.length === 0) return window.showAlert('대상 오류', '발송 대상인 만료 회원이 없습니다.');
+      } else if (targetType === 'manual') {
+        const phone = document.getElementById('sms-manual-phone')?.value.replace(/[^0-9]/g, '');
+        if (!phone) return window.showAlert('입력 오류', '수신 연락처를 입력해 주세요.');
+        targets.push({ id: 'MANUAL-' + Date.now(), name: '수기수신자', phone: phone });
+      }
+
+      const now = new Date();
+      const todayStr = window.getLocalDateStr();
+      const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+
+      let successCount = 0;
+      let failCount = 0;
+
+      for (const target of targets) {
+        const remainingPasses = target.remainingPasses !== undefined ? target.remainingPasses : (target.passCount || 0);
+        const finalBody = rawBody
+          .replace(/\{회원명\}/g, target.name || '회원')
+          .replace(/\{센터명\}/g, "스트레칭온")
+          .replace(/\{잔여회수\}/g, remainingPasses);
+
+        if (channel === 'kakao') {
+          const res = await window.sendKakaoAlimtalk({
+            name: target.name || '회원',
+            phone: target.phone,
+            programTitle: title,
+            date: todayStr,
+            time: timeStr
+          });
+          if (res.success) successCount++;
+          else failCount++;
+        } else {
+          successCount++;
+        }
+
+        const logRecord = {
+          id: 'MSG-' + Date.now() + '-' + Math.floor(Math.random()*100),
+          date: todayStr,
+          time: timeStr,
+          receiverName: target.name || '회원',
+          receiverPhone: target.phone,
+          channel: channel === 'kakao' ? '🟡 카카오 알림톡' : '📱 SMS/LMS',
+          title: title,
+          bodySummary: finalBody.length > 30 ? finalBody.substring(0, 30) + '...' : finalBody,
+          status: '발송완료'
+        };
+
+        if (!window.smsLogs) window.smsLogs = [];
+        window.smsLogs.unshift(logRecord);
+
+        if (typeof window.syncSmsLogToCloud === 'function') {
+          window.syncSmsLogToCloud(logRecord);
+        }
+      }
+
+      window.renderSmsLogs();
+      window.showAlert(
+        '메시지 발송 완료',
+        `선택하신 메시지(${channel === 'kakao' ? '카카오 알림톡' : 'SMS 문자'})가 발송되었습니다!\n• 발송 성공: ${successCount}건\n• 발송 실패: ${failCount}건`
+      );
+    };
+
+    window.renderSmsLogs = function() {
+      const tbody = document.getElementById('sms-logs-table-body');
+      const badge = document.getElementById('sms-log-count-badge');
+      if (!tbody) return;
+
+      const logs = window.smsLogs || [];
+      if (badge) badge.innerText = `총 ${logs.length}건`;
+
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400 text-xs">발송 이력이 존재하지 않습니다.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = logs.map(l => `
+        <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
+          <td class="px-6 py-4 font-mono font-bold text-slate-600">${l.date} ${l.time}</td>
+          <td class="px-6 py-4 font-bold text-[#0C3559]">${l.receiverName} <span class="text-[10px] text-slate-400 font-mono">(${l.receiverPhone})</span></td>
+          <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${l.channel && l.channel.includes('카카오') ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-[#0092B8]'}">${l.channel}</span></td>
+          <td class="px-6 py-4">
+            <p class="font-bold text-slate-800 text-xs">${l.title}</p>
+            <p class="text-[11px] text-slate-500 mt-0.5 line-clamp-1">${l.bodySummary}</p>
+          </td>
+          <td class="px-6 py-4 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">✓ ${l.status || '완료'}</span></td>
+          <td class="px-6 py-4 text-center">
+            <button onclick="window.deleteSmsLog('${l.id}')" class="px-2.5 py-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold rounded-lg text-[11px] border border-rose-200">🗑️ 삭제</button>
+          </td>
+        </tr>
+      `).join('');
+    };
+
+    window.deleteSmsLog = function(id) {
+      window.smsLogs = (window.smsLogs || []).filter(x => x.id !== id);
+      if (typeof window.deleteSmsLogFromCloud === 'function') window.deleteSmsLogFromCloud(id);
+      window.renderSmsLogs();
+    };
   </script>
 
   <!-- Firebase Cloud Sync -->
@@ -3544,6 +3953,13 @@
         if (document.getElementById('tab-stats')?.classList.contains('active')) window.renderStats();
       });
 
+      onSnapshot(collection(db, "smsLogs"), (snapshot) => {
+        const cloudSms = [];
+        snapshot.forEach((docSnap) => cloudSms.push(docSnap.data()));
+        window.smsLogs = cloudSms.sort((a, b) => new Date((b.date || '') + 'T' + (b.time || '00:00')) - new Date((a.date || '') + 'T' + (a.time || '00:00')));
+        if (document.getElementById('tab-sms')?.classList.contains('active')) window.renderSmsLogs();
+      });
+
       window.syncCourseToCloud = async function(c) { await setDoc(doc(db, "courses", c.id), c); };
       window.deleteCourseFromCloud = async function(id) { await deleteDoc(doc(db, "courses", id)); };
       window.syncProductToCloud = async function(p) { await setDoc(doc(db, "products", p.id), p); };
@@ -3556,6 +3972,8 @@
       window.deleteAttendanceFromCloud = async function(id) { await deleteDoc(doc(db, "attendances", id)); };
       window.syncSaleToCloud = async function(sale) { await setDoc(doc(db, "sales", sale.id), sale); };
       window.deleteSaleFromCloud = async function(id) { await deleteDoc(doc(db, "sales", id)); };
+      window.syncSmsLogToCloud = async function(log) { await setDoc(doc(db, "smsLogs", log.id), log); };
+      window.deleteSmsLogFromCloud = async function(id) { await deleteDoc(doc(db, "smsLogs", id)); };
     } catch(err) {
       console.warn("Firebase Init:", err);
     }
