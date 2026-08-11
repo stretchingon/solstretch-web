@@ -15,8 +15,8 @@
 
   <!-- SEO Search Meta Tags -->
   <title>스트레칭온 | 1:1 맞춤 수기 솔루션스트레칭</title>
-  <meta name="description" content="40년 수기 임상 노하우 기반 1:1 맞춤 패시브 스트레칭 및 체형 불균형 교정 전문 스튜디오. 거북목, 어깨·허리·골반 통증 근본 케어." />
-  <meta name="keywords" content="스트레칭온, 솔루션스트레칭, 인천 스트레칭, 가정동 스트레칭, 루원시티 체형교정, 수기 스트레칭, 도수스트레칭" />
+  <meta name="description" content="40년 수기 임상 노하우 기반 1:1 맞춤 패시브 스트레칭 및 체형 불균형 교정 전문 스튜디오. 첫방문 1회 체험 & 정밀 상담 프로그램 수시 진행." />
+  <meta name="keywords" content="스트레칭온, 솔루션스트레칭, 인천 스트레칭, 가정동 스트레칭, 루원시티 체형교정, 수기 스트레칭, 첫방문체험, 도수스트레칭" />
   <link rel="canonical" href="https://solutionstretching.com" />
 
   <!-- Open Graph for Naver / Kakao Link Previews -->
@@ -63,9 +63,7 @@
     <span id="toast-text" class="text-xs sm:text-sm font-semibold"></span>
   </div>
 
-  <!-- ================================================================= -->
   <!-- 📟 스튜디오 현장 전용 키오스크 출석 뷰 (?view=checkin) -->
-  <!-- ================================================================= -->
   <div id="checkin-view" class="hidden min-h-screen bg-[#0C3559] text-white flex flex-col items-center justify-between p-6 sm:p-8 relative overflow-hidden select-none">
     <div class="w-full max-w-6xl flex items-center justify-between border-b border-white/10 pb-4">
       <div class="flex items-center gap-3">
@@ -249,12 +247,12 @@
       </div>
     </header>
 
-    <!-- Hero -->
+    <!-- Hero Section -->
     <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-stone-200/80 shadow-sm text-xs font-semibold text-[#0C3559] mb-6">
-          <span class="w-2 h-2 rounded-full bg-[#0092B8]"></span>
-          <span>40년 임상 수기 기술 · 근골격계 불균형 솔루션</span>
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100/90 border border-amber-300 shadow-sm text-xs font-extrabold text-amber-900 mb-6">
+          <span class="w-2 h-2 rounded-full bg-amber-600 animate-ping"></span>
+          <span>🌱 첫방문 고객 전용 1회 체험 & 체형 정밀 상담 예약 진행 중</span>
         </div>
 
         <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#0C3559] tracking-tight leading-snug mb-6">
@@ -268,12 +266,13 @@
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
-          <button onclick="scrollToSec('reservation')" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] shadow-md flex items-center justify-center gap-2">
+          <button onclick="selectProgramAndBook('p0')" class="w-full sm:w-auto px-7 py-4 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 ring-4 ring-amber-200">
+            🌱 첫방문 1회 체험 (50,000원) 예약하기
+            <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+          </button>
+          <button onclick="scrollToSec('reservation')" class="w-full sm:w-auto px-7 py-4 rounded-full bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] shadow-md flex items-center justify-center gap-2">
             온라인 1:1 예약하기
             <svg class="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-          </button>
-          <button onclick="scrollToSec('brand-story')" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white border border-stone-300 text-[#0C3559] font-medium text-xs sm:text-sm hover:bg-stone-50 shadow-sm">
-            브랜드 철학 알아보기
           </button>
         </div>
 
@@ -303,7 +302,7 @@
       </div>
     </section>
 
-    <!-- Brand Story -->
+    <!-- Brand Story Section -->
     <section id="brand-story" class="py-24 bg-white border-y border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -394,7 +393,7 @@
       </div>
     </section>
 
-    <!-- Body Zones -->
+    <!-- Body Zones Section -->
     <section id="body-zones" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-14">
         <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">ANALYSIS & SOLUTIONS</span>
@@ -406,20 +405,20 @@
       <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card"></div>
     </section>
 
-    <!-- Programs -->
+    <!-- Programs Section -->
     <section id="programs" class="py-24 bg-stone-100/70 border-y border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-16">
           <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CURATED CARE PROGRAMS</span>
           <h2 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">프리미엄 1:1 맞춤 솔루션 프로그램</h2>
-          <p class="text-[#0C3559]/75 text-sm sm:text-base font-medium">정밀 체형 분석 스캔과 원장 1:1 수기 케어가 집중 제공되는 코스입니다.</p>
+          <p class="text-[#0C3559]/75 text-sm sm:text-base font-medium">첫 방문 체형 정밀 측정부터 심화 케어 및 정기 수강권까지 준비되어 있습니다.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="program-cards-container"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="program-cards-container"></div>
       </div>
     </section>
 
-    <!-- Academy -->
+    <!-- Academy Section -->
     <section id="academy" class="py-24 bg-white border-b border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-br from-[#0C3559] via-[#0A2D4C] to-[#082239] text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
@@ -477,7 +476,7 @@
       </div>
     </section>
 
-    <!-- Realtime Reservation (당일 및 지난 날짜 KST 고정 차단) -->
+    <!-- Realtime Reservation Section -->
     <section id="reservation" class="py-24 bg-[#0C3559] text-white">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-xl mx-auto mb-12">
@@ -555,7 +554,7 @@
       </div>
     </section>
 
-    <!-- Location & Guidelines -->
+    <!-- Location & Guidelines Section -->
     <section id="location" class="py-24 bg-stone-100/70 border-t border-stone-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -668,11 +667,13 @@
     </div>
   </div>
 
+  <!-- JavaScript Application Logic -->
   <script>
     const STORAGE_KEY = 'solstretch_bookings_v1';
     const MEMBERS_KEY = 'solstretch_members_v1';
 
     const PROGRAMS = [
+      { id: 'p0', title: 'Sol-First (첫방문/체험)', subtitle: '1:1 체형 정밀 측정스캔 + 수기 체험 & 맞춤 상담 (50분)', duration: 50, priceSingle: '50,000원', price: 50000, originalPrice: 100000, badge: 'FIRST VISIT', description: '첫 방문 고객님을 위한 1:1 정밀 체형 측정 스캔, 통증 원인 상담 및 패시브 스트레칭 체험 코스입니다. 내 몸의 상태를 정확히 알고 맞춤 관리 로드맵을 결정하실 수 있습니다.', targets: ['스트레칭온을 처음 방문하시는 고객님', '내 신체 불균형 및 통증 원인이 궁금하신 분', '1회 체험 후 향후 관리 로드맵을 설계받고 싶으신 분'] },
       { id: 'p1', title: 'Sol-Recovery (시그니처)', subtitle: '1:1 맞춤 체형 교정 & 패시브 수기 스트레칭 (50분)', duration: 50, priceSingle: '70,000원', price: 70000, originalPrice: 150000, badge: 'SIGNATURE', description: '관절 가동 범위를 섬세하게 확보하고, 거북목·승모근 및 만성 근육 긴장 해소를 위한 원장의 독자 수기 대표 기본 솔루션입니다.', targets: ['거북목·승모근 결림 및 목 뻐근함', '어깨 가동범위 제한 및 굽은 등', '일상 속 가벼운 유연성 회복을 원하시는 분'] },
       { id: 'p2', title: 'Sol-Balance (프리미엄)', subtitle: '척추·골반 무브먼트 리밸런스 딥 케어 (90분)', duration: 90, priceSingle: '100,000원', price: 100000, originalPrice: 250000, badge: 'PREMIUM', description: '골반 비대칭 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 굳어진 근막을 딥 이완하고 하체 순환을 촉진하는 정밀 심화 케어입니다.', targets: ['골반 틀어짐 및 요통 근본 해소', '하체 부종 및 고관절 수축·답답함', '자세 구조 정교화 및 신체 밸런스 재정립'] },
       { id: 'p3', title: '솔루션 멤버십 10회 (멤버십)', subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', duration: 50, priceSingle: '600,000원', price: 600000, originalPrice: 1200000, badge: 'MEMBERSHIP', description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 직계 가족 및 지인과 자유롭게 차감 공유 가능합니다.', targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지 및 지속 케어', '가족 및 지인과 차감 공유 원하시는 분'] }
@@ -695,12 +696,13 @@
     ];
 
     const REVIEWS = [
-      { name: '김*환 님', job: 'IT 개발팀 리더', program: 'Sol-Recovery (50분)', comment: '단순 피로 해소 마사지인 줄 알았는데, 제 체형의 불균형 원인을 정확히 짚어주셨습니다. 50분 만에 몸의 가벼움이 완전히 달라졌고 일상 속 집중력이 눈에 띄게 높아졌습니다.', rating: '★★★★★' },
+      { name: '김*환 님', job: 'IT 개발팀 리더', program: 'Sol-First (첫방문 체험)', comment: '첫 방문 체험으로 상담과 수기 케어를 받아보았습니다. 제 불균형 원인을 정확히 짚어주시고 앞으로 어떻게 관리해야 하는지 명확히 알게 되어 바로 등록했습니다.', rating: '★★★★★' },
       { name: '박*진 님', job: '운수업', program: 'Sol-Balance (90분)', comment: '오래된 골반,허리통증으로 많이 고생했습니다. 원장님의 해부학적 수기 이완 덕분에 걸음걸이가 편해지고 밤마다 느끼던 뻐근함이 크게 줄어 삶의 질이 향상되었습니다.', rating: '★★★★★' },
       { name: '최*아 님', job: '사무직', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡아가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★' }
     ];
 
     const FAQS = [
+      { q: '첫 방문 고객은 어떤 코스를 선택해야 하나요?', a: '처음 방문하시는 고객님께는 [Sol-First 첫방문/체험 (50,000원)] 코스를 추천해 드립니다. 1:1 체형 정밀 측정 스캔, 통증 원인 상담, 수기 스트레칭 체험이 통합 제공되며 향후 내 몸에 꼭 맞는 관리 로드맵을 안내받으실 수 있습니다.' },
       { q: '일반 마사지나 도수치료와 무엇이 다른가요?', a: '스트레칭 온은 단순 압박이나 일시적 마사지가 아닙니다. 40여년 임상 경험을 가진 원장이 직접 관절 가동성(Mobility)과 근막 비대칭을 측정 평가하여 1:1 맞춤 수기 이완 및 교정 스트레칭을 진행합니다.' },
       { q: '동일 시간대에 다른 사람과 예약이 겹치지 않나요?', a: '네, 원장 1:1 단독 집중 케어로 진행되므로 프로그램 종류에 관계없이 동일 날짜·시간대에는 오직 1명의 예약만 가능합니다. 먼저 예약된 타임 슬롯은 실시간으로 자동 마감 처리됩니다.' },
       { q: '당일 방문 예약도 가능한가요?', a: '온라인 시스템에서는 정밀한 케어 준비를 위해 최소 방문 1일 전부터만 선택이 가능합니다. 당일 케어를 꼭 원하시는 경우 대표 번호(010-6566-6369)로 연락해 주시면 예약 잔여 시간을 안내해 드립니다.' },
@@ -716,7 +718,6 @@
     let appSelectedTime = '';
     let kioskInputDigits = '';
 
-    // 한국 표준시(KST) 기준 날짜 변환 유틸리티 (UTC 시차 오류 완전 차단)
     function getLocalDateStr(offsetDays = 0) {
       const d = new Date();
       d.setDate(d.getDate() + offsetDays);
@@ -726,11 +727,10 @@
       return `${year}-${month}-${day}`;
     }
 
-    // 최소 예약 가능일 (한국시각 기준 당일 100% 차단 -> 내일부터, 내일이 일요일이면 월요일부터)
     function getNextWorkingDateStr() {
       const d = new Date();
-      d.setDate(d.getDate() + 1); // 내일
-      if (d.getDay() === 0) {     // 내일이 일요일이면 월요일로
+      d.setDate(d.getDate() + 1);
+      if (d.getDay() === 0) {
         d.setDate(d.getDate() + 1);
       }
       const year = d.getFullYear();
@@ -780,7 +780,6 @@
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    // 키오스크 출석체크
     let audioUnlocked = false;
     function unlockAudioAndSpeech() {
       if (audioUnlocked) return;
@@ -985,7 +984,6 @@
       }, 4500);
     }
 
-    // 모바일 앱 라우팅
     function checkUrlRouting() {
       const urlParams = new URLSearchParams(window.location.search);
       const isAppView = urlParams.get('view') === 'app';
@@ -1059,7 +1057,6 @@
       const minDate = getNextWorkingDateStr();
       const todayStr = getLocalDateStr(0);
 
-      // 당일 및 지난 날짜 예외 100% 차단 (KST 고정)
       if (dateVal <= todayStr || dateVal < minDate) {
         showToast('당일 예약은 불가능합니다. (최소 1일 전 사전예약만 가능)');
         document.getElementById('app-date').value = minDate;
@@ -1177,7 +1174,6 @@
       }
     }
 
-    // 웹사이트 실시간 예약 신청 (KST 고정 당일 예약 3중 차단)
     function submitBooking() {
       const name = document.getElementById('user-name').value.trim();
       const phone = document.getElementById('user-phone').value.trim();
@@ -1190,7 +1186,6 @@
       const minDate = getNextWorkingDateStr();
       const todayStr = getLocalDateStr(0);
 
-      // 당일 및 이전 날짜 강력 검증
       if (selectedDate <= todayStr || selectedDate < minDate) {
         showToast('당일 예약은 불가능합니다. (최소 1일 전 사전예약만 가능)');
         document.getElementById('booking-date-input').value = minDate;
@@ -1331,17 +1326,24 @@
 
     function renderPrograms() {
       const container = document.getElementById('program-cards-container');
+      if (!container) return;
+
       container.innerHTML = PROGRAMS.map(p => {
         let priceBoxHtml = '';
-        if (p.id === 'p1' || p.id === 'p2') {
+        if (p.id === 'p0') {
+          priceBoxHtml = `<div class="mb-6 p-4 rounded-2xl bg-amber-50/90 border border-amber-200 text-xs"><div class="flex justify-between items-center text-[#0C3559] font-bold"><span>첫방문 특별 체험가</span><span class="text-[#0092B8] text-sm font-extrabold">${p.priceSingle}</span></div></div>`;
+        } else if (p.id === 'p1' || p.id === 'p2') {
           priceBoxHtml = `<div class="mb-6 p-4 rounded-2xl bg-stone-50 border border-stone-200 text-xs"><div class="flex justify-between items-center text-[#0C3559] font-bold"><span>1회 케어</span><span class="text-[#0092B8] text-sm">${p.priceSingle}</span></div></div>`;
         } else if (p.id === 'p3') {
           priceBoxHtml = `<div class="mb-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-xs"><div class="flex justify-between items-center text-[#0C3559] font-bold"><span>10회 수강권</span><span class="text-[#0092B8] text-sm">${p.priceSingle}</span></div></div>`;
         }
 
+        let badgeBg = 'bg-sky-100 text-[#0092B8]';
+        if (p.id === 'p0') badgeBg = 'bg-amber-100 text-amber-900 border border-amber-300';
+
         return `
-          <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative">
-            <span class="absolute top-6 right-6 px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider bg-sky-100 text-[#0092B8] uppercase">${p.badge}</span>
+          <div class="bg-white rounded-3xl p-8 border ${p.id === 'p0' ? 'border-amber-300 ring-2 ring-amber-200/60' : 'border-stone-200'} shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative">
+            <span class="absolute top-6 right-6 px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider ${badgeBg} uppercase">${p.badge}</span>
             <div>
               <div class="flex items-center gap-2 text-xs font-semibold text-[#0092B8] mb-2"><span>⏱ ${p.duration}분 1:1 맞춤 수기 케어</span></div>
               <h3 class="text-2xl font-semibold text-[#0C3559] mb-1">${p.title}</h3>
@@ -1353,7 +1355,7 @@
                 ${p.targets.map(t => `<div class="flex items-center gap-2 text-xs sm:text-sm text-[#0C3559] font-semibold"><span class="text-[#0092B8]">✓</span><span>${t}</span></div>`).join('')}
               </div>
             </div>
-            <button onclick="selectProgramAndBook('${p.id}')" class="w-full py-4 rounded-2xl bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] transition-all flex items-center justify-center gap-2 shadow-md">${p.title} 선택 및 예약 ➔</button>
+            <button onclick="selectProgramAndBook('${p.id}')" class="w-full py-4 rounded-2xl ${p.id === 'p0' ? 'bg-[#0092B8] hover:bg-[#007a99]' : 'bg-[#0C3559] hover:bg-[#082239]'} text-white font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-md">${p.title} 선택 및 예약 ➔</button>
           </div>
         `;
       }).join('');
@@ -1371,12 +1373,14 @@
 
     function renderStep1() {
       const el = document.getElementById('step1-program-list');
+      if (!el) return;
       el.innerHTML = PROGRAMS.map(p => `
         <div onclick="setStep1Program('${p.id}')" class="p-5 rounded-2xl cursor-pointer border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${selectedProgram.id === p.id ? 'bg-sky-500/20 border-sky-400 ring-2 ring-sky-400' : 'bg-white/5 border-white/10 hover:bg-white/10'}">
           <div>
             <div class="flex items-center gap-2">
               <h4 class="text-lg font-semibold text-white">${p.title}</h4>
               <span class="text-xs px-2.5 py-0.5 rounded bg-white/20 text-stone-200 font-semibold">${p.duration}분</span>
+              ${p.id === 'p0' ? '<span class="text-[10px] px-2 py-0.5 rounded bg-amber-400 text-stone-900 font-bold">첫방문 추천</span>' : ''}
             </div>
             <p class="text-xs sm:text-sm text-stone-300 mt-1 font-normal">${p.subtitle}</p>
           </div>
@@ -1444,7 +1448,6 @@
       const minDate = getNextWorkingDateStr();
       const todayStr = getLocalDateStr(0);
 
-      // 당일 및 이전 날짜 수동 입력 강력 차단 (한국 시각 고정)
       if (val <= todayStr || val < minDate) {
         showToast('당일 및 지난 날짜는 예약이 불가능합니다. (최소 1일 전 사전예약만 가능)');
         document.getElementById('booking-date-input').value = minDate;
@@ -1630,6 +1633,7 @@
     };
   </script>
 
+  <!-- Firebase Cloud Sync -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
