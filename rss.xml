@@ -3,13 +3,15 @@
   <channel>
     <title>스트레칭온 - 1:1 맞춤 스트레칭 &amp; 수기 케어 스튜디오</title>
     <link>https://solutionstretching.com/</link>
-    <description>스트레칭온 공식 홈페이지입니다. 거북목, 승모근 이완, 골반/척추 무브먼트 정밀 케어 프로그램 안내 및 실시간 예약을 제공합니다.</description>
+    <description>스트레칭온 공식 홈페이지입니다. 1:1 맞춤 스트레칭과 수기 케어 프로그램 안내 및 실시간 예약을 제공합니다.</description>
     <language>ko</language>
 
     <item>
       <title>스트레칭온 - 1:1 맞춤 스트레칭 &amp; 수기 케어 스튜디오</title>
       <link>https://solutionstretching.com/</link>
-      <description><![CDATA[스트레칭온 공식 홈페이지입니다. 거북목, 승모근 이완, 골반/척추 무브먼트 정밀 케어 프로그램 안내 및 실시간 예약을 제공합니다.]]></description>
+      <description><![CDATA[
+스트레칭온 공식 홈페이지입니다. 1:1 맞춤 스트레칭과 수기 케어 프로그램 안내 및 실시간 예약을 제공합니다.
+      ]]></description>
       <pubDate>Tue, 11 Aug 2026 00:00:00 +0900</pubDate>
       <guid>https://solutionstretching.com/</guid>
     </item>
@@ -17,25 +19,32 @@
     <item>
       <title>스트레칭온 케어 프로그램 안내 (Sol-Recovery &amp; Sol-Balance)</title>
       <link>https://solutionstretching.com/#program</link>
-      <description><![CDATA[Sol-Recovery 50분 시그니처 수기 이완 프로그램, Sol-Balance 90분 관절 가동성 및 체형 교정 1:1 전담 수기케어 코스 상세 안내.]]></description>
+      <description><![CDATA[
+Sol-Recovery 50분 시그니처 수기 이완 프로그램과 Sol-Balance 90분 관절 가동성 및 체형 교정 1:1 전담 수기 케어 코스를 안내합니다.
+      ]]></description>
       <pubDate>Tue, 11 Aug 2026 00:00:00 +0900</pubDate>
       <guid>https://solutionstretching.com/#program</guid>
     </item>
 
     <item>
-      <title>스트레칭온 1:1 맞춤 수기케어 실시간 예약하기</title>
+      <title>스트레칭온 1:1 맞춤 수기 케어 실시간 예약</title>
       <link>https://solutionstretching.com/#reservation</link>
-      <description><![CDATA[원하는 날짜와 시간을 선택하여 간편하게 1:1 맞춤 수기케어 예약을 진행하세요. 카카오 알림톡 자동 연동 서비스 제공.]]></description>
+      <description><![CDATA[
+원하는 날짜와 시간을 선택하여 1:1 맞춤 수기 케어 예약을 진행할 수 있습니다.
+      ]]></description>
       <pubDate>Tue, 11 Aug 2026 00:00:00 +0900</pubDate>
       <guid>https://solutionstretching.com/#reservation</guid>
     </item>
 
     <item>
-      <title>스트레칭온 스튜디오 오시는 길 및 주차/영업 안내</title>
+      <title>스트레칭온 스튜디오 오시는 길 및 주차 안내</title>
       <link>https://solutionstretching.com/#location</link>
-      <description><![CDATA[인천 서구 가정로 451 8층 803호 (가정동). 건물 내 주차 안내 및 대표 예약 문의(010-6566-6369) 안내.]]></description>
+      <description><![CDATA[
+인천 서구 가정로 451 벨라미센텀시티2차 8층 803호에 위치한 스트레칭온 스튜디오의 위치 및 방문 안내입니다.
+      ]]></description>
       <pubDate>Tue, 11 Aug 2026 00:00:00 +0900</pubDate>
       <guid>https://solutionstretching.com/#location</guid>
     </item>
+
   </channel>
 </rss>
