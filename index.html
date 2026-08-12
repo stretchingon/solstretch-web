@@ -673,14 +673,58 @@
     const MEMBERS_KEY = 'solstretch_members_v1';
 
     const PROGRAMS = [
-      { id: 'p0', title: 'Sol-First (첫방문/체험)', subtitle: '1:1 체형 정밀 측정스캔 + 수기 체험 & 맞춤 상담 (50분)', duration: 50, priceSingle: '50,000원', price: 50000, originalPrice: 100000, badge: 'FIRST VISIT', description: '첫 방문 고객님을 위한 1:1 정밀 체형 측정 스캔, 통증 원인 상담 및 패시브 스트레칭 체험 코스입니다. 내 몸의 상태를 정확히 알고 맞춤 관리 로드맵을 결정하실 수 있습니다.', targets: ['스트레칭온을 처음 방문하시는 고객님', '내 신체 불균형 및 통증 원인이 궁금하신 분', '1회 체험 후 향후 관리 로드맵을 설계받고 싶으신 분'] },
-      { id: 'p1', title: 'Sol-Recovery (시그니처)', subtitle: '1:1 맞춤 체형 교정 & 패시브 수기 스트레칭 (50분)', duration: 50, priceSingle: '70,000원', price: 70000, originalPrice: 150000, badge: 'SIGNATURE', description: '관절 가동 범위를 섬세하게 확보하고, 거북목·승모근 및 만성 근육 긴장 해소를 위한 원장의 독자 수기 대표 기본 솔루션입니다.', targets: ['거북목·승모근 결림 및 목 뻐근함', '어깨 가동범위 제한 및 굽은 등', '일상 속 가벼운 유연성 회복을 원하시는 분'] },
-      { id: 'p2', title: 'Sol-Balance (프리미엄)', subtitle: '척추·골반 무브먼트 리밸런스 딥 케어 (90분)', duration: 90, priceSingle: '100,000원', price: 100000, originalPrice: 250000, badge: 'PREMIUM', description: '골반 비대칭 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 굳어진 근막을 딥 이완하고 하체 순환을 촉진하는 정밀 심화 케어입니다.', targets: ['골반 틀어짐 및 요통 근본 해소', '하체 부종 및 고관절 수축·답답함', '자세 구조 정교화 및 신체 밸런스 재정립'] },
-      { id: 'p3', title: '솔루션 멤버십 10회 (멤버십)', subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', duration: 50, priceSingle: '600,000원', price: 600000, originalPrice: 1200000, badge: 'MEMBERSHIP', description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 직계 가족 및 지인과 자유롭게 차감 공유 가능합니다.', targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지 및 지속 케어', '가족 및 지인과 차감 공유 원하시는 분'] }
+      { 
+        id: 'p0', 
+        title: 'Sol-First (첫방문/체험)', 
+        subtitle: '1:1 체형 정밀 측정스캔 + 수기 체험 & 맞춤 상담 (50분)', 
+        duration: 50, 
+        priceSingle: '50,000원', 
+        price: 50000, 
+        originalPrice: 100000, 
+        badge: 'FIRST VISIT', 
+        description: '첫 방문 고객님을 위한 1:1 정밀 체형 측정 스캔, 통증 원인 상담 및 패시브 스트레칭 체험 코스입니다. 내 몸의 상태를 정확히 알고 맞춤 관리 로드맵을 결정하실 수 있습니다.', 
+        targets: ['스트레칭온을 처음 방문하시는 고객님', '내 신체 불균형 및 통증 원인이 궁금하신 분', '1회 체험 후 향후 관리 로드맵을 설계받고 싶으신 분'] 
+      },
+      { 
+        id: 'p1', 
+        title: 'Sol-Recovery (시그니처)', 
+        subtitle: '1:1 맞춤 체형 교정 & 패시브 수기 스트레칭 (50분)', 
+        duration: 50, 
+        priceSingle: '70,000원', 
+        price: 70000, 
+        originalPrice: 150000, 
+        badge: 'SIGNATURE', 
+        description: '관절 가동 범위를 섬세하게 확보하고, 거북목·승모근 및 만성 근육 긴장 해소를 위한 원장의 독자 수기 대표 기본 솔루션입니다.', 
+        targets: ['거북목·승모근 결림 및 목 뻐근함', '어깨 가동범위 제한 및 굽은 등', '일상 속 가벼운 유연성 회복을 원하시는 분'] 
+      },
+      { 
+        id: 'p2', 
+        title: 'Sol-Balance (프리미엄)', 
+        subtitle: '척추·골반 무브먼트 리밸런스 딥 케어 (90분)', 
+        duration: 90, 
+        priceSingle: '100,000원', 
+        price: 100000, 
+        originalPrice: 250000, 
+        badge: 'PREMIUM', 
+        description: '골반 비대칭 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 굳어진 근막을 딥 이완하고 하체 순환을 촉진하는 정밀 심화 케어입니다.', 
+        targets: ['골반 틀어짐 및 요통 근본 해소', '하체 부종 및 고관절 수축·답답함', '자세 구조 정교화 및 신체 밸런스 재정립'] 
+      },
+      { 
+        id: 'p3', 
+        title: '솔루션 멤버십 10회 (멤버십)', 
+        subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', 
+        duration: 50, 
+        priceSingle: '600,000원', 
+        price: 600000, 
+        originalPrice: 1200000, 
+        badge: 'MEMBERSHIP', 
+        description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 직계 가족 및 지인과 자유롭게 차감 공유 가능합니다.', 
+        targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지 및 지속 케어', '가족 및 지인과 차감 공유 원하시는 분'] 
+      }
     ];
 
     const BODY_ZONES = [
-      { id: 'neck', title: '목 & 어깨 (Neck & Shoulder)', subtitle: '거북목, 일자목, 승모근 긴장 완화', symptoms: ['스마트폰/모니터 집중 후 목 뻐근함', '승모근 뭉침 및 두통 유발', '어깨 가동범위 제한 및 굽은 등', '병원에서 스트레칭을 권유받은 분'], solution: '경추 및 흉근·승모근 근막 이완, 관절 가동성 확보 수기 솔루션', recProgramId: 'p1' },
+      { id: 'neck', title: '목 & 어깨 (Neck & Shoulder)', subtitle: '거북목, 일자목, 승모근 긴장 완화', symptoms: ['스마트폰/모니터 집중 후 목 뻐근함', '승모근 뭉침 및 두통 유발', '어깨 가동범위 제한 및 굽은 등', '병원에서 스트레칭을 권유받은 분'], solution: '경추 및 흉근·승모근 근막 이완, 관절 가동성 확보 수기 솔루션', recProgramId: 'p0' },
       { id: 'waist', title: '허리 & 골반 (Pelvis & Back)', subtitle: '골반 비대칭, 뻐근한 요통 근본 해소', symptoms: ['오래 앉아있으면 요통이 발생함', '양쪽 골반 높이가 다름', '다리를 꼬거나 걸음걸이 불균형', '오래된 통증으로 불편하신 분'], solution: '장요근·장골근 딥 이완 및 고관절 회전성 회복 교정 스트레칭', recProgramId: 'p2' },
       { id: 'legs', title: '하체 & 순환 (Legs & Circulation)', subtitle: '다리 부종, 햄스트링/종아리 단축 해소', symptoms: ['저녁만 되면 다리가 쉽게 부음', '유연성 부족으로 허리를 숙이기 힘듦', '발바닥 및 아킬레스건 피로', '종아리에 쥐가 자주 나시는 분'], solution: '하체 림프 순환 촉진 및 햄스트링·내덕근 확장 딥 솔루션', recProgramId: 'p1' },
       { id: 'full', title: '전신 피로 & 신체 불균형 (Full Body)', subtitle: '만성 피로 해소 및 신체 구조 평온함 회복', symptoms: ['자고 일어나도 온몸이 찌뿌둥함', '몸 전체의 자세가 틀어진 느낌', '삶의 질을 높이는 가벼움 절실', '수술 후 빠른회복을 원하시는 분'], solution: '전신 솔루션 스트레칭으로 신체 밸런스 완전 복원', recProgramId: 'p3' }
@@ -720,7 +764,7 @@
 
     function getLocalDateStr(offsetDays = 0) {
       const d = new Date();
-      d.setDate(d.getDate() + offsetDays);
+      if (offsetDays !== 0) d.setDate(d.getDate() + offsetDays);
       const year = d.getFullYear();
       const month = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
@@ -737,6 +781,12 @@
       const month = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
       return `${year}-${month}-${day}`;
+    }
+
+    function isDateExpired(expiryDateStr) {
+      if (!expiryDateStr) return false;
+      const today = getLocalDateStr(0);
+      return expiryDateStr < today;
     }
 
     function isSundayDate(dateStr) {
@@ -894,6 +944,101 @@
       `;
     }
 
+    // [핵심 보완 1] 개별 회원 출석 차감 실행 (만료일 검증 + Firestore 규격 통일)
+    function executeMemberCheckin(member) {
+      const resBox = document.getElementById('kiosk-result-box');
+      if (!resBox) return;
+
+      const curPasses = member.remainingPasses !== undefined 
+        ? Number(member.remainingPasses) 
+        : (member.passCount !== undefined ? Number(member.passCount) : 0);
+
+      // 1. 만료일 검증
+      if (isDateExpired(member.expiryDate)) {
+        resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-rose-50 text-rose-900 shadow-2xl border-2 border-rose-400 text-center space-y-3';
+        resBox.innerHTML = `
+          <div class="text-4xl">⚠️</div>
+          <h3 class="text-xl sm:text-2xl font-extrabold">${member.name} 회원님</h3>
+          <p class="text-base font-bold text-rose-800">수강권 유효기간이 만료되었습니다.</p>
+          <p class="text-xs text-rose-700">만료일: ${member.expiryDate} (데스크에 문의해 주세요)</p>
+        `;
+        playKioskChime();
+        setTimeout(() => {
+          speakKioskVoice(`${member.name} 회원님. 수강권 유효기간이 만료되었습니다. 데스크에 문의해 주세요.`);
+        }, 350);
+        return;
+      }
+
+      // 2. 잔여 횟수 검증
+      if (curPasses <= 0) {
+        resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400 text-center space-y-3';
+        resBox.innerHTML = `
+          <div class="text-4xl">⚠️</div>
+          <h3 class="text-xl sm:text-2xl font-extrabold">${member.name} 회원님</h3>
+          <p class="text-base font-bold text-amber-800">잔여 수강권이 0회입니다.</p>
+          <p class="text-xs text-amber-700">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
+        `;
+        playKioskChime();
+        setTimeout(() => {
+          speakKioskVoice(`${member.name} 회원님. 잔여 수강권이 0회입니다.`);
+        }, 350);
+        return;
+      }
+
+      // 3. 정상 출석 처리 (Firestore 및 로컬 상태 일치)
+      const nextPasses = Math.max(0, curPasses - 1);
+      member.remainingPasses = nextPasses;
+      member.passCount = nextPasses;
+      saveMembersLocal();
+
+      if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
+
+      const todayStr = getLocalDateStr(0);
+      const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
+
+      const logEntry = {
+        id: 'ATT-' + Date.now(),
+        date: todayStr,
+        time: timeStr,
+        memberId: member.id || ('M-' + Date.now()),
+        memberName: member.name || '회원',
+        phone: member.phone || '',
+        passType: member.passType || '수강권',
+        remainingPasses: nextPasses,
+        source: '태블릿 키오스크 출석'
+      };
+
+      if (!window.attendanceLogs) window.attendanceLogs = [];
+      window.attendanceLogs.unshift(logEntry);
+
+      if (typeof window.syncAttendanceToCloud === 'function') {
+        window.syncAttendanceToCloud(logEntry);
+      }
+
+      playKioskChime();
+      setTimeout(() => {
+        speakKioskVoice(`${member.name} 회원님 환영합니다. 잔여 수강권은 ${nextPasses}회 입니다.`);
+      }, 350);
+
+      resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-emerald-400 text-center space-y-4';
+      resBox.innerHTML = `
+        <div class="text-4xl">🎉</div>
+        <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">${member.name} 회원님 환영합니다!</h3>
+        <div class="p-5 bg-sky-50 rounded-2xl border-2 border-[#0092B8] text-center w-full shadow-inner space-y-1">
+          <p class="text-xs font-bold text-slate-500">출석 완료 후 잔여 수강권</p>
+          <p class="text-4xl sm:text-5xl font-black text-[#0092B8] my-1">${nextPasses}회 <span class="text-sm text-slate-500 font-bold">/ 총 ${member.totalPasses || 10}회</span></p>
+          <p class="text-xs text-slate-600 font-semibold">${member.passType || '수강권'}${member.expiryDate ? ' · 만료일: ' + member.expiryDate : ''}</p>
+        </div>
+      `;
+
+      setTimeout(() => {
+        kioskInputDigits = '';
+        updateKioskDisplay();
+        resetKioskDefaultWelcomeCard();
+      }, 4500);
+    }
+
+    // [핵심 보완 2] 뒷자리 4자리 중복 회원 인터랙티브 대처
     function processKioskCheckin() {
       const digits = kioskInputDigits;
       const matchedMembers = window.members.filter(m => {
@@ -911,77 +1056,44 @@
           <h3 class="text-xl sm:text-2xl font-extrabold">등록되지 않은 번호입니다</h3>
           <p class="text-xs sm:text-sm text-rose-700">입력하신 뒷자리 [${digits}] 번호로 등록된 회원을 찾을 수 없습니다.</p>
         `;
+        setTimeout(() => {
+          kioskInputDigits = '';
+          updateKioskDisplay();
+          resetKioskDefaultWelcomeCard();
+        }, 3500);
+      } else if (matchedMembers.length === 1) {
+        executeMemberCheckin(matchedMembers[0]);
       } else {
-        const member = matchedMembers[0];
-        const curPasses = member.remainingPasses !== undefined 
-          ? Number(member.remainingPasses) 
-          : (member.passCount !== undefined ? Number(member.passCount) : 0);
-
-        if (curPasses <= 0) {
-          resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400 text-center space-y-3';
-          resBox.innerHTML = `
-            <div class="text-4xl">⚠️</div>
-            <h3 class="text-xl sm:text-2xl font-extrabold">${member.name} 회원님</h3>
-            <p class="text-base font-bold text-amber-800">잔여 수강권이 0회입니다.</p>
-            <p class="text-xs text-amber-700">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
+        // 동일 뒷자리 중복 회원 존재 시 성함 선택 화면 표출
+        resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-amber-400 text-center space-y-4';
+        
+        let buttonsHtml = matchedMembers.map(m => {
+          const maskedName = m.name ? (m.name.length > 2 ? m.name[0] + '*' + m.name.slice(2) : m.name[0] + '*') : '회원';
+          const maskedPhone = m.phone ? m.phone.replace(/(\d{3})\d{4}(\d{4})/, '$1-****-$2') : '';
+          return `
+            <button onclick="selectKioskMember('${m.id}')" class="w-full py-3.5 px-4 bg-sky-50 hover:bg-[#0092B8] hover:text-white border-2 border-[#0092B8] rounded-2xl font-extrabold text-sm transition-all flex justify-between items-center shadow-md active:scale-95">
+              <span>👤 ${maskedName} 회원님</span>
+              <span class="text-xs font-mono opacity-80">${maskedPhone}</span>
+            </button>
           `;
-          playKioskChime();
-          setTimeout(() => {
-            speakKioskVoice(`${member.name} 회원님. 잔여 수강권이 0회입니다.`);
-          }, 350);
-        } else {
-          const nextPasses = Math.max(0, curPasses - 1);
-          member.remainingPasses = nextPasses;
-          member.passCount = nextPasses;
-          saveMembersLocal();
+        }).join('');
 
-          if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
-
-          const todayStr = getLocalDateStr(0);
-          const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
-
-          const logEntry = {
-            id: 'ATT-' + Date.now(),
-            date: todayStr,
-            time: timeStr,
-            memberId: member.id || ('M-' + Date.now()),
-            memberName: member.name || '회원',
-            phone: member.phone || '',
-            passType: member.passType || '수강권',
-            remainingPasses: nextPasses,
-            source: '태블릿 키오스크 출석'
-          };
-
-          if (!window.attendanceLogs) window.attendanceLogs = [];
-          window.attendanceLogs.unshift(logEntry);
-
-          if (typeof window.syncAttendanceToCloud === 'function') {
-            window.syncAttendanceToCloud(logEntry);
-          }
-
-          playKioskChime();
-          setTimeout(() => {
-            speakKioskVoice(`${member.name} 회원님 환영합니다. 잔여 수강권은 ${nextPasses}회 입니다.`);
-          }, 350);
-
-          resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-emerald-400 text-center space-y-4';
-          resBox.innerHTML = `
-            <div class="text-4xl">🎉</div>
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">${member.name} 회원님 환영합니다!</h3>
-            <div class="p-5 bg-sky-50 rounded-2xl border-2 border-[#0092B8] text-center w-full shadow-inner space-y-1">
-              <p class="text-xs font-bold text-slate-500">출석 완료 후 잔여 수강권</p>
-              <p class="text-4xl sm:text-5xl font-black text-[#0092B8] my-1">${nextPasses}회 <span class="text-sm text-slate-500 font-bold">/ 총 ${member.totalPasses || 10}회</span></p>
-              <p class="text-xs text-slate-600 font-semibold">${member.passType || '수강권'}${member.expiryDate ? ' · 만료일: ' + member.expiryDate : ''}</p>
-            </div>
-          `;
-        }
+        resBox.innerHTML = `
+          <div class="text-3xl">👥</div>
+          <h3 class="text-xl sm:text-2xl font-extrabold text-[#0C3559]">성함을 선택해 주세요</h3>
+          <p class="text-xs text-slate-500">동일한 뒷자리 번호로 등록된 회원이 ${matchedMembers.length}명 있습니다.</p>
+          <div class="space-y-2 pt-2">
+            ${buttonsHtml}
+          </div>
+        `;
       }
+    }
 
-      setTimeout(() => {
-        kioskInputDigits = '';
-        updateKioskDisplay();
-        resetKioskDefaultWelcomeCard();
-      }, 4500);
+    function selectKioskMember(memberId) {
+      const member = window.members.find(m => m.id === memberId);
+      if (member) {
+        executeMemberCheckin(member);
+      }
     }
 
     function checkUrlRouting() {
@@ -1342,20 +1454,20 @@
         if (p.id === 'p0') badgeBg = 'bg-amber-100 text-amber-900 border border-amber-300';
 
         return `
-          <div class="bg-white rounded-3xl p-8 border ${p.id === 'p0' ? 'border-amber-300 ring-2 ring-amber-200/60' : 'border-stone-200'} shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative">
-            <span class="absolute top-6 right-6 px-3.5 py-1 rounded-full text-[11px] font-semibold tracking-wider ${badgeBg} uppercase">${p.badge}</span>
+          <div class="bg-white rounded-3xl p-6 sm:p-7 border ${p.id === 'p0' ? 'border-amber-300 ring-2 ring-amber-200/60' : 'border-stone-200'} shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative">
+            <span class="absolute top-6 right-6 px-3 py-1 rounded-full text-[10px] font-extrabold tracking-wider ${badgeBg} uppercase">${p.badge}</span>
             <div>
-              <div class="flex items-center gap-2 text-xs font-semibold text-[#0092B8] mb-2"><span>⏱ ${p.duration}분 1:1 맞춤 수기 케어</span></div>
-              <h3 class="text-2xl font-semibold text-[#0C3559] mb-1">${p.title}</h3>
-              <p class="text-xs sm:text-sm text-[#0C3559]/75 mb-5 leading-relaxed font-medium">${p.subtitle}</p>
+              <div class="flex items-center gap-1.5 text-xs font-semibold text-[#0092B8] mb-2"><span>⏱ ${p.duration}분 1:1 맞춤 수기 케어</span></div>
+              <h3 class="text-xl font-bold text-[#0C3559] mb-1">${p.title}</h3>
+              <p class="text-xs text-[#0C3559]/75 mb-4 leading-relaxed font-medium">${p.subtitle}</p>
               ${priceBoxHtml}
-              <p class="text-xs sm:text-sm text-[#0C3559]/80 leading-relaxed mb-6 font-normal">${p.description}</p>
-              <div class="space-y-2 mb-8">
-                <p class="text-[11px] font-semibold text-[#0C3559]/60 uppercase tracking-wider">권장 케어 대상</p>
-                ${p.targets.map(t => `<div class="flex items-center gap-2 text-xs sm:text-sm text-[#0C3559] font-semibold"><span class="text-[#0092B8]">✓</span><span>${t}</span></div>`).join('')}
+              <p class="text-xs text-[#0C3559]/80 leading-relaxed mb-5 font-normal">${p.description}</p>
+              <div class="space-y-1.5 mb-6">
+                <p class="text-[10px] font-semibold text-[#0C3559]/60 uppercase tracking-wider">권장 케어 대상</p>
+                ${p.targets.map(t => `<div class="flex items-start gap-1.5 text-xs text-[#0C3559] font-semibold"><span class="text-[#0092B8]">✓</span><span>${t}</span></div>`).join('')}
               </div>
             </div>
-            <button onclick="selectProgramAndBook('${p.id}')" class="w-full py-4 rounded-2xl ${p.id === 'p0' ? 'bg-[#0092B8] hover:bg-[#007a99]' : 'bg-[#0C3559] hover:bg-[#082239]'} text-white font-semibold text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-md">${p.title} 선택 및 예약 ➔</button>
+            <button onclick="selectProgramAndBook('${p.id}')" class="w-full py-3.5 rounded-2xl ${p.id === 'p0' ? 'bg-amber-400 hover:bg-amber-300 text-[#0C3559]' : 'bg-[#0C3559] hover:bg-[#082239] text-white'} font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1">${p.title} 선택 및 예약 ➔</button>
           </div>
         `;
       }).join('');
@@ -1379,13 +1491,12 @@
           <div>
             <div class="flex items-center gap-2">
               <h4 class="text-lg font-semibold text-white">${p.title}</h4>
-              <span class="text-xs px-2.5 py-0.5 rounded bg-white/20 text-stone-200 font-semibold">${p.duration}분</span>
-              ${p.id === 'p0' ? '<span class="text-[10px] px-2 py-0.5 rounded bg-amber-400 text-stone-900 font-bold">첫방문 추천</span>' : ''}
+              <span class="text-xs px-2.5 py-0.5 rounded ${p.id === 'p0' ? 'bg-amber-400 text-[#0C3559] font-bold' : 'bg-white/20 text-stone-200 font-semibold'}">${p.duration}분</span>
             </div>
             <p class="text-xs sm:text-sm text-stone-300 mt-1 font-normal">${p.subtitle}</p>
           </div>
           <div class="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-            <span class="text-sm font-semibold text-sky-300">${p.priceSingle}</span>
+            <span class="text-sm font-bold ${p.id === 'p0' ? 'text-amber-300' : 'text-sky-300'}">${p.priceSingle}</span>
             <div class="w-6 h-6 rounded-full border flex items-center justify-center ${selectedProgram.id === p.id ? 'bg-sky-400 border-sky-400 text-[#0C3559]' : 'border-stone-500'}">✓</div>
           </div>
         </div>
@@ -1449,7 +1560,7 @@
       const todayStr = getLocalDateStr(0);
 
       if (val <= todayStr || val < minDate) {
-        showToast('당일 및 지난 날짜는 예약이 불가능합니다. (최소 1일 전 사전예약만 가능)');
+        showToast('당일 예약은 불가능합니다. (최소 1일 전 사전예약만 가능)');
         document.getElementById('booking-date-input').value = minDate;
         selectedDate = minDate;
         renderStep2();
@@ -1595,7 +1706,7 @@
         <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
           <button onclick="toggleFaq(${idx})" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
             <span>${f.q}</span>
-            <span id="faq-icon-${idx}" class="text-[#0092B8] text-xs">▼</span>
+            <span id="faq-icon-${idx}" class="text-[#0092B8] text-xs transition-transform">▼</span>
           </button>
           <div id="faq-ans-${idx}" class="hidden px-5 pb-5 text-xs sm:text-sm text-[#0C3559]/85 leading-relaxed border-t border-stone-100 pt-3.5 font-normal">${f.a}</div>
         </div>
@@ -1603,25 +1714,21 @@
     }
 
     function toggleFaq(idx) {
+      const targetAns = document.getElementById(`faq-ans-${idx}`);
+      const isHidden = targetAns.classList.contains('hidden');
+
       FAQS.forEach((_, i) => {
-        const el = document.getElementById(`faq-ans-${i}`);
-        const icon = document.getElementById(`faq-icon-${i}`);
-        if (el) {
-          if (i === idx) {
-            const isHidden = el.classList.contains('hidden');
-            if (isHidden) {
-              el.classList.remove('hidden');
-              if (icon) icon.innerText = '▲';
-            } else {
-              el.classList.add('hidden');
-              if (icon) icon.innerText = '▼';
-            }
-          } else {
-            el.classList.add('hidden');
-            if (icon) icon.innerText = '▼';
-          }
-        }
+        const ansEl = document.getElementById(`faq-ans-${i}`);
+        const iconEl = document.getElementById(`faq-icon-${i}`);
+        if (ansEl) ansEl.classList.add('hidden');
+        if (iconEl) iconEl.innerText = '▼';
       });
+
+      if (isHidden) {
+        targetAns.classList.remove('hidden');
+        const iconEl = document.getElementById(`faq-icon-${idx}`);
+        if (iconEl) iconEl.innerText = '▲';
+      }
     }
 
     window.onload = function() {
