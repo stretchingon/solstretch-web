@@ -649,56 +649,69 @@
 
     </div>
 
-    <!-- 5. 예약관리 (Reservation Management) -->
+    <!-- 5. 예약관리 (Reservation Management Section) -->
     <div id="tab-reservations" class="tab-content space-y-6">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+      
+      <!-- Top Action Bar & Header -->
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <div>
           <h3 class="text-base font-bold text-[#0C3559] flex items-center gap-2">
-            <span>📅</span> 통합 예약 관리 (월간 스케줄 & 전화 수기 접수)
+            <span>📅</span> 통합 예약 관리 (월간 스케줄 & 수기 접수 & 카카오톡 알림)
           </h3>
-          <p class="text-xs text-slate-400 mt-1">월간 달력에서 일자별 실시간 예약 스케줄을 한눈에 파악하고 관리합니다.</p>
+          <p class="text-xs text-slate-400 mt-1">운영시간 설정, 슬롯별/일자별 마감, 수기 예약 등록 및 카카오톡 확정 문자를 한곳에서 관리합니다.</p>
         </div>
-        <div class="flex items-center gap-2">
+
+        <!-- Quick Actions & View Switchers -->
+        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-start lg:justify-end">
           <div class="bg-slate-100 p-1 rounded-xl flex gap-1 border border-slate-200">
-            <button onclick="window.switchReservationView('calendar')" id="res-view-btn-calendar" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#0C3559] text-white shadow-sm">
-              📅 월간 달력 스케줄
+            <button onclick="window.switchReservationView('calendar')" id="res-view-btn-calendar" class="px-3.5 py-2 rounded-lg text-xs font-bold transition-all bg-[#0C3559] text-white shadow-sm">
+              📅 월간 달력
             </button>
-            <button onclick="window.switchReservationView('table')" id="res-view-btn-table" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
-              📋 전체 예약 목록
+            <button onclick="window.switchReservationView('table')" id="res-view-btn-table" class="px-3.5 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900">
+              📋 전체 목록
             </button>
           </div>
 
+          <button onclick="window.openSettingsModal()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5">
+            ⚙️ 운영/휴무 & 카카오톡 설정
+          </button>
+
           <button onclick="window.openManualBookingModal()" class="px-4 py-2 bg-[#0092B8] hover:bg-[#007a99] text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5">
-            📞 예약등록
+            📞 수기 예약 등록
           </button>
         </div>
       </div>
 
       <!-- VIEW 1: 월간 달력 스케줄 뷰 (Calendar View) -->
       <div id="res-view-calendar-container" class="space-y-6">
+        
+        <!-- Calendar Month Control Bar -->
         <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
           <div class="flex items-center gap-3">
-            <button onclick="window.changeResMonth(-1)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs rounded-lg transition-all">
+            <button onclick="window.changeResMonth(-1)" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs rounded-xl transition-all">
               ◀ 이전달
             </button>
-            <h4 id="res-calendar-month-title" class="text-lg font-black text-[#0C3559] tracking-tight">
-              -
+            <h4 id="res-calendar-month-title" class="text-lg font-black text-[#0C3559] tracking-tight min-w-[120px] text-center">
+              2026년 8월
             </h4>
-            <button onclick="window.changeResMonth(1)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs rounded-lg transition-all">
+            <button onclick="window.changeResMonth(1)" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs rounded-xl transition-all">
               다음달 ▶
             </button>
-            <button onclick="window.resetResMonthToday()" class="px-3 py-1.5 bg-sky-50 text-[#0092B8] border border-sky-200 font-bold text-xs rounded-lg hover:bg-sky-100 transition-all">
+            <button onclick="window.resetResMonthToday()" class="px-3.5 py-2 bg-sky-50 text-[#0092B8] border border-sky-200 font-bold text-xs rounded-xl hover:bg-sky-100 transition-all">
               오늘
             </button>
           </div>
 
-          <div class="flex items-center gap-3 text-xs font-bold text-slate-500">
-            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> 예약 확정</span>
-            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span> 취소됨</span>
+          <!-- Status Legend -->
+          <div class="flex flex-wrap items-center gap-3 text-xs font-bold text-slate-500">
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> 홈페이지 예약</span>
             <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> 전화 수기접수</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span> 취소됨</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-slate-400 inline-block"></span> 임의 마감</span>
           </div>
         </div>
 
+        <!-- Monthly Calendar Grid -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-4 sm:p-6">
           <div class="grid grid-cols-7 text-center font-extrabold text-xs text-slate-500 mb-3 border-b border-slate-100 pb-3">
             <div class="text-rose-500">일 (Sun)</div>
@@ -711,41 +724,818 @@
           </div>
 
           <div id="res-calendar-grid" class="grid grid-cols-7 gap-1.5 sm:gap-2 text-xs">
+            <!-- Rendered via JS -->
           </div>
         </div>
 
+        <!-- Selected Date Detailed Timeline & Slot Management -->
         <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-          <div class="flex justify-between items-center border-b pb-3">
-            <h4 class="font-bold text-[#0C3559] text-sm flex items-center gap-2">
-              <span>📌</span> <span id="res-selected-date-label">선택 날짜 상세 예약 스케줄</span>
-            </h4>
-            <button onclick="window.openManualBookingModalForSelectedDate()" class="px-3 py-1.5 bg-[#0092B8] hover:bg-[#007a99] text-white rounded-lg text-xs font-bold transition-all shadow-sm">
-              + 해당 날짜 수기 예약 등록
-            </button>
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-4">
+            <div>
+              <h4 class="font-bold text-[#0C3559] text-base flex items-center gap-2">
+                <span>📌</span> <span id="res-selected-date-label">선택 날짜 상세 예약 스케줄</span>
+              </h4>
+              <p class="text-xs text-slate-400 mt-0.5">원하는 타임 슬롯별로 예약 접수 및 개별 마감/해제가 가능합니다.</p>
+            </div>
+            
+            <div class="flex gap-2">
+              <button onclick="window.toggleWholeDayClose()" id="btn-toggle-day-close" class="px-3.5 py-2 bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 rounded-xl text-xs font-bold transition-all">
+                🔒 하루 전체 마감 / 해제
+              </button>
+              <button onclick="window.openManualBookingModalForSelectedDate()" class="px-3.5 py-2 bg-[#0092B8] hover:bg-[#007a99] text-white rounded-xl text-xs font-bold transition-all shadow-sm">
+                + 해당 날짜 수기 예약 등록
+              </button>
+            </div>
           </div>
 
-          <div id="res-selected-date-list" class="space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
-            <p class="text-xs text-slate-400 py-6 text-center">날짜를 클릭하면 해당 일자의 상세 예약 스케줄이 표시됩니다.</p>
+          <!-- Time Slots Container -->
+          <div id="res-selected-date-list" class="space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar p-1">
+            <p class="text-xs text-slate-400 py-6 text-center">날짜를 클릭하면 해당 일자의 상세 시간대별 예약 스케줄이 표시됩니다.</p>
           </div>
         </div>
+
       </div>
 
       <!-- VIEW 2: 전체 예약 목록 표 (Table View) -->
       <div id="res-view-table-container" class="hidden bg-white rounded-2xl border border-slate-200 shadow-sm overflow-x-auto custom-scrollbar">
-        <table class="w-full text-xs text-left min-w-[700px]">
+        <table class="w-full text-xs text-left min-w-[750px]">
           <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
             <tr>
-              <th class="px-6 py-4 whitespace-nowrap">예약일시</th>
-              <th class="px-6 py-4 whitespace-nowrap">고객명</th>
-              <th class="px-6 py-4 whitespace-nowrap">코스명</th>
-              <th class="px-6 py-4 whitespace-nowrap">접수경로</th>
-              <th class="px-6 py-4 whitespace-nowrap">상태 (클릭 시 변경)</th>
-              <th class="px-6 py-4 text-center whitespace-nowrap">관리 (취소 / 완전 삭제)</th>
+              <th class="px-5 py-4 whitespace-nowrap">예약일시</th>
+              <th class="px-5 py-4 whitespace-nowrap">고객명 / 연락처</th>
+              <th class="px-5 py-4 whitespace-nowrap">코스명</th>
+              <th class="px-5 py-4 whitespace-nowrap">접수경로</th>
+              <th class="px-5 py-4 whitespace-nowrap">상태</th>
+              <th class="px-5 py-4 text-center whitespace-nowrap">관리 (카톡발송 / 수정 / 삭제)</th>
             </tr>
           </thead>
           <tbody id="booking-table-body" class="divide-y divide-slate-100"></tbody>
         </table>
       </div>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL 1: Operating Hours & Day-off Settings Modal -->
+  <div id="modal-settings" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in duration-200">
+      <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <h3 class="font-bold text-[#0C3559] text-base flex items-center gap-2">
+          ⚙️ 매장 운영 및 카카오톡 알림 설정
+        </h3>
+        <button onclick="window.closeModal('modal-settings')" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+      </div>
+
+      <div class="p-6 space-y-5 text-xs max-h-[70vh] overflow-y-auto custom-scrollbar">
+        <div class="p-3 bg-sky-50 border border-sky-100 rounded-xl space-y-1">
+          <p class="font-bold text-[#0092B8]">💡 초보자를 위한 안내</p>
+          <p class="text-[11px] text-slate-600 leading-relaxed">수기 예약 저장 후 카카오톡 문구를 자동으로 만들어 줍니다. 아래 매장명과 기본 설정을 확인해 주세요.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">매장/상호명 *</label>
+            <input type="text" id="cfg-shop-name" value="힐링 케어 센터" placeholder="예: 힐링 케어 센터" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">예약 수기등록 시 동작</label>
+            <select id="cfg-auto-kakao" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+              <option value="Y" selected>예약 저장 직후 카카오톡 발송 창 열기</option>
+              <option value="N">자동으로 안 열기 (필요할 때 직접 클릭)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">운영 시작 시간</label>
+            <select id="cfg-start-time" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+              <option value="08:00">08:00 AM</option>
+              <option value="09:00" selected>09:00 AM</option>
+              <option value="10:00">10:00 AM</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">운영 마감 시간</label>
+            <select id="cfg-end-time" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+              <option value="18:00">06:00 PM (18:00)</option>
+              <option value="19:00" selected>07:00 PM (19:00)</option>
+              <option value="20:00">08:00 PM (20:00)</option>
+              <option value="21:00">09:00 PM (21:00)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">예약 시간 간격</label>
+            <select id="cfg-slot-interval" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+              <option value="30">30분 단위</option>
+              <option value="60" selected>60분 단위 (1시간)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">시간대별 최대 수용 인원</label>
+            <input type="number" id="cfg-max-capacity" value="2" min="1" max="20" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-2">정기 휴무 요일 선택</label>
+          <div class="flex flex-wrap gap-2" id="cfg-weekly-holidays">
+            <button type="button" onclick="window.toggleWeeklyHoliday(0)" data-day="0" class="day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600">일요일</button>
+            <button type="button" onclick="window.toggleWeeklyHoliday(1)" data-day="1" class="day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600">월요일</button>
+            <button type="button" onclick="window.toggleWeeklyHoliday(2)" data-day="2" class="day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600">화요일</button>
+            <button type="button" onclick="window.toggleWeeklyHoliday(3)" data-day="3" class="day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600">수요일</button>
+            <button type="button" onclick="window.toggleWeeklyHoliday(4)" data-day="4" class="day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600">목요일</button>
+            <button type="button" onclick="window.toggleWeeklyHoliday(5)" data-day="5" class="day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600">금요일</button>
+            <button type="button" onclick="window.toggleWeeklyHoliday(6)" data-day="6" class="day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600">토요일</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
+        <button onclick="window.closeModal('modal-settings')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs">취소</button>
+        <button onclick="window.saveSettings()" class="px-5 py-2 bg-[#0C3559] hover:bg-[#08223a] text-white font-bold rounded-xl text-xs shadow-md">설정 저장 적용</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Manual Booking Registration & Edit Modal -->
+  <div id="modal-booking" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in duration-200">
+      <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+        <h3 id="modal-booking-title" class="font-bold text-[#0C3559] text-base flex items-center gap-2">
+          📞 수기 예약 등록 및 수정
+        </h3>
+        <button onclick="window.closeModal('modal-booking')" class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+      </div>
+
+      <form onsubmit="window.handleBookingSubmit(event)" class="p-6 space-y-4 text-xs">
+        <input type="hidden" id="booking-id" value="" />
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">예약 날짜 *</label>
+            <input type="date" id="book-date" required class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">예약 시간 *</label>
+            <select id="book-time" required class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+              <!-- Time choices dynamically generated -->
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">고객명 *</label>
+            <input type="text" id="book-name" placeholder="홍길동" required class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">연락처 *</label>
+            <input type="tel" id="book-phone" placeholder="010-1234-5678" required class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">예약 코스 *</label>
+            <select id="book-course" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+              <option value="베이직 케어 (60분)">베이직 케어 (60분)</option>
+              <option value="프리미엄 케어 (90분)">프리미엄 케어 (90분)</option>
+              <option value="VIP 전신 케어 (120분)">VIP 전신 케어 (120분)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">접수 경로</label>
+            <select id="book-channel" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+              <option value="전화 (수기접수)" selected>📞 전화 (수기접수)</option>
+              <option value="현장 (방문접수)">🏢 현장 (방문접수)</option>
+              <option value="홈페이지 (온라인)">🌐 홈페이지 (온라인)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">예약 상태</label>
+          <select id="book-status" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]">
+            <option value="CONFIRMED" selected>예약 확정</option>
+            <option value="CANCELLED">예약 취소</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">관리자 메모 / 요청사항</label>
+          <textarea id="book-memo" rows="2" placeholder="고객 특이사항 또는 요청사항 기재" class="w-full p-2.5 border border-slate-200 rounded-xl font-medium focus:ring-2 focus:ring-[#0092B8]"></textarea>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl flex items-center justify-between text-amber-900">
+          <span class="font-bold text-[11px]">💬 저장 후 카카오톡 예약 확정문자 발송창 띄우기</span>
+          <input type="checkbox" id="book-send-kakao" checked class="w-4 h-4 accent-[#0092B8]" />
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="window.closeModal('modal-booking')" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs">취소</button>
+          <button type="submit" class="px-5 py-2 bg-[#0092B8] hover:bg-[#007a99] text-white font-bold rounded-xl text-xs shadow-md">저장하기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: KakaoTalk Notification Sender Modal -->
+  <div id="modal-kakao" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in duration-200">
+      <div class="p-5 border-b border-amber-100 flex justify-between items-center bg-amber-400 text-amber-950">
+        <h3 class="font-extrabold text-base flex items-center gap-2">
+          💬 카카오톡 예약 확정 안내문 전송
+        </h3>
+        <button onclick="window.closeModal('modal-kakao')" class="hover:text-black font-bold text-lg">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs">
+        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 space-y-1">
+          <p class="font-bold flex items-center gap-1">📌 쉬운 카카오톡 전송 방법</p>
+          <p class="text-[11px] leading-relaxed">
+            1. 아래 <b>[카카오톡 문구 복사하기]</b>를 누르면 문장이 자동으로 복사됩니다.<br/>
+            2. <b>[카카오톡 열기]</b> 버튼을 눌러 고객 채팅방에 붙여넣기(Ctrl+V)하여 전송하세요.
+          </p>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">고객에게 전송될 카카오톡 메시지 내용</label>
+          <textarea id="kakao-message-text" rows="8" class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-mono text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-amber-400"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button onclick="window.copyKakaoMessage()" class="px-4 py-3 bg-amber-400 hover:bg-amber-500 text-amber-950 font-extrabold rounded-xl shadow-sm text-xs flex items-center justify-center gap-1">
+            📋 문구 복사하기
+          </button>
+          <button onclick="window.openKakaoApp()" class="px-4 py-3 bg-slate-900 hover:bg-black text-white font-extrabold rounded-xl shadow-sm text-xs flex items-center justify-center gap-1">
+            💬 카카오톡 열기
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="window.closeModal('modal-kakao')" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-xs">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    // Main App State Store
+    const state = {
+      currentView: 'calendar', // 'calendar' | 'table'
+      currentYear: 2026,
+      currentMonth: 7, // 0-indexed (7 = August)
+      selectedDateStr: '2026-08-17',
+      
+      // Store configuration
+      config: {
+        shopName: "힐링 케어 센터",
+        autoKakao: "Y",
+        startTime: "09:00",
+        endTime: "19:00",
+        slotInterval: 60, // in minutes
+        maxCapacity: 2,
+        weeklyHolidays: [0] // 0 = Sunday
+      },
+
+      // Custom closed slots store: e.g. "2026-08-17" : ["09:00", "10:00"] or "2026-08-17": ["FULL_DAY"]
+      closedSlots: {
+        '2026-08-20': ['FULL_DAY'], // Closed entire day
+        '2026-08-18': ['14:00', '15:00'] // Closed specific slots
+      },
+
+      // Sample Bookings Data
+      bookings: [
+        { id: 'bk-1', date: '2026-08-17', time: '10:00', name: '김민준', phone: '010-2345-6789', course: '베이직 케어 (60분)', channel: '홈페이지 (온라인)', status: 'CONFIRMED', memo: '첫 방문 고객' },
+        { id: 'bk-2', date: '2026-08-17', time: '14:00', name: '이서연', phone: '010-3456-7890', course: '프리미엄 케어 (90분)', channel: '전화 (수기접수)', status: 'CONFIRMED', memo: '어깨 집중 관리 요청' },
+        { id: 'bk-3', date: '2026-08-19', time: '11:00', name: '박지훈', phone: '010-4567-8901', course: 'VIP 전신 케어 (120분)', channel: '홈페이지 (온라인)', status: 'CONFIRMED', memo: '' },
+        { id: 'bk-4', date: '2026-08-19', time: '15:00', name: '최수빈', phone: '010-5678-9012', course: '베이직 케어 (60분)', channel: '전화 (수기접수)', status: 'CANCELLED', memo: '개인 사정 취소' }
+      ]
+    };
+
+    // Helper: Toast Notifications
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'bg-slate-900 text-white text-xs font-bold px-4 py-3 rounded-xl shadow-xl transition-all transform translate-y-2 opacity-0 flex items-center gap-2 pointer-events-auto';
+      toast.innerHTML = message;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // Helper: Modal Controllers
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // View Switching
+    function switchReservationView(view) {
+      state.currentView = view;
+      const calContainer = document.getElementById('res-view-calendar-container');
+      const tblContainer = document.getElementById('res-view-table-container');
+      const calBtn = document.getElementById('res-view-btn-calendar');
+      const tblBtn = document.getElementById('res-view-btn-table');
+
+      if (view === 'calendar') {
+        calContainer.classList.remove('hidden');
+        tblContainer.classList.add('hidden');
+        calBtn.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all bg-[#0C3559] text-white shadow-sm";
+        tblBtn.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+        renderCalendar();
+        renderSelectedDateSlots();
+      } else {
+        calContainer.classList.add('hidden');
+        tblContainer.classList.remove('hidden');
+        calBtn.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all text-slate-600 hover:text-slate-900";
+        tblBtn.className = "px-3.5 py-2 rounded-lg text-xs font-bold transition-all bg-[#0C3559] text-white shadow-sm";
+        renderTableList();
+      }
+    }
+
+    function changeResMonth(delta) {
+      state.currentMonth += delta;
+      if (state.currentMonth > 11) {
+        state.currentMonth = 0;
+        state.currentYear++;
+      } else if (state.currentMonth < 0) {
+        state.currentMonth = 11;
+        state.currentYear--;
+      }
+      renderCalendar();
+    }
+
+    function resetResMonthToday() {
+      const today = new Date();
+      state.currentYear = today.getFullYear();
+      state.currentMonth = today.getMonth();
+      state.selectedDateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+      renderCalendar();
+      renderSelectedDateSlots();
+    }
+
+    function renderCalendar() {
+      const monthTitle = document.getElementById('res-calendar-month-title');
+      monthTitle.textContent = `${state.currentYear}년 ${state.currentMonth + 1}월`;
+
+      const grid = document.getElementById('res-calendar-grid');
+      grid.innerHTML = '';
+
+      const firstDay = new Date(state.currentYear, state.currentMonth, 1).getDay();
+      const lastDate = new Date(state.currentYear, state.currentMonth + 1, 0).getDate();
+
+      // Empty padding cells for previous month
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = "bg-slate-50/50 rounded-xl min-h-[85px] border border-dashed border-slate-100";
+        grid.appendChild(emptyCell);
+      }
+
+      // Days rendering
+      for (let day = 1; day <= lastDate; day++) {
+        const dateStr = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayOfWeek = new Date(state.currentYear, state.currentMonth, day).getDay();
+        
+        const isSelected = (dateStr === state.selectedDateStr);
+        const dayBookings = state.bookings.filter(b => b.date === dateStr && b.status !== 'CANCELLED');
+        const isWeeklyHoliday = state.config.weeklyHolidays.includes(dayOfWeek);
+        const isClosedDay = state.closedSlots[dateStr] && state.closedSlots[dateStr].includes('FULL_DAY');
+
+        const dayCard = document.createElement('div');
+        dayCard.onclick = () => selectDate(dateStr);
+
+        let cardBg = "bg-white hover:border-[#0092B8]";
+        if (isSelected) cardBg = "bg-sky-50/70 border-2 border-[#0092B8] shadow-sm";
+        if (isClosedDay || isWeeklyHoliday) cardBg = "bg-slate-100/80 border-slate-200 text-slate-400";
+
+        let dayNumColor = "text-slate-800";
+        if (dayOfWeek === 0) dayNumColor = "text-rose-500 font-bold";
+        if (dayOfWeek === 6) dayNumColor = "text-sky-600 font-bold";
+
+        dayCard.className = `p-2 rounded-xl border transition-all cursor-pointer min-h-[90px] flex flex-col justify-between ${cardBg}`;
+
+        let statusBadges = '';
+        if (isWeeklyHoliday) {
+          statusBadges = `<span class="px-1.5 py-0.5 bg-slate-200 text-slate-600 rounded text-[10px] font-bold">정기휴무</span>`;
+        } else if (isClosedDay) {
+          statusBadges = `<span class="px-1.5 py-0.5 bg-rose-100 text-rose-600 rounded text-[10px] font-bold">전체마감</span>`;
+        } else if (dayBookings.length > 0) {
+          statusBadges = `<span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[10px] font-bold">예약 ${dayBookings.length}건</span>`;
+        } else {
+          statusBadges = `<span class="text-[10px] text-slate-300">가능</span>`;
+        }
+
+        dayCard.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="${dayNumColor} text-xs font-black">${day}</span>
+            ${statusBadges}
+          </div>
+          <div class="space-y-1 mt-1">
+            ${dayBookings.slice(0, 2).map(b => `
+              <div class="truncate text-[10px] px-1.5 py-0.5 rounded font-bold ${b.channel.includes('전화') ? 'bg-amber-100 text-amber-900' : 'bg-emerald-50 text-emerald-800'}">
+                ${b.time} ${b.name}
+              </div>
+            `).join('')}
+            ${dayBookings.length > 2 ? `<div class="text-[9px] text-slate-400 font-bold text-center">+${dayBookings.length - 2}건 더보기</div>` : ''}
+          </div>
+        `;
+
+        grid.appendChild(dayCard);
+      }
+    }
+
+    function selectDate(dateStr) {
+      state.selectedDateStr = dateStr;
+      renderCalendar();
+      renderSelectedDateSlots();
+    }
+
+    function getTimeSlots() {
+      const slots = [];
+      let [startH] = state.config.startTime.split(':').map(Number);
+      let [endH] = state.config.endTime.split(':').map(Number);
+      const interval = state.config.slotInterval;
+
+      let currMinutes = startH * 60;
+      const endMinutes = endH * 60;
+
+      while (currMinutes < endMinutes) {
+        const h = Math.floor(currMinutes / 60);
+        const m = currMinutes % 60;
+        const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        slots.push(timeStr);
+        currMinutes += interval;
+      }
+      return slots;
+    }
+
+    function renderSelectedDateSlots() {
+      const label = document.getElementById('res-selected-date-label');
+      label.textContent = `${state.selectedDateStr} 상세 시간대별 예약 & 마감 관리`;
+
+      const listContainer = document.getElementById('res-selected-date-list');
+      listContainer.innerHTML = '';
+
+      const dateStr = state.selectedDateStr;
+      const dayClosedList = state.closedSlots[dateStr] || [];
+      const isWholeDayClosed = dayClosedList.includes('FULL_DAY');
+
+      const slots = getTimeSlots();
+
+      slots.forEach(slotTime => {
+        const slotBookings = state.bookings.filter(b => b.date === dateStr && b.time === slotTime && b.status !== 'CANCELLED');
+        const isClosedSlot = isWholeDayClosed || dayClosedList.includes(slotTime);
+        const isFull = slotBookings.length >= state.config.maxCapacity;
+
+        const slotCard = document.createElement('div');
+        slotCard.className = `p-3.5 rounded-xl border transition-all flex flex-col md:flex-row justify-between md:items-center gap-3 ${
+          isClosedSlot ? 'bg-slate-100 border-slate-200 opacity-75' : isFull ? 'bg-amber-50/50 border-amber-200' : 'bg-white border-slate-200 hover:border-sky-300'
+        }`;
+
+        slotCard.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="px-3 py-1.5 rounded-lg font-black text-xs ${isClosedSlot ? 'bg-slate-300 text-slate-600' : 'bg-[#0C3559] text-white'}">
+              ⏰ ${slotTime}
+            </div>
+            <div>
+              <span class="text-xs font-bold ${isClosedSlot ? 'text-rose-600' : isFull ? 'text-amber-600' : 'text-emerald-600'}">
+                ${isClosedSlot ? '🔒 관리자 마감됨' : isFull ? '⚠️ 예약 마감 (정원초과)' : `✅ 예약 가능 (${slotBookings.length}/${state.config.maxCapacity}명)`}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <div class="space-y-1.5">
+              ${slotBookings.map(b => `
+                <div class="p-2 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center text-xs">
+                  <div>
+                    <span class="font-bold text-slate-800">${b.name}</span> (${b.phone})
+                    <span class="text-[10px] text-slate-400 block">${b.course} | ${b.channel}</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button onclick="window.openKakaoModal('${b.id}')" class="px-2 py-1 bg-yellow-400 hover:bg-yellow-500 text-amber-950 rounded-lg text-[11px] font-bold shadow-2xs">💬 카톡발송</button>
+                    <button onclick="window.editBooking('${b.id}')" class="px-2 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900">수정</button>
+                    <button onclick="window.cancelBooking('${b.id}')" class="px-2 py-1 bg-rose-50 border border-rose-200 rounded-lg text-[11px] font-bold text-rose-600 hover:bg-rose-100">취소</button>
+                  </div>
+                </div>
+              `).join('')}
+              ${slotBookings.length === 0 && !isClosedSlot ? '<p class="text-[11px] text-slate-400 py-0.5">등록된 예약이 없습니다.</p>' : ''}
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 justify-end pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
+            <button onclick="window.toggleSlotClose('${slotTime}')" class="px-3 py-1.5 ${isClosedSlot ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-rose-500 hover:bg-rose-600 text-white'} rounded-lg text-xs font-bold transition-all shadow-sm">
+              ${isClosedSlot ? '🔓 해당시간 해제' : '🔒 해당시간 마감'}
+            </button>
+          </div>
+        `;
+
+        listContainer.appendChild(slotCard);
+      });
+    }
+
+    function toggleSlotClose(slotTime) {
+      const dateStr = state.selectedDateStr;
+      if (!state.closedSlots[dateStr]) {
+        state.closedSlots[dateStr] = [];
+      }
+
+      const index = state.closedSlots[dateStr].indexOf(slotTime);
+      if (index > -1) {
+        state.closedSlots[dateStr].splice(index, 1);
+        showToast(`🔓 ${dateStr} ${slotTime} 예약이 마감 해제되었습니다.`);
+      } else {
+        state.closedSlots[dateStr].push(slotTime);
+        showToast(`🔒 ${dateStr} ${slotTime} 예약이 관리자에 의해 마감되었습니다.`);
+      }
+
+      renderCalendar();
+      renderSelectedDateSlots();
+    }
+
+    function toggleWholeDayClose() {
+      const dateStr = state.selectedDateStr;
+      if (!state.closedSlots[dateStr]) {
+        state.closedSlots[dateStr] = [];
+      }
+
+      const isClosed = state.closedSlots[dateStr].includes('FULL_DAY');
+      if (isClosed) {
+        state.closedSlots[dateStr] = state.closedSlots[dateStr].filter(s => s !== 'FULL_DAY');
+        showToast(`🔓 ${dateStr} 하루 전체 마감이 해제되었습니다.`);
+      } else {
+        state.closedSlots[dateStr].push('FULL_DAY');
+        showToast(`🔒 ${dateStr} 하루 전체가 휴무/마감 처리되었습니다.`);
+      }
+
+      renderCalendar();
+      renderSelectedDateSlots();
+    }
+
+    function openManualBookingModal() {
+      document.getElementById('booking-id').value = '';
+      document.getElementById('modal-booking-title').textContent = '📞 수기 예약 신규 등록';
+      document.getElementById('book-date').value = state.selectedDateStr || new Date().toISOString().split('T')[0];
+      
+      // Populate times
+      const timeSelect = document.getElementById('book-time');
+      timeSelect.innerHTML = getTimeSlots().map(t => `<option value="${t}">${t}</option>`).join('');
+      
+      document.getElementById('book-name').value = '';
+      document.getElementById('book-phone').value = '';
+      document.getElementById('book-course').selectedIndex = 0;
+      document.getElementById('book-channel').value = '전화 (수기접수)';
+      document.getElementById('book-status').value = 'CONFIRMED';
+      document.getElementById('book-memo').value = '';
+      document.getElementById('book-send-kakao').checked = true;
+
+      document.getElementById('modal-booking').classList.remove('hidden');
+    }
+
+    function openManualBookingModalForSelectedDate() {
+      openManualBookingModal();
+    }
+
+    function editBooking(bookingId) {
+      const b = state.bookings.find(item => item.id === bookingId);
+      if (!b) return;
+
+      document.getElementById('booking-id').value = b.id;
+      document.getElementById('modal-booking-title').textContent = '✏️ 수기 예약 내용 수정';
+      document.getElementById('book-date').value = b.date;
+
+      const timeSelect = document.getElementById('book-time');
+      timeSelect.innerHTML = getTimeSlots().map(t => `<option value="${t}" ${t === b.time ? 'selected' : ''}>${t}</option>`).join('');
+
+      document.getElementById('book-name').value = b.name;
+      document.getElementById('book-phone').value = b.phone;
+      document.getElementById('book-course').value = b.course;
+      document.getElementById('book-channel').value = b.channel;
+      document.getElementById('book-status').value = b.status;
+      document.getElementById('book-memo').value = b.memo || '';
+      document.getElementById('book-send-kakao').checked = false;
+
+      document.getElementById('modal-booking').classList.remove('hidden');
+    }
+
+    function handleBookingSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('booking-id').value;
+      const date = document.getElementById('book-date').value;
+      const time = document.getElementById('book-time').value;
+      const name = document.getElementById('book-name').value.trim();
+      const phone = document.getElementById('book-phone').value.trim();
+      const course = document.getElementById('book-course').value;
+      const channel = document.getElementById('book-channel').value;
+      const status = document.getElementById('book-status').value;
+      const memo = document.getElementById('book-memo').value.trim();
+      const sendKakaoCheck = document.getElementById('book-send-kakao').checked;
+
+      let targetBooking = null;
+
+      if (id) {
+        targetBooking = state.bookings.find(b => b.id === id);
+        if (targetBooking) {
+          targetBooking.date = date;
+          targetBooking.time = time;
+          targetBooking.name = name;
+          targetBooking.phone = phone;
+          targetBooking.course = course;
+          targetBooking.channel = channel;
+          targetBooking.status = status;
+          targetBooking.memo = memo;
+          showToast('✏️ 예약 내용이 성공적으로 수정되었습니다.');
+        }
+      } else {
+        targetBooking = {
+          id: 'bk-' + Date.now(),
+          date, time, name, phone, course, channel, status, memo
+        };
+        state.bookings.push(targetBooking);
+        showToast('✅ 새 수기 예약이 접수되었습니다.');
+      }
+
+      closeModal('modal-booking');
+      renderCalendar();
+      renderSelectedDateSlots();
+      if (state.currentView === 'table') renderTableList();
+
+      // Open KakaoTalk Notice modal if checked
+      if (sendKakaoCheck && targetBooking) {
+        openKakaoModal(targetBooking.id);
+      }
+    }
+
+    function cancelBooking(bookingId) {
+      const b = state.bookings.find(item => item.id === bookingId);
+      if (b) {
+        b.status = 'CANCELLED';
+        showToast('⚠️ 예약이 취소 처리되었습니다.');
+        renderCalendar();
+        renderSelectedDateSlots();
+        if (state.currentView === 'table') renderTableList();
+      }
+    }
+
+    function deleteBooking(bookingId) {
+      state.bookings = state.bookings.filter(item => item.id !== bookingId);
+      showToast('🗑️ 예약이 полностью 삭제되었습니다.');
+      renderCalendar();
+      renderSelectedDateSlots();
+      if (state.currentView === 'table') renderTableList();
+    }
+
+    function openKakaoModal(bookingId) {
+      const booking = state.bookings.find(b => b.id === bookingId);
+      if (!booking) return;
+
+      const shopName = state.config.shopName || "힐링 케어 센터";
+      
+      const msg = `[${shopName}] 예약이 확정되었습니다.\n\n` +
+        `👤 고객명: ${booking.name}님\n` +
+        `📅 예약일시: ${booking.date} ${booking.time}\n` +
+        `💆 예약코스: ${booking.course}\n` +
+        `📞 연락처: ${booking.phone}\n` +
+        (booking.memo ? `📝 참고사항: ${booking.memo}\n` : '') +
+        `\n안내해 드린 시간에 방문 부탁드립니다. 감사합니다! 😊`;
+
+      document.getElementById('kakao-message-text').value = msg;
+      document.getElementById('modal-kakao').classList.remove('hidden');
+    }
+
+    function copyKakaoMessage() {
+      const textarea = document.getElementById('kakao-message-text');
+      textarea.select();
+      document.execCommand('copy');
+      showToast('📋 카카오톡 안내 문구가 복사되었습니다!');
+    }
+
+    function openKakaoApp() {
+      copyKakaoMessage();
+      window.open('https://kakaotalk.com', '_blank');
+    }
+
+    function openSettingsModal() {
+      document.getElementById('cfg-shop-name').value = state.config.shopName || "힐링 케어 센터";
+      document.getElementById('cfg-auto-kakao').value = state.config.autoKakao || "Y";
+      document.getElementById('cfg-start-time').value = state.config.startTime;
+      document.getElementById('cfg-end-time').value = state.config.endTime;
+      document.getElementById('cfg-slot-interval').value = state.config.slotInterval;
+      document.getElementById('cfg-max-capacity').value = state.config.maxCapacity;
+
+      document.querySelectorAll('#cfg-weekly-holidays .day-btn').forEach(btn => {
+        const d = parseInt(btn.dataset.day, 10);
+        if (state.config.weeklyHolidays.includes(d)) {
+          btn.className = "day-btn px-3 py-1.5 bg-rose-500 text-white border border-rose-500 rounded-lg font-bold transition-all";
+        } else {
+          btn.className = "day-btn px-3 py-1.5 border border-slate-200 rounded-lg font-bold transition-all text-slate-600 hover:bg-slate-100";
+        }
+      });
+
+      document.getElementById('modal-settings').classList.remove('hidden');
+    }
+
+    function toggleWeeklyHoliday(dayNum) {
+      const idx = state.config.weeklyHolidays.indexOf(dayNum);
+      if (idx > -1) {
+        state.config.weeklyHolidays.splice(idx, 1);
+      } else {
+        state.config.weeklyHolidays.push(dayNum);
+      }
+      openSettingsModal(); // Refresh modal state
+    }
+
+    function saveSettings() {
+      state.config.shopName = document.getElementById('cfg-shop-name').value.trim() || "힐링 케어 센터";
+      state.config.autoKakao = document.getElementById('cfg-auto-kakao').value;
+      state.config.startTime = document.getElementById('cfg-start-time').value;
+      state.config.endTime = document.getElementById('cfg-end-time').value;
+      state.config.slotInterval = parseInt(document.getElementById('cfg-slot-interval').value, 10);
+      state.config.maxCapacity = parseInt(document.getElementById('cfg-max-capacity').value, 10);
+
+      closeModal('modal-settings');
+      showToast('⚙️ 매장 운영 및 카카오톡 설정이 저장되었습니다.');
+      renderCalendar();
+      renderSelectedDateSlots();
+    }
+
+    function renderTableList() {
+      const tbody = document.getElementById('booking-table-body');
+      if (!tbody) return;
+
+      if (state.bookings.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-8 text-center text-slate-400">등록된 예약 내역이 없습니다.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = state.bookings.map(b => {
+        let statusBadge = `<span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded-lg font-bold text-[11px]">확정</span>`;
+        if (b.status === 'CANCELLED') {
+          statusBadge = `<span class="px-2 py-1 bg-rose-100 text-rose-700 rounded-lg font-bold text-[11px]">취소됨</span>`;
+        }
+
+        return `
+          <tr class="hover:bg-slate-50 transition-all border-b border-slate-100">
+            <td class="px-5 py-3.5 font-extrabold text-[#0C3559]">${b.date} ${b.time}</td>
+            <td class="px-5 py-3.5">
+              <span class="font-bold text-slate-800 block">${b.name}</span>
+              <span class="text-[10px] text-slate-400">${b.phone}</span>
+            </td>
+            <td class="px-5 py-3.5 font-medium">${b.course}</td>
+            <td class="px-5 py-3.5 text-slate-500">${b.channel}</td>
+            <td class="px-5 py-3.5">${statusBadge}</td>
+            <td class="px-5 py-3.5 text-center space-x-1">
+              <button onclick="window.openKakaoModal('${b.id}')" class="px-2 py-1 bg-yellow-400 hover:bg-yellow-500 text-amber-950 rounded-lg text-xs font-bold shadow-2xs">💬 카톡전송</button>
+              <button onclick="window.editBooking('${b.id}')" class="px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100">수정</button>
+              <button onclick="window.deleteBooking('${b.id}')" class="px-2 py-1 bg-rose-50 border border-rose-200 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-100">완전삭제</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.switchReservationView = switchReservationView;
+    window.changeResMonth = changeResMonth;
+    window.resetResMonthToday = resetResMonthToday;
+    window.selectDate = selectDate;
+    window.toggleSlotClose = toggleSlotClose;
+    window.toggleWholeDayClose = toggleWholeDayClose;
+    window.openSettingsModal = openSettingsModal;
+    window.toggleWeeklyHoliday = toggleWeeklyHoliday;
+    window.saveSettings = saveSettings;
+    window.openManualBookingModal = openManualBookingModal;
+    window.openManualBookingModalForSelectedDate = openManualBookingModalForSelectedDate;
+    window.handleBookingSubmit = handleBookingSubmit;
+    window.editBooking = editBooking;
+    window.cancelBooking = cancelBooking;
+    window.deleteBooking = deleteBooking;
+    window.renderTableList = renderTableList;
+    window.closeModal = closeModal;
+    window.openKakaoModal = openKakaoModal;
+    window.copyKakaoMessage = copyKakaoMessage;
+    window.openKakaoApp = openKakaoApp;
+
+    // Boot App on DOM Load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCalendar();
+      renderSelectedDateSlots();
+    });
+  </script>
+</body>
     </div>
 
     <!-- 6. 출석관리 (Attendance Management) -->
