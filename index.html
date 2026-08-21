@@ -900,7 +900,20 @@ window.updateKioskDisplay = function() {
   }
 };
 
-// 📱 키오스크 4자리 출석 조회 처리
+window.resetKioskDefaultWelcomeCard = function() {
+  const resBox = document.getElementById('kiosk-result-box');
+  if (!resBox) return;
+  resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-[#0C3559] text-white shadow-2xl border border-white/10 text-center space-y-4';
+  resBox.innerHTML = `
+    <div class="inline-flex p-4 rounded-2xl bg-[#0092B8]/20 border border-[#0092B8]/40 mb-2">
+      <span class="text-3xl">🧘‍♀️</span>
+    </div>
+    <h3 class="text-xl sm:text-2xl font-extrabold tracking-tight">회원 출석체크</h3>
+    <p class="text-xs sm:text-sm text-stone-300">휴대폰 번호 뒷자리 4자리를 입력해주세요.</p>
+  `;
+};
+
+// 1. 뒷자리 조회
 window.processKioskCheckin = async function() {
   const digits = window.kioskInputDigits.trim();
   const resBox = document.getElementById('kiosk-result-box');
@@ -912,13 +925,16 @@ window.processKioskCheckin = async function() {
 
   try {
     let allMembers = [];
-    const firestoreDb = window.db || (typeof db !== 'undefined' ? db : null);
-
-    if (firestoreDb && typeof firestoreDb.collection === 'function') {
-      const snap = await firestoreDb.collection('members').get();
-      snap.forEach(doc => allMembers.push({ id: doc.id, ...doc.data() }));
-    } else if (Array.isArray(window.members) && window.members.length > 0) {
-      allMembers = window.members;
+    
+    // Firestore SDK v10 동적 조회
+    try {
+      const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+      if (window.db) {
+        const snap = await getDocs(collection(window.db, 'members'));
+        snap.forEach(d => allMembers.push({ id: d.id, ...d.data() }));
+      }
+    } catch (e) {
+      if (Array.isArray(window.members)) allMembers = window.members;
     }
 
     const matchedMembers = allMembers.filter(m => {
@@ -932,30 +948,24 @@ window.processKioskCheckin = async function() {
         resBox.innerHTML = `
           <div class="text-4xl">⚠️</div>
           <h3 class="text-xl sm:text-2xl font-extrabold">등록되지 않은 번호입니다</h3>
-          <p class="text-xs sm:text-sm text-rose-700">입력하신 뒷자리 [${digits}] 번호로 등록된 회원을 찾을 수 없습니다.</p>
+          <p class="text-xs sm:text-sm text-rose-700">입력하신 뒷자리 [${digits}] 회원 정보를 찾을 수 없습니다.</p>
         `;
-        setTimeout(() => {
-          window.kioskInputDigits = '';
-          window.updateKioskDisplay();
-          if (typeof resetKioskDefaultWelcomeCard === 'function') resetKioskDefaultWelcomeCard();
-        }, 3500);
-      } else {
-        alert('등록되지 않은 번호입니다.');
       }
+      setTimeout(() => {
+        window.kioskInputDigits = '';
+        window.updateKioskDisplay();
+        window.resetKioskDefaultWelcomeCard();
+      }, 3000);
       return;
     }
 
     if (matchedMembers.length === 1) {
-      if (typeof window.executeMemberCheckin === 'function') {
-        window.executeMemberCheckin(matchedMembers[0]);
-      } else if (typeof executeMemberCheckin === 'function') {
-        executeMemberCheckin(matchedMembers[0]);
-      }
+      window.executeMemberCheckin(matchedMembers[0]);
     } else {
       if (resBox) {
         resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-amber-400 text-center space-y-4';
         const buttonsHtml = matchedMembers.map(m => `
-          <button onclick='window.executeMemberCheckin ? window.executeMemberCheckin(${JSON.stringify(m)}) : executeMemberCheckin(${JSON.stringify(m)})' class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-lg transition">
+          <button onclick='window.executeMemberCheckin(${JSON.stringify(m)})' class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-lg transition shadow-md">
             ${m.name} (${m.phone ? m.phone.slice(-4) : '회원'})
           </button>
         `).join('');
@@ -969,8 +979,78 @@ window.processKioskCheckin = async function() {
     }
   } catch (error) {
     console.error('출석 조회 에러:', error);
-    alert('출석 조회 중 오류가 발생했습니다. 데스크에 문의해주세요.');
+    alert('출석 조회 중 오류가 발생했습니다.');
   }
+};
+
+// 2. 실제 출석 승인 및 차감 처리
+window.executeMemberCheckin = async function(member) {
+  const resBox = document.getElementById('kiosk-result-box');
+  const now = new Date();
+  const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+  
+  const currentPass = Number(member.remainPass) || 0;
+  const newPassCount = Math.max(0, currentPass - 1);
+
+  // 음성 안내 TTS
+  try {
+    if ('speechSynthesis' in window) {
+      const msg = new SpeechSynthesisUtterance(`${member.name} 회원님, 출석이 완료되었습니다. 잔여 ${newPassCount}회입니다.`);
+      msg.lang = 'ko-KR';
+      msg.rate = 1.0;
+      window.speechSynthesis.speak(msg);
+    }
+  } catch (e) {}
+
+  // 화면 출석 완료 카드 표시
+  if (resBox) {
+    resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-emerald-50 text-emerald-950 shadow-2xl border-2 border-emerald-500 text-center space-y-4 transition-all animate-bounce-short';
+    resBox.innerHTML = `
+      <div class="text-5xl">🎉</div>
+      <h3 class="text-2xl sm:text-3xl font-black text-emerald-700">${member.name} 회원님</h3>
+      <p class="text-base sm:text-lg font-bold text-emerald-900">출석이 정상 처리되었습니다 (${timeStr})</p>
+      <div class="p-4 bg-white/80 rounded-2xl border border-emerald-200 shadow-inner flex justify-around items-center">
+        <div>
+          <span class="text-xs text-stone-500 block">수강권명</span>
+          <span class="text-sm font-bold text-stone-800">${member.passName || '스트레칭 맞춤권'}</span>
+        </div>
+        <div class="h-8 w-px bg-stone-200"></div>
+        <div>
+          <span class="text-xs text-stone-500 block">잔여 횟수</span>
+          <span class="text-xl font-extrabold text-[#0092B8]">${newPassCount}회</span>
+        </div>
+      </div>
+      <p class="text-xs text-emerald-600 font-semibold">잠시 후 첫 화면으로 자동 복귀합니다</p>
+    `;
+  }
+
+  // Firestore DB 실시간 차감 & 출석 로그 기록
+  try {
+    const { doc, updateDoc, collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
+    if (window.db) {
+      await updateDoc(doc(window.db, 'members', member.id), {
+        remainPass: newPassCount,
+        lastCheckin: now.toISOString()
+      });
+      await addDoc(collection(window.db, 'attendances'), {
+        memberId: member.id,
+        name: member.name,
+        phone: member.phone || '',
+        passName: member.passName || '1:1 맞춤 스트레칭',
+        checkedAt: now.toISOString(),
+        type: '출석 (키오스크)'
+      });
+    }
+  } catch (err) {
+    console.error('DB 출석 업데이트 실패:', err);
+  }
+
+  // 3.5초 후 초기화
+  setTimeout(() => {
+    window.kioskInputDigits = '';
+    window.updateKioskDisplay();
+    window.resetKioskDefaultWelcomeCard();
+  }, 3500);
 };
        // 🕒 예약 가능 시간표 렌더링 함수 복원
   function renderAppTimeSlots(dateVal) {
