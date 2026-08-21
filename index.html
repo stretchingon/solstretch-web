@@ -1828,7 +1828,7 @@ window.executeMemberCheckin = async function(member) {
     }
   });
    // ==========================================================
-// 1. 부위별 솔루션 & 프로그램 데이터 정의
+// 1. 부위별 솔루션 & 공식 프로그램 4종 데이터 정의
 // ==========================================================
 const SOLUTIONS_DATA = [
   {
@@ -1861,35 +1861,44 @@ const SOLUTIONS_DATA = [
   }
 ];
 
+// [공식 프로그램 4종 업데이트]
 const PROGRAMS_DATA = [
   {
-    id: 'trial',
+    id: 'SOL-FIRST',
     name: '첫방문 1회 체험 & 체형 정밀 상담',
-    duration: '60분',
+    duration: '50분',
     price: '100,000원',
-    tag: 'BEST / 첫방문 전용',
+    tag: 'FIRST TRIAL',
     desc: '정밀 체형 분석 측정 + 1:1 맞춤 솔루션 스트레칭 + 원인 분석 리포트 제공'
   },
   {
-    id: 'single-care',
-    name: '1:1 맞춤 집중 케어 (1회)',
-    duration: '60분',
-    price: '130,000원',
-    tag: '단기 집중',
-    desc: '통증 원인 부위 집중 케어 및 체형 교정 맞춤 스트레칭 진행'
+    id: 'SIGNATURE',
+    name: '컨디셔닝 패시브 스트레칭',
+    duration: '50분',
+    price: '150,000원',
+    tag: 'SIGNATURE',
+    desc: '1:1 전신 근막 이완 및 관절 가동범위 회복 맞춤 패시브 테라피'
   },
   {
-    id: 'premium-care',
-    name: '프리미엄 전신 밸런스 케어',
+    id: 'PREMIUM',
+    name: '무브먼트 리밸런스 딥 케어',
     duration: '90분',
-    price: '180,000원',
-    tag: '심화 케어',
-    desc: '상/하체 전신 근막 이완, 체형 교정 및 자가 관리 스트레칭 처방'
+    price: '250,000원',
+    tag: 'PREMIUM DEEP',
+    desc: '심층 근막 릴리즈 + 골반/체형 정밀 교정 + 움직임 패턴 재교육 테라피'
+  },
+  {
+    id: 'MEMBERSHIP',
+    name: '솔루션 멤버십 10회',
+    duration: '50분',
+    price: '1,000,000원',
+    tag: 'MEMBERSHIP 10회',
+    desc: '지속적인 체형 교정 및 통증 재발 방지를 위한 정기 집중 관리 수강권'
   }
 ];
 
 // ==========================================================
-// 2. 화면 렌더링 함수 (부위별 솔루션, 프로그램, 1단계 리스트)
+// 2. 화면 렌더링 함수 (부위별 솔루션, 4종 프로그램, Step 1 리스트)
 // ==========================================================
 function renderAllSections() {
   // A. 부위별 솔루션 렌더링
@@ -1914,26 +1923,26 @@ function renderAllSections() {
     `;
   }
 
-  // B. 프리미엄 프로그램 섹션 렌더링
+  // B. 공식 4종 프로그램 섹션 렌더링 (2x2 또는 4열 그리드)
   const progContainer = document.getElementById('program-list') || 
                         document.querySelector('section[id*="program"] .grid, section[id*="program"] > div > div:last-child, #programs .grid');
   
   if (progContainer) {
     progContainer.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; margin-top: 24px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; margin-top: 24px; box-sizing: border-box;">
         ${PROGRAMS_DATA.map(prog => `
           <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 20px; padding: 24px; text-align: left; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-size: 11px; font-weight: 700; color: #0092B8; background: #e0f2fe; padding: 3px 8px; border-radius: 6px;">${prog.tag}</span>
-                <span style="font-size: 12px; color: #6b7280;">⏱ ${prog.duration}</span>
+                <span style="font-size: 12px; color: #6b7280; font-weight: 600;">⏱ ${prog.duration}</span>
               </div>
-              <h3 style="font-size: 17px; font-weight: 800; color: #111827; margin: 6px 0;">${prog.name}</h3>
-              <p style="font-size: 13px; color: #6b7280; line-height: 1.5; margin-bottom: 16px;">${prog.desc}</p>
+              <h3 style="font-size: 16px; font-weight: 800; color: #111827; margin: 6px 0 8px 0; min-height: 44px; display: flex; align-items: center;">${prog.name}</h3>
+              <p style="font-size: 12.5px; color: #6b7280; line-height: 1.5; margin-bottom: 16px; min-height: 38px;">${prog.desc}</p>
             </div>
             <div>
-              <div style="font-size: 20px; font-weight: 800; color: #0092B8; margin-bottom: 14px;">${prog.price}</div>
-              <button type="button" onclick="selectProgramAndBook('${prog.name}', '${prog.price}')" style="width: 100%; padding: 12px; border-radius: 12px; background: #0092B8; color: #ffffff; font-weight: 700; font-size: 14px; border: none; cursor: pointer;">이 프로그램 예약하기 ➔</button>
+              <div style="font-size: 19px; font-weight: 800; color: #0092B8; margin-bottom: 14px;">${prog.price}</div>
+              <button type="button" onclick="selectProgramAndBook('${prog.name}', '${prog.price}')" style="width: 100%; padding: 12px; border-radius: 12px; background: #0092B8; color: #ffffff; font-weight: 700; font-size: 13.5px; border: none; cursor: pointer; transition: all 0.2s;">이 프로그램 예약하기 ➔</button>
             </div>
           </div>
         `).join('')}
@@ -1941,7 +1950,7 @@ function renderAllSections() {
     `;
   }
 
-  // C. 실시간 예약 1단계(Step 1) 프로그램 선택 리스트 채우기
+  // C. 실시간 예약 1단계(Step 1) 4종 프로그램 선택 라디오 리스트
   const step1List = document.getElementById('step1-program-list');
   if (step1List) {
     step1List.innerHTML = PROGRAMS_DATA.map((prog, index) => `
@@ -1949,7 +1958,7 @@ function renderAllSections() {
         <div style="display: flex; align-items: center; gap: 12px;">
           <input type="radio" name="booking-program-radio" value="${prog.name}" ${index === 0 ? 'checked' : ''} onchange="selectedBookingData.program='${prog.name}'; selectedBookingData.price='${prog.price}';" style="accent-color: #0092B8; width: 18px; height: 18px;">
           <div>
-            <div style="font-size: 14px; font-weight: 700;">${prog.name}</div>
+            <div style="font-size: 14px; font-weight: 700;">${prog.name} <span style="font-size: 12px; color: rgba(255,255,255,0.7); font-weight: normal;">(${prog.duration})</span></div>
             <div style="font-size: 12px; color: rgba(255,255,255,0.6);">${prog.desc}</div>
           </div>
         </div>
@@ -1960,11 +1969,11 @@ function renderAllSections() {
 }
 
 // ==========================================================
-// 3. 실시간 예약 시스템 통합 로직 (운영시간 10:00~20:00)
+// 3. 실시간 예약 시스템 제어 (10:00~20:00, 4열 3줄 정렬)
 // ==========================================================
 let currentBookingStep = 1;
 let selectedBookingData = {
-  program: '첫방문 1회 체험 & 체형 정밀 상담 (100,000원)',
+  program: '첫방문 1회 체험 & 체형 정밀 상담',
   price: '100,000원',
   date: '',
   time: '',
@@ -2073,7 +2082,7 @@ function prevStep() {
 }
 
 function selectProgramAndBook(programName, price) {
-  selectedBookingData.program = programName || '첫방문 1회 체험 & 체형 정밀 상담 (100,000원)';
+  selectedBookingData.program = programName || '첫방문 1회 체험 & 체형 정밀 상담';
   selectedBookingData.price = price || '100,000원';
   goToStep(2);
 }
@@ -2094,6 +2103,7 @@ async function submitBooking() {
 
   const bookingPayload = {
     program: selectedBookingData.program,
+    price: selectedBookingData.price,
     date: selectedBookingData.date,
     time: selectedBookingData.time,
     name: name,
@@ -2122,11 +2132,11 @@ async function submitBooking() {
 }
 
 // ==========================================================
-// 4. 페이지 초기 로드 시 모든 섹션 자동 실행
+// 4. 페이지 초기 로드 시 렌더링
 // ==========================================================
 document.addEventListener('DOMContentLoaded', () => {
   renderAllSections();
 });
-setTimeout(renderAllSections, 500); // 렌더링 보장용 실행
+setTimeout(renderAllSections, 500);
 </script>
 </html>
