@@ -1848,24 +1848,26 @@ const AVAILABLE_TIMES = [
   '17:00', '18:00', '19:00', '20:00'
 ];
 
-// 1. 시간대 버튼 생성 및 렌더링
+// 1. 시간대 버튼 생성 및 렌더링 (겹침 해결 및 최적화)
 function renderTimeSlots() {
   const container = document.getElementById('step2-time-slots');
   if (!container) return;
 
   container.innerHTML = '';
+  
+  // 3~4열 반응형 그리드로 여유 공간 확보
   const grid = document.createElement('div');
-  grid.className = 'grid grid-cols-2 sm:grid-cols-5 gap-2.5 mt-2';
+  grid.className = 'grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-2 w-full';
 
   AVAILABLE_TIMES.forEach(time => {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `p-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+    btn.className = `flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer select-none ${
       selectedBookingData.time === time
         ? 'bg-[#0092B8] text-white border-[#0092B8] shadow-md ring-2 ring-sky-300'
         : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
     }`;
-    btn.innerHTML = `<span>🕒</span> ${time}`;
+    btn.innerHTML = `<span class="text-xs">🕒</span><span>${time}</span>`;
     btn.onclick = () => {
       selectedBookingData.time = time;
       renderTimeSlots();
