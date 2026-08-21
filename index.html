@@ -1828,7 +1828,139 @@ window.executeMemberCheckin = async function(member) {
     }
   });
    // ==========================================================
-// 스트레칭온 실시간 1:1 맞춤 예약 시스템 통합 제어
+// 1. 부위별 솔루션 & 프로그램 데이터 정의
+// ==========================================================
+const SOLUTIONS_DATA = [
+  {
+    id: 'neck-shoulder',
+    part: '목 & 어깨',
+    icon: '🧘‍♂️',
+    title: '거북목 / 라운드숄더 / 만성 결림',
+    desc: '경추 및 승모근 긴장 완화, 굽은 등 교정 스트레칭을 통해 목 어깨의 만성 뻐근함과 통증을 즉각 완화합니다.'
+  },
+  {
+    id: 'waist-pelvis',
+    part: '허리 & 골반',
+    icon: '⚡',
+    title: '요통 / 골반 비대칭 / 디스크 관리',
+    desc: '장요근 및 둔근 밸런스 회복, 골반 정렬 테라피로 틀어진 중심축을 바로잡고 허리 부담을 줄여줍니다.'
+  },
+  {
+    id: 'leg-foot',
+    part: '다리 & 발',
+    icon: '🦵',
+    title: '휜다리(O/X자) / 하체부종 / 족저근막',
+    desc: '하체 순환 및 대퇴부 회전근 이완을 통해 다리 라인을 정돈하고 보행 시 피로도를 낮춥니다.'
+  },
+  {
+    id: 'full-posture',
+    part: '전신 & 밸런스',
+    icon: '✨',
+    title: '전신 체형 불균형 / 만성 피로 회복',
+    desc: '40년 노하우의 전신 수기 스트레칭으로 신체 좌우 불균형을 리셋하고 몸 본연의 유연성을 되찾아줍니다.'
+  }
+];
+
+const PROGRAMS_DATA = [
+  {
+    id: 'trial',
+    name: '첫방문 1회 체험 & 체형 정밀 상담',
+    duration: '60분',
+    price: '100,000원',
+    tag: 'BEST / 첫방문 전용',
+    desc: '정밀 체형 분석 측정 + 1:1 맞춤 솔루션 스트레칭 + 원인 분석 리포트 제공'
+  },
+  {
+    id: 'single-care',
+    name: '1:1 맞춤 집중 케어 (1회)',
+    duration: '60분',
+    price: '130,000원',
+    tag: '단기 집중',
+    desc: '통증 원인 부위 집중 케어 및 체형 교정 맞춤 스트레칭 진행'
+  },
+  {
+    id: 'premium-care',
+    name: '프리미엄 전신 밸런스 케어',
+    duration: '90분',
+    price: '180,000원',
+    tag: '심화 케어',
+    desc: '상/하체 전신 근막 이완, 체형 교정 및 자가 관리 스트레칭 처방'
+  }
+];
+
+// ==========================================================
+// 2. 화면 렌더링 함수 (부위별 솔루션, 프로그램, 1단계 리스트)
+// ==========================================================
+function renderAllSections() {
+  // A. 부위별 솔루션 렌더링
+  const solContainer = document.querySelector('#solutions .container, #solutions > div > div, .solution-container') ||
+                       document.querySelector('section[id*="solution"] .bg-white\\/10, section[id*="solution"] .rounded-3xl, section[id*="solution"] > div > div:last-child');
+  
+  const whiteBoxes = document.querySelectorAll('section div.rounded-3xl, section div.bg-white');
+  const targetSolBox = solContainer || whiteBoxes[0];
+
+  if (targetSolBox) {
+    targetSolBox.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; padding: 20px; width: 100%; box-sizing: border-box;">
+        ${SOLUTIONS_DATA.map(item => `
+          <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 20px; text-align: left; transition: all 0.2s;">
+            <div style="font-size: 28px; margin-bottom: 8px;">${item.icon}</div>
+            <span style="font-size: 11px; font-weight: 700; background: #0092B8; color: #fff; padding: 2px 8px; border-radius: 6px;">${item.part}</span>
+            <h4 style="font-size: 15px; font-weight: 700; color: #fff; margin: 10px 0 6px 0;">${item.title}</h4>
+            <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; margin: 0;">${item.desc}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // B. 프리미엄 프로그램 섹션 렌더링
+  const progContainer = document.getElementById('program-list') || 
+                        document.querySelector('section[id*="program"] .grid, section[id*="program"] > div > div:last-child, #programs .grid');
+  
+  if (progContainer) {
+    progContainer.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; margin-top: 24px;">
+        ${PROGRAMS_DATA.map(prog => `
+          <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 20px; padding: 24px; text-align: left; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 11px; font-weight: 700; color: #0092B8; background: #e0f2fe; padding: 3px 8px; border-radius: 6px;">${prog.tag}</span>
+                <span style="font-size: 12px; color: #6b7280;">⏱ ${prog.duration}</span>
+              </div>
+              <h3 style="font-size: 17px; font-weight: 800; color: #111827; margin: 6px 0;">${prog.name}</h3>
+              <p style="font-size: 13px; color: #6b7280; line-height: 1.5; margin-bottom: 16px;">${prog.desc}</p>
+            </div>
+            <div>
+              <div style="font-size: 20px; font-weight: 800; color: #0092B8; margin-bottom: 14px;">${prog.price}</div>
+              <button type="button" onclick="selectProgramAndBook('${prog.name}', '${prog.price}')" style="width: 100%; padding: 12px; border-radius: 12px; background: #0092B8; color: #ffffff; font-weight: 700; font-size: 14px; border: none; cursor: pointer;">이 프로그램 예약하기 ➔</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // C. 실시간 예약 1단계(Step 1) 프로그램 선택 리스트 채우기
+  const step1List = document.getElementById('step1-program-list');
+  if (step1List) {
+    step1List.innerHTML = PROGRAMS_DATA.map((prog, index) => `
+      <label style="display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-radius: 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); cursor: pointer; color: #fff; margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <input type="radio" name="booking-program-radio" value="${prog.name}" ${index === 0 ? 'checked' : ''} onchange="selectedBookingData.program='${prog.name}'; selectedBookingData.price='${prog.price}';" style="accent-color: #0092B8; width: 18px; height: 18px;">
+          <div>
+            <div style="font-size: 14px; font-weight: 700;">${prog.name}</div>
+            <div style="font-size: 12px; color: rgba(255,255,255,0.6);">${prog.desc}</div>
+          </div>
+        </div>
+        <div style="font-size: 15px; font-weight: 800; color: #38bdf8;">${prog.price}</div>
+      </label>
+    `).join('');
+  }
+}
+
+// ==========================================================
+// 3. 실시간 예약 시스템 통합 로직 (운영시간 10:00~20:00)
 // ==========================================================
 let currentBookingStep = 1;
 let selectedBookingData = {
@@ -1841,14 +1973,12 @@ let selectedBookingData = {
   note: ''
 };
 
-// [수정 완료] 센터 공식 예약 가능 시간대 (10개 슬롯)
 const AVAILABLE_TIMES = [
   '10:00', '11:00', '12:00', 
   '14:00', '15:00', '16:00', 
   '17:00', '18:00', '19:00', '20:00'
 ];
 
-// 1. 시간대 버튼 생성 및 렌더링 (가로 4칸 3줄 배열)
 function renderTimeSlots() {
   const container = document.getElementById('step2-time-slots');
   if (!container) return;
@@ -1856,65 +1986,37 @@ function renderTimeSlots() {
   container.innerHTML = '';
   container.style.width = '100%';
   
-  // 가로 4칸 고정 그리드 레이아웃
   const grid = document.createElement('div');
-  grid.style.cssText = `
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    width: 100%;
-    margin-top: 8px;
-    box-sizing: border-box;
-  `;
+  grid.style.cssText = 'display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-top: 8px; box-sizing: border-box;';
 
   AVAILABLE_TIMES.forEach(time => {
     const isSelected = selectedBookingData.time === time;
     const btn = document.createElement('button');
     btn.type = 'button';
-    
     btn.style.cssText = `
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 12px 6px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: all 0.2s ease;
-      box-sizing: border-box;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 12px 6px; border-radius: 12px; font-size: 13px; font-weight: 700;
+      cursor: pointer; user-select: none; transition: all 0.2s ease; box-sizing: border-box;
       border: 1px solid ${isSelected ? '#0092B8' : 'rgba(255, 255, 255, 0.2)'};
       background: ${isSelected ? '#0092B8' : 'rgba(255, 255, 255, 0.1)'};
       color: #ffffff;
       box-shadow: ${isSelected ? '0 0 0 2px rgba(56, 189, 248, 0.6)' : 'none'};
     `;
-
     btn.innerHTML = `<span style="font-size: 12px;">🕒</span><span>${time}</span>`;
     
-    btn.onmouseover = () => {
-      if (selectedBookingData.time !== time) {
-        btn.style.background = 'rgba(255, 255, 255, 0.2)';
-      }
-    };
-    btn.onmouseout = () => {
-      if (selectedBookingData.time !== time) {
-        btn.style.background = 'rgba(255, 255, 255, 0.1)';
-      }
-    };
+    btn.onmouseover = () => { if (selectedBookingData.time !== time) btn.style.background = 'rgba(255, 255, 255, 0.2)'; };
+    btn.onmouseout = () => { if (selectedBookingData.time !== time) btn.style.background = 'rgba(255, 255, 255, 0.1)'; };
 
     btn.onclick = () => {
       selectedBookingData.time = time;
       renderTimeSlots();
     };
-
     grid.appendChild(btn);
   });
 
   container.appendChild(grid);
 }
-// 2. 예약 단계(Step 1, 2, 3) 이동 제어
+
 function goToStep(step) {
   try {
     if (step === 3 && !selectedBookingData.time) {
@@ -1958,9 +2060,7 @@ function goToStep(step) {
     }
 
     const reservationSection = document.getElementById('reservation') || document.getElementById('booking');
-    if (reservationSection) {
-      reservationSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (reservationSection) reservationSection.scrollIntoView({ behavior: 'smooth' });
   } catch (err) {
     console.error('예약 단계 전환 오류:', err);
   }
@@ -1972,14 +2072,12 @@ function prevStep() {
   }
 }
 
-// 3. 메인 배너 버튼 클릭 시 예약 진입
 function selectProgramAndBook(programName, price) {
-  selectedBookingData.program = programName || '1:1 맞춤 스트레칭 케어';
-  selectedBookingData.price = price || '';
+  selectedBookingData.program = programName || '첫방문 1회 체험 & 체형 정밀 상담 (100,000원)';
+  selectedBookingData.price = price || '100,000원';
   goToStep(2);
 }
 
-// 4. 최종 예약 신청 제출 (Firebase Firestore 연동)
 async function submitBooking() {
   const nameInput = document.getElementById('user-name');
   const phoneInput = document.getElementById('user-phone');
@@ -1991,7 +2089,7 @@ async function submitBooking() {
   const note = noteInput ? noteInput.value.trim() : '';
 
   if (!name) return alert('예약자 성함을 입력해주세요.');
-  if (!phone || phone.length < 10) return alert('연락처(휴대폰 번호)를 올바르게 입력해주세요.');
+  if (!phone || phone.length < 10) return alert('연락처를 올바르게 입력해주세요.');
   if (agreeCheck && !agreeCheck.checked) return alert('개인정보 수집 및 이용에 동의해주세요.');
 
   const bookingPayload = {
@@ -2009,7 +2107,6 @@ async function submitBooking() {
     if (window.db) {
       await window.db.collection('bookings').add(bookingPayload);
     }
-
     const successModal = document.getElementById('modal-booking-success');
     if (successModal) {
       successModal.classList.remove('hidden');
@@ -2024,10 +2121,12 @@ async function submitBooking() {
   }
 }
 
+// ==========================================================
+// 4. 페이지 초기 로드 시 모든 섹션 자동 실행
+// ==========================================================
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('booking-step-2')) {
-    renderTimeSlots();
-  }
+  renderAllSections();
 });
+setTimeout(renderAllSections, 500); // 렌더링 보장용 실행
 </script>
 </html>
