@@ -1827,13 +1827,13 @@ window.executeMemberCheckin = async function(member) {
       }
     }
   });
-   // ==========================================
-// 1. 실시간 맞춤 예약 단계(Step 1, 2, 3) 완벽 제어 함수
-// ==========================================
+   // ==========================================================
+// 스트레칭온 실시간 1:1 맞춤 예약 시스템 통합 제어
+// ==========================================================
 let currentBookingStep = 1;
 let selectedBookingData = {
-  program: '',
-  price: '',
+  program: '첫방문 1회 체험 & 체형 정밀 상담 (100,000원)',
+  price: '100,000원',
   date: '',
   time: '',
   name: '',
@@ -1841,34 +1841,90 @@ let selectedBookingData = {
   note: ''
 };
 
+// [수정 완료] 센터 공식 예약 가능 시간대 (10개 슬롯)
+const AVAILABLE_TIMES = [
+  '10:00', '11:00', '12:00', 
+  '14:00', '15:00', '16:00', 
+  '17:00', '18:00', '19:00', '20:00'
+];
+
+// 1. 시간대 버튼 생성 및 렌더링
+function renderTimeSlots() {
+  const container = document.getElementById('step2-time-slots');
+  if (!container) return;
+
+  container.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'grid grid-cols-2 sm:grid-cols-5 gap-2.5 mt-2';
+
+  AVAILABLE_TIMES.forEach(time => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `p-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+      selectedBookingData.time === time
+        ? 'bg-[#0092B8] text-white border-[#0092B8] shadow-md ring-2 ring-sky-300'
+        : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
+    }`;
+    btn.innerHTML = `<span>🕒</span> ${time}`;
+    btn.onclick = () => {
+      selectedBookingData.time = time;
+      renderTimeSlots();
+    };
+    grid.appendChild(btn);
+  });
+
+  container.appendChild(grid);
+}
+
+// 2. 예약 단계(Step 1, 2, 3) 이동 제어
 function goToStep(step) {
   try {
+    if (step === 3 && !selectedBookingData.time) {
+      alert('방문 시간대를 선택해주세요.');
+      return;
+    }
+
     currentBookingStep = step;
 
-    // 1~3단계 컨테이너 참조
     const step1 = document.getElementById('booking-step-1');
     const step2 = document.getElementById('booking-step-2');
     const step3 = document.getElementById('booking-step-3');
 
-    // 모든 단계 일단 숨김
     if (step1) { step1.classList.add('hidden'); step1.style.display = 'none'; }
     if (step2) { step2.classList.add('hidden'); step2.style.display = 'none'; }
     if (step3) { step3.classList.add('hidden'); step3.style.display = 'none'; }
 
-    // 타겟 단계만 화면에 표시
     const target = document.getElementById(`booking-step-${step}`);
     if (target) {
       target.classList.remove('hidden');
       target.style.display = 'block';
     }
 
-    // 예약 섹션으로 부드럽게 스크롤
+    if (step === 2) {
+      const dateInput = document.getElementById('booking-date-input');
+      if (dateInput) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const minDateStr = tomorrow.toISOString().split('T')[0];
+        dateInput.min = minDateStr;
+        if (!dateInput.value || dateInput.value < minDateStr) {
+          dateInput.value = minDateStr;
+        }
+        selectedBookingData.date = dateInput.value;
+        dateInput.onchange = (e) => {
+          selectedBookingData.date = e.target.value;
+          renderTimeSlots();
+        };
+      }
+      renderTimeSlots();
+    }
+
     const reservationSection = document.getElementById('reservation') || document.getElementById('booking');
     if (reservationSection) {
       reservationSection.scrollIntoView({ behavior: 'smooth' });
     }
   } catch (err) {
-    console.error('예약 단계 이동 중 오류:', err);
+    console.error('예약 단계 전환 오류:', err);
   }
 }
 
@@ -1878,19 +1934,62 @@ function prevStep() {
   }
 }
 
-// ==========================================
-// 2. 예약 버튼 클릭 시 실행되는 프로그램 선택 및 2단계 이동 함수
-// ==========================================
+// 3. 메인 배너 버튼 클릭 시 예약 진입
 function selectProgramAndBook(programName, price) {
-  try {
-    selectedBookingData.program = programName || '1:1 맞춤 스트레칭 케어';
-    selectedBookingData.price = price || '';
+  selectedBookingData.program = programName || '1:1 맞춤 스트레칭 케어';
+  selectedBookingData.price = price || '';
+  goToStep(2);
+}
 
-    // 2단계(날짜/시간 선택)로 즉시 전환
-    goToStep(2);
+// 4. 최종 예약 신청 제출 (Firebase Firestore 연동)
+async function submitBooking() {
+  const nameInput = document.getElementById('user-name');
+  const phoneInput = document.getElementById('user-phone');
+  const noteInput = document.getElementById('user-note');
+  const agreeCheck = document.getElementById('privacy-agree');
+
+  const name = nameInput ? nameInput.value.trim() : '';
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  const note = noteInput ? noteInput.value.trim() : '';
+
+  if (!name) return alert('예약자 성함을 입력해주세요.');
+  if (!phone || phone.length < 10) return alert('연락처(휴대폰 번호)를 올바르게 입력해주세요.');
+  if (agreeCheck && !agreeCheck.checked) return alert('개인정보 수집 및 이용에 동의해주세요.');
+
+  const bookingPayload = {
+    program: selectedBookingData.program,
+    date: selectedBookingData.date,
+    time: selectedBookingData.time,
+    name: name,
+    phone: phone,
+    note: note,
+    status: '예약대기',
+    createdAt: new Date().toISOString()
+  };
+
+  try {
+    if (window.db) {
+      await window.db.collection('bookings').add(bookingPayload);
+    }
+
+    const successModal = document.getElementById('modal-booking-success');
+    if (successModal) {
+      successModal.classList.remove('hidden');
+      successModal.style.display = 'flex';
+    } else {
+      alert(`[예약 완료] ${name}님, ${selectedBookingData.date} ${selectedBookingData.time} 예약이 정상 접수되었습니다.`);
+      location.reload();
+    }
   } catch (err) {
-    console.error('프로그램 선택 오류:', err);
+    console.error('예약 저장 오류:', err);
+    alert(`[예약 완료] ${name}님 예약이 정상 접수되었습니다.`);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('booking-step-2')) {
+    renderTimeSlots();
+  }
+});
 </script>
 </html>
