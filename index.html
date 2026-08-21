@@ -862,8 +862,21 @@
       }
     }
 
-  // 📱 키패드 입력 전역 변수 및 제어 함수
+ // ==========================================
+// 📱 키오스크 키패드 & 실시간 출석/차감 통합 엔진
+// ==========================================
 window.kioskInputDigits = '';
+
+// 잔여 횟수 통합 추출 함수 (passes, remainPass, remainingPasses 중 유효값 우선 추출)
+function getMemberPassCount(m) {
+  const candidates = [m.passes, m.remainingPasses, m.remainPass, m.passCount];
+  for (const val of candidates) {
+    if (val !== undefined && val !== null && val !== '' && Number(val) > 0) {
+      return Number(val);
+    }
+  }
+  return Number(m.passes ?? m.remainPass ?? m.remainingPasses ?? 0);
+}
 
 window.pressKioskKey = function(key) {
   try {
@@ -913,7 +926,7 @@ window.resetKioskDefaultWelcomeCard = function() {
   `;
 };
 
-// 1. 뒷자리 조회
+// 1. 뒷자리 4자리 실시간 조회
 window.processKioskCheckin = async function() {
   const digits = window.kioskInputDigits.trim();
   const resBox = document.getElementById('kiosk-result-box');
@@ -924,22 +937,23 @@ window.processKioskCheckin = async function() {
   }
 
   try {
-    let allMembers = [];
-    
-    // Firestore SDK v10 동적 조회
-    try {
+    let allMembers = Array.isArray(window.members) && window.members.length > 0 ? window.members : [];
+
+    // 메모리에 없을 경우 Firestore에서 즉시 강제 조회
+    if (allMembers.length === 0 && window.db) {
       const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
-      if (window.db) {
-        const snap = await getDocs(collection(window.db, 'members'));
-        snap.forEach(d => allMembers.push({ id: d.id, ...d.data() }));
-      }
-    } catch (e) {
-      if (Array.isArray(window.members)) allMembers = window.members;
+      const snap = await getDocs(collection(window.db, 'members'));
+      allMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      window.members = allMembers;
     }
 
+    console.log('🔍 키오스크 전체 회원 조회 목록:', allMembers);
+
+    // 특수문자 제거 후 뒷자리 4자리 매칭
     const matchedMembers = allMembers.filter(m => {
-      const cleanPhone = (m.phone || '').toString().replace(/[^0-9]/g, '');
-      return cleanPhone.endsWith(digits);
+      const rawPhone = m.phone || m.contact || m.tel || m.phoneNum || '';
+      const cleanPhone = rawPhone.toString().replace(/[^0-9]/g, '');
+      return cleanPhone.length >= 4 && cleanPhone.endsWith(digits);
     });
 
     if (matchedMembers.length === 0) {
@@ -966,7 +980,7 @@ window.processKioskCheckin = async function() {
         resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-amber-400 text-center space-y-4';
         const buttonsHtml = matchedMembers.map(m => `
           <button onclick='window.executeMemberCheckin(${JSON.stringify(m)})' class="w-full py-3 px-4 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-lg transition shadow-md">
-            ${m.name} (${m.phone ? m.phone.slice(-4) : '회원'})
+            ${m.name} (${(m.phone || m.contact || '').toString().slice(-4)} 회원)
           </button>
         `).join('');
 
@@ -983,13 +997,13 @@ window.processKioskCheckin = async function() {
   }
 };
 
-// 2. 실제 출석 승인 및 차감 처리
+// 2. 출석 승인 및 차감 처리 (ERP/웹 모든 필드 동시 차감)
 window.executeMemberCheckin = async function(member) {
   const resBox = document.getElementById('kiosk-result-box');
   const now = new Date();
   const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
   
-  const currentPass = Number(member.remainPass) || 0;
+  const currentPass = getMemberPassCount(member);
   const newPassCount = Math.max(0, currentPass - 1);
 
   // 음성 안내 TTS
@@ -1004,7 +1018,7 @@ window.executeMemberCheckin = async function(member) {
 
   // 화면 출석 완료 카드 표시
   if (resBox) {
-    resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-emerald-50 text-emerald-950 shadow-2xl border-2 border-emerald-500 text-center space-y-4 transition-all animate-bounce-short';
+    resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-emerald-50 text-emerald-950 shadow-2xl border-2 border-emerald-500 text-center space-y-4 transition-all';
     resBox.innerHTML = `
       <div class="text-5xl">🎉</div>
       <h3 class="text-2xl sm:text-3xl font-black text-emerald-700">${member.name} 회원님</h3>
@@ -1012,7 +1026,7 @@ window.executeMemberCheckin = async function(member) {
       <div class="p-4 bg-white/80 rounded-2xl border border-emerald-200 shadow-inner flex justify-around items-center">
         <div>
           <span class="text-xs text-stone-500 block">수강권명</span>
-          <span class="text-sm font-bold text-stone-800">${member.passName || '스트레칭 맞춤권'}</span>
+          <span class="text-sm font-bold text-stone-800">${member.passName || member.selectedProgram || '솔루션 스트레칭'}</span>
         </div>
         <div class="h-8 w-px bg-stone-200"></div>
         <div>
@@ -1024,25 +1038,27 @@ window.executeMemberCheckin = async function(member) {
     `;
   }
 
-  // Firestore DB 실시간 차감 & 출석 로그 기록
+  // Firestore DB 모든 수강권 필드 동시 갱신 (ERP와 완벽 연동)
   try {
     const { doc, updateDoc, collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
     if (window.db) {
       await updateDoc(doc(window.db, 'members', member.id), {
+        passes: newPassCount,
         remainPass: newPassCount,
+        remainingPasses: newPassCount,
         lastCheckin: now.toISOString()
       });
       await addDoc(collection(window.db, 'attendances'), {
         memberId: member.id,
         name: member.name,
-        phone: member.phone || '',
-        passName: member.passName || '1:1 맞춤 스트레칭',
+        phone: member.phone || member.contact || '',
+        passName: member.passName || member.selectedProgram || '솔루션 스트레칭',
         checkedAt: now.toISOString(),
         type: '출석 (키오스크)'
       });
     }
   } catch (err) {
-    console.error('DB 출석 업데이트 실패:', err);
+    console.error('DB 출석 차감 저장 실패:', err);
   }
 
   // 3.5초 후 초기화
@@ -1052,8 +1068,40 @@ window.executeMemberCheckin = async function(member) {
     window.resetKioskDefaultWelcomeCard();
   }, 3500);
 };
+2. index.html 하단 Firebase 모듈 최종 확인
+
+index.html 맨 아래의 Firebase 스크립트가 다음과 같이 설정되어 있는지 확인합니다:
+
+HTML
+  <!-- Firebase Cloud Sync -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
+      authDomain: "solutionstretching.firebaseapp.com",
+      projectId: "solutionstretching",
+      storageBucket: "solutionstretching.firebasestorage.app",
+      messagingSenderId: "567579240099",
+      appId: "1:567579240099:web:1b32c98d04fbd4e55d0116",
+      measurementId: "G-663RDZSPGH"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+
+    window.members = [];
+    onSnapshot(collection(db, 'members'), (snapshot) => {
+      window.members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      console.log('🔥 키오스크 회원 명부 실시간 동기화 완료:', window.members.length, '명');
+    }, (err) => {
+      console.error('회원 목록 동기화 에러:', err);
+    });
+  </script>
        // 🕒 예약 가능 시간표 렌더링 함수 복원
-  function renderAppTimeSlots(dateVal) {
+  function renerAppTimeSlots(dateVal) {
     const bookedTimes = (window.bookings || []).filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
     const isSat = typeof isSaturdayDate === 'function' ? isSaturdayDate(dateVal) : false;
 
