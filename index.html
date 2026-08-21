@@ -1828,40 +1828,8 @@ window.executeMemberCheckin = async function(member) {
     }
   });
    // ==========================================================
-// 1. 부위별 솔루션 & 공식 프로그램 4종 데이터 정의
+// 1. 공식 4종 프로그램 & 부위별 솔루션 데이터
 // ==========================================================
-const SOLUTIONS_DATA = [
-  {
-    id: 'neck-shoulder',
-    part: '목 & 어깨',
-    icon: '🧘‍♂️',
-    title: '거북목 / 라운드숄더 / 만성 결림',
-    desc: '경추 및 승모근 긴장 완화, 굽은 등 교정 스트레칭을 통해 목 어깨의 만성 뻐근함과 통증을 즉각 완화합니다.'
-  },
-  {
-    id: 'waist-pelvis',
-    part: '허리 & 골반',
-    icon: '⚡',
-    title: '요통 / 골반 비대칭 / 디스크 관리',
-    desc: '장요근 및 둔근 밸런스 회복, 골반 정렬 테라피로 틀어진 중심축을 바로잡고 허리 부담을 줄여줍니다.'
-  },
-  {
-    id: 'leg-foot',
-    part: '다리 & 발',
-    icon: '🦵',
-    title: '휜다리(O/X자) / 하체부종 / 족저근막',
-    desc: '하체 순환 및 대퇴부 회전근 이완을 통해 다리 라인을 정돈하고 보행 시 피로도를 낮춥니다.'
-  },
-  {
-    id: 'full-posture',
-    part: '전신 & 밸런스',
-    icon: '✨',
-    title: '전신 체형 불균형 / 만성 피로 회복',
-    desc: '40년 노하우의 전신 수기 스트레칭으로 신체 좌우 불균형을 리셋하고 몸 본연의 유연성을 되찾아줍니다.'
-  }
-];
-
-// [공식 프로그램 4종 업데이트]
 const PROGRAMS_DATA = [
   {
     id: 'SOL-FIRST',
@@ -1897,60 +1865,107 @@ const PROGRAMS_DATA = [
   }
 ];
 
+const SOLUTIONS_DATA = [
+  {
+    part: '목 & 어깨',
+    icon: '🧘‍♂️',
+    title: '거북목 / 라운드숄더 / 만성 결림',
+    desc: '경추 및 승모근 긴장 완화, 굽은 등 교정 스트레칭으로 목 어깨의 만성 뻐근함을 즉각 개선합니다.',
+    targetProg: '첫방문 1회 체험 & 체형 정밀 상담',
+    targetPrice: '100,000원'
+  },
+  {
+    part: '허리 & 골반',
+    icon: '⚡',
+    title: '요통 / 골반 비대칭 / 좌식 불균형',
+    desc: '장요근 및 둔근 밸런스 회복, 골반 정렬 테라피로 틀어진 신체 중심축을 바로잡아 줍니다.',
+    targetProg: '컨디셔닝 패시브 스트레칭',
+    targetPrice: '150,000원'
+  },
+  {
+    part: '다리 & 발',
+    icon: '🦵',
+    title: '휜다리(O/X자) / 하체부종 / 보행피로',
+    desc: '하체 순환 및 대퇴부 회전근 이완을 통해 다리 라인을 정돈하고 보행 시 피로도를 낮춥니다.',
+    targetProg: '무브먼트 리밸런스 딥 케어',
+    targetPrice: '250,000원'
+  },
+  {
+    part: '전신 & 밸런스',
+    icon: '✨',
+    title: '전신 체형 불균형 / 만성 피로 회복',
+    desc: '40년 노하우의 전신 수기 스트레칭으로 신체 좌우 불균형을 리셋하고 몸 본연의 유연성을 되찾습니다.',
+    targetProg: '솔루션 멤버십 10회',
+    targetPrice: '1,000,000원'
+  }
+];
+
 // ==========================================================
-// 2. 화면 렌더링 함수 (부위별 솔루션, 4종 프로그램, Step 1 리스트)
+// 2. 부위별 솔루션 & 프로그램(가로 4열 나란히) 정밀 렌더링
 // ==========================================================
 function renderAllSections() {
-  // A. 부위별 솔루션 렌더링
-  const solContainer = document.querySelector('#solutions .container, #solutions > div > div, .solution-container') ||
-                       document.querySelector('section[id*="solution"] .bg-white\\/10, section[id*="solution"] .rounded-3xl, section[id*="solution"] > div > div:last-child');
-  
-  const whiteBoxes = document.querySelectorAll('section div.rounded-3xl, section div.bg-white');
-  const targetSolBox = solContainer || whiteBoxes[0];
+  // A. [부위별 솔루션] 영역 렌더링 (4가지 카드 + 매칭 예약 연결)
+  const allSections = document.querySelectorAll('section');
+  let solSection = null;
+  let progSection = null;
 
-  if (targetSolBox) {
-    targetSolBox.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; padding: 20px; width: 100%; box-sizing: border-box;">
-        ${SOLUTIONS_DATA.map(item => `
-          <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 20px; text-align: left; transition: all 0.2s;">
-            <div style="font-size: 28px; margin-bottom: 8px;">${item.icon}</div>
-            <span style="font-size: 11px; font-weight: 700; background: #0092B8; color: #fff; padding: 2px 8px; border-radius: 6px;">${item.part}</span>
-            <h4 style="font-size: 15px; font-weight: 700; color: #fff; margin: 10px 0 6px 0;">${item.title}</h4>
-            <p style="font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.5; margin: 0;">${item.desc}</p>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
+  allSections.forEach(sec => {
+    const text = sec.innerText || '';
+    if (text.includes('불편하신 신체 부위') || text.includes('ANALYSIS')) solSection = sec;
+    if (text.includes('프리미엄 1:1 맞춤 솔루션') || text.includes('CURATED CARE')) progSection = sec;
+  });
 
-  // B. 공식 4종 프로그램 섹션 렌더링 (2x2 또는 4열 그리드)
-  const progContainer = document.getElementById('program-list') || 
-                        document.querySelector('section[id*="program"] .grid, section[id*="program"] > div > div:last-child, #programs .grid');
-  
-  if (progContainer) {
-    progContainer.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; margin-top: 24px; box-sizing: border-box;">
-        ${PROGRAMS_DATA.map(prog => `
-          <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 20px; padding: 24px; text-align: left; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-size: 11px; font-weight: 700; color: #0092B8; background: #e0f2fe; padding: 3px 8px; border-radius: 6px;">${prog.tag}</span>
-                <span style="font-size: 12px; color: #6b7280; font-weight: 600;">⏱ ${prog.duration}</span>
+  if (solSection) {
+    const targetBox = solSection.querySelector('div.bg-white, div.rounded-3xl, .container') || solSection.querySelector('div > div:last-child');
+    if (targetBox) {
+      targetBox.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; width: 100%; padding: 10px 0; box-sizing: border-box;">
+          ${SOLUTIONS_DATA.map(item => `
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 22px; text-align: left; box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="font-size: 28px; margin-bottom: 10px;">${item.icon}</div>
+                <span style="font-size: 11px; font-weight: 700; background: #0092B8; color: #fff; padding: 3px 8px; border-radius: 6px;">${item.part}</span>
+                <h4 style="font-size: 15px; font-weight: 800; color: #0C3559; margin: 10px 0 6px 0;">${item.title}</h4>
+                <p style="font-size: 12.5px; color: #64748b; line-height: 1.5; margin: 0 0 16px 0;">${item.desc}</p>
               </div>
-              <h3 style="font-size: 16px; font-weight: 800; color: #111827; margin: 6px 0 8px 0; min-height: 44px; display: flex; align-items: center;">${prog.name}</h3>
-              <p style="font-size: 12.5px; color: #6b7280; line-height: 1.5; margin-bottom: 16px; min-height: 38px;">${prog.desc}</p>
+              <button type="button" onclick="selectProgramAndBook('${item.targetProg}', '${item.targetPrice}')" style="width: 100%; padding: 10px; border-radius: 10px; background: #f0f9ff; color: #0092B8; font-weight: 700; font-size: 12.5px; border: 1px solid #bae6fd; cursor: pointer; transition: all 0.2s;">
+                매칭 프로그램 예약 ➔
+              </button>
             </div>
-            <div>
-              <div style="font-size: 19px; font-weight: 800; color: #0092B8; margin-bottom: 14px;">${prog.price}</div>
-              <button type="button" onclick="selectProgramAndBook('${prog.name}', '${prog.price}')" style="width: 100%; padding: 12px; border-radius: 12px; background: #0092B8; color: #ffffff; font-weight: 700; font-size: 13.5px; border: none; cursor: pointer; transition: all 0.2s;">이 프로그램 예약하기 ➔</button>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
+          `).join('')}
+        </div>
+      `;
+    }
   }
 
-  // C. 실시간 예약 1단계(Step 1) 4종 프로그램 선택 라디오 리스트
+  // B. [프로그램] 영역 렌더링 (가로 4개 나란히 배치)
+  if (progSection) {
+    let cardContainer = progSection.querySelector('#program-list, .grid') || progSection.querySelector('div > div:last-child');
+    if (cardContainer) {
+      cardContainer.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; max-width: 1280px; margin: 24px auto 0 auto; box-sizing: border-box;">
+          ${PROGRAMS_DATA.map(prog => `
+            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 22px; text-align: left; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: space-between; min-width: 0;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <span style="font-size: 10.5px; font-weight: 800; color: #0092B8; background: #e0f2fe; padding: 2px 7px; border-radius: 6px;">${prog.tag}</span>
+                  <span style="font-size: 11.5px; color: #64748b; font-weight: 600;">⏱ ${prog.duration}</span>
+                </div>
+                <h3 style="font-size: 15px; font-weight: 800; color: #0C3559; margin: 6px 0 8px 0; min-height: 40px; display: flex; align-items: center; word-break: keep-all;">${prog.name}</h3>
+                <p style="font-size: 12px; color: #64748b; line-height: 1.45; margin-bottom: 16px; min-height: 50px; word-break: keep-all;">${prog.desc}</p>
+              </div>
+              <div>
+                <div style="font-size: 18px; font-weight: 800; color: #0092B8; margin-bottom: 12px;">${prog.price}</div>
+                <button type="button" onclick="selectProgramAndBook('${prog.name}', '${prog.price}')" style="width: 100%; padding: 11px; border-radius: 12px; background: #0092B8; color: #ffffff; font-weight: 700; font-size: 13px; border: none; cursor: pointer; transition: all 0.2s;">예약하기 ➔</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+  }
+
+  // C. 실시간 예약 1단계(Step 1) 라디오 목록 채우기
   const step1List = document.getElementById('step1-program-list');
   if (step1List) {
     step1List.innerHTML = PROGRAMS_DATA.map((prog, index) => `
@@ -1969,7 +1984,7 @@ function renderAllSections() {
 }
 
 // ==========================================================
-// 3. 실시간 예약 시스템 제어 (10:00~20:00, 4열 3줄 정렬)
+// 3. 실시간 예약 단계 및 10개 시간대 제어
 // ==========================================================
 let currentBookingStep = 1;
 let selectedBookingData = {
@@ -2132,11 +2147,11 @@ async function submitBooking() {
 }
 
 // ==========================================================
-// 4. 페이지 초기 로드 시 렌더링
+// 4. 페이지 로드 시 즉시 실행
 // ==========================================================
 document.addEventListener('DOMContentLoaded', () => {
   renderAllSections();
 });
-setTimeout(renderAllSections, 500);
+setTimeout(renderAllSections, 300);
 </script>
 </html>
