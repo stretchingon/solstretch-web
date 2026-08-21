@@ -1001,7 +1001,7 @@ window.processKioskCheckin = async function() {
 window.executeMemberCheckin = async function(member) {
   const resBox = document.getElementById('kiosk-result-box');
   
-  // 🕒 한국 표준시(KST) 정확한 시간 생성
+  // 🕒 한국 표준시(KST) 시간 생성
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -1011,18 +1011,18 @@ window.executeMemberCheckin = async function(member) {
   const seconds = String(now.getSeconds()).padStart(2, '0');
 
   const dateStr = `${year}-${month}-${day}`; // 2026-08-21
-  const timeStr = `${hours}:${minutes}`;     // 16:45
+  const timeStr = `${hours}:${minutes}`;     // 16:51
   const fullTimeStr = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   const koreanTimeStr = `${year}. ${now.getMonth() + 1}. ${now.getDate()}. ${now.getHours() >= 12 ? '오후' : '오전'} ${now.getHours() % 12 || 12}:${minutes}:${seconds}`;
 
-  // 잔여 횟수 계산 (0 미만 방지)
+  // 잔여 횟수 계산 (0 이하 방지)
   const currentPass = getMemberPassCount(member);
   const newPassCount = Math.max(0, currentPass - 1);
 
-  // 1. 음성 안내 TTS (한국어)
+  // 1. 음성 안내 TTS
   try {
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel(); // 이전 음성 취소
+      window.speechSynthesis.cancel();
       const msg = new SpeechSynthesisUtterance(`${member.name} 회원님, 출석이 완료되었습니다. 잔여 ${newPassCount}회입니다.`);
       msg.lang = 'ko-KR';
       msg.rate = 1.0;
@@ -1052,11 +1052,11 @@ window.executeMemberCheckin = async function(member) {
     `;
   }
 
-  // 3. Firestore DB 동시 갱신 (ERP의 모든 수강권/출결 필드 완벽 호환)
+  // 3. Firestore DB 실시간 반영 (회원 명부 차감 + ERP 실시간 출결 로그 생성)
   try {
     const { doc, updateDoc, collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
     if (window.db) {
-      // (1) 회원 명부 횟수 일괄 차감 & 마지막 출석시간 한국시 기록
+      // (1) 회원 명부 횟수 필드 일괄 차감
       await updateDoc(doc(window.db, 'members', member.id), {
         passes: newPassCount,
         remainPass: newPassCount,
@@ -1066,7 +1066,7 @@ window.executeMemberCheckin = async function(member) {
         updated_at: koreanTimeStr
       });
 
-      // (2) ERP 출결 관리 테이블 로그 생성 (ERP 모든 변수명 대응)
+      // (2) ERP 실시간 현황판 및 출결 로그 저장 (모든 잔여횟수 변수명 포함)
       const logData = {
         memberId: member.id,
         memberName: member.name || '',
@@ -1077,12 +1077,16 @@ window.executeMemberCheckin = async function(member) {
         time: timeStr,
         checkedAt: fullTimeStr,
         createdAt: koreanTimeStr,
+        remainPass: newPassCount,
+        remainingPasses: newPassCount,
+        passes: newPassCount,
+        passCount: newPassCount,
         type: '키오스크 출석',
         status: '출석'
       };
 
       await addDoc(collection(window.db, 'attendances'), logData);
-      console.log('✅ 출결 로그 저장 성공:', logData);
+      console.log('✅ ERP 실시간 출결 로그 및 잔여횟수 저장 완료:', logData);
     }
   } catch (err) {
     console.error('❌ 출석 DB 저장 에러:', err);
