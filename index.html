@@ -1848,30 +1848,60 @@ const AVAILABLE_TIMES = [
   '17:00', '18:00', '19:00', '20:00'
 ];
 
-// 1. 시간대 버튼 생성 및 렌더링 (겹침 해결 및 최적화)
+// 1. 시간대 버튼 생성 및 렌더링 (겹침 완벽 해결 버전)
 function renderTimeSlots() {
   const container = document.getElementById('step2-time-slots');
   if (!container) return;
 
   container.innerHTML = '';
   
-  // 3~4열 반응형 그리드로 여유 공간 확보
+  // 독립 그리드 레이아웃 생성
   const grid = document.createElement('div');
-  grid.className = 'grid grid-cols-2 sm:grid-cols-3 gap-2.5 mt-2 w-full';
+  grid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 8px; width: 100%; margin-top: 8px;';
 
   AVAILABLE_TIMES.forEach(time => {
+    const isSelected = selectedBookingData.time === time;
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl border text-xs sm:text-sm font-bold transition-all cursor-pointer select-none ${
-      selectedBookingData.time === time
-        ? 'bg-[#0092B8] text-white border-[#0092B8] shadow-md ring-2 ring-sky-300'
-        : 'bg-white/10 hover:bg-white/20 text-white border-white/20'
-    }`;
-    btn.innerHTML = `<span class="text-xs">🕒</span><span>${time}</span>`;
+    
+    // 버튼 기본/선택 스타일 직접 지정 (Tailwind CDN 누락 방지)
+    btn.style.cssText = `
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 6px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      border: 1px solid ${isSelected ? '#0092B8' : 'rgba(255, 255, 255, 0.2)'};
+      background: ${isSelected ? '#0092B8' : 'rgba(255, 255, 255, 0.1)'};
+      color: #ffffff;
+      box-shadow: ${isSelected ? '0 0 0 2px rgba(56, 189, 248, 0.6)' : 'none'};
+    `;
+
+    btn.innerHTML = `<span style="font-size: 12px;">🕒</span><span>${time}</span>`;
+    
+    btn.onmouseover = () => {
+      if (selectedBookingData.time !== time) {
+        btn.style.background = 'rgba(255, 255, 255, 0.2)';
+      }
+    };
+    btn.onmouseout = () => {
+      if (selectedBookingData.time !== time) {
+        btn.style.background = 'rgba(255, 255, 255, 0.1)';
+      }
+    };
+
     btn.onclick = () => {
       selectedBookingData.time = time;
       renderTimeSlots();
     };
+
     grid.appendChild(btn);
   });
 
