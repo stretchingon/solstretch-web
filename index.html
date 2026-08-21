@@ -972,13 +972,7 @@ window.processKioskCheckin = async function() {
     alert('출석 조회 중 오류가 발생했습니다. 데스크에 문의해주세요.');
   }
 };
-      } catch (error) {
-      console.error('출석 조회 에러:', error);
-      alert('출석 조회 중 오류가 발생했습니다. 데스크에 문의해주세요.');
-    }
-  };
-
-  // 🕒 예약 가능 시간표 렌더링 함수 복원
+       // 🕒 예약 가능 시간표 렌더링 함수 복원
   function renderAppTimeSlots(dateVal) {
     const bookedTimes = (window.bookings || []).filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
     const isSat = typeof isSaturdayDate === 'function' ? isSaturdayDate(dateVal) : false;
