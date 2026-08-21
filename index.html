@@ -1000,15 +1000,29 @@ window.processKioskCheckin = async function() {
 // 2. 출석 승인 및 차감 처리 (ERP/웹 모든 필드 동시 차감)
 window.executeMemberCheckin = async function(member) {
   const resBox = document.getElementById('kiosk-result-box');
-  const now = new Date();
-  const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
   
+  // 🕒 한국 표준시(KST) 정확한 시간 생성
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  const dateStr = `${year}-${month}-${day}`; // 2026-08-21
+  const timeStr = `${hours}:${minutes}`;     // 16:45
+  const fullTimeStr = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  const koreanTimeStr = `${year}. ${now.getMonth() + 1}. ${now.getDate()}. ${now.getHours() >= 12 ? '오후' : '오전'} ${now.getHours() % 12 || 12}:${minutes}:${seconds}`;
+
+  // 잔여 횟수 계산 (0 미만 방지)
   const currentPass = getMemberPassCount(member);
   const newPassCount = Math.max(0, currentPass - 1);
 
-  // 음성 안내 TTS
+  // 1. 음성 안내 TTS (한국어)
   try {
     if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel(); // 이전 음성 취소
       const msg = new SpeechSynthesisUtterance(`${member.name} 회원님, 출석이 완료되었습니다. 잔여 ${newPassCount}회입니다.`);
       msg.lang = 'ko-KR';
       msg.rate = 1.0;
@@ -1016,13 +1030,13 @@ window.executeMemberCheckin = async function(member) {
     }
   } catch (e) {}
 
-  // 화면 출석 완료 카드 표시
+  // 2. 화면 출석 완료 카드 표시
   if (resBox) {
     resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-emerald-50 text-emerald-950 shadow-2xl border-2 border-emerald-500 text-center space-y-4 transition-all';
     resBox.innerHTML = `
       <div class="text-5xl">🎉</div>
       <h3 class="text-2xl sm:text-3xl font-black text-emerald-700">${member.name} 회원님</h3>
-      <p class="text-base sm:text-lg font-bold text-emerald-900">출석이 정상 처리되었습니다 (${timeStr})</p>
+      <p class="text-base sm:text-lg font-bold text-emerald-900">출석 완료 (${timeStr})</p>
       <div class="p-4 bg-white/80 rounded-2xl border border-emerald-200 shadow-inner flex justify-around items-center">
         <div>
           <span class="text-xs text-stone-500 block">수강권명</span>
@@ -1038,30 +1052,43 @@ window.executeMemberCheckin = async function(member) {
     `;
   }
 
-  // Firestore DB 모든 수강권 필드 동시 갱신 (ERP와 완벽 연동)
+  // 3. Firestore DB 동시 갱신 (ERP의 모든 수강권/출결 필드 완벽 호환)
   try {
     const { doc, updateDoc, collection, addDoc } = await import('https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js');
     if (window.db) {
+      // (1) 회원 명부 횟수 일괄 차감 & 마지막 출석시간 한국시 기록
       await updateDoc(doc(window.db, 'members', member.id), {
         passes: newPassCount,
         remainPass: newPassCount,
         remainingPasses: newPassCount,
-        lastCheckin: now.toISOString()
+        passCount: newPassCount,
+        lastCheckin: fullTimeStr,
+        updated_at: koreanTimeStr
       });
-      await addDoc(collection(window.db, 'attendances'), {
+
+      // (2) ERP 출결 관리 테이블 로그 생성 (ERP 모든 변수명 대응)
+      const logData = {
         memberId: member.id,
-        name: member.name,
+        memberName: member.name || '',
+        name: member.name || '',
         phone: member.phone || member.contact || '',
         passName: member.passName || member.selectedProgram || '솔루션 스트레칭',
-        checkedAt: now.toISOString(),
-        type: '출석 (키오스크)'
-      });
+        date: dateStr,
+        time: timeStr,
+        checkedAt: fullTimeStr,
+        createdAt: koreanTimeStr,
+        type: '키오스크 출석',
+        status: '출석'
+      };
+
+      await addDoc(collection(window.db, 'attendances'), logData);
+      console.log('✅ 출결 로그 저장 성공:', logData);
     }
   } catch (err) {
-    console.error('DB 출석 차감 저장 실패:', err);
+    console.error('❌ 출석 DB 저장 에러:', err);
   }
 
-  // 3.5초 후 초기화
+  // 4. 3.5초 후 초기화
   setTimeout(() => {
     window.kioskInputDigits = '';
     window.updateKioskDisplay();
