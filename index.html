@@ -1828,38 +1828,7 @@ window.executeMemberCheckin = async function(member) {
     }
   });
    // ==========================================
-// 1. 예약 버튼 클릭 시 실행되는 프로그램 선택 및 예약 함수 복구
-// ==========================================
-function selectProgramAndBook(programName, price) {
-  try {
-    const programSelect = document.getElementById('bookingProgram') || document.getElementById('programSelect') || document.querySelector('select[name="program"]');
-    if (programSelect && programName) {
-      for (let i = 0; i < programSelect.options.length; i++) {
-        if (programSelect.options[i].text.includes(programName) || programSelect.options[i].value.includes(programName)) {
-          programSelect.selectedIndex = i;
-          break;
-        }
-      }
-    }
-
-    const bookingModal = document.getElementById('bookingModal') || document.getElementById('reservationModal');
-    if (bookingModal) {
-      bookingModal.classList.remove('hidden');
-      bookingModal.style.display = 'flex';
-      return;
-    }
-
-    const bookingSection = document.getElementById('booking') || document.getElementById('reservation') || document.getElementById('bookingSection') || document.querySelector('#booking');
-    if (bookingSection) {
-      bookingSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  } catch (err) {
-    console.error('예약 연동 처리 중 오류:', err);
-  }
-}
-
-// ==========================================
-// 2. 실시간 예약 단계(Step) 이동 및 제어 함수 복구
+// 1. 실시간 맞춤 예약 단계(Step 1, 2, 3) 완벽 제어 함수
 // ==========================================
 let currentBookingStep = 1;
 let selectedBookingData = {
@@ -1868,54 +1837,59 @@ let selectedBookingData = {
   date: '',
   time: '',
   name: '',
-  phone: ''
+  phone: '',
+  note: ''
 };
 
 function goToStep(step) {
   try {
     currentBookingStep = step;
 
-    // 모든 스텝 컨테이너 숨김 처리
-    const stepContainers = document.querySelectorAll('[id^="step"], [id^="booking-step"], .booking-step-content');
-    stepContainers.forEach(el => {
-      el.classList.add('hidden');
-      el.style.display = 'none';
-    });
+    // 1~3단계 컨테이너 참조
+    const step1 = document.getElementById('booking-step-1');
+    const step2 = document.getElementById('booking-step-2');
+    const step3 = document.getElementById('booking-step-3');
 
-    // 선택된 타겟 스텝 화면 표출
-    const targetStep = document.getElementById(`step${step}`) || 
-                       document.getElementById(`step-${step}`) || 
-                       document.getElementById(`bookingStep${step}`) ||
-                       document.querySelector(`[data-step="${step}"]`);
+    // 모든 단계 일단 숨김
+    if (step1) { step1.classList.add('hidden'); step1.style.display = 'none'; }
+    if (step2) { step2.classList.add('hidden'); step2.style.display = 'none'; }
+    if (step3) { step3.classList.add('hidden'); step3.style.display = 'none'; }
 
-    if (targetStep) {
-      targetStep.classList.remove('hidden');
-      targetStep.style.display = 'block';
+    // 타겟 단계만 화면에 표시
+    const target = document.getElementById(`booking-step-${step}`);
+    if (target) {
+      target.classList.remove('hidden');
+      target.style.display = 'block';
     }
 
-    // 스텝 버튼/인디케이터 스타일 활성화
-    document.querySelectorAll('[data-step-btn]').forEach(btn => {
-      const btnStep = btn.getAttribute('data-step-btn');
-      if (btnStep == step) {
-        btn.classList.add('bg-[#0092B8]', 'text-white', 'font-bold');
-      } else {
-        btn.classList.remove('bg-[#0092B8]', 'text-white', 'font-bold');
-      }
-    });
-
-    // 예약 섹션 위치로 스크롤
-    const bookingSection = document.getElementById('booking') || document.getElementById('reservation') || document.querySelector('.reservation-section');
-    if (bookingSection) {
-      bookingSection.scrollIntoView({ behavior: 'smooth' });
+    // 예약 섹션으로 부드럽게 스크롤
+    const reservationSection = document.getElementById('reservation') || document.getElementById('booking');
+    if (reservationSection) {
+      reservationSection.scrollIntoView({ behavior: 'smooth' });
     }
   } catch (err) {
-    console.error('스텝 이동 중 오류:', err);
+    console.error('예약 단계 이동 중 오류:', err);
   }
 }
 
 function prevStep() {
   if (currentBookingStep > 1) {
     goToStep(currentBookingStep - 1);
+  }
+}
+
+// ==========================================
+// 2. 예약 버튼 클릭 시 실행되는 프로그램 선택 및 2단계 이동 함수
+// ==========================================
+function selectProgramAndBook(programName, price) {
+  try {
+    selectedBookingData.program = programName || '1:1 맞춤 스트레칭 케어';
+    selectedBookingData.price = price || '';
+
+    // 2단계(날짜/시간 선택)로 즉시 전환
+    goToStep(2);
+  } catch (err) {
+    console.error('프로그램 선택 오류:', err);
   }
 }
 </script>
