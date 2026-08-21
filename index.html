@@ -972,27 +972,38 @@ window.processKioskCheckin = async function() {
     alert('출석 조회 중 오류가 발생했습니다. 데스크에 문의해주세요.');
   }
 };
-      const bookedTimes = window.bookings.filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
-      const isSat = isSaturdayDate(dateVal);
-
-      const slotsEl = document.getElementById('app-time-slots');
-      slotsEl.innerHTML = TIME_SLOTS.map(t => {
-        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
-        const isBooked = bookedTimes.includes(t);
-        const isSelected = appSelectedTime === t;
-
-        if (isSaturdayCutoff || isBooked) {
-          return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
-        }
-
-        return `
-          <button onclick="selectAppTime('${t}')" class="py-2.5 rounded-xl text-xs font-bold border ${isSelected ? 'bg-[#0092B8] text-white border-[#0092B8]' : 'bg-white text-[#0C3559] border-stone-200 hover:bg-stone-50'}">
-            ${t}
-          </button>
-        `;
-      }).join('');
+      } catch (error) {
+      console.error('출석 조회 에러:', error);
+      alert('출석 조회 중 오류가 발생했습니다. 데스크에 문의해주세요.');
     }
+  };
 
+  // 🕒 예약 가능 시간표 렌더링 함수 복원
+  function renderAppTimeSlots(dateVal) {
+    const bookedTimes = (window.bookings || []).filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
+    const isSat = typeof isSaturdayDate === 'function' ? isSaturdayDate(dateVal) : false;
+
+    const slotsEl = document.getElementById('app-time-slots');
+    if (!slotsEl) return;
+
+    const timeSlotsList = typeof TIME_SLOTS !== 'undefined' ? TIME_SLOTS : ['10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+
+    slotsEl.innerHTML = timeSlotsList.map(t => {
+      const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
+      const isBooked = bookedTimes.includes(t);
+      const isSelected = (typeof appSelectedTime !== 'undefined') && (appSelectedTime === t);
+
+      if (isSaturdayCutoff || isBooked) {
+        return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
+      }
+
+      return `
+        <button onclick="selectAppTime('${t}')" class="py-2.5 rounded-xl text-xs font-bold border ${isSelected ? 'bg-[#0092B8] text-white border-[#0092B8]' : 'bg-white text-[#0C3559] border-stone-200 hover:bg-stone-50'}">
+          ${t}
+        </button>
+      `;
+    }).join('');
+  }
     function selectAppTime(t) {
       appSelectedTime = t;
       renderAppTimeSlots();
