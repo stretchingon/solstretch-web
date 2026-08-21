@@ -1526,7 +1526,44 @@ window.processKioskCheckin = async function() {
         if (iconEl) iconEl.innerText = '▲';
       }
     }
+// 📱 URL 파라미터 감지 (?view=checkin 출석 키오스크 전용 화면)
+    function checkUrlRouting() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const view = urlParams.get('view');
 
+      if (view === 'checkin') {
+        const mainHeader = document.querySelector('header');
+        const mainFooter = document.querySelector('footer');
+        const mainElements = document.querySelectorAll('main, section:not(#checkin-view)');
+        
+        if (mainHeader) mainHeader.style.display = 'none';
+        if (mainFooter) mainFooter.style.display = 'none';
+        mainElements.forEach(el => {
+          if (el.id !== 'checkin-view' && !el.closest('#checkin-view')) {
+            el.style.display = 'none';
+          }
+        });
+
+        const checkinView = document.getElementById('checkin-view');
+        if (checkinView) {
+          checkinView.classList.remove('hidden');
+          checkinView.style.display = 'flex';
+        }
+      }
+   }
+    window.onload = function() {
+      checkUrlRouting();
+      renderBodyZones();
+      renderPrograms();
+      renderStaticSections();
+      renderStep1();
+    };
+  </script>
+
+  <!-- Firebase Cloud Sync -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
     window.onload = function() {
       checkUrlRouting();
       renderBodyZones();
