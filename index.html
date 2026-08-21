@@ -1827,5 +1827,39 @@ window.executeMemberCheckin = async function(member) {
       }
     }
   });
+    // ==========================================
+// 예약 버튼 클릭 시 실행되는 프로그램 선택 및 예약 함수 복구
+// ==========================================
+function selectProgramAndBook(programName, price) {
+  try {
+    // 1. 프로그램 선택 필드가 있을 경우 값 설정
+    const programSelect = document.getElementById('bookingProgram') || document.getElementById('programSelect') || document.querySelector('select[name="program"]');
+    if (programSelect && programName) {
+      // 옵션 목록 중 일치하는 항목 선택
+      for (let i = 0; i < programSelect.options.length; i++) {
+        if (programSelect.options[i].text.includes(programName) || programSelect.options[i].value.includes(programName)) {
+          programSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+
+    // 2. 예약 팝업(모달)이 있는 경우 열기
+    const bookingModal = document.getElementById('bookingModal') || document.getElementById('reservationModal');
+    if (bookingModal) {
+      bookingModal.classList.remove('hidden');
+      bookingModal.style.display = 'flex';
+      return;
+    }
+
+    // 3. 페이지 내 실시간 예약 섹션으로 부드럽게 스크롤 이동
+    const bookingSection = document.getElementById('booking') || document.getElementById('reservation') || document.getElementById('bookingSection') || document.querySelector('#booking');
+    if (bookingSection) {
+      bookingSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  } catch (err) {
+    console.error('예약 연동 처리 중 오류:', err);
+  }
+}
 </script>
 </html>
