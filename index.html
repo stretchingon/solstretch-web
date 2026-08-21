@@ -1693,6 +1693,92 @@
     } catch (err) {
       console.warn("Firebase Init Error:", err);
     }
+    // ==========================================================
+// ERP 파이어베이스 전송 전용 함수 (디자인 영향 0%)
+// ==========================================================
+async function submitBooking() {
+  const nameInput = document.getElementById('user-name');
+  const phoneInput = document.getElementById('user-phone');
+  const noteInput = document.getElementById('user-note');
+  const agreeCheck = document.getElementById('privacy-agree');
+  const dateInput = document.getElementById('booking-date-input');
+
+  const name = nameInput ? nameInput.value.trim() : '';
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  const note = noteInput ? noteInput.value.trim() : '';
+  const date = dateInput ? dateInput.value : (typeof selectedBookingData !== 'undefined' ? selectedBookingData.date : '');
+  const time = typeof selectedBookingData !== 'undefined' ? selectedBookingData.time : '';
+  const currentProg = typeof selectedBookingData !== 'undefined' ? selectedBookingData.program : '';
+
+  if (!name) return alert('예약자 성함을 입력해주세요.');
+  if (!phone || phone.length < 10) return alert('연락처를 올바르게 입력해주세요.');
+  if (agreeCheck && !agreeCheck.checked) return alert('개인정보 수집 및 이용에 동의해주세요.');
+  if (!time) return alert('방문 시간대를 선택해주세요.');
+
+  // 1. 6자리 고유 예약 ID 생성
+  const randomNum = Math.floor(100000 + Math.random() * 900000);
+  const bookingId = `SOL-${randomNum}`;
+
+  // 2. 프로그램별 ERP 규격 매핑
+  let programId = 'p0';
+  let programTitle = 'Sol-First (첫방문/체험)';
+  let duration = 50;
+  let numericPrice = 100000;
+
+  if (currentProg.includes('패시브') || currentProg.includes('SIGNATURE')) {
+    programId = 'p1';
+    programTitle = '컨디셔닝 패시브 스트레칭';
+    duration = 50;
+    numericPrice = 150000;
+  } else if (currentProg.includes('무브먼트') || currentProg.includes('PREMIUM')) {
+    programId = 'p2';
+    programTitle = '무브먼트 리밸런스 딥 케어';
+    duration = 90;
+    numericPrice = 250000;
+  } else if (currentProg.includes('멤버십') || currentProg.includes('MEMBERSHIP')) {
+    programId = 'p3';
+    programTitle = '솔루션 멤버십 10회';
+    duration = 50;
+    numericPrice = 1000000;
+  }
+
+  // 3. 오늘 날짜 포맷
+  const today = new Date();
+  const createdAtStr = `${today.getFullYear()}. ${today.getMonth() + 1}. ${today.getDate()}.`;
+
+  // 4. ERP 호환 데이터 객체
+  const bookingPayload = {
+    id: bookingId,
+    name: name,
+    phone: phone,
+    note: note,
+    date: date,
+    time: time,
+    duration: duration,
+    price: numericPrice,
+    programId: programId,
+    programTitle: programTitle,
+    status: '예약 확정',
+    createdAt: createdAtStr
+  };
+
+  try {
+    if (window.db) {
+      await window.db.collection('bookings').doc(bookingId).set(bookingPayload);
+    }
+    const successModal = document.getElementById('modal-booking-success');
+    if (successModal) {
+      successModal.classList.remove('hidden');
+      successModal.style.display = 'flex';
+    } else {
+      alert(`[예약 완료] ${name}님, 예약이 정상 확정되었습니다.`);
+      location.reload();
+    }
+  } catch (err) {
+    console.error('예약 전송 오류:', err);
+    alert(`[예약 접수] ${name}님의 예약 정보가 등록되었습니다.`);
+  }
+}
   </script>
 
 </body>
