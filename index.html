@@ -1639,20 +1639,35 @@ window.executeMemberCheckin = async function(member) {
       renderStep1();
     };
   </script>
-
-  <!-- Firebase Cloud Sync -->
+<!-- Firebase Cloud Sync -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, setDoc, doc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    window.onload = function() {
-      checkUrlRouting();
-      renderBodyZones();
-      renderPrograms();
-      renderStaticSections();
-      renderStep1();
-    };
-  </script>
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyCnwvnHMwwrQx3mAOVAimDn9mNbI9VsFeM",
+      authDomain: "solutionstretching.firebaseapp.com",
+      projectId: "solutionstretching",
+      storageBucket: "solutionstretching.firebasestorage.app",
+      messagingSenderId: "567579240099",
+      appId: "1:567579240099:web:1b32c98d04fbd4e55d0116",
+      measurementId: "G-663RDZSPGH"
+    };
+
+    // Firebase 초기화 및 전역 db 등록
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.db = db;
+
+    // 실시간 회원 명부 실시간 동기화
+    window.members = [];
+    onSnapshot(collection(db, 'members'), (snapshot) => {
+      window.members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      console.log('🔥 키오스크 회원 명부 실시간 연동 완료:', window.members.length, '명');
+    }, (error) => {
+      console.error('회원 목록 동기화 실패:', error);
+    });
+  </script>
   <!-- Firebase Cloud Sync -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
