@@ -1843,4 +1843,26 @@ async function processKioskCheckin() {
   </script>
 
 </body>
+  <script>
+  // 📱 URL의 ?view=checkin 감지하여 출석체크 전용 화면 표출
+  window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('view') === 'checkin') {
+      // 1. 일반 홈페이지의 메인 요소들 숨김 처리
+      const mainHeader = document.querySelector('header');
+      const mainBody = document.querySelector('main');
+      const mainFooter = document.querySelector('footer');
+      if (mainHeader) mainHeader.style.display = 'none';
+      if (mainBody) mainBody.style.display = 'none';
+      if (mainFooter) mainFooter.style.display = 'none';
+
+      // 2. 출석체크 키오스크 화면 표시
+      const checkinView = document.getElementById('checkin-view');
+      if (checkinView) {
+        checkinView.classList.remove('hidden');
+        checkinView.classList.add('flex');
+      }
+    }
+  });
+</script>
 </html>
