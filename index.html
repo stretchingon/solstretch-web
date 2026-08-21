@@ -862,7 +862,7 @@
       }
     }
 
-   // 📱 키패드 입력 전역 변수 및 제어 함수
+  // 📱 키패드 입력 전역 변수 및 제어 함수
 window.kioskInputDigits = '';
 
 window.pressKioskKey = function(key) {
@@ -972,97 +972,6 @@ window.processKioskCheckin = async function() {
     alert('출석 조회 중 오류가 발생했습니다. 데스크에 문의해주세요.');
   }
 };
-    function selectKioskMember(memberId) {
-      const member = window.members.find(m => m.id === memberId);
-      if (member) {
-        executeMemberCheckin(member);
-      }
-    }
-
-    function checkUrlRouting() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const isAppView = urlParams.get('view') === 'app';
-      const isCheckinView = urlParams.get('view') === 'checkin';
-
-      if (isCheckinView) {
-        document.getElementById('main-website').classList.add('hidden');
-        document.getElementById('app-view').classList.add('hidden');
-        document.getElementById('checkin-view').classList.remove('hidden');
-      } else if (isAppView) {
-        document.getElementById('main-website').classList.add('hidden');
-        document.getElementById('checkin-view').classList.add('hidden');
-        document.getElementById('app-view').classList.remove('hidden');
-        
-        const appName = sessionStorage.getItem('solstretch_app_name');
-        const appPhone = sessionStorage.getItem('solstretch_app_phone');
-        if (appName && appPhone) {
-          loadAppDashboard(appName, appPhone);
-        }
-      }
-
-    function appLoginCheck() {
-      const name = document.getElementById('app-input-name').value.trim();
-      const rawPhone = document.getElementById('app-input-phone').value.trim();
-      const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
-
-      if (!name || !cleanPhone) return showToast('성함과 연락처를 작성해 주세요.');
-
-      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-      if (!member) {
-        alert('🚨 등록된 10회권 회원 정보가 없습니다. 원장님께 등록 문의를 해주세요.');
-        return;
-      }
-
-      sessionStorage.setItem('solstretch_app_name', name);
-      sessionStorage.setItem('solstretch_app_phone', cleanPhone);
-      loadAppDashboard(name, cleanPhone);
-    }
-
-    function loadAppDashboard(name, cleanPhone) {
-      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-      if (!member) { appLogout(); return; }
-
-      const curPasses = member.remainingPasses !== undefined ? member.remainingPasses : member.passCount;
-
-      document.getElementById('app-login-screen').classList.add('hidden');
-      document.getElementById('app-booking-screen').classList.remove('hidden');
-
-      document.getElementById('app-user-name').innerText = member.name;
-      document.getElementById('app-user-type').innerText = member.passType || '솔루션 멤버십 10회';
-      document.getElementById('app-user-passes').innerText = curPasses;
-      document.getElementById('app-user-expiry').innerText = member.expiryDate || '무제한';
-
-      document.getElementById('app-date').value = getNextWorkingDateStr();
-      document.getElementById('app-date').min = getNextWorkingDateStr();
-      
-      renderAppTimeSlots();
-      renderAppMyBookings(name, cleanPhone);
-    }
-
-    function appLogout() {
-      sessionStorage.removeItem('solstretch_app_name');
-      sessionStorage.removeItem('solstretch_app_phone');
-      document.getElementById('app-login-screen').classList.remove('hidden');
-      document.getElementById('app-booking-screen').classList.add('hidden');
-    }
-
-    function renderAppTimeSlots() {
-      const dateVal = document.getElementById('app-date').value;
-      const minDate = getNextWorkingDateStr();
-      const todayStr = getLocalDateStr(0);
-
-      if (dateVal <= todayStr || dateVal < minDate) {
-        showToast('당일 예약은 불가능합니다. (최소 1일 전 사전예약만 가능)');
-        document.getElementById('app-date').value = minDate;
-        return renderAppTimeSlots();
-      }
-
-      if (isSundayDate(dateVal)) {
-        showToast('일요일은 정기 휴무입니다.');
-        document.getElementById('app-date').value = minDate;
-        return renderAppTimeSlots();
-      }
-
       const bookedTimes = window.bookings.filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
       const isSat = isSaturdayDate(dateVal);
 
