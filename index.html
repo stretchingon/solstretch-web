@@ -1848,29 +1848,36 @@ const AVAILABLE_TIMES = [
   '17:00', '18:00', '19:00', '20:00'
 ];
 
-// 1. 시간대 버튼 생성 및 렌더링 (겹침 완벽 해결 버전)
+// 1. 시간대 버튼 생성 및 렌더링 (가로 4칸 3줄 배열)
 function renderTimeSlots() {
   const container = document.getElementById('step2-time-slots');
   if (!container) return;
 
   container.innerHTML = '';
+  container.style.width = '100%';
   
-  // 독립 그리드 레이아웃 생성
+  // 가로 4칸 고정 그리드 레이아웃
   const grid = document.createElement('div');
-  grid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 8px; width: 100%; margin-top: 8px;';
+  grid.style.cssText = `
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-top: 8px;
+    box-sizing: border-box;
+  `;
 
   AVAILABLE_TIMES.forEach(time => {
     const isSelected = selectedBookingData.time === time;
     const btn = document.createElement('button');
     btn.type = 'button';
     
-    // 버튼 기본/선택 스타일 직접 지정 (Tailwind CDN 누락 방지)
     btn.style.cssText = `
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      padding: 10px 6px;
+      padding: 12px 6px;
       border-radius: 12px;
       font-size: 13px;
       font-weight: 700;
@@ -1907,7 +1914,6 @@ function renderTimeSlots() {
 
   container.appendChild(grid);
 }
-
 // 2. 예약 단계(Step 1, 2, 3) 이동 제어
 function goToStep(step) {
   try {
