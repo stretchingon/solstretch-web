@@ -565,7 +565,7 @@
               <div class="space-y-4 mb-8 text-sm sm:text-base text-[#0C3559]">
                 <div>
                   <p class="font-semibold text-[#0C3559] text-base sm:text-lg">스트레칭온</p>
-                  <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
+                  <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서해구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
                   <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간 제공</p>
                 </div>
                 <div class="text-sm font-semibold text-[#0C3559]">📞 직통 전화 문의: 010-6566-6369 (대표 김동수)</div>
@@ -614,7 +614,7 @@
 
     <footer class="bg-[#0C3559] text-stone-300 py-16 border-t border-white/10 text-xs">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서구 가정로 451 8층 803호</p>
+        <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 대표: 김동수 | 연락처: 010-6566-6369 | 인천 서해구 가정로 451 8층 803호</p>
       </div>
     </footer>
   </div>
@@ -1074,7 +1074,7 @@
 
       const slotsEl = document.getElementById('app-time-slots');
       slotsEl.innerHTML = TIME_SLOTS.map(t => {
-        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00', '21:00'].includes(t);
+        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
         const isBooked = bookedTimes.includes(t);
         const isSelected = appSelectedTime === t;
 
