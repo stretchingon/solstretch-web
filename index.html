@@ -267,7 +267,7 @@
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
           <button onclick="selectProgramAndBook('p0')" class="w-full sm:w-auto px-7 py-4 rounded-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm shadow-lg transform hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 ring-4 ring-amber-200">
-            🌱 첫방문 1회 체험 (50,000원) 예약하기
+            🌱 첫방문 1회 체험 (100,000원) 예약하기
             <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
           </button>
           <button onclick="scrollToSec('reservation')" class="w-full sm:w-auto px-7 py-4 rounded-full bg-[#0C3559] text-white font-semibold text-xs sm:text-sm hover:bg-[#082239] shadow-md flex items-center justify-center gap-2">
@@ -439,8 +439,8 @@
                 </div>
                 <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
                   <p class="text-xs text-sky-300 font-semibold mb-1">수강료 및 자격증</p>
-                  <p class="text-2xl font-semibold text-white">120만원</p>
-                  <p class="text-xs text-stone-300 mt-1 font-normal">* 공식 수기지도자 자격증 발급비 포함</p>
+                  <p class="text-2xl font-semibold text-white">150만원</p>
+                  <p class="text-xs text-stone-300 mt-1 font-normal">* 솔루션 스트레칭 지도자 자격증 발급비 포함</p>
                 </div>
               </div>
 
@@ -673,10 +673,10 @@
     const MEMBERS_KEY = 'solstretch_members_v1';
 
     const PROGRAMS = [
-      { id: 'p0', title: 'Sol-First (첫방문/체험)', subtitle: '1:1 체형 정밀 측정스캔 + 수기 체험 & 맞춤 상담 (50분)', duration: 50, priceSingle: '50,000원', price: 50000, originalPrice: 100000, badge: 'FIRST VISIT', description: '첫 방문 고객님을 위한 1:1 정밀 체형 측정 스캔, 통증 원인 상담 및 패시브 스트레칭 체험 코스입니다. 내 몸의 상태를 정확히 알고 맞춤 관리 로드맵을 결정하실 수 있습니다.', targets: ['스트레칭온을 처음 방문하시는 고객님', '내 신체 불균형 및 통증 원인이 궁금하신 분', '1회 체험 후 향후 관리 로드맵을 설계받고 싶으신 분'] },
-      { id: 'p1', title: 'Sol-Recovery (시그니처)', subtitle: '1:1 맞춤 체형 교정 & 패시브 수기 스트레칭 (50분)', duration: 50, priceSingle: '70,000원', price: 70000, originalPrice: 150000, badge: 'SIGNATURE', description: '관절 가동 범위를 섬세하게 확보하고, 거북목·승모근 및 만성 근육 긴장 해소를 위한 원장의 독자 수기 대표 기본 솔루션입니다.', targets: ['거북목·승모근 결림 및 목 뻐근함', '어깨 가동범위 제한 및 굽은 등', '일상 속 가벼운 유연성 회복을 원하시는 분'] },
-      { id: 'p2', title: 'Sol-Balance (프리미엄)', subtitle: '척추·골반 무브먼트 리밸런스 딥 케어 (90분)', duration: 90, priceSingle: '100,000원', price: 100000, originalPrice: 250000, badge: 'PREMIUM', description: '골반 비대칭 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 굳어진 근막을 딥 이완하고 하체 순환을 촉진하는 정밀 심화 케어입니다.', targets: ['골반 틀어짐 및 요통 근본 해소', '하체 부종 및 고관절 수축·답답함', '자세 구조 정교화 및 신체 밸런스 재정립'] },
-      { id: 'p3', title: '솔루션 멤버십 10회 (멤버십)', subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', duration: 50, priceSingle: '600,000원', price: 600000, originalPrice: 1200000, badge: 'MEMBERSHIP', description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 직계 가족 및 지인과 자유롭게 차감 공유 가능합니다.', targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지 및 지속 케어', '가족 및 지인과 차감 공유 원하시는 분'] }
+      { id: 'p0', title: 'Sol-First (첫방문/체험)', subtitle: '1:1 체형 정밀 측정스캔 + 수기 체험 & 맞춤 상담 (50분)', duration: 50, priceSingle: '100,000원', price: 150000, originalPrice: 150000, badge: 'FIRST VISIT', description: '첫 방문 고객님을 위한 1:1 정밀 체형 측정 스캔, 통증 원인 상담 및 패시브 스트레칭 체험 코스입니다. 내 몸의 상태를 정확히 알고 맞춤 관리 로드맵을 결정하실 수 있습니다.', targets: ['스트레칭온을 처음 방문하시는 고객님', '내 신체 불균형 및 통증 원인이 궁금하신 분', '1회 체험 후 향후 관리 로드맵을 설계받고 싶으신 분'] },
+      { id: 'p1', title: 'Sol-Recovery (시그니처)', subtitle: '1:1 맞춤 체형 교정 & 패시브 수기 스트레칭 (50분)', duration: 50, priceSingle: '150,000원', price: 150000, originalPrice: 150000, badge: 'SIGNATURE', description: '관절 가동 범위를 섬세하게 확보하고, 거북목·승모근 및 만성 근육 긴장 해소를 위한 원장의 독자 수기 대표 기본 솔루션입니다.', targets: ['거북목·승모근 결림 및 목 뻐근함', '어깨 가동범위 제한 및 굽은 등', '일상 속 가벼운 유연성 회복을 원하시는 분'] },
+      { id: 'p2', title: 'Sol-Balance (프리미엄)', subtitle: '척추·골반 무브먼트 리밸런스 딥 케어 (90분)', duration: 90, priceSingle: '250,000원', price: 250000, originalPrice: 250000, badge: 'PREMIUM', description: '골반 비대칭 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 굳어진 근막을 딥 이완하고 하체 순환을 촉진하는 정밀 심화 케어입니다.', targets: ['골반 틀어짐 및 요통 근본 해소', '하체 부종 및 고관절 수축·답답함', '자세 구조 정교화 및 신체 밸런스 재정립'] },
+      { id: 'p3', title: '솔루션 멤버십 10회 (멤버십)', subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', duration: 50, priceSingle: '1,000,000원', price: 1500000, originalPrice: 1500000, badge: 'MEMBERSHIP', description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 직계 가족 및 지인과 자유롭게 차감 공유 가능합니다.', targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지 및 지속 케어', '가족 및 지인과 차감 공유 원하시는 분'] }
     ];
 
     const BODY_ZONES = [
@@ -686,7 +686,7 @@
       { id: 'full', title: '전신 피로 & 신체 불균형 (Full Body)', subtitle: '만성 피로 해소 및 신체 구조 평온함 회복', symptoms: ['자고 일어나도 온몸이 찌뿌둥함', '몸 전체의 자세가 틀어진 느낌', '삶의 질을 높이는 가벼움 절실', '수술 후 빠른회복을 원하시는 분'], solution: '전신 솔루션 스트레칭으로 신체 밸런스 완전 복원', recProgramId: 'p3' }
     ];
 
-    const TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
+    const TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
     const GUIDELINES = [
       { category: '예약 및 취소/변경 규정', badge: 'RESERVATION', items: [{ title: '온라인 당일 예약 제한 (100% 사전예약제)', desc: '원장의 1:1 집중 정밀 케어를 위해 당일 온라인 예약은 없습니다. 당일 관리를 희망하시는 경우 대표 번호(010-6566-6369)로 문의 부탁드립니다.' }, { title: '타임 슬롯 당 1명 한정 (중복 예약 자동 차감)', desc: '어떤 프로그램을 선택하셔도 동일한 시간대에는 오직 1분의 고객님만 모십니다. 이미 예약된 타임은 마감 처리됩니다.' }, { title: '자유로운 일시 변경 및 취소', desc: '예약 취소 및 날짜/시간 변경은 방문 3시간 전까지 웹사이트 내 [내 예약] 메뉴를 통해 신청하실 수 있습니다.' }] },
@@ -702,7 +702,7 @@
     ];
 
     const FAQS = [
-      { q: '첫 방문 고객은 어떤 코스를 선택해야 하나요?', a: '처음 방문하시는 고객님께는 [Sol-First 첫방문/체험 (50,000원)] 코스를 추천해 드립니다. 1:1 체형 정밀 측정 스캔, 통증 원인 상담, 수기 스트레칭 체험이 통합 제공되며 향후 내 몸에 꼭 맞는 관리 로드맵을 안내받으실 수 있습니다.' },
+      { q: '첫 방문 고객은 어떤 코스를 선택해야 하나요?', a: '처음 방문하시는 고객님께는 [Sol-First 첫방문/체험 (100,000원)] 코스를 추천해 드립니다. 1:1 체형 정밀 측정 스캔, 통증 원인 상담, 수기 스트레칭 체험이 통합 제공되며 향후 내 몸에 꼭 맞는 관리 로드맵을 안내받으실 수 있습니다.' },
       { q: '일반 마사지나 도수치료와 무엇이 다른가요?', a: '스트레칭 온은 단순 압박이나 일시적 마사지가 아닙니다. 40여년 임상 경험을 가진 원장이 직접 관절 가동성(Mobility)과 근막 비대칭을 측정 평가하여 1:1 맞춤 수기 이완 및 교정 스트레칭을 진행합니다.' },
       { q: '동일 시간대에 다른 사람과 예약이 겹치지 않나요?', a: '네, 원장 1:1 단독 집중 케어로 진행되므로 프로그램 종류에 관계없이 동일 날짜·시간대에는 오직 1명의 예약만 가능합니다. 먼저 예약된 타임 슬롯은 실시간으로 자동 마감 처리됩니다.' },
       { q: '당일 방문 예약도 가능한가요?', a: '온라인 시스템에서는 정밀한 케어 준비를 위해 최소 방문 1일 전부터만 선택이 가능합니다. 당일 케어를 꼭 원하시는 경우 대표 번호(010-6566-6369)로 연락해 주시면 예약 잔여 시간을 안내해 드립니다.' },
@@ -1413,7 +1413,7 @@
 
       const slotsEl = document.getElementById('step2-time-slots');
       slotsEl.innerHTML = TIME_SLOTS.map(t => {
-        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00', '21:00'].includes(t);
+        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
         const isBooked = bookedTimes.includes(t);
         const isSelected = selectedTime === t;
 
