@@ -1416,36 +1416,40 @@
       }
 
       const slotsEl = document.getElementById('step2-time-slots');
-      slotsEl.innerHTML = TIME_SLOTS.map(t => {
-        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
-        const isBooked = bookedTimes.includes(t);
-        const isSelected = selectedTime === t;
+  slotsEl.innerHTML = TIME_SLOTS.map(t => {
+    const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
+    const isBooked = bookedTimes.includes(t);
+    const isSelected = selectedTime === t;
 
-        if (isSaturdayCutoff) {
-          return `
-            <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
-              <span class="line-through">${t}</span>
-              <span class="text-[10px] text-amber-400 font-semibold mt-0.5">토 18시 종료</span>
-            </button>
-          `;
-        }
+    // 🔒 ERP 관리자 수동 마감 여부 실시간 확인
+    const slotKey = `${selectedDate}-${t}`;
+    const isManualClosed = window.closedSlots && !!window.closedSlots[slotKey];
 
-        if (isBooked) {
-          return `
-            <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
-              <span class="line-through">${t}</span>
-              <span class="text-[10px] text-red-400 font-semibold mt-0.5">마감</span>
-            </button>
-          `;
-        }
+    if (isSaturdayCutoff) {
+      return `
+        <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
+          <span class="line-through">${t}</span>
+          <span class="text-[10px] text-amber-400 font-semibold mt-0.5">토 18시 종료</span>
+        </button>
+      `;
+    }
 
-        return `
-          <button onclick="setStep2Time('${t}')" class="py-3.5 rounded-xl text-xs font-semibold border transition-all flex flex-col items-center justify-center ${isSelected ? 'bg-sky-400 text-[#0C3559] border-sky-400 ring-2 ring-sky-300 shadow-lg scale-105' : 'bg-[#082239] text-stone-200 border-white/10 hover:border-white/30 hover:bg-white/5'}">
-            <span>${t}</span>
-            <span class="text-[10px] ${isSelected ? 'text-[#0C3559]' : 'text-emerald-400'}">예약가능</span>
-          </button>
-        `;
-      }).join('');
+    if (isBooked || isManualClosed) {
+      return `
+        <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
+          <span class="line-through">${t}</span>
+          <span class="text-[10px] text-red-400 font-semibold mt-0.5">마감</span>
+        </button>
+      `;
+    }
+
+    return `
+      <button onclick="setStep2Time('${t}')" class="py-3.5 rounded-xl text-xs font-semibold border transition-all flex flex-col items-center justify-center ${isSelected ? 'bg-sky-400 text-[#0C3559] border-sky-400 ring-2 ring-sky-300' : 'border-stone-700 text-stone-300 hover:border-sky-400 hover:bg-stone-800'}">
+        <span>${t}</span>
+        <span class="text-[10px] ${isSelected ? 'text-[#0C3559]' : 'text-emerald-400'}">예약가능</span>
+      </button>
+    `;
+  }).join('');
     }
 
     function handleBookingDateChange(val) {
