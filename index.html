@@ -1069,18 +1069,22 @@
         return renderAppTimeSlots();
       }
 
-      const bookedTimes = window.bookings.filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
-      const isSat = isSaturdayDate(dateVal);
+      const bookedTimes = (window.bookings || []).filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
+    const isSat = isSaturdayDate(dateVal);
 
-      const slotsEl = document.getElementById('app-time-slots');
-      slotsEl.innerHTML = TIME_SLOTS.map(t => {
-        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
-        const isBooked = bookedTimes.includes(t);
-        const isSelected = appSelectedTime === t;
+    const slotsEl = document.getElementById('app-time-slots');
+    slotsEl.innerHTML = TIME_SLOTS.map(t => {
+      const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
+      const isBooked = bookedTimes.includes(t);
+      const isSelected = appSelectedTime === t;
+      
+      // 🔒 ERP 관리자 수동 마감 여부 확인
+      const slotKey = `${dateVal}-${t}`;
+      const isManualClosed = window.closedSlots && !!window.closedSlots[slotKey];
 
-        if (isSaturdayCutoff || isBooked) {
-          return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
-        }
+      if (isSaturdayCutoff || isBooked || isManualClosed) {
+        return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
+      }
 
         return `
           <button onclick="selectAppTime('${t}')" class="py-2.5 rounded-xl text-xs font-bold border ${isSelected ? 'bg-[#0092B8] text-white border-[#0092B8]' : 'bg-white text-[#0C3559] border-stone-200 hover:bg-stone-50'}">
@@ -1667,8 +1671,19 @@
         window.bookings = cloudBookings;
         localStorage.setItem('solstretch_bookings_v1', JSON.stringify(cloudBookings));
         if (typeof renderStep2 === 'function') renderStep2();
+        if (typeof renderAppTimeSlots === 'function') renderAppTimeSlots();
       }, (err) => console.log("Bookings listener:", err));
-
+// 🔒 ERP 수동 마감 슬롯(closedSlots) 실시간 연동
+window.closedSlots = {};
+onSnapshot(collection(db, "closedSlots"), (snapshot) => {
+  const map = {};
+  snapshot.forEach((docSnap) => {
+    map[docSnap.id] = true;
+  });
+  window.closedSlots = map;
+  if (typeof renderAppTimeSlots === 'function') renderAppTimeSlots();
+  if (typeof renderStep2 === 'function') renderStep2();
+}, (err) => console.log("ClosedSlots listener:", err));
       window.syncMemberToCloud = async function(memberObj) {
         try { await setDoc(doc(db, "members", memberObj.id), memberObj); }
         catch (e) { console.error("Cloud member save:", e); }
