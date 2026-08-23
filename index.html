@@ -1422,7 +1422,8 @@
     const isSelected = selectedTime === t;
 
     // 🔒 ERP 관리자 수동 마감 여부 실시간 확인
-    const slotKey = `${selectedDate}-${t}`;
+    const activeDate = (document.getElementById('booking-date-input') && document.getElementById('booking-date-input').value) || selectedDate;
+    const slotKey = `${activeDate}-${t}`;
     const isManualClosed = window.closedSlots && !!window.closedSlots[slotKey];
 
     if (isSaturdayCutoff) {
