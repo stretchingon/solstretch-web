@@ -1118,6 +1118,8 @@
         return;
       }
 
+      const cleanPhone = phone.replace(/[^0-9]/g, '');
+
       const newB = {
         id: 'APP-' + Math.floor(100000 + Math.random() * 900000),
         programId: 'p3',
@@ -1126,7 +1128,8 @@
         price: 0,
         date: date,
         time: appSelectedTime,
-        name, phone,
+        name,
+        phone: cleanPhone,
         note: '10회권 앱 전용 간편 예약',
         status: '예약 확정',
         createdAt: new Date().toLocaleDateString('ko-KR')
@@ -1142,7 +1145,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: name,
-            phone: phone,
+            phone: cleanPhone,
             programTitle: '솔루션 멤버십 10회 (앱예약)',
             duration: 50,
             date: date,
@@ -1156,9 +1159,8 @@
 
       alert(`✅ ${date} ${appSelectedTime} 1:1 맞춤 예약이 확정되었습니다!\n* 수강권은 방문 당일 스튜디오 출석체크 시 차감됩니다.`);
       appSelectedTime = '';
-      loadAppDashboard(name, phone);
+      loadAppDashboard(name, cleanPhone);
     }
-
     function renderAppMyBookings(name, phone) {
       const userBookings = window.bookings.filter(b => b.name === name && b.phone.replace(/[^0-9]/g, '').endsWith(phone));
       const listEl = document.getElementById('app-my-bookings-list');
