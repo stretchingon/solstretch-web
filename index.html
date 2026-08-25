@@ -1708,16 +1708,24 @@
     try {
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+ onSnapshot(collection(db, "members"), (snapshot) => {
+    if (!snapshot.empty) {
+      const cloudMembers = [];
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        cloudMembers.push({ id: docSnap.id, ...data });
+      });
+      window.members = cloudMembers;
+      localStorage.setItem('solstretch_members_v1', JSON.stringify(cloudMembers));
 
-      onSnapshot(collection(db, "members"), (snapshot) => {
-        if (!snapshot.empty) {
-          const cloudMembers = [];
-          snapshot.forEach((docSnap) => cloudMembers.push(docSnap.data()));
-          window.members = cloudMembers;
-          localStorage.setItem('solstretch_members_v1', JSON.stringify(cloudMembers));
-        }
-      }, (err) => console.log("Members listener:", err));
-
+      // 🚀 실시간 회원 목록 화면 즉시 자동 새로고침
+      if (typeof renderMembers === 'function') renderMembers();
+      if (typeof renderMembersTable === 'function') renderMembersTable();
+      if (typeof renderMemberList === 'function') renderMemberList();
+      if (typeof renderMemberTable === 'function') renderMemberTable();
+      if (typeof updateMembersUI === 'function') updateMembersUI();
+    }
+  }, (err) => console.log("Members listener:", err));
       onSnapshot(collection(db, "bookings"), (snapshot) => {
         const cloudBookings = [];
         snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
@@ -1737,10 +1745,17 @@ onSnapshot(collection(db, "closedSlots"), (snapshot) => {
   if (typeof renderAppTimeSlots === 'function') renderAppTimeSlots();
   if (typeof renderStep2 === 'function') renderStep2();
 }, (err) => console.log("ClosedSlots listener:", err));
-      window.syncMemberToCloud = async function(memberObj) {
-        try { await setDoc(doc(db, "members", memberObj.id), memberObj); }
-        catch (e) { console.error("Cloud member save:", e); }
-      };
+     window.syncMemberToCloud = async function(memberObj) {
+      try {
+        if (!memberObj) return;
+        const targetId = String(memberObj.id || memberObj.docId || memberObj.memberId || '');
+        if (targetId) {
+          await setDoc(doc(db, "members", targetId), memberObj, { merge: true });
+        }
+      } catch (e) {
+        console.error("Cloud member save:", e);
+      }
+    };
 
       window.syncAttendanceToCloud = async function(attObj) {
         try { await setDoc(doc(db, "attendances", attObj.id), attObj); }
