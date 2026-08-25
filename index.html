@@ -914,10 +914,16 @@
       } else {
         const member = matchedMembers[0];
 
-      // 문자열("26회" 등)이 들어있어도 숫자만 안전하게 추출 (에러 방지)
-      const rawVal = member.remainingPasses ?? member.passCount ?? 0;
-      const curPasses = parseInt(String(rawVal).replace(/[^0-9]/g, ''), 10) || 0;
+      // remainingPasses, passCount, passes, totalPasses 등 모든 수강권 필드 탐색
+      let rawVal = member.remainingPasses ?? member.passCount ?? member.passes ?? member.totalPasses;
+      
+      // 수강권 횟수 필드가 비어있다면 passType(예: "솔루션 멤버십 10회")에서 숫자를 자동 추출
+      if ((rawVal === undefined || rawVal === null || rawVal === '') && member.passType) {
+        const match = String(member.passType).match(/\d+/);
+        if (match) rawVal = match[0];
+      }
 
+      const curPasses = parseInt(String(rawVal ?? 0).replace(/[^0-9]/g, ''), 10) || 0;
       if (curPasses <= 0) {
         resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400 text-center space-y-3';
         resBox.innerHTML = `
