@@ -952,47 +952,47 @@
 
           if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
 
-        // 🚀 클라우드 DB(Firebase) 회원 데이터의 잔여 횟수 즉시 차감 반영
-        if (window.db) {
-      try {
-        const cleanPhone = String(member.phone || '').replace(/[^0-9]/g, '');
-        const rawPhone = member.phone || '';
-        const phoneList = Array.from(new Set([rawPhone, cleanPhone])).filter(Boolean);
+       // 🚀 클라우드 DB(Firebase) 회원 메인 데이터의 잔여 횟수 즉시 차감 반영
+      if (window.db) {
+        try {
+          const docId = member.docId || member.id;
+          const cleanPhone = String(member.phone || '').replace(/[^0-9]/g, '');
+          const last4 = cleanPhone.slice(-4);
 
-        window.db.collection('members').where('phone', 'in', phoneList).get().then(snapshot => {
-          if (!snapshot.empty) {
+          window.db.collection('members').get().then(snapshot => {
             snapshot.forEach(doc => {
-              doc.ref.update({
-                remainingPasses: nextPasses,
-                passCount: nextPasses
-              });
+              const d = doc.data();
+              const dPhone = String(d.phone || d.phoneNumber || d.hp || '').replace(/[^0-9]/g, '');
+              if (doc.id === String(docId) || d.name === member.name || (last4 && dPhone.endsWith(last4))) {
+                doc.ref.update({
+                  remainingPasses: nextPasses,
+                  passCount: nextPasses
+                }).catch(err => console.warn('Member doc update err:', err));
+              }
             });
-          } else if (member.id) {
-            window.db.collection('members').doc(String(member.id)).set({
-              remainingPasses: nextPasses,
-              passCount: nextPasses
-            }, { merge: true });
-          }
-        }).catch(err => console.warn('Member sync query error:', err));
-      } catch (e) {
-        console.warn('Firebase member sync error:', e);
+          }).catch(err => console.warn('Member fetch err:', err));
+        } catch (e) {
+          console.warn('Firebase member sync error:', e);
+        }
       }
-    }
 
           const todayStr = getLocalDateStr(0);
           const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
 
           const logEntry = {
-            id: 'ATT-' + Date.now(),
-            date: todayStr,
-            time: timeStr,
-            memberId: member.id || ('M-' + Date.now()),
-            memberName: member.name || '회원',
-            phone: member.phone || '',
-            passType: member.passType || '수강권',
-            remainingPasses: nextPasses,
-            source: '태블릿 키오스크 출석'
-          };
+        id: 'ATT-' + Date.now(),
+        date: todayStr,
+        time: timeStr,
+        memberId: member.id || ('M-' + Date.now()),
+        memberName: member.name || '회원',
+        phone: member.phone || '',
+        passType: member.passType || '수강권',
+        prevPasses: curPasses,
+        afterPasses: nextPasses,
+        remainingPasses: nextPasses,
+        note: `잔여: ${curPasses}회 → ${nextPasses}회 (-1회)`,
+        source: '태블릿 키오스크 출석'
+      };
 
           if (!window.attendanceLogs) window.attendanceLogs = [];
           window.attendanceLogs.unshift(logEntry);
