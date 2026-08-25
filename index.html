@@ -953,16 +953,31 @@
           if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
 
         // 🚀 클라우드 DB(Firebase) 회원 데이터의 잔여 횟수 즉시 차감 반영
-        if (window.db && member.id) {
-          try {
+        if (window.db) {
+      try {
+        const cleanPhone = String(member.phone || '').replace(/[^0-9]/g, '');
+        const rawPhone = member.phone || '';
+        const phoneList = Array.from(new Set([rawPhone, cleanPhone])).filter(Boolean);
+
+        window.db.collection('members').where('phone', 'in', phoneList).get().then(snapshot => {
+          if (!snapshot.empty) {
+            snapshot.forEach(doc => {
+              doc.ref.update({
+                remainingPasses: nextPasses,
+                passCount: nextPasses
+              });
+            });
+          } else if (member.id) {
             window.db.collection('members').doc(String(member.id)).set({
               remainingPasses: nextPasses,
               passCount: nextPasses
             }, { merge: true });
-          } catch (e) {
-            console.warn('Firebase member sync error:', e);
           }
-        }
+        }).catch(err => console.warn('Member sync query error:', err));
+      } catch (e) {
+        console.warn('Firebase member sync error:', e);
+      }
+    }
 
           const todayStr = getLocalDateStr(0);
           const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
