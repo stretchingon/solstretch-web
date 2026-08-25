@@ -952,6 +952,18 @@
 
           if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
 
+        // 🚀 클라우드 DB(Firebase) 회원 데이터의 잔여 횟수 즉시 차감 반영
+        if (window.db && member.id) {
+          try {
+            window.db.collection('members').doc(String(member.id)).set({
+              remainingPasses: nextPasses,
+              passCount: nextPasses
+            }, { merge: true });
+          } catch (e) {
+            console.warn('Firebase member sync error:', e);
+          }
+        }
+
           const todayStr = getLocalDateStr(0);
           const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
 
