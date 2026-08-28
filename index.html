@@ -1441,7 +1441,20 @@ function selectProgramAndBook(pId) {
       dateInput.min = minDate;
 
       const isSat = isSaturdayDate(selectedDate);
-      const bookedTimes = window.bookings.filter(b => b.date === selectedDate && b.status !== '취소').map(b => b.time);
+      // 1. 일반 예약 내역 추출
+      const bookedTimes = (window.bookings || [])
+        .filter(b => b.date === selectedDate && b.status !== '취소')
+        .map(b => b.time);
+
+      // 2. 관리자 수동 마감 슬롯 체크 함수
+      const isManualClosed = (timeStr) => {
+        if (!window.closedSlots) return false;
+        const key = `${selectedDate}-${timeStr}`;
+        if (Array.isArray(window.closedSlots)) {
+          return window.closedSlots.some(s => s.id === key || s.slotKey === key || (s.date === selectedDate && s.time === timeStr));
+        }
+        return !!window.closedSlots[key];
+      };
 
       if (isSat && ['18:00', '19:00', '20:00'].includes(selectedTime)) {
         selectedTime = '10:00';
@@ -1450,7 +1463,8 @@ function selectProgramAndBook(pId) {
       const slotsEl = document.getElementById('step2-time-slots');
       slotsEl.innerHTML = TIME_SLOTS.map(t => {
         const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
-        const isBooked = bookedTimes.includes(t);
+        // 예약된 시간 또는 관리자 마감 슬롯 모두 '마감' 처리
+        const isBooked = bookedTimes.includes(t) || isManualClosed(t);
         const isSelected = selectedTime === t;
 
         if (isSaturdayCutoff) {
@@ -1704,7 +1718,14 @@ function selectProgramAndBook(pId) {
         localStorage.setItem('solstretch_bookings_v1', JSON.stringify(cloudBookings));
         if (typeof renderStep2 === 'function') renderStep2();
       }, (err) => console.log("Bookings listener:", err));
-
+// 🔒 ERP 관리자 마감 슬롯 실시간 연동
+    onSnapshot(collection(db, "closedSlots"), (snapshot) => {
+      const cloudClosedSlots = [];
+      snapshot.forEach((docSnap) => cloudClosedSlots.push({ id: docSnap.id, ...docSnap.data() }));
+      window.closedSlots = cloudClosedSlots;
+      localStorage.setItem('sol_closed_slots', JSON.stringify(cloudClosedSlots));
+      if (typeof renderStep2 === 'function') renderStep2();
+    }, (err) => console.log("ClosedSlots listener:", err));
       window.syncMemberToCloud = async function(memberObj) {
         try { await setDoc(doc(db, "members", memberObj.id), memberObj); }
         catch (e) { console.error("Cloud member save:", e); }
