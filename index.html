@@ -689,9 +689,9 @@
     const TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
     const GUIDELINES = [
-      { category: '예약 및 취소/변경 규정', badge: 'RESERVATION', items: [{ title: '온라인 당일 예약 제한 (100% 사전예약제)', desc: '원장의 1:1 집중 정밀 케어를 위해 당일 온라인 예약은 없습니다. 당일 관리를 희망하시는 경우 대표 번호(010-6566-6369)로 문의 부탁드립니다.' }, { title: '타임 슬롯 당 1명 한정 (중복 예약 자동 차감)', desc: '어떤 프로그램을 선택하셔도 동일한 시간대에는 오직 1분의 고객님만 모십니다. 이미 예약된 타임은 마감 처리됩니다.' },
+      { category: '예약 및 취소/변경 규정', badge: 'RESERVATION', items: [{ title: '온라인 당일 예약 제한 (100% 사전예약제)', desc: '원장의 1:1 집중 정밀 케어를 위해 당일 온라인 예약은 없습니다. 당일 관리를 희망하시는 경우 대표 번호(010-6566-6369)로 문의 부탁드립니다.' }, { title: '타임 슬롯 당 1명 한정 (중복 예약 자동 차감)', desc: '어떤 프로그램을 선택하셔도 동일한 시간대에는 오직 1분의 고객님만 모십니다. 이미 예약된 타임은 마감 처리됩니다.' }, { title: '자유로운 일시 변경 및 취소', desc: '예약 취소 및 날짜/시간 변경은 방문 3시간 전까지 웹사이트 내 [내 예약] 메뉴를 통해 신청하실 수 있습니다.' }] },
       { category: '복장 및 시설 안내', badge: 'DRESS CODE', items: [{ title: '유니폼 및 탈의실 미운영', desc: '스트레칭 온은 별도의 유니폼을 제공하지 않으며 탈의실/파우더룸을 운영하지 않습니다.' }, { title: '편안한 복장 착용 후 방문', desc: '관절 및 근막의 자율적이고 원활한 이완 움직임을 위해 방문 시 상·하체 움직임이 편안한 복장(운동복 등)을 미리 착용 후 방문해 주세요.' }] },
-      { category: '솔루션 멤버십(10회) 규정', badge: 'MEMBERSHIP', items: [{ title: '유효기간 안내', desc: '10회 수강권의 유효기간은 등록일로부터 2개월입니다.' }, { title: '가족 및 지인 자유 공유', desc: '수강권 이용권은 본인 외에도 직계 가족 및 지인과 자유롭게 차감 공유하여 함께 이용하실 수 있습니다.' }] },
+      { category: '솔루션 멤버십(10회) 규정', badge: 'MEMBERSHIP', items: [{ title: '유효기간 안내', desc: '10회 수강권의 유효기간은 등록일로부터 2개월입니다.' }, { title: '당일 예약취소 규정', desc: '당일 예약 취소는 3시간전까지 가능하며, 미방문 시 1회 차감됩니다.' }, { title: '가족 및 지인 자유 공유', desc: '수강권 이용권은 본인 외에도 직계 가족 및 지인과 자유롭게 차감 공유하여 함께 이용하실 수 있습니다.' }] },
       { category: '주차 및 위치 / 안전 안내', badge: 'PARKING & SAFETY', items: [{ title: '건물 내 2시간 무료 주차', desc: '벨라미센텀시티 2차 건물 지하 주차장에 2시간 무료 주차가 가능하며, 케어 완료 후 차량 번호를 등록해 드립니다.' }, { title: '신체 상태 사전 공유', desc: '수술 이력, 디스크 중증 질환, 임신 중이신 경우 케어 진행 전 원장에게 미리 말씀해 주시면 안전을 최우선으로 진행합니다.' }] }
     ];
 
@@ -913,86 +913,44 @@
         `;
       } else {
         const member = matchedMembers[0];
+        const curPasses = member.remainingPasses !== undefined 
+          ? Number(member.remainingPasses) 
+          : (member.passCount !== undefined ? Number(member.passCount) : 0);
 
-      // 1. 잔여 횟수(remainingPasses 또는 passCount) 확인
-      let curPasses = parseInt(String(member.remainingPasses ?? member.passCount ?? '').replace(/[^0-9]/g, ''), 10);
-
-      // 2. 만약 잔여 횟수가 0이거나 비어있다면 수강권 종류/총 횟수(예: "10회")에서 진짜 횟수를 자동 추출
-      if (isNaN(curPasses) || curPasses === 0) {
-        const altVal = member.passes ?? member.totalPasses;
-        if (altVal && parseInt(altVal, 10) > 0) {
-          curPasses = parseInt(altVal, 10);
-        } else if (member.passType) {
-          const match = String(member.passType).match(/\d+/);
-          if (match && parseInt(match[0], 10) > 0) {
-            curPasses = parseInt(match[0], 10);
-          }
-        }
-      }
-      if (isNaN(curPasses)) curPasses = 0;
-      if (curPasses <= 0) {
-        resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400 text-center space-y-3';
-        resBox.innerHTML = `
-          <div class="text-4xl">⚠️</div>
-          <h3 class="text-xl sm:text-2xl font-extrabold">${member.name} 회원님</h3>
-          <p class="text-base font-bold text-amber-800">잔여 수강권이 0회입니다.</p>
-          <p class="text-xs text-amber-700">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
-        `;
-        playKioskChime();
-        setTimeout(() => {
-          speakKioskVoice(`${member.name} 회원님. 잔여 수강권이 0회입니다.`);
-        }, 350);
-      } else {
-        const nextPasses = Math.max(0, curPasses - 1);
-        
-        // 두 필드 모두 정수 숫자로 완벽 동기화
-        member.remainingPasses = nextPasses;
-        member.passCount = nextPasses;
-        saveMembersLocal();
+        if (curPasses <= 0) {
+          resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400 text-center space-y-3';
+          resBox.innerHTML = `
+            <div class="text-4xl">⚠️</div>
+            <h3 class="text-xl sm:text-2xl font-extrabold">${member.name} 회원님</h3>
+            <p class="text-base font-bold text-amber-800">잔여 수강권이 0회입니다.</p>
+            <p class="text-xs text-amber-700">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
+          `;
+          playKioskChime();
+          setTimeout(() => {
+            speakKioskVoice(`${member.name} 회원님. 잔여 수강권이 0회입니다.`);
+          }, 350);
+        } else {
+          const nextPasses = Math.max(0, curPasses - 1);
+          member.remainingPasses = nextPasses;
+          member.passCount = nextPasses;
+          saveMembersLocal();
 
           if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
-
-       // 🚀 클라우드 DB(Firebase) 회원 메인 데이터의 잔여 횟수 즉시 차감 반영
-      if (window.db) {
-        try {
-          const docId = member.docId || member.id;
-          const cleanPhone = String(member.phone || '').replace(/[^0-9]/g, '');
-          const last4 = cleanPhone.slice(-4);
-
-          window.db.collection('members').get().then(snapshot => {
-            snapshot.forEach(doc => {
-              const d = doc.data();
-              const dPhone = String(d.phone || d.phoneNumber || d.hp || '').replace(/[^0-9]/g, '');
-              if (doc.id === String(docId) || d.name === member.name || (last4 && dPhone.endsWith(last4))) {
-                doc.ref.update({
-                  remainingPasses: nextPasses,
-                  passCount: nextPasses
-                }).catch(err => console.warn('Member doc update err:', err));
-              }
-            });
-          }).catch(err => console.warn('Member fetch err:', err));
-        } catch (e) {
-          console.warn('Firebase member sync error:', e);
-        }
-      }
 
           const todayStr = getLocalDateStr(0);
           const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
 
           const logEntry = {
-        id: 'ATT-' + Date.now(),
-        date: todayStr,
-        time: timeStr,
-        memberId: member.id || ('M-' + Date.now()),
-        memberName: member.name || '회원',
-        phone: member.phone || '',
-        passType: member.passType || '수강권',
-        prevPasses: curPasses,
-        afterPasses: nextPasses,
-        remainingPasses: nextPasses,
-        note: `잔여: ${curPasses}회 → ${nextPasses}회 (-1회)`,
-        source: '태블릿 키오스크 출석'
-      };
+            id: 'ATT-' + Date.now(),
+            date: todayStr,
+            time: timeStr,
+            memberId: member.id || ('M-' + Date.now()),
+            memberName: member.name || '회원',
+            phone: member.phone || '',
+            passType: member.passType || '수강권',
+            remainingPasses: nextPasses,
+            source: '태블릿 키오스크 출석'
+          };
 
           if (!window.attendanceLogs) window.attendanceLogs = [];
           window.attendanceLogs.unshift(logEntry);
@@ -1111,22 +1069,18 @@
         return renderAppTimeSlots();
       }
 
-      const bookedTimes = (window.bookings || []).filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
-    const isSat = isSaturdayDate(dateVal);
+      const bookedTimes = window.bookings.filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
+      const isSat = isSaturdayDate(dateVal);
 
-    const slotsEl = document.getElementById('app-time-slots');
-    slotsEl.innerHTML = TIME_SLOTS.map(t => {
-      const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
-      const isBooked = bookedTimes.includes(t);
-      const isSelected = appSelectedTime === t;
-      
-      // 🔒 ERP 관리자 수동 마감 여부 확인
-      const slotKey = `${dateVal}-${t}`;
-      const isManualClosed = window.closedSlots && !!window.closedSlots[slotKey];
+      const slotsEl = document.getElementById('app-time-slots');
+      slotsEl.innerHTML = TIME_SLOTS.map(t => {
+        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
+        const isBooked = bookedTimes.includes(t);
+        const isSelected = appSelectedTime === t;
 
-      if (isSaturdayCutoff || isBooked || isManualClosed) {
-        return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
-      }
+        if (isSaturdayCutoff || isBooked) {
+          return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
+        }
 
         return `
           <button onclick="selectAppTime('${t}')" class="py-2.5 rounded-xl text-xs font-bold border ${isSelected ? 'bg-[#0092B8] text-white border-[#0092B8]' : 'bg-white text-[#0C3559] border-stone-200 hover:bg-stone-50'}">
@@ -1160,8 +1114,6 @@
         return;
       }
 
-      const cleanPhone = phone.replace(/[^0-9]/g, '');
-
       const newB = {
         id: 'APP-' + Math.floor(100000 + Math.random() * 900000),
         programId: 'p3',
@@ -1170,8 +1122,7 @@
         price: 0,
         date: date,
         time: appSelectedTime,
-        name,
-        phone: cleanPhone,
+        name, phone,
         note: '10회권 앱 전용 간편 예약',
         status: '예약 확정',
         createdAt: new Date().toLocaleDateString('ko-KR')
@@ -1187,7 +1138,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: name,
-            phone: cleanPhone,
+            phone: phone,
             programTitle: '솔루션 멤버십 10회 (앱예약)',
             duration: 50,
             date: date,
@@ -1201,8 +1152,9 @@
 
       alert(`✅ ${date} ${appSelectedTime} 1:1 맞춤 예약이 확정되었습니다!\n* 수강권은 방문 당일 스튜디오 출석체크 시 차감됩니다.`);
       appSelectedTime = '';
-      loadAppDashboard(name, cleanPhone);
+      loadAppDashboard(name, phone);
     }
+
     function renderAppMyBookings(name, phone) {
       const userBookings = window.bookings.filter(b => b.name === name && b.phone.replace(/[^0-9]/g, '').endsWith(phone));
       const listEl = document.getElementById('app-my-bookings-list');
@@ -1274,11 +1226,7 @@
         price: selectedProgram.price,
         date: selectedDate,
         time: selectedTime,
-        name, 
-        phone: cleanPhone, 
-        note,
-        channel: '홈페이지',
-        type: '홈페이지',
+        name, phone: cleanPhone, note,
         status: '예약 확정',
         createdAt: new Date().toLocaleDateString('ko-KR')
       };
@@ -1464,41 +1412,36 @@
       }
 
       const slotsEl = document.getElementById('step2-time-slots');
-  slotsEl.innerHTML = TIME_SLOTS.map(t => {
-    const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
-    const isBooked = bookedTimes.includes(t);
-    const isSelected = selectedTime === t;
+      slotsEl.innerHTML = TIME_SLOTS.map(t => {
+        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
+        const isBooked = bookedTimes.includes(t);
+        const isSelected = selectedTime === t;
 
-    // 🔒 ERP 관리자 수동 마감 여부 실시간 확인
-    const activeDate = (document.getElementById('booking-date-input') && document.getElementById('booking-date-input').value) || selectedDate;
-    const slotKey = `${activeDate}-${t}`;
-    const isManualClosed = window.closedSlots && !!window.closedSlots[slotKey];
+        if (isSaturdayCutoff) {
+          return `
+            <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
+              <span class="line-through">${t}</span>
+              <span class="text-[10px] text-amber-400 font-semibold mt-0.5">토 18시 종료</span>
+            </button>
+          `;
+        }
 
-    if (isSaturdayCutoff) {
-      return `
-        <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
-          <span class="line-through">${t}</span>
-          <span class="text-[10px] text-amber-400 font-semibold mt-0.5">토 18시 종료</span>
-        </button>
-      `;
-    }
+        if (isBooked) {
+          return `
+            <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
+              <span class="line-through">${t}</span>
+              <span class="text-[10px] text-red-400 font-semibold mt-0.5">마감</span>
+            </button>
+          `;
+        }
 
-    if (isBooked || isManualClosed) {
-      return `
-        <button disabled class="py-3.5 rounded-xl text-xs font-medium border border-stone-700 bg-stone-800/80 text-stone-500 cursor-not-allowed flex flex-col items-center justify-center opacity-60">
-          <span class="line-through">${t}</span>
-          <span class="text-[10px] text-red-400 font-semibold mt-0.5">마감</span>
-        </button>
-      `;
-    }
-
-    return `
-      <button onclick="setStep2Time('${t}')" class="py-3.5 rounded-xl text-xs font-semibold border transition-all flex flex-col items-center justify-center ${isSelected ? 'bg-sky-400 text-[#0C3559] border-sky-400 ring-2 ring-sky-300' : 'border-stone-700 text-stone-300 hover:border-sky-400 hover:bg-stone-800'}">
-        <span>${t}</span>
-        <span class="text-[10px] ${isSelected ? 'text-[#0C3559]' : 'text-emerald-400'}">예약가능</span>
-      </button>
-    `;
-  }).join('');
+        return `
+          <button onclick="setStep2Time('${t}')" class="py-3.5 rounded-xl text-xs font-semibold border transition-all flex flex-col items-center justify-center ${isSelected ? 'bg-sky-400 text-[#0C3559] border-sky-400 ring-2 ring-sky-300 shadow-lg scale-105' : 'bg-[#082239] text-stone-200 border-white/10 hover:border-white/30 hover:bg-white/5'}">
+            <span>${t}</span>
+            <span class="text-[10px] ${isSelected ? 'text-[#0C3559]' : 'text-emerald-400'}">예약가능</span>
+          </button>
+        `;
+      }).join('');
     }
 
     function handleBookingDateChange(val) {
@@ -1708,54 +1651,28 @@
     try {
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
- onSnapshot(collection(db, "members"), (snapshot) => {
-    if (!snapshot.empty) {
-      const cloudMembers = [];
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        cloudMembers.push({ id: docSnap.id, ...data });
-      });
-      window.members = cloudMembers;
-      localStorage.setItem('solstretch_members_v1', JSON.stringify(cloudMembers));
 
-      // 🚀 실시간 회원 목록 화면 즉시 자동 새로고침
-      if (typeof renderMembers === 'function') renderMembers();
-      if (typeof renderMembersTable === 'function') renderMembersTable();
-      if (typeof renderMemberList === 'function') renderMemberList();
-      if (typeof renderMemberTable === 'function') renderMemberTable();
-      if (typeof updateMembersUI === 'function') updateMembersUI();
-    }
-  }, (err) => console.log("Members listener:", err));
+      onSnapshot(collection(db, "members"), (snapshot) => {
+        if (!snapshot.empty) {
+          const cloudMembers = [];
+          snapshot.forEach((docSnap) => cloudMembers.push(docSnap.data()));
+          window.members = cloudMembers;
+          localStorage.setItem('solstretch_members_v1', JSON.stringify(cloudMembers));
+        }
+      }, (err) => console.log("Members listener:", err));
+
       onSnapshot(collection(db, "bookings"), (snapshot) => {
         const cloudBookings = [];
         snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
         window.bookings = cloudBookings;
         localStorage.setItem('solstretch_bookings_v1', JSON.stringify(cloudBookings));
         if (typeof renderStep2 === 'function') renderStep2();
-        if (typeof renderAppTimeSlots === 'function') renderAppTimeSlots();
       }, (err) => console.log("Bookings listener:", err));
-// 🔒 ERP 수동 마감 슬롯(closedSlots) 실시간 연동
-window.closedSlots = {};
-onSnapshot(collection(db, "closedSlots"), (snapshot) => {
-  const map = {};
-  snapshot.forEach((docSnap) => {
-    map[docSnap.id] = true;
-  });
-  window.closedSlots = map;
-  if (typeof renderAppTimeSlots === 'function') renderAppTimeSlots();
-  if (typeof renderStep2 === 'function') renderStep2();
-}, (err) => console.log("ClosedSlots listener:", err));
-     window.syncMemberToCloud = async function(memberObj) {
-      try {
-        if (!memberObj) return;
-        const targetId = String(memberObj.id || memberObj.docId || memberObj.memberId || '');
-        if (targetId) {
-          await setDoc(doc(db, "members", targetId), memberObj, { merge: true });
-        }
-      } catch (e) {
-        console.error("Cloud member save:", e);
-      }
-    };
+
+      window.syncMemberToCloud = async function(memberObj) {
+        try { await setDoc(doc(db, "members", memberObj.id), memberObj); }
+        catch (e) { console.error("Cloud member save:", e); }
+      };
 
       window.syncAttendanceToCloud = async function(attObj) {
         try { await setDoc(doc(db, "attendances", attObj.id), attObj); }
