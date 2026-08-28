@@ -1411,20 +1411,28 @@
     }
 
     // 메인 홈 카드 버튼 클릭 처리
-    function selectProgramAndBook(pId) {
-      if (pId === 'p0' || pId === 'p1' || pId === 'p2') {
-        const goNaver = confirm(
-          '1회 이용 및 체험 예약은 [네이버 예약]으로 진행됩니다.\n\n네이버 예약 페이지로 이동하시겠습니까?'
-        );
-        if (goNaver) {
-          window.open(NAVER_BOOKING_URL, '_blank', 'noopener,noreferrer');
-        }
-        return;
-      }
-
-      selectedProgram = PROGRAMS.find(p => p.id === pId);
-      goToStep(2);
+function selectProgramAndBook(pId) {
+  if (pId === 'p0' || pId === 'p1' || pId === 'p2') {
+    const goNaver = confirm(
+      '1회 이용 및 체험 예약은 [네이버 예약]으로 진행됩니다.\n\n네이버 예약 페이지로 이동하시겠습니까?'
+    );
+    if (goNaver) {
+      window.open(NAVER_BOOKING_URL, '_blank', 'noopener,noreferrer');
     }
+    return;
+  }
+
+  // 솔루션 멤버십 10회 선택 시: 2단계 활성화 후 예약창으로 자동 스크롤 이동
+  selectedProgram = PROGRAMS.find(p => p.id === pId);
+  goToStep(2);
+
+  if (typeof scrollToSec === 'function') {
+    scrollToSec('reservation');
+  } else {
+    const target = document.getElementById('reservation') || document.getElementById('booking-step-2');
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  }
+}
     function renderStep2() {
       const dateInput = document.getElementById('booking-date-input');
       const minDate = getNextWorkingDateStr();
