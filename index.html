@@ -1392,11 +1392,39 @@
       `).join('');
     }
 
+   const NAVER_BOOKING_URL = 'https://booking.naver.com/booking/13/bizes/1102918';
+
+    // 1단계 목록 클릭 처리
     function setStep1Program(pId) {
+      if (pId === 'p0' || pId === 'p1' || pId === 'p2') {
+        const goNaver = confirm(
+          '1회 이용 및 체험 예약은 [네이버 예약]으로 진행됩니다.\n\n네이버 예약 페이지로 이동하시겠습니까?'
+        );
+        if (goNaver) {
+          window.open(NAVER_BOOKING_URL, '_blank', 'noopener,noreferrer');
+        }
+        return;
+      }
+
       selectedProgram = PROGRAMS.find(p => p.id === pId);
       renderStep1();
     }
 
+    // 메인 홈 카드 버튼 클릭 처리
+    function selectProgramAndBook(pId) {
+      if (pId === 'p0' || pId === 'p1' || pId === 'p2') {
+        const goNaver = confirm(
+          '1회 이용 및 체험 예약은 [네이버 예약]으로 진행됩니다.\n\n네이버 예약 페이지로 이동하시겠습니까?'
+        );
+        if (goNaver) {
+          window.open(NAVER_BOOKING_URL, '_blank', 'noopener,noreferrer');
+        }
+        return;
+      }
+
+      selectedProgram = PROGRAMS.find(p => p.id === pId);
+      goToStep(2);
+    }
     function renderStep2() {
       const dateInput = document.getElementById('booking-date-input');
       const minDate = getNextWorkingDateStr();
