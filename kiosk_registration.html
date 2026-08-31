@@ -531,46 +531,46 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs" id="group-selected-program">
                 
                 <label class="cursor-pointer block">
-                  <input type="radio" name="selected_program" value="첫방문 1회 체험 (50,000원)" class="radio-chip program-chip sr-only" checked>
+                  <input type="radio" name="selected_program" value="첫방문 1회 체험 (100,000원)" class="radio-chip program-chip sr-only" checked>
                   <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
                     <span class="font-bold flex items-center gap-2">
                       <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
                       <span>첫방문 1회 체험</span>
-                    </span>
-                    <span class="font-extrabold text-brand-700 program-price">50,000원</span>
-                  </div>
-                </label>
-
-                <label class="cursor-pointer block">
-                  <input type="radio" name="selected_program" value="컨디셔닝 패시브 스트레칭 50분 (70,000원)" class="radio-chip program-chip sr-only">
-                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
-                    <span class="font-bold flex items-center gap-2">
-                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
-                      <span>Sol-Recovery (50분)</span>
-                    </span>
-                    <span class="font-extrabold text-brand-700 program-price">70,000원</span>
-                  </div>
-                </label>
-
-                <label class="cursor-pointer block">
-                  <input type="radio" name="selected_program" value="무브먼트 리밸런스 딥 케어 90분 (100,000원)" class="radio-chip program-chip sr-only">
-                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
-                    <span class="font-bold flex items-center gap-2">
-                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
-                      <span>Sol-Balance (90분)</span>
                     </span>
                     <span class="font-extrabold text-brand-700 program-price">100,000원</span>
                   </div>
                 </label>
 
                 <label class="cursor-pointer block">
-                  <input type="radio" name="selected_program" value="멤버십 솔루션 10회 (600,000원)" class="radio-chip program-chip sr-only">
+                  <input type="radio" name="selected_program" value="컨디셔닝 패시브 스트레칭 50분 (150,000원)" class="radio-chip program-chip sr-only">
+                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
+                    <span class="font-bold flex items-center gap-2">
+                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
+                      <span>Sol-Recovery (50분)</span>
+                    </span>
+                    <span class="font-extrabold text-brand-700 program-price">150,000원</span>
+                  </div>
+                </label>
+
+                <label class="cursor-pointer block">
+                  <input type="radio" name="selected_program" value="무브먼트 리밸런스 딥 케어 90분 (250,000원)" class="radio-chip program-chip sr-only">
+                  <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
+                    <span class="font-bold flex items-center gap-2">
+                      <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
+                      <span>Sol-Balance (90분)</span>
+                    </span>
+                    <span class="font-extrabold text-brand-700 program-price">250,000원</span>
+                  </div>
+                </label>
+
+                <label class="cursor-pointer block">
+                  <input type="radio" name="selected_program" value="멤버십 솔루션 10회 (1,000,000원)" class="radio-chip program-chip sr-only">
                   <div class="p-3.5 rounded-xl flex justify-between items-center shadow-xs">
                     <span class="font-bold flex items-center gap-2">
                       <i class="fa-solid fa-circle-check check-icon opacity-20 transition-all text-sm"></i>
                       <span>솔루션 멤버십 (10회)</span>
                     </span>
-                    <span class="font-extrabold text-brand-700 program-price">600,000원</span>
+                    <span class="font-extrabold text-brand-700 program-price">1,000,000원</span>
                   </div>
                 </label>
 
@@ -1253,7 +1253,7 @@
       const durationEl = document.querySelector('input[name="pain_duration"]:checked');
       const exerciseFreqEl = document.querySelector('input[name="exercise_freq"]:checked');
       const selectedProgEl = document.querySelector('input[name="selected_program"]:checked');
-      const selectedProgTitle = selectedProgEl ? selectedProgEl.value : '첫방문 1회 체험 (50,000원)';
+      const selectedProgTitle = selectedProgEl ? selectedProgEl.value : '첫방문 1회 체험 (100,000원)';
 
       let defaultPassCount = 1;
       let defaultMonths = 1;
@@ -1285,7 +1285,7 @@
         treatmentExp: getCheckedValues('#group-treatment-exp input'),
         expOther: document.getElementById('input-exp-other')?.value.trim() || '',
         expEffect: document.getElementById('input-exp-effect')?.value.trim() || '',
-        counselorName: document.getElementById('input-counselor-name')?.value.trim() || '김동수 대표원장',
+        counselorName: document.getElementById('input-counselor-name')?.value.trim() || '원장',
         trainerEval: document.getElementById('input-trainer-eval')?.value.trim() || ''
       };
 
