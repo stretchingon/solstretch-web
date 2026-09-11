@@ -14,15 +14,15 @@
   <meta name="naver-site-verification" content="e8081e77e431fe3678695a16d44eac8e63b4acce" />
 
   <!-- SEO Search Meta Tags -->
-  <title>스트레칭온 | 1:1 맞춤 수기 솔루션스트레칭</title>
-  <meta name="description" content="40년 수기 임상 노하우 기반 1:1 맞춤 패시브 스트레칭 및 체형 불균형 교정 전문 스튜디오. 첫방문 1회 체험 & 정밀 상담 프로그램 수시 진행." />
-  <meta name="keywords" content="스트레칭온, 솔루션스트레칭, 인천 스트레칭, 가정동 스트레칭, 루원시티 체형교정, 수기 스트레칭, 첫방문체험, 도수스트레칭" />
+  <title>스트레칭온 | 이완·스트레칭·운동을 연결하는 1:1 움직임 관리</title>
+  <meta name="description" content="몸의 움직임을 확인하고 수기 근막이완·패시브 스트레칭·맞춤운동을 연결하는 인천 1:1 움직임 관리 스튜디오. 처음이라면 Initial Session부터 시작하세요." />
+  <meta name="keywords" content="스트레칭온, 솔루션스트레칭, 인천 스트레칭, 가정동 스트레칭, 루원시티 스트레칭, 패시브 스트레칭, 근막이완, 1대1 스트레칭, 움직임 관리" />
   <link rel="canonical" href="https://solutionstretching.com" />
 
   <!-- Open Graph for Naver / Kakao Link Previews -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="스트레칭온 | 1:1 맞춤 수기 솔루션스트레칭" />
-  <meta property="og:description" content="40년 임상 노하우 1:1 맞춤 체형교정 수기 솔루션. 인천 가정역 8층 803호" />
+  <meta property="og:title" content="스트레칭온 | 평생 내가 원하는 대로 움직일 수 있도록" />
+  <meta property="og:description" content="몸의 움직임을 확인하고 이완·스트레칭·운동을 연결하는 1:1 움직임 관리 스튜디오. 인천 가정역." />
   <meta property="og:url" content="https://solutionstretching.com" />
   <meta property="og:image" content="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1200" />
 
@@ -51,6 +51,60 @@
     .custom-scrollbar::-webkit-scrollbar-track {
       background-color: #f1f5f9;
     }
+
+    /* Premium bilingual navigation */
+    .nav-swap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 72px;
+      height: 28px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .nav-swap .nav-en, .nav-swap .nav-ko {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: transform .24s ease, opacity .24s ease;
+    }
+    .nav-swap .nav-en { opacity: 1; transform: translate(-50%, 0); }
+    .nav-swap .nav-ko { opacity: 0; transform: translate(-50%, 11px); }
+    .nav-swap:hover .nav-en, .nav-swap:focus-visible .nav-en { opacity: 0; transform: translate(-50%, -11px); }
+    .nav-swap:hover .nav-ko, .nav-swap:focus-visible .nav-ko { opacity: 1; transform: translate(-50%, 0); }
+    .mobile-nav-item .m-en { font-size: 11px; letter-spacing: .12em; color: rgba(16,42,67,.55); }
+    .mobile-nav-item .m-ko { margin-top: 2px; font-size: 14px; font-weight: 600; color: #102A43; }
+
+    /* V4 visual polish */
+    html { scroll-behavior: smooth; }
+
+    #method, #initial, #solution-program, #story, #location, #academy-teaser {
+      scroll-margin-top: 92px;
+    }
+
+    #method { scroll-margin-top: 88px; }
+
+    .hero-reveal { animation: heroReveal .9s cubic-bezier(.2,.7,.2,1) both; }
+    .hero-reveal-delay { animation: heroReveal .9s .14s cubic-bezier(.2,.7,.2,1) both; }
+    @keyframes heroReveal {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .method-step { transition: background-color .25s ease, transform .25s ease; }
+    .method-step:hover { background: rgba(255,255,255,.035); transform: translateY(-2px); }
+    .premium-card { transition: transform .28s ease, box-shadow .28s ease; }
+    .premium-card:hover { transform: translateY(-4px); box-shadow: 0 22px 60px rgba(16,42,67,.10); }
+    .mobile-sticky-cta { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+    @media (max-width: 767px) {
+      #main-website { padding-bottom: 76px; }
+    }
+  
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 4px;
+    }
+
   </style>
 </head>
 <body class="bg-[#FAF9F6] text-[#0C3559] selection:bg-[#0092B8]/20 selection:text-[#0C3559] antialiased min-h-screen flex flex-col justify-between">
@@ -124,7 +178,7 @@
     <div class="text-xs text-stone-400 font-medium text-center pt-2">© Stretching ON Studio Interactive Kiosk</div>
   </div>
 
-  <!-- 📱 10회권 회원 전용 모바일 앱 뷰 (?view=app) -->
+  <!-- 📱 기존 회원 전용 모바일 앱 뷰 (?view=app) -->
   <div id="app-view" class="hidden min-h-screen bg-[#FAF9F6] p-4 max-w-md mx-auto relative">
     <div class="flex justify-between items-center py-3 mb-4 border-b border-stone-200">
       <div class="flex items-center gap-2">
@@ -136,7 +190,7 @@
 
     <div id="app-login-screen" class="mt-8 bg-white p-6 rounded-3xl border border-stone-200 shadow-xl space-y-4">
       <div class="text-center mb-4">
-        <h2 class="text-xl font-bold text-[#0C3559]">10회권 회원 확인</h2>
+        <h2 class="text-xl font-bold text-[#0C3559]">회원 확인</h2>
         <p class="text-xs text-stone-500 mt-1">등록하신 성함과 연락처를 입력해 주세요.</p>
       </div>
       <input type="text" id="app-input-name" placeholder="성함 *" class="w-full p-3.5 border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#0C3559]" />
@@ -152,7 +206,7 @@
           <div>
             <span class="text-xs text-sky-300 font-semibold block">MEMBER PROFILE</span>
             <h3 class="text-xl font-bold mt-1"><span id="app-user-name">O</span> 회원님</h3>
-            <p class="text-[11px] text-stone-300 mt-0.5" id="app-user-type">솔루션 멤버십 10회</p>
+            <p class="text-[11px] text-stone-300 mt-0.5" id="app-user-type">등록 프로그램</p>
           </div>
           <button onclick="appLogout()" class="text-[10px] bg-white/10 px-2.5 py-1 rounded-full text-stone-300 hover:bg-white/20">로그아웃</button>
         </div>
@@ -190,432 +244,315 @@
   </div>
 
   <!-- 🖥️ 일반 PC/모바일 공식 웹사이트 뷰 -->
-  <div id="main-website" class="flex-1 flex flex-col justify-between">
+  <div id="main-website" class="flex-1 flex flex-col bg-[#F5F2EC] text-[#102A43]">
 
-    <header class="fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-2xl border-b border-stone-200/80 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        <div onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="cursor-pointer group flex items-center gap-3.5">
-          <svg class="h-10 w-auto shrink-0 filter drop-shadow-sm" viewBox="0 0 130 110" fill="none">
+    <header class="fixed top-0 left-0 right-0 z-40 bg-[#F5F2EC]/90 backdrop-blur-xl border-b border-[#102A43]/10">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10 h-20 flex items-center justify-between">
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="flex items-center gap-3 text-left">
+          <svg class="h-9 w-auto" viewBox="0 0 130 110" fill="none" aria-hidden="true">
             <path d="M 62 20 C 85 20, 105 38, 105 62 C 105 85, 85 102, 60 102 C 38 102, 22 86, 24 66" stroke="#3C5A76" stroke-width="14" stroke-linecap="round" fill="none" />
             <circle cx="46" cy="18" r="9" fill="#3C5A76" />
             <path d="M 2 38 C 18 37, 34 33, 50 28" stroke="#3C5A76" stroke-width="11" stroke-linecap="round" fill="none" />
             <path d="M 52 26 C 50 45, 38 72, 12 106 L 20 108 C 45 75, 58 48, 58 26 Z" fill="#3C5A76" />
             <path d="M 50 30 L 76 4 L 82 26 Z" fill="#3C5A76" />
           </svg>
-          <div class="flex flex-col justify-center text-left">
-            <span class="font-sans font-semibold text-xl leading-none text-[#3C5A76] tracking-tight">스트레칭 온</span>
-            <div class="w-full h-[1px] bg-[#3C5A76]/25 my-1"></div>
-            <span class="font-sans font-semibold text-[13px] leading-none text-[#3C5A76] tracking-normal">Stretching ON</span>
+          <div>
+            <div class="text-[17px] font-semibold tracking-[-0.02em] text-[#3C5A76]">스트레칭 온</div>
+            <div class="text-[10px] tracking-[0.18em] text-[#3C5A76]/70 uppercase">Stretching ON</div>
           </div>
-        </div>
-
-        <nav class="hidden md:flex items-center gap-7 text-[15px] font-semibold text-[#0C3559]/80">
-          <button onclick="scrollToSec('brand-story')" class="hover:text-[#0092B8] transition-colors py-1">브랜드 철학</button>
-          <button onclick="scrollToSec('body-zones')" class="hover:text-[#0092B8] transition-colors py-1">부위별 솔루션</button>
-          <button onclick="scrollToSec('programs')" class="hover:text-[#0092B8] transition-colors py-1">프로그램</button>
-          <button onclick="scrollToSec('academy')" class="hover:text-[#0092B8] transition-colors py-1">아카데미</button>
-          <button onclick="scrollToSec('reservation')" class="hover:text-[#0092B8] transition-colors py-1">실시간 예약</button>
-          <button onclick="scrollToSec('location')" class="hover:text-[#0092B8] transition-colors py-1">이용 안내</button>
+        </button>
+        <nav class="hidden lg:flex items-center gap-5 text-[12px] font-semibold text-[#102A43]/70">
+          <a href="#method" class="nav-swap" aria-label="진행방식"><span class="nav-en">METHOD</span><span class="nav-ko">진행방식</span></a>
+          <a href="#initial" class="nav-swap min-w-[118px]" aria-label="첫 방문"><span class="nav-en">INITIAL SESSION</span><span class="nav-ko">첫 방문</span></a>
+          <a href="#solution-program" class="nav-swap min-w-[128px]" aria-label="정기 프로그램"><span class="nav-en">SOLUTION PROGRAM</span><span class="nav-ko">정기 프로그램</span></a>
+          <a href="#story" class="nav-swap" aria-label="브랜드 이야기"><span class="nav-en">STORY</span><span class="nav-ko">브랜드 이야기</span></a>
+          <a href="#location" class="nav-swap" aria-label="스튜디오 안내"><span class="nav-en">STUDIO</span><span class="nav-ko">스튜디오 안내</span></a>
+          <a href="#academy-teaser" class="nav-swap min-w-[88px]" aria-label="아카데미"><span class="nav-en">ACADEMY</span><span class="nav-ko">아카데미</span></a>
         </nav>
-
-        <div class="hidden md:flex items-center gap-3">
-          <button onclick="openMyBookingsModal()" class="px-4 py-2 rounded-full text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-[#0C3559] transition-all flex items-center gap-1.5 border border-stone-200">
-            <svg class="w-3.5 h-3.5 text-[#0092B8]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-            <span id="header-user-status">내 예약 / 수강권 조회</span>
-          </button>
-          <button onclick="selectProgramAndBook('p3')" class="px-5 py-2.5 rounded-full text-xs font-semibold bg-[#0C3559] text-white hover:bg-[#082239] transition-all flex items-center gap-1.5 shadow-sm">
-            온라인 1:1 예약
-            <svg class="w-3.5 h-3.5 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 5l7 7-7 7" /></svg>
-          </button>
-        </div>
-
-        <div class="md:hidden flex items-center gap-1.5">
-          <button onclick="openMyBookingsModal()" class="p-2 rounded-full bg-stone-100 text-[#0C3559] text-xs font-semibold px-2.5 border border-stone-200">내 예약</button>
-          <button onclick="toggleMobileMenu()" class="p-2 text-[#0C3559] rounded-xl bg-stone-100">☰</button>
+        <div class="flex items-center gap-2">
+          <button onclick="location.href='?view=app'" class="hidden sm:inline-flex px-4 py-2.5 rounded-full border border-[#102A43]/15 text-xs font-semibold text-[#102A43] hover:bg-white/60">회원 예약</button>
+          <button onclick="window.open('https://booking.naver.com/booking/13/bizes/1102918','_blank')" class="hidden sm:inline-flex px-4 sm:px-5 py-2.5 rounded-full bg-[#102A43] text-white text-xs font-semibold hover:bg-[#0B2034]">처음 방문하기</button>
+          <button onclick="togglePremiumMobileMenu()" class="lg:hidden w-10 h-10 rounded-full border border-[#102A43]/15 flex items-center justify-center text-[#102A43]" aria-label="메뉴 열기">☰</button>
         </div>
       </div>
-
-      <div id="mobile-menu" class="hidden md:hidden bg-white/95 border-b border-stone-200 px-6 py-6 flex flex-col gap-3">
-      <button onclick="scrollToSec('brand-story')" class="text-left py-2 border-b border-stone-100">브랜드 철학</button>
-      <button onclick="scrollToSec('body-zones')" class="text-left py-2 border-b border-stone-100">부위별 솔루션</button>
-      <button onclick="scrollToSec('programs')" class="text-left py-2 border-b border-stone-100">프로그램</button>
-      <button onclick="scrollToSec('academy')" class="text-left py-2 border-b border-stone-100">아카데미</button>
-      <button onclick="selectProgramAndBook('p3'); toggleMobileMenu();" class="text-left py-2 border-b border-stone-100">실시간 예약</button>
-      <button onclick="scrollToSec('location')" class="text-left py-2 border-b border-stone-100">이용 안내</button>
-      <button onclick="openMyBookingsModal()" class="text-left py-2 border-b border-stone-100 text-[#0092B8]">🔑 내 예약 / 수강권 조회</button>
-      <button onclick="selectProgramAndBook('p3'); toggleMobileMenu();" class="mt-2 w-full py-3.5 rounded-2xl bg-[#0C3559] text-white font-semibold text-center">온라인 1:1 예약</button>
-    </div>
-  </header>
-
-    <!-- Hero Section -->
-    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100/90 border border-amber-300 shadow-sm text-xs font-extrabold text-amber-900 mb-6">
-          <span class="w-2 h-2 rounded-full bg-amber-600 animate-ping"></span>
-          <span>🌱 첫방문 고객 전용 1회 체험 & 체형 정밀 상담 예약 진행 중</span>
+      <div id="premium-mobile-menu" class="hidden lg:hidden border-t border-[#102A43]/10 bg-[#F5F2EC]/98 backdrop-blur-xl">
+        <div class="px-5 sm:px-7 py-5 grid grid-cols-2 gap-x-6 gap-y-4">
+          <a href="#method" onclick="togglePremiumMobileMenu(false)" class="mobile-nav-item text-left"><div class="m-en">METHOD</div><div class="m-ko">진행방식</div></a>
+          <a href="#initial" onclick="togglePremiumMobileMenu(false)" class="mobile-nav-item text-left"><div class="m-en">INITIAL SESSION</div><div class="m-ko">첫 방문</div></a>
+          <a href="#solution-program" onclick="togglePremiumMobileMenu(false)" class="mobile-nav-item text-left"><div class="m-en">SOLUTION PROGRAM</div><div class="m-ko">정기 프로그램</div></a>
+          <a href="#story" onclick="togglePremiumMobileMenu(false)" class="mobile-nav-item text-left"><div class="m-en">STORY</div><div class="m-ko">브랜드 이야기</div></a>
+          <a href="#location" onclick="togglePremiumMobileMenu(false)" class="mobile-nav-item text-left"><div class="m-en">STUDIO</div><div class="m-ko">스튜디오 안내</div></a>
+          <a href="#academy-teaser" onclick="togglePremiumMobileMenu(false)" class="mobile-nav-item text-left"><div class="m-en">ACADEMY</div><div class="m-ko">아카데미</div></a>
         </div>
-
-        <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold text-[#0C3559] tracking-tight leading-snug mb-6">
-          통증을 원인부터 해소하고, <br class="hidden sm:inline" />
-          몸 본연의 자유로움과 평온을 되찾다
-        </h1>
-
-        <p class="max-w-2xl mx-auto text-sm sm:text-base text-[#0C3559]/80 font-normal leading-relaxed mb-8">
-          단순 피로 회복을 위한 1회성 케어가 아닙니다.<br class="hidden sm:inline" />
-          40여년의 수기 임상 노하우로 체형 불균형의 정밀한 원인을 측정하고, 삶의 질을 바꾸는 1:1 솔루션 스트레칭을 선보입니다.
-        </p>
-
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
-        <button onclick="window.open('https://booking.naver.com/booking/13/bizes/1102918', '_blank')" class="w-full sm:w-auto px-7 py-4 rounded-full bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold shadow-xl shadow-amber-500/20 hover:scale-105 transition-all flex items-center justify-center gap-2 group">
-          🌱 첫방문 1회 체험 (100,000원) 예약하기
-          <svg class="w-4 h-4 text-stone-900" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
-        </button>
-        <button onclick="selectProgramAndBook('p3')" class="w-full sm:w-auto px-7 py-4 rounded-full bg-[#0C3559] text-white hover:bg-[#082239] font-bold shadow-xl shadow-[#0C3559]/20 hover:scale-105 transition-all flex items-center justify-center gap-2 group">
-          온라인 1:1 예약하기
-          <svg class="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
-        </button>
-      </div>
-
-        <div class="max-w-4xl mx-auto bg-white/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 border border-stone-200/90 shadow-2xl text-left grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
-            <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">40+</div>
-            <div>
-              <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">40여년</p>
-              <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">축적된 원장 체형수기 임상 경험</p>
-            </div>
-          </div>
-          <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
-            <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">1:1</div>
-            <div>
-              <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">100%</p>
-              <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">1:1 단독 맞춤 수기 솔루션</p>
-            </div>
-          </div>
-          <div class="p-5 rounded-2xl bg-stone-50 border border-stone-200/60 flex items-start gap-4">
-            <div class="p-3.5 rounded-2xl bg-sky-50 text-[#0092B8] shrink-0 font-bold">★</div>
-            <div>
-              <p class="text-2xl sm:text-3xl font-semibold text-[#0C3559]">99.4%</p>
-              <p class="text-xs sm:text-sm text-[#0C3559]/75 font-semibold mt-0.5">고객 신체 가동성 개선 만족도</p>
-            </div>
-          </div>
+        <div class="px-5 sm:px-7 pb-5 flex gap-2">
+          <button onclick="location.href='?view=app'" class="flex-1 py-3 rounded-full border border-[#102A43]/15 text-xs font-semibold">회원 예약</button>
+          <button onclick="window.open('https://booking.naver.com/booking/13/bizes/1102918','_blank')" class="flex-1 py-3 rounded-full bg-[#102A43] text-white text-xs font-semibold">처음 방문하기</button>
         </div>
       </div>
-    </section>
+    </header>
 
-    <!-- Brand Story Section -->
-    <section id="brand-story" class="py-24 bg-white border-y border-stone-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div class="relative">
-            <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white">
-              <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1000" alt="스트레칭 온 공간" class="w-full h-[450px] object-cover" />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#0C3559]/80 via-transparent to-transparent"></div>
-              <div class="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg">
-                <p class="text-[#0C3559] text-sm sm:text-base font-semibold leading-relaxed">
-                  "단순한 마사지가 아닌, 인체 본연의 관절 가동성과 균형을 회복시키는 깊이 있는 1:1 테크닉"
-                </p>
-                <p class="text-xs text-[#0092B8] font-semibold mt-1.5">SOLSTRETCH 솔루션스트레칭</p>
-              </div>
-            </div>
-          </div>
+    <!-- HERO -->
+    <section class="relative min-h-[94vh] pt-28 pb-14 flex items-end overflow-hidden bg-[#0A2136]">
+      <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=90&w=2000" alt="움직임과 스트레칭" class="absolute inset-0 w-full h-full object-cover object-center opacity-60 scale-[1.01]" />
+      <div class="absolute inset-0 bg-gradient-to-r from-[#071B2C]/95 via-[#0A2136]/72 to-[#0A2136]/18"></div>
+      <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#071B2C]/45 to-transparent"></div>
 
-          <div class="space-y-6">
-            <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1.5 rounded-full">THE SOLSTRETCH BRAND STORY</span>
-            <h2 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] leading-snug">
-              몸의 불균형을 근본부터 해결하여 <br />
-              삶 전체의 깊은 평온을 되찾아 주는 공간
-            </h2>
-            <p class="text-[#0C3559]/80 text-xs sm:text-sm leading-relaxed font-normal">
-              현대인의 굳어진 근육과 비틀어진 골반은 단순한 피로가 아닌 신체 구조적 신호입니다. 스트레칭 온의 프리미엄 브랜드 <strong class="text-[#0C3559] font-semibold">SOLSTRETCH(솔루션스트레칭)</strong>는 일시적인 통증 차단을 지양하고, 40여년 집약된 해부학적 수기 분석을 통해 근골격계와 관절의 가동 범위를 안전하고 정교하게 확장시킵니다.
-            </p>
-
-            <div class="pt-2 space-y-3">
-              <div class="flex items-start gap-3">
-                <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
-                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-[#0C3559] text-sm">01. 정밀 모빌리티 측정 평가</h3>
-                  <p class="text-xs text-[#0C3559]/70 mt-0.5">방문 즉시 관절 제한 범위와 관절막·근막 불균형 지점을 과학적으로 측정평가합니다.</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
-                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-[#0C3559] text-sm">02. 40년 수기 임상 기반 패시브 솔루션</h3>
-                  <p class="text-xs text-[#0C3559]/70 mt-0.5">호흡과 신체 이완 반사를 활용한 고도의 1:1 수기 가동성 회복 케어를 진행합니다.</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="p-1.5 rounded-full bg-[#0C3559] text-white shrink-0 mt-0.5">
-                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-[#0C3559] text-sm">03. 맞춤형 자가 관리 및 자세 로드맵</h3>
-                  <p class="text-xs text-[#0C3559]/70 mt-0.5">케어 후 스스로 평온한 신체 상태를 유지할 수 있도록 1:1 자가 운동 가이드를 전수합니다.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-gradient-to-br from-[#0C3559] via-[#082239] to-[#051829] rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
-          <div class="max-w-3xl mb-10">
-            <span class="text-xs font-semibold text-sky-300 tracking-widest uppercase bg-white/10 px-3.5 py-1 rounded-full">THE ETYMOLOGY OF SOLSTRETCH</span>
-            <h3 class="text-2xl sm:text-3xl font-semibold text-white mt-4 mb-3 leading-tight">
-              브랜드가 약속하는 3가지 핵심 밸류, <span class="text-sky-300 font-bold">SOL</span>
-            </h3>
-            <p class="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
-              상호명 <strong class="text-white font-semibold">스트레칭 온(Stretching ON)</strong>이 추구하는 근본적 브랜드 가치 <strong class="text-sky-300 font-semibold">SOLSTRETCH</strong>는 인체의 문제 해결을 넘어, 따스한 온기와 완전한 회복을 상징합니다.
-            </p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-              <span class="text-xs text-sky-300 font-semibold uppercase block">01 SOLUTION</span>
-              <h4 class="text-base font-semibold text-white mb-2">근본적 문제 해결 (Solution)</h4>
-              <p class="text-xs text-stone-300 leading-relaxed font-normal">단순 일시적 자극이나 마사지가 아닙니다. 관절 가동성과 근막 비대칭의 일차 원인을 정밀 스캔하여 명확한 맞춤 수기 이완 솔루션을 제시합니다.</p>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-              <span class="text-xs text-amber-300 font-semibold uppercase block">02 SOL [LATIN: SUN]</span>
-              <h4 class="text-base font-semibold text-white mb-2">태양의 따스한 생명력 (Sol)</h4>
-              <p class="text-xs text-stone-300 leading-relaxed font-normal">라틴어로 ‘태양’을 의미하는 Sol처럼, 만성적으로 차갑게 굳어버린 관절과 근육에 따스한 온기와 자유로운 생명력을 불어넣어 드립니다.</p>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-              <span class="text-xs text-emerald-300 font-semibold uppercase block">03 SHALOM [TRANQUILITY]</span>
-              <h4 class="text-base font-semibold text-white mb-2">온전한 안식과 평온 (Shalom)</h4>
-              <p class="text-xs text-stone-300 leading-relaxed font-normal">히브리어 '샬롬(Shalom)'의 깊은 평안처럼, 신체 오케스트라의 밸런스를 완전하게 회복시켜 일상 전체에 비로소 차오르는 평온을 선사합니다.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Body Zones Section -->
-    <section id="body-zones" class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-14">
-        <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">ANALYSIS & SOLUTIONS</span>
-        <h2 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-2 mb-3">불편하신 신체 부위를 선택해 주세요</h2>
-        <p class="text-[#0C3559]/70 text-xs sm:text-sm font-normal">원인이 되는 부위를 선택하시면 스트레칭 온만의 정밀 케어 솔루션과 매칭 코스를 확인하실 수 있습니다.</p>
+      <div class="absolute right-6 lg:right-10 top-32 hidden md:flex flex-col items-end text-white/50">
+        <span class="text-[10px] tracking-[0.25em]">MOVEMENT FREEDOM</span>
+        <span class="mt-2 w-16 h-px bg-white/30"></span>
+        <span class="mt-3 text-[10px] tracking-[0.18em]">01 / STRETCHING ON</span>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 mb-8" id="zone-tab-buttons"></div>
-      <div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="zone-detail-card"></div>
-    </section>
-
-    <!-- Programs Section -->
-    <section id="programs" class="py-24 bg-stone-100/70 border-y border-stone-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-          <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CURATED CARE PROGRAMS</span>
-          <h2 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">프리미엄 1:1 맞춤 솔루션 프로그램</h2>
-          <p class="text-[#0C3559]/75 text-sm sm:text-base font-medium">첫 방문 체형 정밀 측정부터 심화 케어 및 정기 수강권까지 준비되어 있습니다.</p>
+      <div class="relative z-10 max-w-7xl mx-auto px-5 sm:px-7 lg:px-10 w-full pb-7 sm:pb-12">
+        <div class="hero-reveal">
+          <p class="text-[10px] sm:text-xs tracking-[0.24em] font-semibold text-white/80 mb-6">STRETCHING ON · SOLUTION STRETCHING METHOD</p>
+          <h1 class="max-w-5xl text-[43px] leading-[1.08] sm:text-6xl lg:text-[76px] lg:leading-[1.05] font-semibold tracking-[-0.05em] text-white">
+            나이는 들어도,<br />움직임까지 나이 들<br class="sm:hidden" /> 필요는 없습니다.
+          </h1>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="program-cards-container"></div>
-      </div>
-    </section>
-
-    <!-- Academy Section -->
-    <section id="academy" class="py-24 bg-white border-b border-stone-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-br from-[#0C3559] via-[#0A2D4C] to-[#082239] text-white rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div class="lg:col-span-7 space-y-6">
-              <span class="px-3.5 py-1.5 rounded-full bg-sky-400/20 text-sky-300 text-xs font-semibold tracking-widest uppercase">SOLSTRETCH ACADEMY</span>
-              <h2 class="text-3xl sm:text-4xl md:text-4xl font-semibold text-white leading-tight">"전공 무관·초보자 가능! 4주 만에 끝내는 소자본 1인 수기 스트레칭 창업/취업 마스터"</h2>
-              <p class="text-stone-300 text-sm sm:text-base leading-relaxed font-normal">
-                40여년 경력의 원장이 직접 지도하는 최고위 스트레칭 전문가 양성 과정입니다.<br />
-                체형 분석 이론부터 실전 수기 테크닉까지 완성형 노하우를 밀착 전수합니다.
-              </p>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
-                  <p class="text-xs text-sky-300 font-semibold mb-1">교육 일정 (평일 오전, 오후, 저녁 / 주말반)총 36시간</p>
-                  <p class="text-base font-semibold text-white">예비전문가, 창업반, 취업반, 올데이 마스터반 </p>
-                  <p class="text-xs text-stone-300 mt-1 font-normal">수료 후 동작이 미흡하면 다음 기수 무료 청강/보충 제공</p>
-                </div>
-                <div class="p-4.5 rounded-2xl bg-white/10 border border-white/10 backdrop-blur-md">
-                  <p class="text-xs text-sky-300 font-semibold mb-1">수강료 및 자격증</p>
-                  <p class="text-2xl font-semibold text-white">150만원</p>
-                  <p class="text-xs text-stone-300 mt-1 font-normal">* 솔루션 스트레칭 지도자 자격증 발급비 포함</p>
-                </div>
-              </div>
-
-              <div class="pt-4 flex flex-col sm:flex-row gap-4">
-                <button onclick="openAcademyModal()" class="px-8 py-4.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-xs sm:text-sm hover:bg-sky-300 transition-all shadow-xl flex items-center justify-center gap-2">지도자 수강 상담 신청 ➔</button>
-                <a href="tel:010-6566-6369" class="px-6 py-4.5 rounded-full bg-white/10 text-white border border-white/20 font-semibold text-xs sm:text-sm hover:bg-white/20 transition-all flex items-center justify-center gap-2">📞 직통 문의: 010-6566-6369</a>
-              </div>
-            </div>
-
-            <div class="lg:col-span-5 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl p-6 space-y-4">
-              <h3 class="text-lg font-semibold text-white flex items-center gap-2">🎓 4주 차별 핵심 커리큘럼</h3>
-              <div class="space-y-3 text-xs sm:text-sm text-stone-200">
-                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                  <p class="font-semibold text-sky-300">1주차: 해부학 & 정밀 체형 스캔</p>
-                  <p class="mt-0.5 text-stone-300 font-normal">관절 가동 범위 측정 및 불균형 원인 스캔</p>
-                </div>
-                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                  <p class="font-semibold text-sky-300">2주차: 상체 및 경추 딥 수기 실습</p>
-                  <p class="mt-0.5 text-stone-300 font-normal">거북목, 승모근, 흉곽 이완 테크닉 실습</p>
-                </div>
-                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                  <p class="font-semibold text-sky-300">3주차: 골반 & 하체 리밸런스</p>
-                  <p class="mt-0.5 text-stone-300 font-normal">고관절 회전성 확보 및 장요근 이완 노하우</p>
-                </div>
-                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10">
-                  <p class="font-semibold text-sky-300">4주차: 실전 코칭 심사 & 자격 수여</p>
-                  <p class="mt-0.5 text-stone-300 font-normal">원장 및 교수진 직접 심사 공식 자격증 수여</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Realtime Reservation Section -->
-    <section id="reservation" class="py-24 bg-[#0C3559] text-white">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-xl mx-auto mb-12">
-          <span class="text-xs font-semibold tracking-widest text-sky-300 uppercase">REAL-TIME RESERVATION</span>
-          <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-3 mb-3">실시간 1:1 맞춤 예약</h2>
-          <p class="text-stone-300 text-xs sm:text-sm font-normal leading-relaxed">
-            * 원장의 100% 1:1 단독 집중 케어로 진행됩니다. <br class="hidden sm:inline" />
-            * 당일 예약은 불가하며, 최소 1일 전 사전예약 선택만 가능합니다.
+        <div class="hero-reveal-delay">
+          <p class="max-w-2xl mt-7 text-[16px] sm:text-[19px] leading-relaxed text-white font-medium drop-shadow-sm">
+            몸의 움직임을 확인하고, 이완 · 스트레칭 · 운동을 연결하는<br class="hidden sm:block" />
+            <strong class="font-semibold text-white">1:1 움직임 관리 스튜디오</strong>입니다.
           </p>
-        </div>
 
-        <div class="bg-white/10 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/15 shadow-2xl">
-          <!-- Step 1 -->
-          <div id="booking-step-1" class="space-y-6">
-            <h3 class="text-xl font-semibold text-white">1단계: 케어 프로그램 선택</h3>
-            <div class="space-y-3" id="step1-program-list"></div>
-            <button onclick="goToStep(2)" class="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">
-              다음: 날짜 및 시간 선택 ➔
+          <div class="mt-9 flex flex-col sm:flex-row gap-3 sm:items-center">
+            <button onclick="window.open('https://booking.naver.com/booking/13/bizes/1102918','_blank')" class="group px-7 py-4 rounded-full bg-white text-[#102A43] font-semibold text-sm hover:bg-[#F5F2EC] transition-all">
+              처음 방문하기 <span class="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
             </button>
+            <a href="#method" class="px-7 py-4 rounded-full border border-white/35 text-white font-semibold text-sm hover:bg-white/10 transition-colors text-center">진행방식 보기 ↓</a>
           </div>
 
-          <!-- Step 2 -->
-          <div id="booking-step-2" class="space-y-6 hidden">
-            <h3 class="text-xl font-semibold text-white">2단계: 방문 날짜 및 시간 선택 (일요일 휴무)</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
-              <div class="md:col-span-5 space-y-3">
-                <label class="block text-xs font-semibold text-stone-200">방문 날짜 선택 (내일부터 예약 가능)</label>
-                <input type="date" id="booking-date-input" onchange="handleBookingDateChange(this.value)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm font-semibold focus:outline-none focus:border-sky-400" />
-                <div class="p-4 rounded-xl bg-[#082239]/80 border border-white/10 text-xs text-stone-300 space-y-1.5 font-normal">
-                  <p class="font-semibold text-sky-300">💡 예약 정책 안내</p>
-                  <p>• 당일 예약은 불가합니다 (최소 1일 전 사전예약)</p>
-                  <p>• 선택하신 날짜의 예약 완료 시간대는 '마감'으로 자동 차단됩니다.</p>
-                  <p>• 원장 1:1 전담으로 동일 시간에 추가 중복 예약이 불가능합니다.</p>
-                </div>
-              </div>
-
-              <div class="md:col-span-7 space-y-3">
-                <label class="block text-xs font-semibold text-stone-200">방문 시간대</label>
-                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5" id="step2-time-slots"></div>
-              </div>
-            </div>
-
-            <div class="flex justify-between pt-4">
-              <button onclick="goToStep(1)" class="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs font-semibold">이전 단계</button>
-              <button onclick="goToStep(3)" class="px-8 py-3.5 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm">다음: 예약자 정보 입력 ➔</button>
-            </div>
-          </div>
-
-          <!-- Step 3 -->
-          <div id="booking-step-3" class="space-y-6 hidden">
-            <h3 class="text-xl font-semibold text-white mb-4">3단계: 예약자 정보 입력</h3>
-            <input type="text" id="user-name" placeholder="성함 *" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
-            <input type="tel" id="user-phone" placeholder="연락처 *" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm" />
-            <textarea id="user-note" rows="3" placeholder="주요 통증 부위 및 요청사항 (선택)" class="w-full bg-[#082239] border border-white/20 rounded-xl px-4 py-3.5 text-white text-sm resize-none"></textarea>
-            
-            <div class="p-4 rounded-xl bg-[#082239] border border-white/10 space-y-2.5">
-              <label class="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-stone-200 cursor-pointer select-none">
-                <input type="checkbox" id="privacy-agree" class="w-4 h-4 rounded" />
-                <span>[필수] 개인정보 수집 및 이용 동의</span>
-              </label>
-              <div class="p-3 rounded-lg bg-[#0C3559]/60 border border-white/10 text-[11px] text-stone-300 leading-relaxed space-y-1 font-normal">
-                <p>• <strong class="text-stone-200">수집 항목:</strong> 성함, 연락처, 주요 통증 부위 및 요청사항</p>
-                <p>• <strong class="text-stone-200">이용 목적:</strong> 1:1 맞춤 스트레칭 실시간 예약 확정 및 안내</p>
-                <p>• <strong class="text-stone-200">보유 기간:</strong> 이용 완료 후 관련 법령에 따라 최대 3개월 보관 후 파기</p>
-              </div>
-            </div>
-
-            <div class="flex justify-between items-center pt-4">
-              <button type="button" onclick="goToStep(2)" class="px-6 py-3 rounded-full bg-white/10 text-stone-300 text-xs font-semibold">이전 단계</button>
-              <button type="button" onclick="submitBooking()" class="px-10 py-4 rounded-full bg-sky-400 text-[#0C3559] font-semibold text-sm shadow-xl">예약 신청 및 즉시 확정하기 ✓</button>
-            </div>
+          <div class="mt-10 pt-6 border-t border-white/20 max-w-2xl flex flex-wrap gap-x-7 gap-y-2 text-[11px] sm:text-xs text-white/75">
+            <span>CHECK</span><span>RELEASE</span><span>STRETCH</span><span>MOVE</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Location & Guidelines Section -->
-    <section id="location" class="py-24 bg-stone-100/70 border-t border-stone-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-lg flex flex-col justify-between">
-            <div>
-              <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1.5 rounded-full">LOCATION & SEARCH</span>
-              <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-4 mb-6">오시는 길 및 안내</h3>
-              <div class="space-y-4 mb-8 text-sm sm:text-base text-[#0C3559]">
-                <div>
-                  <p class="font-semibold text-[#0C3559] text-base sm:text-lg">스트레칭온</p>
-                  <p class="text-xs sm:text-sm text-[#0C3559]/85 mt-1 font-semibold">인천 서해구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</p>
-                  <p class="text-xs text-[#0092B8] font-semibold mt-1.5">* 인천지하철 2호선 가정역 6번 출구 112m / 건물 내 무료주차 2시간 제공</p>
-                </div>
-                <div class="text-sm font-semibold text-[#0C3559]">📞 직통 전화 문의: 010-6566-6369</div>
-                <div class="text-xs sm:text-sm text-[#0C3559]/85 font-semibold">
-                  <p>월 - 금요일: 10:00 - 22:00</p>
-                  <p>토요일: 10:00 - 18:00 (일요일 정기휴무)</p>
-                </div>
+    <!-- WHAT -->
+    <section class="py-24 sm:py-32 bg-[#F5F2EC]">
+      <div class="max-w-6xl mx-auto px-5 sm:px-7 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-20 items-start">
+        <div class="lg:col-span-4">
+          <p class="text-xs tracking-[0.18em] font-semibold text-[#3C5A76]">WHAT IS SOLUTION STRETCHING?</p>
+        </div>
+        <div class="lg:col-span-8">
+          <h2 class="text-3xl sm:text-5xl leading-tight font-semibold tracking-[-0.035em] text-[#102A43]">솔루션스트레칭은 단순히<br class="hidden sm:block" /> 새로운 스트레칭 기법을 의미하지 않습니다.</h2>
+          <p class="mt-8 text-lg sm:text-2xl leading-relaxed text-[#102A43]/72">몸을 하나의 방법으로만 접근하지 않고, 필요한 방법을 연결해 <strong class="text-[#102A43] font-semibold">움직임의 해법</strong>을 찾는 시스템입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- METHOD -->
+    <section id="method" class="py-24 sm:py-32 bg-[#102A43] text-white">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10">
+        <p class="text-xs tracking-[0.2em] font-semibold text-white/55">THE METHOD</p>
+        <h2 class="mt-4 text-3xl sm:text-5xl font-semibold tracking-[-0.035em]">CHECK가 Solution을 결정합니다.</h2>
+        <div class="mt-16 border-t border-white/15">
+          <div class="grid md:grid-cols-4">
+            <div class="method-step py-8 md:pr-7 border-b md:border-b-0 md:border-r border-white/15"><span class="text-xs text-white/45">01</span><h3 class="mt-5 text-3xl font-semibold">CHECK</h3><p class="mt-3 text-sm text-white/65 leading-relaxed">불편감과 현재 움직임, 가동범위와 보상 움직임을 확인합니다.</p></div>
+            <div class="method-step py-8 md:px-7 border-b md:border-b-0 md:border-r border-white/15"><span class="text-xs text-white/45">02</span><h3 class="mt-5 text-3xl font-semibold">RELEASE</h3><p class="mt-3 text-sm text-white/65 leading-relaxed">필요한 부위의 긴장과 조직 반응을 고려해 수기 이완을 적용합니다.</p></div>
+            <div class="method-step py-8 md:px-7 border-b md:border-b-0 md:border-r border-white/15"><span class="text-xs text-white/45">03</span><h3 class="mt-5 text-3xl font-semibold">STRETCH</h3><p class="mt-3 text-sm text-white/65 leading-relaxed">현재 상태에 맞는 패시브 스트레칭으로 움직임의 범위를 확장해 봅니다.</p></div>
+            <div class="method-step py-8 md:pl-7"><span class="text-xs text-white/45">04</span><h3 class="mt-5 text-3xl font-semibold">MOVE</h3><p class="mt-3 text-sm text-white/65 leading-relaxed">달라진 움직임을 스스로 사용할 수 있도록 맞춤운동으로 연결합니다.</p></div>
+          </div>
+        </div>
+        <p class="mt-14 text-2xl sm:text-4xl font-medium tracking-[-0.03em]">이완에서 끝나지 않고, <span class="text-[#9CC8D5]">움직임으로 완성합니다.</span></p>
+      </div>
+    </section>
+
+    <!-- WHY SOLUTION -->
+    <section class="py-24 sm:py-32 bg-white">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div>
+          <p class="text-xs tracking-[0.2em] font-semibold text-[#3C5A76]">WHY SOLUTION?</p>
+          <h2 class="mt-5 text-4xl sm:text-6xl leading-[1.08] font-semibold tracking-[-0.045em]">한 사람의 몸에<br />하나의 정답은<br />없기 때문입니다.</h2>
+        </div>
+        <div class="space-y-6 text-base sm:text-lg leading-relaxed text-[#102A43]/70">
+          <p>같은 어깨 불편감이라도 실제 움직임과 생활패턴은 사람마다 다릅니다. 그래서 불편한 부위 하나만 보고 정해진 코스를 적용하지 않습니다.</p>
+          <p>먼저 움직임을 확인하고, 그날 필요한 방법을 선택합니다. 수기 근막이완이 필요할 수도 있고, 패시브 스트레칭이나 움직임 연습이 더 필요할 수도 있습니다.</p>
+          <p class="font-semibold text-[#102A43]">Pain Point가 아니라 Movement Context를 봅니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INITIAL -->
+    <section id="initial" class="py-24 sm:py-32 bg-[#E9E5DE]">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10">
+        <div class="max-w-3xl">
+          <p class="text-xs tracking-[0.2em] font-semibold text-[#3C5A76]">YOUR FIRST STEP</p>
+          <h2 class="mt-5 text-4xl sm:text-6xl font-semibold tracking-[-0.045em]">처음이라면,<br />내 몸을 이해하는 것부터.</h2>
+          <p class="mt-7 text-base sm:text-lg text-[#102A43]/70 leading-relaxed">처음부터 정기등록을 결정하실 필요는 없습니다. 상담과 움직임 CHECK를 통해 현재 상태를 확인하고 Solution Stretching을 직접 경험해 보세요.</p>
+        </div>
+        <div class="mt-14 grid md:grid-cols-2 gap-5">
+          <article class="premium-card bg-[#F9F7F3] p-8 sm:p-10 border border-[#102A43]/10 min-h-[380px] flex flex-col justify-between">
+            <div><div class="flex justify-between items-start"><span class="text-xs tracking-[0.15em] text-[#3C5A76] font-semibold">INITIAL 50</span><span class="text-sm font-semibold">100,000원</span></div><h3 class="mt-9 text-4xl font-semibold">50 MIN</h3><p class="mt-5 text-sm leading-relaxed text-[#102A43]/65">상담 · 기본 움직임 CHECK · Solution Session</p></div>
+            <button onclick="window.open('https://booking.naver.com/booking/13/bizes/1102918','_blank')" class="mt-10 w-full py-4 border border-[#102A43] text-[#102A43] text-sm font-semibold hover:bg-[#102A43] hover:text-white transition-colors">50분 예약하기 →</button>
+          </article>
+          <article class="premium-card bg-[#102A43] text-white p-8 sm:p-10 min-h-[380px] flex flex-col justify-between relative overflow-hidden">
+            <div><div class="absolute top-0 right-0 px-4 py-2 bg-[#9CC8D5] text-[#102A43] text-[9px] font-bold tracking-[0.14em]">FIRST VISIT PICK</div><div class="flex justify-between items-start"><span class="text-xs tracking-[0.15em] text-[#9CC8D5] font-semibold">INITIAL 90 · RECOMMENDED</span><span class="text-sm font-semibold">150,000원</span></div><h3 class="mt-9 text-4xl font-semibold">90 MIN</h3><p class="mt-5 text-sm leading-relaxed text-white/65">상담 · 보다 자세한 CHECK · Solution Session · RE-CHECK · 맞춤운동 안내</p></div>
+            <button onclick="window.open('https://booking.naver.com/booking/13/bizes/1102918','_blank')" class="mt-10 w-full py-4 bg-white text-[#102A43] text-sm font-semibold hover:bg-[#F5F2EC]">90분 예약하기 →</button>
+          </article>
+        </div>
+        <div class="mt-7 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-[#102A43]/58 border-t border-[#102A43]/10 pt-6">
+          <p>처음 방문의 목적은 프로그램을 고르는 것이 아니라, 현재 몸과 움직임을 이해하는 것입니다.</p>
+          <p class="font-semibold text-[#102A43]">처음부터 정기등록을 결정하실 필요는 없습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTION PROGRAM -->
+    <section id="solution-program" class="py-24 sm:py-32 bg-[#F5F2EC]">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10">
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-20">
+          <div><p class="text-xs tracking-[0.2em] font-semibold text-[#3C5A76]">SOLUTION PROGRAM</p><h2 class="mt-5 text-4xl sm:text-5xl font-semibold tracking-[-0.04em]">한 번의 관리보다<br />지속되는 움직임을 위해.</h2><p class="mt-5 text-sm sm:text-base text-[#102A43]/62 leading-relaxed">한 달을 기준으로 운영하는 정기 관리 프로그램입니다. 횟수와 월 이용금액을 함께 확인해 주세요.</p></div>
+          <div class="flex items-end"><p class="text-base leading-relaxed text-[#102A43]/68">Initial Session 이후 계속 관리가 필요하다면 현재 몸의 상태, 관리 필요도, 운동 자립도를 함께 보고 적절한 이용주기를 안내합니다. 정해진 순서대로 등록해야 하는 프로그램이 아닙니다.</p></div>
+        </div>
+        <div class="mt-14 border-y border-[#102A43]/15 divide-y divide-[#102A43]/15">
+          <div class="grid grid-cols-[70px_1fr_auto] sm:grid-cols-[100px_1fr_auto] items-center gap-4 py-7"><span class="text-3xl sm:text-5xl font-light">02</span><div><p class="font-semibold">유지관리</p><p class="text-xs sm:text-sm text-[#102A43]/55 mt-1">스스로 운동하면서 주기적으로 움직임을 확인하고 조정</p></div><strong class="text-sm sm:text-lg">월 150,000원</strong></div>
+          <div class="grid grid-cols-[70px_1fr_auto] sm:grid-cols-[100px_1fr_auto] items-center gap-4 py-7"><span class="text-3xl sm:text-5xl font-light">04</span><div><div class="flex items-center gap-2"><p class="font-semibold">정기관리</p><span class="text-[9px] px-2 py-1 rounded-full bg-[#102A43] text-white">MAIN</span></div><p class="text-xs sm:text-sm text-[#102A43]/55 mt-1">주 1회 리듬으로 CHECK와 홈 운동을 연결</p></div><strong class="text-sm sm:text-lg">월 260,000원</strong></div>
+          <div class="grid grid-cols-[70px_1fr_auto] sm:grid-cols-[100px_1fr_auto] items-center gap-4 py-7"><span class="text-3xl sm:text-5xl font-light">08</span><div><p class="font-semibold">집중관리</p><p class="text-xs sm:text-sm text-[#102A43]/55 mt-1">보다 높은 관여도로 움직임의 기반과 운동 방법을 함께 익히는 과정</p></div><strong class="text-sm sm:text-lg">월 440,000원</strong></div>
+        </div>
+        <p class="mt-6 text-xs text-[#102A43]/52">* 이용주기는 Initial Session 후 현재 상태에 따라 안내되며, 필요에 따라 변경할 수 있습니다.</p>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section class="py-24 sm:py-32 bg-[#C9D4D4]" id="story">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10 grid lg:grid-cols-12 gap-12 items-end">
+        <div class="lg:col-span-5"><p class="text-[76px] sm:text-[110px] leading-none font-semibold tracking-[-0.07em] text-[#102A43]">1985</p><p class="mt-3 text-xs tracking-[0.18em] font-semibold text-[#102A43]/55">MOVEMENT EXPERIENCE</p></div>
+        <div class="lg:col-span-7"><h2 class="text-3xl sm:text-5xl font-semibold tracking-[-0.04em]">스트레칭을 해온 시간이 아니라,<br />움직임을 관찰해온 시간.</h2><p class="mt-7 max-w-2xl text-base leading-relaxed text-[#102A43]/70">패시브 스트레칭을 활용해 온 오랜 현장 경험은 수기 이완과 스트레칭, 운동을 하나의 흐름으로 연결하는 Solution Stretching Method로 이어졌습니다.</p><p class="mt-5 text-[11px] text-[#102A43]/50">* 1985는 스트레칭온 설립연도가 아닌, 운영자의 패시브 스트레칭 및 움직임 지도 경험의 시작 시점을 의미합니다.</p></div>
+      </div>
+    </section>
+
+    <!-- STUDIO / FAQ -->
+    <section id="location" class="py-24 sm:py-32 bg-white">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10">
+        <div class="grid lg:grid-cols-[0.9fr_1.1fr] gap-14 lg:gap-24 items-start">
+          <div class="lg:sticky lg:top-28">
+            <p class="text-xs tracking-[0.2em] font-semibold text-[#3C5A76]">STUDIO</p>
+            <h2 class="mt-5 text-4xl sm:text-5xl font-semibold tracking-[-0.04em] leading-[1.08]">1:1로 온전히<br />집중하는 시간.</h2>
+            <p class="mt-6 max-w-md text-sm sm:text-base text-[#102A43]/62 leading-relaxed">
+              한 분의 움직임에 집중하기 위해 모든 세션은 1:1 예약제로 운영합니다.
+            </p>
+
+            <div class="mt-10 border-t border-[#102A43]/12">
+              <div class="py-5 border-b border-[#102A43]/10 grid grid-cols-[74px_1fr] gap-4 text-sm">
+                <span class="text-[#102A43]/42">PLACE</span>
+                <span class="text-[#102A43] leading-relaxed"><strong>스트레칭온</strong><br />인천 서해구 가정로 451 (가정동, 벨라미센텀시티2차) 8층 803호</span>
+              </div>
+              <div class="py-5 border-b border-[#102A43]/10 grid grid-cols-[74px_1fr] gap-4 text-sm">
+                <span class="text-[#102A43]/42">ACCESS</span>
+                <span class="text-[#102A43]/72">인천지하철 2호선 가정역 6번 출구 112m<br />건물 내 무료주차 2시간</span>
+              </div>
+              <div class="py-5 border-b border-[#102A43]/10 grid grid-cols-[74px_1fr] gap-4 text-sm">
+                <span class="text-[#102A43]/42">HOURS</span>
+                <span class="text-[#102A43]/72">월–금 10:00–22:00<br />토 10:00–18:00 · 일요일 휴무</span>
               </div>
             </div>
 
-            <div class="p-6 rounded-2xl bg-stone-50 border border-stone-200 space-y-4">
-              <p class="text-xs font-semibold text-[#0C3559]/70 uppercase tracking-wider">지도 앱으로 빠르게 위치 찾기</p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button onclick="openMapSearch('naver')" class="w-full py-3.5 px-4 rounded-xl bg-[#03CF5D] text-white font-semibold text-xs sm:text-sm shadow-sm">💚 네이버 지도 검색 ↗</button>
-                <button onclick="openMapSearch('kakao')" class="w-full py-3.5 px-4 rounded-xl bg-[#FEE500] text-[#191919] font-semibold text-xs sm:text-sm shadow-sm">💛 카카오맵 검색 ↗</button>
-              </div>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <button onclick="openMapSearch('naver')" class="px-5 py-3 rounded-full border border-[#102A43]/20 text-xs font-semibold hover:bg-[#F5F2EC] transition-colors">네이버 지도 →</button>
+              <button onclick="openMapSearch('kakao')" class="px-5 py-3 rounded-full border border-[#102A43]/20 text-xs font-semibold hover:bg-[#F5F2EC] transition-colors">카카오맵 →</button>
+              <a href="https://talk.naver.com/W48K04" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-full bg-[#102A43] text-white text-xs font-semibold hover:bg-[#173A58] transition-colors">네이버 톡톡 문의 →</a>
             </div>
+          </div>
+
+          <div class="bg-[#F8F6F1] p-6 sm:p-9 lg:p-10">
+            <p class="text-xs tracking-[0.2em] font-semibold text-[#3C5A76]">FAQ</p>
+            <h3 class="mt-4 text-2xl sm:text-3xl font-semibold tracking-[-0.03em]">처음 방문하시기 전에.</h3>
+            <div id="faqs-container" class="mt-7 space-y-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="py-20 sm:py-24 bg-[#F5F2EC]">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div>
+            <p class="text-xs tracking-[0.2em] font-semibold text-[#3C5A76]">MEMBER VOICES</p>
+            <h2 class="mt-4 text-3xl sm:text-4xl font-semibold tracking-[-0.035em]">직접 경험한 움직임의 변화.</h2>
+          </div>
+          <p class="max-w-sm text-xs sm:text-sm text-[#102A43]/52 leading-relaxed">개인의 경험을 바탕으로 한 후기이며, 결과는 사람마다 다를 수 있습니다.</p>
+        </div>
+        <div id="reviews-container" class="mt-10 grid md:grid-cols-3 gap-5"></div>
+      </div>
+    </section>
+
+    <!-- GUIDELINES -->
+    <section class="py-20 sm:py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10">
+        <div class="max-w-2xl">
+          <p class="text-xs tracking-[0.2em] font-semibold text-[#3C5A76]">STUDIO GUIDE</p>
+          <h2 class="mt-4 text-3xl sm:text-4xl font-semibold tracking-[-0.035em]">편안한 세션을 위한 안내.</h2>
+        </div>
+        <div id="guidelines-container" class="mt-10 grid md:grid-cols-2 gap-5"></div>
+      </div>
+    </section>
+
+    <!-- ACADEMY -->
+    <section class="py-20 sm:py-24 bg-[#0C263D] text-white border-b border-white/10" id="academy-teaser">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10">
+        <div class="grid lg:grid-cols-[0.82fr_1.18fr] gap-12 lg:gap-20 items-start">
+          <div>
+            <p class="text-[10px] tracking-[0.22em] text-white/48">SOLUTION STRETCHING ACADEMY</p>
+            <h3 class="mt-4 text-3xl sm:text-4xl lg:text-5xl leading-[1.12] font-semibold tracking-[-0.04em]">
+              움직임을 보고,<br />필요한 방법을<br />연결하는 지도자 교육.
+            </h3>
           </div>
 
           <div>
-            <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">FAQ</span>
-            <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-2 mb-6">자주 묻는 질문</h3>
-            <div id="faqs-container" class="space-y-3.5"></div>
-          </div>
-        </div>
+            <p class="text-base sm:text-lg leading-relaxed text-white/78 max-w-2xl">
+              단순히 스트레칭 동작을 배우는 과정이 아니라, 회원의 움직임을 CHECK하고
+              필요한 RELEASE · STRETCH · MOVE를 선택하고 연결하는 사고방식과 적용 과정을 교육합니다.
+            </p>
 
-        <div id="reviews" class="pt-8 border-t border-stone-200/80">
-          <div class="text-center max-w-2xl mx-auto mb-16">
-            <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase">CUSTOMER REVIEWS</span>
-            <h3 class="text-3xl sm:text-4xl font-semibold text-[#0C3559] mt-3 mb-4">솔루션스트레칭 고객 수기 후기</h3>
-            <p class="text-[#0C3559]/75 text-sm sm:text-base font-normal">신체 불균형을 개선하고 가벼운 일상을 회복하신 고객분들의 실제 경험담입니다.</p>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="reviews-container"></div>
-        </div>
+            <div class="mt-9 grid sm:grid-cols-2 gap-x-8 border-t border-white/15">
+              <div class="py-5 border-b border-white/10">
+                <span class="block text-[10px] tracking-[0.16em] text-white/40">01 · CHECK</span>
+                <strong class="block mt-2 text-sm font-semibold">움직임을 관찰하는 기준</strong>
+              </div>
+              <div class="py-5 border-b border-white/10">
+                <span class="block text-[10px] tracking-[0.16em] text-white/40">02 · SELECT</span>
+                <strong class="block mt-2 text-sm font-semibold">필요한 방법을 선택하는 기준</strong>
+              </div>
+              <div class="py-5 border-b border-white/10">
+                <span class="block text-[10px] tracking-[0.16em] text-white/40">03 · CONNECT</span>
+                <strong class="block mt-2 text-sm font-semibold">이완 · 스트레칭 · 운동의 연결</strong>
+              </div>
+              <div class="py-5 border-b border-white/10">
+                <span class="block text-[10px] tracking-[0.16em] text-white/40">04 · RE-CHECK</span>
+                <strong class="block mt-2 text-sm font-semibold">확인하고 다음 움직임으로 연결</strong>
+              </div>
+            </div>
 
-        <div class="pt-8 border-t border-stone-200/80">
-          <div class="text-center max-w-2xl mx-auto mb-12">
-            <span class="text-xs font-semibold tracking-widest text-[#0092B8] uppercase bg-sky-50 px-3.5 py-1 rounded-full">STUDIO POLICIES</span>
-            <h3 class="text-2xl sm:text-3xl font-semibold text-[#0C3559] mt-3 mb-3">스튜디오 이용 & 수강권 상세 규정</h3>
-            <p class="text-[#0C3559]/75 text-xs sm:text-sm font-normal">투명하고 안전한 스튜디오 이용을 위한 예약, 복장, 수강권 환불 및 공유 기준입니다.</p>
+            <p class="mt-7 text-xs sm:text-sm text-white/48 leading-relaxed">
+              Solution Stretching Academy는 스튜디오 서비스와 분리된 지도자 교육 영역입니다.
+            </p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="guidelines-container"></div>
         </div>
       </div>
     </section>
 
-    <footer class="bg-[#0C3559] text-stone-300 py-16 border-t border-white/10 text-xs">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
-        <p>© 2026 스트레칭온. All rights reserved. | 상호명: 스트레칭온 | 인천 서해구 가정로 451 8층 803호</p>
+    <!-- FINAL CTA -->
+    <section class="relative py-28 sm:py-36 bg-[#102A43] text-white overflow-hidden">
+      <div class="absolute -right-20 -top-20 w-72 h-72 rounded-full border border-white/8"></div>
+      <div class="absolute -right-6 -top-6 w-44 h-44 rounded-full border border-white/8"></div>
+      <div class="relative max-w-5xl mx-auto px-5 sm:px-7 text-center">
+        <p class="text-xs tracking-[0.22em] text-white/50">STRETCHING ON</p>
+        <h2 class="mt-6 text-4xl sm:text-6xl lg:text-7xl leading-[1.08] font-semibold tracking-[-0.05em]">평생, 내가 원하는 대로<br />움직일 수 있도록.</h2>
+        <p class="mt-6 text-sm sm:text-base text-white/62">처음이라면 Initial Session에서 현재의 몸과 움직임부터 확인합니다.</p>
+        <div class="mt-10 flex flex-col sm:flex-row justify-center gap-3">
+          <button onclick="window.open('https://booking.naver.com/booking/13/bizes/1102918','_blank')" class="px-8 py-4 rounded-full bg-white text-[#102A43] text-sm font-semibold hover:bg-[#F5F2EC] transition-colors">INITIAL SESSION 예약 →</button>
+          <button onclick="location.href='?view=app'" class="px-8 py-4 rounded-full border border-white/25 text-white text-sm font-semibold hover:bg-white/10 transition-colors">기존 회원 예약</button>
+        </div>
       </div>
+    </section>
+
+    <footer class="bg-[#0B2034] text-white/55 py-10 text-[11px]">
+      <div class="max-w-7xl mx-auto px-5 sm:px-7 lg:px-10 flex flex-col sm:flex-row justify-between gap-3"><p>© 2026 스트레칭온. All rights reserved.</p><p>STRETCHING ON · SOLUTION STRETCHING METHOD</p></div>
     </footer>
   </div>
 
@@ -673,10 +610,10 @@
     const MEMBERS_KEY = 'solstretch_members_v1';
 
     const PROGRAMS = [
-      { id: 'p0', title: 'Sol-First (첫방문/체험)', subtitle: '1:1 체형 정밀 측정스캔 + 수기 체험 & 맞춤 상담 (50분)', duration: 50, priceSingle: '100,000원', price: 150000, originalPrice: 150000, badge: 'FIRST VISIT', description: '첫 방문 고객님을 위한 1:1 정밀 체형 측정 스캔, 통증 원인 상담 및 패시브 스트레칭 체험 코스입니다. 내 몸의 상태를 정확히 알고 맞춤 관리 로드맵을 결정하실 수 있습니다.', targets: ['스트레칭온을 처음 방문하시는 고객님', '내 신체 불균형 및 통증 원인이 궁금하신 분', '1회 체험 후 향후 관리 로드맵을 설계받고 싶으신 분'] },
-      { id: 'p1', title: 'Sol-Recovery (시그니처)', subtitle: '1:1 맞춤 체형 교정 & 패시브 수기 스트레칭 (50분)', duration: 50, priceSingle: '150,000원', price: 150000, originalPrice: 150000, badge: 'SIGNATURE', description: '관절 가동 범위를 섬세하게 확보하고, 거북목·승모근 및 만성 근육 긴장 해소를 위한 원장의 독자 수기 대표 기본 솔루션입니다.', targets: ['거북목·승모근 결림 및 목 뻐근함', '어깨 가동범위 제한 및 굽은 등', '일상 속 가벼운 유연성 회복을 원하시는 분'] },
-      { id: 'p2', title: 'Sol-Balance (프리미엄)', subtitle: '척추·골반 무브먼트 리밸런스 딥 케어 (90분)', duration: 90, priceSingle: '250,000원', price: 250000, originalPrice: 250000, badge: 'PREMIUM', description: '골반 비대칭 및 척추 구조 불균형의 근본 원인을 수기 측정평가하여 굳어진 근막을 딥 이완하고 하체 순환을 촉진하는 정밀 심화 케어입니다.', targets: ['골반 틀어짐 및 요통 근본 해소', '하체 부종 및 고관절 수축·답답함', '자세 구조 정교화 및 신체 밸런스 재정립'] },
-      { id: 'p3', title: '솔루션 멤버십 10회 (멤버십)', subtitle: '체계적 1:1 맞춤 체형 교정 & 집중 정기 케어 패키지', duration: 50, priceSingle: '1,000,000원', price: 1500000, originalPrice: 1500000, badge: 'MEMBERSHIP', description: '지속적인 신체 불균형 개선과 올바른 자세 유지를 위한 10회 맞춤 이용권. 직계 가족 및 지인과 자유롭게 차감 공유 가능합니다.', targets: ['근본적인 체형 교정이 필요하신 분', '만성 통증 재발 방지 및 지속 케어', '가족 및 지인과 차감 공유 원하시는 분'] }
+      { id: 'p0', title: 'Initial Session 50', subtitle: '상담 + 기본 움직임 CHECK + Solution Session (50분)', duration: 50, priceSingle: '100,000원', price: 100000, originalPrice: 100000, badge: 'FIRST VISIT', description: '처음 방문해 현재 몸과 움직임을 확인하고 Solution Stretching을 경험하는 세션입니다.', targets: ['처음 방문하시는 분', '현재 움직임과 불편감을 함께 확인하고 싶은 분', '정기 이용 전 먼저 경험해 보고 싶은 분'] },
+      { id: 'p1', title: 'Initial Session 50', subtitle: '상담 + 기본 움직임 CHECK + Solution Session (50분)', duration: 50, priceSingle: '100,000원', price: 100000, originalPrice: 100000, badge: 'INITIAL 50', description: '상담과 기본 움직임 CHECK 후 필요한 이완·스트레칭·운동을 연결합니다.', targets: ['처음 방문하시는 분'] },
+      { id: 'p2', title: 'Initial Session 90', subtitle: '상담 + 자세한 CHECK + Solution Session + RE-CHECK + 맞춤운동 안내 (90분)', duration: 90, priceSingle: '150,000원', price: 150000, originalPrice: 150000, badge: 'RECOMMENDED', description: '조금 더 충분한 시간으로 현재 움직임을 확인하고 Session과 RE-CHECK, 맞춤운동 안내까지 연결합니다.', targets: ['처음 방문 시 충분한 상담과 확인을 원하는 분'] },
+      { id: 'p3', title: '기존 회원 예약', subtitle: '기존 등록 회원 전용 예약', duration: 50, priceSingle: '회원 전용', price: 0, originalPrice: 0, badge: 'MEMBER', description: '기존 등록 회원의 예약 연동을 위한 항목입니다.', targets: ['기존 등록 회원'] }
     ];
 
     const BODY_ZONES = [
@@ -689,24 +626,24 @@
     const TIME_SLOTS = ['10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
     const GUIDELINES = [
-      { category: '예약 및 취소/변경 규정', badge: 'RESERVATION', items: [{ title: '온라인 당일 예약 제한 (100% 사전예약제)', desc: '원장의 1:1 집중 정밀 케어를 위해 당일 온라인 예약은 없습니다. 당일 관리를 희망하시는 경우 대표 번호(010-6566-6369)로 문의 부탁드립니다.' }, { title: '타임 슬롯 당 1명 한정 (중복 예약 자동 차감)', desc: '어떤 프로그램을 선택하셔도 동일한 시간대에는 오직 1분의 고객님만 모십니다. 이미 예약된 타임은 마감 처리됩니다.' }, { title: '노쇼 및 취소', desc: '노쇼 및 취소를 방지하기 위해 예약금 제도를 시행합니다(20%).' }] },
-      { category: '복장 및 시설 안내', badge: 'DRESS CODE', items: [{ title: '유니폼 및 탈의실 미운영', desc: '스트레칭 온은 별도의 유니폼을 제공하지 않으며 탈의실/파우더룸을 운영하지 않습니다.' }, { title: '편안한 복장 착용 후 방문', desc: '관절 및 근막의 자율적이고 원활한 이완 움직임을 위해 방문 시 상·하체 움직임이 편안한 복장(운동복 등)을 미리 착용 후 방문해 주세요.' }] },
-      { category: '솔루션 멤버십(10회) 규정', badge: 'MEMBERSHIP', items: [{ title: '유효기간 안내', desc: '10회 수강권의 유효기간은 등록일로부터 2개월입니다.' }, { title: '당일 예약취소 규정', desc: '당일 예약 취소는 불가능하며, 미방문 시 1회 차감됩니다.' }, { title: '가족 및 지인 자유 공유', desc: '수강권 이용권은 본인 외에도 직계 가족 및 지인과 자유롭게 차감 공유하여 함께 이용하실 수 있습니다.' }] },
-      { category: '주차 및 위치 / 안전 안내', badge: 'PARKING & SAFETY', items: [{ title: '건물 내 2시간 무료 주차', desc: '벨라미센텀시티 2차 건물 지하 주차장에 2시간 무료 주차가 가능하며, 케어 완료 후 차량 번호를 등록해 드립니다.' }, { title: '신체 상태 사전 공유', desc: '수술 이력, 디스크 중증 질환, 임신 중이신 경우 케어 진행 전 원장에게 미리 말씀해 주시면 안전을 최우선으로 진행합니다.' }] }
+      { category: '예약 및 이용 안내', badge: 'RESERVATION', items: [{ title: '1:1 사전예약제', desc: '모든 세션은 한 시간대에 한 분만 진행합니다. 예약 가능한 시간은 예약 페이지에서 확인해 주세요.' }, { title: '당일취소·노쇼', desc: '정기 프로그램 이용 중 당일취소 및 노쇼는 1회 이용으로 처리됩니다.' }] },
+      { category: '방문 안내', badge: 'VISIT', items: [{ title: '편안한 복장', desc: '움직임 확인과 스트레칭, 운동이 가능하도록 편안한 복장으로 방문해 주세요.' }, { title: '현재 몸 상태 공유', desc: '최근 수술, 치료 중인 질환, 임신 등 세션에 참고해야 할 사항이 있다면 시작 전 미리 알려주세요.' }] },
+      { category: '정기 Solution Program', badge: 'SOLUTION PROGRAM', items: [{ title: '월 단위 이용주기', desc: '2회·4회·8회 중 현재 상태에 맞는 이용주기를 안내하며, 필요에 따라 다음 달 주기를 변경할 수 있습니다.' }, { title: '휴회·연기', desc: '월 단위 프로그램은 별도 휴회·연기 없이 해당 이용기간 안에서 진행합니다.' }] },
+      { category: '위치 및 주차', badge: 'LOCATION', items: [{ title: '가정역 도보권', desc: '인천지하철 2호선 가정역 6번 출구에서 가깝습니다.' }, { title: '2시간 무료주차', desc: '건물 지하주차장 이용 시 2시간 무료주차 등록을 도와드립니다.' }] }
     ];
 
     const REVIEWS = [
-      { name: '김*환 님', job: 'IT 개발팀 리더', program: 'Sol-First (첫방문 체험)', comment: '첫 방문 체험으로 상담과 수기 케어를 받아보았습니다. 제 불균형 원인을 정확히 짚어주시고 앞으로 어떻게 관리해야 하는지 명확히 알게 되어 바로 등록했습니다.', rating: '★★★★★' },
-      { name: '박*진 님', job: '운수업', program: 'Sol-Balance (90분)', comment: '오래된 골반,허리통증으로 많이 고생했습니다. 원장님의 해부학적 수기 이완 덕분에 걸음걸이가 편해지고 밤마다 느끼던 뻐근함이 크게 줄어 삶의 질이 향상되었습니다.', rating: '★★★★★' },
-      { name: '최*아 님', job: '사무직', program: '솔루션 멤버십 10회', comment: '정기적으로 체형을 바르게 잡아가면서 어깨 가동범위가 정상으로 돌아왔습니다. 내 몸의 가치를 되찾아주는 최고 수준의 1:1 케어 스튜디오입니다.', rating: '★★★★★' }
+      { name: '김*환 님', job: '이용자', program: 'Initial Session', comment: '처음 방문해 상담과 스트레칭을 받아보면서 평소 잘 몰랐던 제 움직임을 함께 확인할 수 있었습니다.', rating: '★★★★★' },
+      { name: '박*진 님', job: '이용자', program: 'Solution Session', comment: '수기로 풀어주는 것에서 끝나지 않고 제 몸에 맞는 움직임과 운동까지 알려주셔서 일상에서 활용하기 좋았습니다.', rating: '★★★★★' },
+      { name: '최*아 님', job: '이용자', program: 'Regular Program', comment: '정기적으로 몸 상태를 확인하면서 그때그때 필요한 스트레칭과 운동을 조정해가는 방식이 좋았습니다.', rating: '★★★★★' }
     ];
 
     const FAQS = [
-      { q: '첫 방문 고객은 어떤 코스를 선택해야 하나요?', a: '처음 방문하시는 고객님께는 [Sol-First 첫방문/체험 (100,000원)] 코스를 추천해 드립니다. 1:1 체형 정밀 측정 스캔, 통증 원인 상담, 수기 스트레칭 체험이 통합 제공되며 향후 내 몸에 꼭 맞는 관리 로드맵을 안내받으실 수 있습니다.' },
-      { q: '일반 마사지나 도수치료와 무엇이 다른가요?', a: '스트레칭 온은 단순 압박이나 일시적 마사지가 아닙니다. 40여년 임상 경험을 가진 원장이 직접 관절 가동성(Mobility)과 근막 비대칭을 측정 평가하여 1:1 맞춤 수기 이완 및 교정 스트레칭을 진행합니다.' },
-      { q: '동일 시간대에 다른 사람과 예약이 겹치지 않나요?', a: '네, 원장 1:1 단독 집중 케어로 진행되므로 프로그램 종류에 관계없이 동일 날짜·시간대에는 오직 1명의 예약만 가능합니다. 먼저 예약된 타임 슬롯은 실시간으로 자동 마감 처리됩니다.' },
-      { q: '당일 방문 예약도 가능한가요?', a: '온라인 시스템에서는 정밀한 케어 준비를 위해 최소 방문 1일 전부터만 선택이 가능합니다. 당일 케어를 꼭 원하시는 경우 대표 번호(010-6566-6369)로 연락해 주시면 예약 잔여 시간을 안내해 드립니다.' },
-      { q: '편안한 복장이 준비되어 있나요?', a: '아니요, 스트레칭 온은 탈의실 및 별도 유니폼을 제공하지 않습니다. 자율적이고 원활한 가동 이완을 위해 방문 시 움직임이 편안한 복장(운동복 등)을 미리 착용하고 방문해 주시기 바랍니다.' }
+      { q: '처음 방문하면 무엇을 하나요?', a: '처음 방문에서는 불편한 점과 생활패턴을 듣고 현재 움직임을 확인합니다. 그 결과에 따라 수기 이완, 패시브 스트레칭, 맞춤운동을 필요한 만큼 연결합니다.' },
+      { q: '마사지나 병원 치료와 같은 서비스인가요?', a: '스트레칭온은 질환을 진단하거나 치료하는 의료기관이 아닙니다. 현재 몸의 움직임을 확인하고 이완·스트레칭·운동을 연결해 일상에서 더 편하게 움직일 수 있도록 돕는 1:1 움직임 관리 스튜디오입니다.' },
+      { q: '처음부터 정기 프로그램을 등록해야 하나요?', a: '아닙니다. Initial Session을 먼저 받아보신 뒤 필요할 경우 현재 상태와 관리 필요도, 운동 자립도를 고려해 적절한 이용주기를 안내합니다.' },
+      { q: '50분과 90분은 어떻게 다른가요?', a: '50분은 상담과 기본 CHECK, Solution Session 중심입니다. 90분은 보다 충분한 CHECK와 Session, RE-CHECK, 맞춤운동 안내까지 진행하기에 첫 방문 시 몸과 움직임을 더 자세히 이해하고 싶은 분께 권합니다.' },
+      { q: '어떤 복장으로 방문하면 되나요?', a: '움직임을 확인하고 스트레칭과 운동을 진행할 수 있도록 편안한 운동복 차림으로 방문해 주세요.' }
     ];
 
     window.bookings = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -768,9 +705,12 @@
     }
 
     function scrollToSec(id) {
-      document.getElementById('mobile-menu').classList.add('hidden');
+      const oldMenu = document.getElementById('mobile-menu');
+      if (oldMenu) oldMenu.classList.add('hidden');
+      const premiumMenu = document.getElementById('premium-mobile-menu');
+      if (premiumMenu) premiumMenu.classList.add('hidden');
       const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function toggleMobileMenu() {
@@ -1015,7 +955,7 @@
 
       const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
       if (!member) {
-        alert('🚨 등록된 10회권 회원 정보가 없습니다. 원장님께 등록 문의를 해주세요.');
+        alert('🚨 등록된 회원 정보가 없습니다. 스튜디오에 문의해 주세요.');
         return;
       }
 
@@ -1034,7 +974,7 @@
       document.getElementById('app-booking-screen').classList.remove('hidden');
 
       document.getElementById('app-user-name').innerText = member.name;
-      document.getElementById('app-user-type').innerText = member.passType || '솔루션 멤버십 10회';
+      document.getElementById('app-user-type').innerText = member.passType || '등록 프로그램';
       document.getElementById('app-user-passes').innerText = curPasses;
       document.getElementById('app-user-expiry').innerText = member.expiryDate || '무제한';
 
@@ -1117,7 +1057,7 @@
       const newB = {
         id: 'APP-' + Math.floor(100000 + Math.random() * 900000),
         programId: 'p3',
-        programTitle: '솔루션 멤버십 10회 (앱예약)',
+        programTitle: '등록 프로그램 (앱예약)',
         duration: 50,
         price: 0,
         date: date,
@@ -1139,7 +1079,7 @@
           body: JSON.stringify({
             name: name,
             phone: phone,
-            programTitle: '솔루션 멤버십 10회 (앱예약)',
+            programTitle: '등록 프로그램 (앱예약)',
             duration: 50,
             date: date,
             time: appSelectedTime,
@@ -1268,6 +1208,7 @@
 
     function renderBodyZones() {
       const tabContainer = document.getElementById('zone-tab-buttons');
+      if (!tabContainer) return;
       tabContainer.innerHTML = BODY_ZONES.map(z => {
         const isSelected = selectedZone.id === z.id;
         return `
@@ -1422,7 +1363,7 @@ function selectProgramAndBook(pId) {
     return;
   }
 
-  // 솔루션 멤버십 10회 선택 시: 2단계 활성화 후 예약창으로 자동 스크롤 이동
+  // 등록 프로그램 선택 시: 2단계 활성화 후 예약창으로 자동 스크롤 이동
   selectedProgram = PROGRAMS.find(p => p.id === pId);
   goToStep(2);
 
@@ -1435,6 +1376,7 @@ function selectProgramAndBook(pId) {
 }
     function renderStep2() {
       const dateInput = document.getElementById('booking-date-input');
+      if (!dateInput) return;
       const minDate = getNextWorkingDateStr();
 
       dateInput.value = selectedDate < minDate ? minDate : selectedDate;
@@ -1606,7 +1548,8 @@ function selectProgramAndBook(pId) {
     }
 
     function renderStaticSections() {
-      document.getElementById('reviews-container').innerHTML = REVIEWS.map(r => `
+      const reviewsEl = document.getElementById('reviews-container');
+      if (reviewsEl) reviewsEl.innerHTML = REVIEWS.map(r => `
         <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-md flex flex-col justify-between hover:shadow-xl transition-all">
           <div>
             <div class="text-amber-400 font-bold mb-3">${r.rating}</div>
@@ -1622,7 +1565,8 @@ function selectProgramAndBook(pId) {
         </div>
       `).join('');
 
-      document.getElementById('guidelines-container').innerHTML = GUIDELINES.map(g => `
+      const guidelinesEl = document.getElementById('guidelines-container');
+      if (guidelinesEl) guidelinesEl.innerHTML = GUIDELINES.map(g => `
         <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4">
@@ -1641,7 +1585,8 @@ function selectProgramAndBook(pId) {
         </div>
       `).join('');
 
-      document.getElementById('faqs-container').innerHTML = FAQS.map((f, idx) => `
+      const faqsEl = document.getElementById('faqs-container');
+      if (faqsEl) faqsEl.innerHTML = FAQS.map((f, idx) => `
         <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden transition-all shadow-sm">
           <button onclick="toggleFaq(${idx})" class="w-full p-5 text-left font-semibold text-[#0C3559] text-sm sm:text-base hover:bg-stone-50 flex justify-between items-center">
             <span>${f.q}</span>
@@ -1794,7 +1739,7 @@ async function submitBooking() {
     numericPrice = 250000;
   } else if (currentProg.includes('멤버십') || currentProg.includes('MEMBERSHIP')) {
     programId = 'p3';
-    programTitle = '솔루션 멤버십 10회';
+    programTitle = '등록 프로그램';
     duration = 50;
     numericPrice = 1000000;
   }
@@ -1838,5 +1783,15 @@ async function submitBooking() {
 }
   </script>
 
+
+  <script>
+    function togglePremiumMobileMenu(force) {
+      const menu = document.getElementById('premium-mobile-menu');
+      if (!menu) return;
+      if (force === false) { menu.classList.add('hidden'); return; }
+      if (force === true) { menu.classList.remove('hidden'); return; }
+      menu.classList.toggle('hidden');
+    }
+  </script>
 </body>
 </html>
