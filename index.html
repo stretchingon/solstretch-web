@@ -117,132 +117,6 @@
     <span id="toast-text" class="text-xs sm:text-sm font-semibold"></span>
   </div>
 
-  <!-- 📟 스튜디오 현장 전용 키오스크 출석 뷰 (?view=checkin) -->
-  <div id="checkin-view" class="hidden min-h-screen bg-[#0C3559] text-white flex flex-col items-center justify-between p-6 sm:p-8 relative overflow-hidden select-none">
-    <div class="w-full max-w-6xl flex items-center justify-between border-b border-white/10 pb-4">
-      <div class="flex items-center gap-3">
-        <div class="w-3.5 h-3.5 rounded-full bg-emerald-400 animate-ping"></div>
-        <span class="font-extrabold text-2xl tracking-tight text-white">스트레칭 온</span>
-        <span class="text-xs font-semibold bg-sky-500/20 text-sky-300 px-3.5 py-1 rounded-full border border-sky-400/30">스튜디오 현장 출석 키오스크</span>
-      </div>
-      <a href="index.html" class="text-xs text-stone-400 hover:text-white underline">일반 홈페이지 이동</a>
-    </div>
-
-    <div class="w-full max-w-6xl my-auto py-6">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <div class="lg:col-span-6 space-y-5 text-center lg:text-left">
-          <div>
-            <p class="text-xs font-bold text-sky-300 tracking-wider uppercase mb-1">STRETCHING ON CHECK-IN</p>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">연락처 뒷자리 4자리를 눌러주세요</h2>
-          </div>
-
-          <div class="bg-[#082239] border-2 border-sky-400/40 rounded-3xl p-4 sm:p-5 shadow-2xl flex items-center justify-center gap-3 max-w-md mx-auto lg:mx-0">
-            <span class="text-lg sm:text-2xl font-mono text-stone-400">010 - **** -</span>
-            <div id="kiosk-digits-display" class="flex gap-2">
-              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
-              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
-              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
-              <span class="w-9 h-11 border-b-4 border-sky-400 text-2xl sm:text-3xl font-extrabold flex items-center justify-center text-amber-300">-</span>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2.5 sm:gap-3 max-w-md mx-auto lg:mx-0">
-            <button onclick="pressKioskKey('1')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">1</button>
-            <button onclick="pressKioskKey('2')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">2</button>
-            <button onclick="pressKioskKey('3')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">3</button>
-            <button onclick="pressKioskKey('4')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">4</button>
-            <button onclick="pressKioskKey('5')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">5</button>
-            <button onclick="pressKioskKey('6')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">6</button>
-            <button onclick="pressKioskKey('7')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">7</button>
-            <button onclick="pressKioskKey('8')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">8</button>
-            <button onclick="pressKioskKey('9')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">9</button>
-            <button onclick="pressKioskKey('C')" class="h-14 sm:h-16 rounded-2xl bg-rose-500/30 hover:bg-rose-500/50 border border-rose-400/40 text-sm font-bold text-rose-200 active:scale-95 transition-all">지우기</button>
-            <button onclick="pressKioskKey('0')" class="h-14 sm:h-16 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 text-2xl font-extrabold text-white shadow-md active:scale-95 transition-all">0</button>
-            <button onclick="pressKioskKey('OK')" class="h-14 sm:h-16 rounded-2xl bg-amber-400 hover:bg-amber-300 text-[#0C3559] text-base font-extrabold shadow-lg active:scale-95 transition-all">확인 ➔</button>
-          </div>
-        </div>
-
-        <div class="lg:col-span-6 flex items-center justify-center">
-          <div id="kiosk-result-box" class="w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-sky-400 text-center space-y-4">
-            <div class="w-16 h-16 rounded-2xl bg-sky-50 text-[#0092B8] flex items-center justify-center mx-auto text-3xl font-bold">👋</div>
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">스트레칭온 스튜디오</h3>
-            <p class="text-sm font-semibold text-slate-500 leading-relaxed">
-              연락처 뒷자리 4자리를 누르시면<br />
-              <strong class="text-[#0092B8]">1:1 출석체크 및 잔여 수강권</strong>이 바로 확인됩니다.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-xs text-stone-400 font-medium text-center pt-2">© Stretching ON Studio Interactive Kiosk</div>
-  </div>
-
-  <!-- 📱 기존 회원 전용 모바일 앱 뷰 (?view=app) -->
-  <div id="app-view" class="hidden min-h-screen bg-[#FAF9F6] p-4 max-w-md mx-auto relative">
-    <div class="flex justify-between items-center py-3 mb-4 border-b border-stone-200">
-      <div class="flex items-center gap-2">
-        <span class="font-bold text-lg text-[#0C3559]">스트레칭 온</span>
-        <span class="text-[10px] font-bold bg-[#0092B8] text-white px-2 py-0.5 rounded-full">회원 전용 앱</span>
-      </div>
-      <button onclick="location.href='index.html'" class="text-xs text-stone-400 underline">일반 웹사이트</button>
-    </div>
-
-    <div id="app-login-screen" class="mt-8 bg-white p-6 rounded-3xl border border-stone-200 shadow-xl space-y-4">
-      <div class="text-center mb-4">
-        <h2 class="text-xl font-bold text-[#0C3559]">회원 확인</h2>
-        <p class="text-xs text-stone-500 mt-1">등록하신 성함과 연락처를 입력해 주세요.</p>
-      </div>
-      <input type="text" id="app-input-name" placeholder="성함 *" class="w-full p-3.5 border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#0C3559]" />
-      <input type="tel" id="app-input-phone" placeholder="연락처 (예: 01012345678) *" class="w-full p-3.5 border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#0C3559]" />
-      <button onclick="appLoginCheck()" class="w-full py-4 bg-[#0C3559] text-white font-bold rounded-xl text-xs shadow-md hover:bg-[#082239] transition-all">
-        내 수강권 확인 및 1:1 예약하기 ➔
-      </button>
-    </div>
-
-    <div id="app-booking-screen" class="hidden space-y-5">
-      <div class="bg-gradient-to-br from-[#0C3559] via-[#0A2D4C] to-[#082239] p-6 rounded-3xl text-white shadow-xl relative overflow-hidden">
-        <div class="flex justify-between items-start">
-          <div>
-            <span class="text-xs text-sky-300 font-semibold block">MEMBER PROFILE</span>
-            <h3 class="text-xl font-bold mt-1"><span id="app-user-name">O</span> 회원님</h3>
-            <p class="text-[11px] text-stone-300 mt-0.5" id="app-user-type">등록 프로그램</p>
-          </div>
-          <button onclick="appLogout()" class="text-[10px] bg-white/10 px-2.5 py-1 rounded-full text-stone-300 hover:bg-white/20">로그아웃</button>
-        </div>
-        <div class="mt-5 p-4 rounded-2xl bg-white/10 backdrop-blur-md flex justify-between items-center border border-white/10">
-          <span class="text-xs font-semibold text-stone-200">잔여 수강권</span>
-          <span class="text-2xl font-extrabold text-amber-300"><span id="app-user-passes">0</span> <span class="text-sm text-white font-normal">/ 10회</span></span>
-        </div>
-        <div class="mt-3 text-right">
-          <p class="text-[10px] text-stone-300">만료 예정일: <span id="app-user-expiry">-</span></p>
-        </div>
-      </div>
-
-      <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-lg space-y-4">
-        <h4 class="font-bold text-sm text-[#0C3559]">⚡ 3초 1:1 간편 예약</h4>
-        <div class="space-y-3">
-          <div>
-            <label class="block text-[11px] font-semibold text-stone-500 mb-1">방문 날짜 선택 (내일부터 가능)</label>
-            <input type="date" id="app-date" onchange="renderAppTimeSlots()" class="w-full p-3 border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-[#0C3559]" />
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-stone-500 mb-1">방문 시간대</label>
-            <div id="app-time-slots" class="grid grid-cols-3 gap-2"></div>
-          </div>
-          <button onclick="submitAppBooking()" class="w-full py-4 bg-[#0092B8] text-white font-bold rounded-xl text-xs shadow-lg hover:bg-[#007a99] transition-all mt-2">
-            1:1 맞춤 예약 확정하기 ✓
-          </button>
-        </div>
-      </div>
-
-      <div class="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm space-y-3">
-        <h4 class="font-bold text-xs text-[#0C3559]">📅 내 예약 신청 내역</h4>
-        <div id="app-my-bookings-list" class="space-y-2"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- 🖥️ 일반 PC/모바일 공식 웹사이트 뷰 -->
   <div id="main-website" class="flex-1 flex flex-col bg-[#F5F2EC] text-[#102A43]">
 
@@ -568,29 +442,6 @@
     </div>
   </div>
 
-  <div id="modal-my-bookings" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 relative max-h-[85vh] overflow-y-auto custom-scrollbar">
-      <button onclick="closeModal('modal-my-bookings')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
-      <h3 class="text-xl font-bold text-[#0C3559] mb-1">🔑 내 예약 및 수강권 조회</h3>
-      <p class="text-xs text-stone-500 mb-4">예약 시 입력하셨던 성함과 연락처로 조회하시면 실시간 확인 및 취소가 가능합니다.</p>
-
-      <form onsubmit="handleCustomerLookup(event)" class="space-y-3 mb-6 p-4 rounded-2xl bg-stone-50 border border-stone-200">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <input type="text" id="lookup-name" required placeholder="성함 *" class="border p-2.5 rounded-xl text-xs bg-white" />
-          <input type="tel" id="lookup-phone" required placeholder="연락처 (예: 01012345678) *" class="border p-2.5 rounded-xl text-xs bg-white" />
-        </div>
-        <button type="submit" class="w-full py-2.5 bg-[#0C3559] text-white font-bold rounded-xl text-xs shadow-sm">
-          내 예약 및 수강권 조회하기 ➔
-        </button>
-      </form>
-
-      <div id="my-member-status-box" class="hidden mb-6 p-4 rounded-2xl bg-sky-50 border border-sky-200 text-xs space-y-2"></div>
-      <div id="my-bookings-list" class="space-y-3">
-        <p class="text-xs text-stone-400 py-6 text-center font-medium">성함과 연락처를 입력 후 조회해 주세요.</p>
-      </div>
-    </div>
-  </div>
-
   <div id="modal-academy" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-8 relative">
       <button onclick="closeModal('modal-academy')" class="absolute top-6 right-6 text-stone-500 font-bold">✕</button>
@@ -607,7 +458,9 @@
   <!-- JavaScript Application Logic -->
   <script>
     const STORAGE_KEY = 'solstretch_bookings_v1';
-    const MEMBERS_KEY = 'solstretch_members_v1';
+    localStorage.removeItem('solstretch_members_v1');
+    sessionStorage.removeItem('solstretch_app_name');
+    sessionStorage.removeItem('solstretch_app_phone');
 
     const PROGRAMS = [
       { id: 'p0', title: 'Initial Session 50', subtitle: '상담 + 기본 움직임 CHECK + Solution Session (50분)', duration: 50, priceSingle: '80,000원', price: 80000, originalPrice: 80000, badge: 'FIRST VISIT', description: '처음 방문해 현재 몸과 움직임을 확인하고 Solution Stretching을 경험하는 세션입니다.', targets: ['처음 방문하시는 분', '현재 움직임과 불편감을 함께 확인하고 싶은 분', '정기 이용 전 먼저 경험해 보고 싶은 분'] },
@@ -647,13 +500,10 @@
     ];
 
     window.bookings = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    window.members = JSON.parse(localStorage.getItem(MEMBERS_KEY)) || [];
     let selectedProgram = PROGRAMS[0];
     let selectedZone = BODY_ZONES[0];
     let selectedDate = getNextWorkingDateStr();
     let selectedTime = TIME_SLOTS[2];
-    let appSelectedTime = '';
-    let kioskInputDigits = '';
 
     function getLocalDateStr(offsetDays = 0) {
       const d = new Date();
@@ -700,10 +550,6 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(window.bookings));
     }
 
-    function saveMembersLocal() {
-      localStorage.setItem(MEMBERS_KEY, JSON.stringify(window.members));
-    }
-
     function scrollToSec(id) {
       const oldMenu = document.getElementById('mobile-menu');
       if (oldMenu) oldMenu.classList.add('hidden');
@@ -720,390 +566,10 @@
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-    let audioUnlocked = false;
-    function unlockAudioAndSpeech() {
-      if (audioUnlocked) return;
-      audioUnlocked = true;
-      try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (AudioCtx) {
-          const ctx = new AudioCtx();
-          ctx.resume();
-        }
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.resume();
-          window.speechSynthesis.getVoices();
-        }
-      } catch (e) {}
-    }
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-      };
-    }
-
-    function updateKioskDisplay() {
-      const displayContainer = document.getElementById('kiosk-digits-display');
-      if (!displayContainer) return;
-      const spans = displayContainer.querySelectorAll('span');
-      for (let i = 0; i < 4; i++) {
-        spans[i].innerText = kioskInputDigits[i] ? kioskInputDigits[i] : '-';
-      }
-    }
-
-    function pressKioskKey(key) {
-      unlockAudioAndSpeech();
-      if (key === 'C') {
-        kioskInputDigits = '';
-      } else if (key === 'OK') {
-        if (kioskInputDigits.length === 4) processKioskCheckin();
-        else showToast('뒷자리 4자리를 모두 눌러주세요.');
-      } else {
-        if (kioskInputDigits.length < 4) {
-          kioskInputDigits += key;
-        }
-      }
-      updateKioskDisplay();
-    }
-
-    function playKioskChime() {
-      try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
-        if (ctx.state === 'suspended') ctx.resume();
-        const playNote = (freq, startTime, duration) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
-          gain.gain.setValueAtTime(0.3, ctx.currentTime + startTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(ctx.currentTime + startTime);
-          osc.stop(ctx.currentTime + startTime + duration);
-        };
-        playNote(659.25, 0, 0.4);
-        playNote(880.00, 0.22, 0.65);
-      } catch (e) {
-        console.warn("Chime Audio Error:", e);
-      }
-    }
-
-    function speakKioskVoice(message) {
-      try {
-        if (!('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-        window.speechSynthesis.resume();
-
-        const utterance = new SpeechSynthesisUtterance(message);
-        utterance.lang = 'ko-KR';
-        utterance.pitch = 1.1;
-        utterance.rate = 1.0;
-
-        window.currentUtterance = utterance;
-
-        const voices = window.speechSynthesis.getVoices();
-        const koVoice = voices.find(v => v.lang.includes('ko') && (v.name.includes('Yuna') || v.name.includes('SunHi') || v.name.includes('Heami') || v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Korean') || v.name.includes('ko')));
-        if (koVoice) utterance.voice = koVoice;
-
-        utterance.onend = () => { window.currentUtterance = null; };
-        utterance.onerror = (err) => { console.warn("Speech Synthesis Error:", err); };
-
-        setTimeout(() => {
-          window.speechSynthesis.speak(utterance);
-        }, 100);
-      } catch (e) {
-        console.warn("Kiosk Voice Speech Error:", e);
-      }
-    }
-
-    function resetKioskDefaultWelcomeCard() {
-      const resBox = document.getElementById('kiosk-result-box');
-      if (!resBox) return;
-      resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-sky-400 text-center space-y-4';
-      resBox.innerHTML = `
-        <div class="w-16 h-16 rounded-2xl bg-sky-50 text-[#0092B8] flex items-center justify-center mx-auto text-3xl font-bold">👋</div>
-        <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">스트레칭온 스튜디오</h3>
-        <p class="text-sm font-semibold text-slate-500 leading-relaxed">
-          연락처 뒷자리 4자리를 누르시면<br />
-          <strong class="text-[#0092B8]">1:1 출석체크 및 잔여 수강권</strong>이 바로 확인됩니다.
-        </p>
-      `;
-    }
-
-    function processKioskCheckin() {
-      const digits = kioskInputDigits;
-      const matchedMembers = window.members.filter(m => {
-        const cleanPhone = (m.phone || '').replace(/[^0-9]/g, '');
-        return cleanPhone.endsWith(digits);
-      });
-
-      const resBox = document.getElementById('kiosk-result-box');
-      if (!resBox) return;
-
-      if (matchedMembers.length === 0) {
-        resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-rose-50 text-rose-900 shadow-2xl border-2 border-rose-400 text-center space-y-3';
-        resBox.innerHTML = `
-          <div class="text-4xl">⚠️</div>
-          <h3 class="text-xl sm:text-2xl font-extrabold">등록되지 않은 번호입니다</h3>
-          <p class="text-xs sm:text-sm text-rose-700">입력하신 뒷자리 [${digits}] 번호로 등록된 회원을 찾을 수 없습니다.</p>
-        `;
-      } else {
-        const member = matchedMembers[0];
-        const curPasses = member.remainingPasses !== undefined 
-          ? Number(member.remainingPasses) 
-          : (member.passCount !== undefined ? Number(member.passCount) : 0);
-
-        if (curPasses <= 0) {
-          resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-amber-50 text-amber-900 shadow-2xl border-2 border-amber-400 text-center space-y-3';
-          resBox.innerHTML = `
-            <div class="text-4xl">⚠️</div>
-            <h3 class="text-xl sm:text-2xl font-extrabold">${member.name} 회원님</h3>
-            <p class="text-base font-bold text-amber-800">잔여 수강권이 0회입니다.</p>
-            <p class="text-xs text-amber-700">데스크에서 수강권 결제 후 이용이 가능합니다.</p>
-          `;
-          playKioskChime();
-          setTimeout(() => {
-            speakKioskVoice(`${member.name} 회원님. 잔여 수강권이 0회입니다.`);
-          }, 350);
-        } else {
-          const nextPasses = Math.max(0, curPasses - 1);
-          member.remainingPasses = nextPasses;
-          member.passCount = nextPasses;
-          saveMembersLocal();
-
-          if (typeof window.syncMemberToCloud === 'function') window.syncMemberToCloud(member);
-
-          const todayStr = getLocalDateStr(0);
-          const timeStr = new Date().toTimeString().split(' ')[0].substring(0, 5);
-
-          const logEntry = {
-            id: 'ATT-' + Date.now(),
-            date: todayStr,
-            time: timeStr,
-            memberId: member.id || ('M-' + Date.now()),
-            memberName: member.name || '회원',
-            phone: member.phone || '',
-            passType: member.passType || '수강권',
-            remainingPasses: nextPasses,
-            source: '태블릿 키오스크 출석'
-          };
-
-          if (!window.attendanceLogs) window.attendanceLogs = [];
-          window.attendanceLogs.unshift(logEntry);
-
-          if (typeof window.syncAttendanceToCloud === 'function') {
-            window.syncAttendanceToCloud(logEntry);
-          }
-
-          playKioskChime();
-          setTimeout(() => {
-            speakKioskVoice(`${member.name} 회원님 환영합니다. 잔여 수강권은 ${nextPasses}회 입니다.`);
-          }, 350);
-
-          resBox.className = 'w-full max-w-lg p-6 sm:p-8 rounded-3xl bg-white text-[#0C3559] shadow-2xl border-2 border-emerald-400 text-center space-y-4';
-          resBox.innerHTML = `
-            <div class="text-4xl">🎉</div>
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-[#0C3559]">${member.name} 회원님 환영합니다!</h3>
-            <div class="p-5 bg-sky-50 rounded-2xl border-2 border-[#0092B8] text-center w-full shadow-inner space-y-1">
-              <p class="text-xs font-bold text-slate-500">출석 완료 후 잔여 수강권</p>
-              <p class="text-4xl sm:text-5xl font-black text-[#0092B8] my-1">${nextPasses}회 <span class="text-sm text-slate-500 font-bold">/ 총 ${member.totalPasses || 10}회</span></p>
-              <p class="text-xs text-slate-600 font-semibold">${member.passType || '수강권'}${member.expiryDate ? ' · 만료일: ' + member.expiryDate : ''}</p>
-            </div>
-          `;
-        }
-      }
-
-      setTimeout(() => {
-        kioskInputDigits = '';
-        updateKioskDisplay();
-        resetKioskDefaultWelcomeCard();
-      }, 4500);
-    }
-
     function checkUrlRouting() {
       const urlParams = new URLSearchParams(window.location.search);
-      const isAppView = urlParams.get('view') === 'app';
-      const isCheckinView = urlParams.get('view') === 'checkin';
-
-      if (isCheckinView) {
-        document.getElementById('main-website').classList.add('hidden');
-        document.getElementById('app-view').classList.add('hidden');
-        document.getElementById('checkin-view').classList.remove('hidden');
-      } else if (isAppView) {
+      if (urlParams.get('view') === 'app') {
         window.location.replace('https://app.solutionstretching.com/app/');
-        return;
-      }
-    }
-
-    function appLoginCheck() {
-      const name = document.getElementById('app-input-name').value.trim();
-      const rawPhone = document.getElementById('app-input-phone').value.trim();
-      const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
-
-      if (!name || !cleanPhone) return showToast('성함과 연락처를 작성해 주세요.');
-
-      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-      if (!member) {
-        alert('🚨 등록된 회원 정보가 없습니다. 스튜디오에 문의해 주세요.');
-        return;
-      }
-
-      sessionStorage.setItem('solstretch_app_name', name);
-      sessionStorage.setItem('solstretch_app_phone', cleanPhone);
-      loadAppDashboard(name, cleanPhone);
-    }
-
-    function loadAppDashboard(name, cleanPhone) {
-      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-      if (!member) { appLogout(); return; }
-
-      const curPasses = member.remainingPasses !== undefined ? member.remainingPasses : member.passCount;
-
-      document.getElementById('app-login-screen').classList.add('hidden');
-      document.getElementById('app-booking-screen').classList.remove('hidden');
-
-      document.getElementById('app-user-name').innerText = member.name;
-      document.getElementById('app-user-type').innerText = member.passType || '등록 프로그램';
-      document.getElementById('app-user-passes').innerText = curPasses;
-      document.getElementById('app-user-expiry').innerText = member.expiryDate || '무제한';
-
-      document.getElementById('app-date').value = getNextWorkingDateStr();
-      document.getElementById('app-date').min = getNextWorkingDateStr();
-      
-      renderAppTimeSlots();
-      renderAppMyBookings(name, cleanPhone);
-    }
-
-    function appLogout() {
-      sessionStorage.removeItem('solstretch_app_name');
-      sessionStorage.removeItem('solstretch_app_phone');
-      document.getElementById('app-login-screen').classList.remove('hidden');
-      document.getElementById('app-booking-screen').classList.add('hidden');
-    }
-
-    function renderAppTimeSlots() {
-      const dateVal = document.getElementById('app-date').value;
-      const minDate = getNextWorkingDateStr();
-      const todayStr = getLocalDateStr(0);
-
-      if (dateVal <= todayStr || dateVal < minDate) {
-        showToast('당일 예약은 불가능합니다. (최소 1일 전 사전예약만 가능)');
-        document.getElementById('app-date').value = minDate;
-        return renderAppTimeSlots();
-      }
-
-      if (isSundayDate(dateVal)) {
-        showToast('일요일은 정기 휴무입니다.');
-        document.getElementById('app-date').value = minDate;
-        return renderAppTimeSlots();
-      }
-
-      const bookedTimes = window.bookings.filter(b => b.date === dateVal && b.status !== '취소').map(b => b.time);
-      const isSat = isSaturdayDate(dateVal);
-
-      const slotsEl = document.getElementById('app-time-slots');
-      slotsEl.innerHTML = TIME_SLOTS.map(t => {
-        const isSaturdayCutoff = isSat && ['18:00', '19:00', '20:00'].includes(t);
-        const isBooked = bookedTimes.includes(t);
-        const isSelected = appSelectedTime === t;
-
-        if (isSaturdayCutoff || isBooked) {
-          return `<button disabled class="py-2.5 rounded-xl text-xs bg-stone-100 text-stone-400 line-through cursor-not-allowed">마감 ${t}</button>`;
-        }
-
-        return `
-          <button onclick="selectAppTime('${t}')" class="py-2.5 rounded-xl text-xs font-bold border ${isSelected ? 'bg-[#0092B8] text-white border-[#0092B8]' : 'bg-white text-[#0C3559] border-stone-200 hover:bg-stone-50'}">
-            ${t}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function selectAppTime(t) {
-      appSelectedTime = t;
-      renderAppTimeSlots();
-    }
-
-    function submitAppBooking() {
-      const name = sessionStorage.getItem('solstretch_app_name');
-      const phone = sessionStorage.getItem('solstretch_app_phone');
-      const date = document.getElementById('app-date').value;
-
-      const minDate = getNextWorkingDateStr();
-      const todayStr = getLocalDateStr(0);
-
-      if (date <= todayStr || date < minDate) return showToast('당일 및 지난 날짜는 예약이 불가능합니다.');
-      if (!appSelectedTime) return showToast('시간대를 선택해 주세요.');
-
-      const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(phone));
-      const curPasses = member ? (member.remainingPasses !== undefined ? member.remainingPasses : member.passCount) : 0;
-
-      if (!member || curPasses <= 0) {
-        alert('🚨 잔여 수강권이 없습니다. 재결제가 필요합니다.');
-        return;
-      }
-
-      const newB = {
-        id: 'APP-' + Math.floor(100000 + Math.random() * 900000),
-        programId: 'p3',
-        programTitle: '등록 프로그램 (앱예약)',
-        duration: 50,
-        price: 0,
-        date: date,
-        time: appSelectedTime,
-        name, phone,
-        note: '10회권 앱 전용 간편 예약',
-        status: '예약 확정',
-        createdAt: new Date().toLocaleDateString('ko-KR')
-      };
-
-      window.bookings.unshift(newB);
-      saveBookingsLocal();
-      if (typeof window.syncBookingToCloud === 'function') window.syncBookingToCloud(newB);
-
-      try {
-        fetch('/api/send-alimtalk', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: name,
-            phone: phone,
-            programTitle: '등록 프로그램 (앱예약)',
-            duration: 50,
-            date: date,
-            time: appSelectedTime,
-            note: '10회권 앱 전용 간편 예약'
-          })
-        }).catch(err => console.warn('Alimtalk send error:', err));
-      } catch (err) {
-        console.warn('Alimtalk exception:', err);
-      }
-
-      alert(`✅ ${date} ${appSelectedTime} 1:1 맞춤 예약이 확정되었습니다!\n* 수강권은 방문 당일 스튜디오 출석체크 시 차감됩니다.`);
-      appSelectedTime = '';
-      loadAppDashboard(name, phone);
-    }
-
-    function renderAppMyBookings(name, phone) {
-      const userBookings = window.bookings.filter(b => b.name === name && b.phone.replace(/[^0-9]/g, '').endsWith(phone));
-      const listEl = document.getElementById('app-my-bookings-list');
-
-      if (userBookings.length === 0) {
-        listEl.innerHTML = `<p class="text-xs text-stone-400 py-3 text-center">예약 신청 내역이 없습니다.</p>`;
-      } else {
-        listEl.innerHTML = userBookings.map(b => `
-          <div class="p-3 rounded-xl bg-stone-50 border border-stone-200 flex justify-between items-center text-xs">
-            <div>
-              <span class="font-bold text-[#0C3559]">${b.date} (${b.time})</span>
-              <p class="text-[10px] text-stone-400">${b.programTitle}</p>
-            </div>
-            <span class="px-2 py-0.5 rounded ${b.status === '취소' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'} text-[10px] font-bold">${b.status}</span>
-          </div>
-        `).join('');
       }
     }
 
@@ -1142,13 +608,8 @@
       }
 
       if (selectedProgram.id === 'p3' || selectedProgram.badge === 'MEMBERSHIP') {
-        const member = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-        const curPasses = member ? (member.remainingPasses !== undefined ? member.remainingPasses : member.passCount) : 0;
-        
-        if (!member || curPasses <= 0) {
-          alert("🚨 10회권 등록 회원이 아니거나 잔여 수강권이 없습니다.\n일반 1회 예약 코스를 선택해 주시거나 스튜디오로 회원 등록을 진행해 주세요.");
-          return;
-        }
+        window.location.href = 'https://app.solutionstretching.com/app/';
+        return;
       }
 
       const newB = {
@@ -1466,74 +927,6 @@ function selectProgramAndBook(pId) {
       renderStep2();
     }
 
-    function openMyBookingsModal() { openModal('modal-my-bookings'); }
-
-    function handleCustomerLookup(e) {
-      e.preventDefault();
-      const name = document.getElementById('lookup-name').value.trim();
-      const rawPhone = document.getElementById('lookup-phone').value.trim();
-      const cleanPhone = rawPhone.replace(/[^0-9]/g, '');
-
-      if (!name || !cleanPhone) return showToast('성함과 연락처를 작성해 주세요.');
-
-      const mem = window.members.find(m => m.name === name && m.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-      const memBox = document.getElementById('my-member-status-box');
-
-      if (mem) {
-        const passes = mem.remainingPasses !== undefined ? mem.remainingPasses : mem.passCount;
-        memBox.classList.remove('hidden');
-        memBox.innerHTML = `
-          <div class="flex justify-between items-center">
-            <strong class="text-sm font-bold text-[#0C3559]">👤 ${mem.name} 회원님</strong>
-            <span class="px-2.5 py-1 bg-[#0C3559] text-white rounded-full font-bold text-xs">잔여 ${passes} / ${mem.totalPasses || 10}회</span>
-          </div>
-          <p class="text-[11px] text-stone-600">수강권: ${mem.passType} · 만료일: ${mem.expiryDate || '무제한'}</p>
-        `;
-      } else {
-        memBox.classList.add('hidden');
-      }
-
-      const userBookings = window.bookings.filter(b => b.name === name && b.phone.replace(/[^0-9]/g, '').endsWith(cleanPhone));
-      const listEl = document.getElementById('my-bookings-list');
-
-      if (userBookings.length === 0) {
-        listEl.innerHTML = `<p class="text-xs text-stone-500 py-6 text-center font-medium">${name}님의 등록된 예약 내역이 없습니다.</p>`;
-      } else {
-        listEl.innerHTML = userBookings.map(b => {
-          const apptTime = new Date(`${b.date}T${b.time}:00`);
-          const diffHours = (apptTime - new Date()) / (1000 * 60 * 60);
-          const eligibleCancel = b.status !== '취소' && diffHours >= 3;
-
-          return `
-            <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200 flex justify-between items-center gap-3 text-xs">
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="px-2 py-0.5 rounded ${b.status === '취소' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-800'} text-[10px] font-bold">${b.status}</span>
-                  <span class="font-mono text-stone-400 text-[10px]">${b.id}</span>
-                </div>
-                <h4 class="text-sm font-bold text-[#0C3559]">${b.programTitle}</h4>
-                <p class="text-stone-500 mt-0.5 font-semibold">${b.date} (${b.time})</p>
-              </div>
-              ${b.status !== '취소' ? (
-                eligibleCancel ? `<button onclick="userCancelBooking('${b.id}')" class="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-xl font-bold border border-rose-200 hover:bg-rose-100">예약 취소</button>` : `<span class="text-[10px] text-stone-400 text-right">방문 3시간 이내<br>(전화문의)</span>`
-              ) : ''}
-            </div>
-          `;
-        }).join('');
-      }
-    }
-
-    function userCancelBooking(id) {
-      const b = window.bookings.find(x => x.id === id);
-      if (b) {
-        b.status = '취소';
-        saveBookingsLocal();
-        if (typeof window.deleteBookingFromCloud === 'function') window.deleteBookingFromCloud(id);
-        showToast(`예약 [${id}]이 성공적으로 취소되었습니다.`);
-        document.querySelector('#modal-my-bookings form').dispatchEvent(new Event('submit'));
-      }
-    }
-
     function openAcademyModal() { openModal('modal-academy'); }
     function submitAcademyApply() {
       const name = document.getElementById('academy-name').value.trim();
@@ -1649,15 +1042,6 @@ function selectProgramAndBook(pId) {
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      onSnapshot(collection(db, "members"), (snapshot) => {
-        if (!snapshot.empty) {
-          const cloudMembers = [];
-          snapshot.forEach((docSnap) => cloudMembers.push(docSnap.data()));
-          window.members = cloudMembers;
-          localStorage.setItem('solstretch_members_v1', JSON.stringify(cloudMembers));
-        }
-      }, (err) => console.log("Members listener:", err));
-
       onSnapshot(collection(db, "bookings"), (snapshot) => {
         const cloudBookings = [];
         snapshot.forEach((docSnap) => cloudBookings.push(docSnap.data()));
@@ -1673,16 +1057,6 @@ function selectProgramAndBook(pId) {
       localStorage.setItem('sol_closed_slots', JSON.stringify(cloudClosedSlots));
       if (typeof renderStep2 === 'function') renderStep2();
     }, (err) => console.log("ClosedSlots listener:", err));
-      window.syncMemberToCloud = async function(memberObj) {
-        try { await setDoc(doc(db, "members", memberObj.id), memberObj); }
-        catch (e) { console.error("Cloud member save:", e); }
-      };
-
-      window.syncAttendanceToCloud = async function(attObj) {
-        try { await setDoc(doc(db, "attendances", attObj.id), attObj); }
-        catch (e) { console.error("Cloud attendance save:", e); }
-      };
-
       window.syncBookingToCloud = async function(bookingObj) {
         try { await setDoc(doc(db, "bookings", bookingObj.id), bookingObj); }
         catch (e) { console.error("Cloud booking save:", e); }
